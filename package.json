@@ -1,0 +1,46 @@
+{
+  "name": "thesis-travel-app",
+  "version": "1.0.0",
+  "description": "Travel App",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "webpack --mode development && node server/index.js",
+    "build": "webpack --mode production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test",
+      "...": "..."
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joshjnunez/thesis-travel-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/joshjnunez/thesis-travel-app/issues"
+  },
+  "homepage": "https://github.com/joshjnunez/thesis-travel-app#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "babel-loader": "^8.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "husky": "^4.2.5",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
