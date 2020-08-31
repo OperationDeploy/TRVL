@@ -6,11 +6,11 @@ const htmlPlugin = new HtmlWebPackPlugin({
   filename: 'index.html',
 });
 module.exports = {
-  entry: './client/src/index.js',
+  entry: './client/src/index.jsx',
   output: {
     // NEW
     path: path.join(__dirname, 'dist'),
-    filename: '[name].js',
+    filename: '[name].jsx',
   }, // NEW Ends
   plugins: [htmlPlugin],
   module: {
