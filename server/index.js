@@ -1,9 +1,9 @@
 require('dotenv').config();
 // import db
-const { sequelize } = require('./db.js');
 const express = require('express');
 const path = require('path'); // NEW
 const bodyParser = require('body-parser');
+const { sequelize } = require('./db.js');
 
 const app = express();
 const { PORT } = process.env;
@@ -13,7 +13,7 @@ const HTML_FILE = path.join(DIST_DIR, 'index.html'); // NEW
 // parse application/json
 app.use(bodyParser.json());
 
-/*****************************************************/
+/** ************************************************** */
 // established database connection
 sequelize
   .authenticate()
@@ -23,7 +23,7 @@ sequelize
   .catch((err) => {
     console.log(err);
   });
-/*****************************************************/
+/** ************************************************** */
 
 // established axios connection to front end
 // GET
@@ -31,21 +31,21 @@ app.get('/get', (req, res) => {
   res.send('HELLO WORLD');
 });
 
-//POST
+// POST
 app.post('/post', (req, res) => {
   console.log('Data from post:', req.body.data);
 });
 
-/*****************************************************/
+/** ************************************************** */
 
 app.use(express.static(DIST_DIR)); // NEW
 
 // listening on localhost:3000
-app.listen(PORT, function () {
+app.listen(PORT, () => {
   console.log(`App listening on port:${PORT}`);
 });
 
-/***********************************************************************/
+/** ******************************************************************** */
 /*
   //these are no longer needed now that we connected front end w react:
 
