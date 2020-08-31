@@ -30,7 +30,6 @@ class App extends Component {
   }
 
   render() {
-    // render the splash page
     return <Splash/>
   }
 }
