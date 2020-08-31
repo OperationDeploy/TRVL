@@ -30,11 +30,11 @@ class App extends Component {
 
   render() {
     return (
-    <div>
-      <div> Hello World from Deployment </div>
-      <Preferences />
-    </div>
-    )
+      <div>
+        <div> Hello World from Deployment </div>
+        <Preferences />
+      </div>
+    );
   }
 }
 

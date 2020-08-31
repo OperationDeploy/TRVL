@@ -42,16 +42,15 @@ export default function ContinuousSlider() {
     setRelationship(newValue);
   };
 
-
   return (
     <div className={classes.root}>
       <Typography id="continuous-slider" gutterBottom>
-          Preferences:
+        Preferences:
       </Typography>
       <Grid container spacing={2}>
-          Temperature
+        Temperature
         <Grid item>
-            Hot
+          Hot
         </Grid>
         <Grid item xs>
           <Slider value={temp} onChange={handleChangeTemp} aria-labelledby="temp" />
@@ -61,9 +60,9 @@ export default function ContinuousSlider() {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-          City Expenses
+        City Expenses
         <Grid item>
-            Low
+          Low
         </Grid>
         <Grid item xs>
           <Slider value={expense} onChange={handleChangeExpense} aria-labelledby="continuous-slider" />
@@ -73,7 +72,7 @@ export default function ContinuousSlider() {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-          Landscape
+        Landscape
         <Grid item>
           City
         </Grid>
@@ -85,7 +84,7 @@ export default function ContinuousSlider() {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-          City Type
+        City Type
         <Grid item>
           Party
         </Grid>
@@ -97,7 +96,7 @@ export default function ContinuousSlider() {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-          Proximity
+        Proximity
         <Grid item>
           Domestic
         </Grid>
@@ -109,7 +108,7 @@ export default function ContinuousSlider() {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-          Group Age
+        Group Age
         <Grid item>
           Young Adults
         </Grid>
@@ -121,7 +120,7 @@ export default function ContinuousSlider() {
         </Grid>
       </Grid>
       <Grid container spacing={2}>
-          Group Relationship Status
+        Group Relationship Status
         <Grid item>
           Singles
         </Grid>
