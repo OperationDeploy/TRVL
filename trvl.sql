@@ -1,9 +1,11 @@
-DROP DATABASE [IF EXISTS] trvl_db;
+\connect test_db;
+DROP DATABASE trvl_db;
 CREATE DATABASE trvl_db;
+\connect trvl_db;
 
 CREATE TABLE "user" (
   "id" SERIAL PRIMARY KEY,
-  "first_name" TEXT,
+  "first_name" VARCHAR(20),
   "last_name" TEXT,
   "email" TEXT,
   "profile_pic" TEXT,
