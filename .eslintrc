@@ -1,6 +1,16 @@
 {
   "plugins": [
     "json",
-    "markdown"
-  ]
+    "markdown",
+    "react"
+  ],
+  "extends": [
+    "plugin:react/recommended",
+    "standard"
+  ],
+  "env": {
+      "browser": true,
+      "node": true,
+      "jest": true
+  }
 }
