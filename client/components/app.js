@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Splash from '../src/Splash.js';
+import Splash from './Splash.js';
 
 
 class App extends Component {
@@ -30,7 +30,7 @@ class App extends Component {
   }
 
   render() {
-    // return <div>Hello World from Deployment</div>;
+    // render the splash page
     return <Splash/>
   }
 }

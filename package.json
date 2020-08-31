@@ -7,7 +7,9 @@
     "start": "node server/index.js",
     "dev": "webpack --mode development && node server/index.js",
     "build": "webpack --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --ext .json --ext .md",
+    "pretest": "npm run lint",
+    "test": "echo \"No tests\""
   },
   "husky": {
     "hooks": {
@@ -43,7 +45,13 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
+<<<<<<< HEAD
     "file-loader": "^6.1.0",
+=======
+    "eslint": "^7.7.0",
+    "eslint-plugin-json": "^2.1.2",
+    "eslint-plugin-markdown": "^1.0.2",
+>>>>>>> 9498877701e5e610aed38a319aeaae3d61edc48d
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
     "webpack": "^4.44.1",
