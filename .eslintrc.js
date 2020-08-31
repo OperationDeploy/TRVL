@@ -18,7 +18,7 @@ module.exports = {
   },
   plugins: ['react', 'json', 'markdown'],
   rules: {
-    'linebreak-style': ["error", "unix"]
+    'linebreak-style': ["error", "unix"],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
   },
 };
