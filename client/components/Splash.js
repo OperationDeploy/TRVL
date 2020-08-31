@@ -4,7 +4,7 @@ import logo from '../src/logo.png';
 // when user visits the domain they will see or logo and google login button
 // TODO: styling
 
-const Splash = ({}) => {
+const Splash = () => {
   return (
     <div>
       <img src={logo} alt="Logo" /> 
@@ -13,4 +13,4 @@ const Splash = ({}) => {
   );
 };
 
-export default Splash; 
+export default Splash;

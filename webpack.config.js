@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const path = require('path');
+
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './client/src/index.html',
   filename: 'index.html',
@@ -20,12 +21,12 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
-      { // added file loader for logo.png on the splash page
+      {
         test: /\.(jpg|png|gif|ico|svg)$/,
         use: [{
           loader: 'file-loader',
-          options: {name: '[name].[ext]', publicPath: 'img/', outputPath: 'img/'}
-        }]
+          options: { name: '[name].[ext]', publicPath: 'img/', outputPath: 'img/' },
+        }],
       },
     ],
   },
