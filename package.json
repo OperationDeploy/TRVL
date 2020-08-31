@@ -7,7 +7,9 @@
     "start": "node server/index.js",
     "dev": "webpack --mode development --open --hot --watch",
     "build": "webpack --mode production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "eslint . --ext .json --ext .js --ext .jsx --ext .md",
+    "pretest": "npm run lint",
+    "test": "echo \"No tests\""
   },
   "husky": {
     "hooks": {
@@ -45,6 +47,16 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-json": "^2.1.2",
+    "eslint-plugin-jsx-a11y": "^6.3.1",
+    "eslint-plugin-markdown": "^1.0.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
     "webpack": "^4.44.1",
