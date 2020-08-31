@@ -14,7 +14,7 @@ A step by step series of examples that tell you how to get a development env run
 2. **_Fork_** the repo.
 3. Next, **_git clone_** your fork of the repo.
 4. Then, **_cd_** into the repo.
-5. Run the command **_npm install_** to download dependencies defined in the package.json file.
+5. Run the command **_npm install_** in the root directory to download dependencies defined in the package.json file.
 6. Be sure to add a .env file to your root directory that contains the following environmental variables: PORT, DB_NAME, DB_USER, DB_PASS, DB_HOST.
 7. Run the command **_npm run start_** to just start the server/index.js.
 8. Run the command **_npm run build_** to begin starting frontend.
