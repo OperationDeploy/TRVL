@@ -7,10 +7,9 @@ const htmlPlugin = new HtmlWebPackPlugin({
 module.exports = {
   entry: './client/src/index.js',
   output: {
-    // NEW
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
-  }, // NEW Ends
+  },
   plugins: [htmlPlugin],
   module: {
     rules: [
@@ -20,6 +19,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      { // added file loader for logo.png on the splash page
+        test: /\.(jpg|png|gif|ico|svg)$/,
+        use: [{
+          loader: 'file-loader',
+          options: {name: '[name].[ext]', publicPath: 'img/', outputPath: 'img/'}
+        }]
       },
     ],
   },

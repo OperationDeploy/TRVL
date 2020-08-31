@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Splash from '../src/Splash.js';
+
 
 class App extends Component {
   constructor(props) {
@@ -28,7 +30,8 @@ class App extends Component {
   }
 
   render() {
-    return <div>Hello World from Deployment</div>;
+    // return <div>Hello World from Deployment</div>;
+    return <Splash/>
   }
 }
 
