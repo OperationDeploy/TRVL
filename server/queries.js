@@ -1,16 +1,6 @@
 require('dotenv').config();
 
-const {
-  User,
-  Trip,
-  TripUser,
-  TripPreferences,
-  TripPhoto,
-  TripProposal,
-  TripItinerary,
-  TripProposalVotes,
-  Destinations,
-} = require('./db.js');
+const { User } = require('./db.js');
 
 // create a user
 const createUser = (req, res) => {
@@ -28,10 +18,4 @@ const createUser = (req, res) => {
 
 module.exports = {
   createUser,
-};
-
-// destinations - dummy data
-
-const addDestinations = () => {
-  Destinations.create({});
 };
