@@ -112,9 +112,9 @@ ALTER TABLE "TripItineraries" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("i
 
 ALTER TABLE "TripItineraries" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_A_id") REFERENCES "destinations" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_A_id") REFERENCES "Destinations" ("id");
 
-ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_B_id") REFERENCES "destinations" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_B_id") REFERENCES "Destinations" ("id");
 
-ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_C_id") REFERENCES "destinations" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_C_id") REFERENCES "Destinations" ("id");
 
