@@ -9,12 +9,12 @@ CREATE TABLE "Users" (
   "first_name" TEXT,
   "last_name" TEXT,
   "email" TEXT,
-  "profile_pic" TEXT,
+  "profile_pic" VARCHAR(200),
   "host" boolean,
   "createdAt" time,
   "updatedAt" time
-
 );
+
 CREATE TABLE "trip" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT,
@@ -23,27 +23,33 @@ CREATE TABLE "trip" (
   "start_date" date,
   "end_date" date
 );
+
 CREATE TABLE "trip_user" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int
 );
+
 CREATE TABLE "trip_preferences" (
   "id" int,
   "user_id" int,
   "trip_id" int,
-  "preferred_budget" int,
-  "hot_cold" int,
-  "city_nat" int,
-  "int_dom" int,
-  "party_hist" int
+  "temperature" int,
+  "city_expenses" int,
+  "landscape" int,
+  "proximity" int,
+  "city_type" int,
+  "group_age" int,
+  "group_relationship" int
 );
+
 CREATE TABLE "trip_photo" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int,
   "photo_link" TEXT
 );
+
 CREATE TABLE "trip_proposal" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
@@ -52,6 +58,7 @@ CREATE TABLE "trip_proposal" (
   "destination_B_id" int,
   "destination_C_id" int
 );
+
 CREATE TABLE "trip_itinerary" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
@@ -59,19 +66,26 @@ CREATE TABLE "trip_itinerary" (
   "event" TEXT,
   "day" date
 );
+
 CREATE TABLE "trip_proposal_votes" (
   "id" int,
   "user_id" int,
   "trip_id" int,
   "destination" int
 );
-CREATE TABLE "destinations" (
+
+CREATE TABLE "Destinations" (
   "id" SERIAL PRIMARY KEY,
-  "location" TEXT,
-  "hot_cold" int,
-  "city_nat" int,
-  "int_dom" int,
-  "party_hist" int
+  "city" TEXT,
+  "temperature" int,
+  "city_expenses" int,
+  "landscape" int,
+  "proximity" int,
+  "city_type" int,
+  "group_age" int,
+  "group_relationship" int,
+  "createdAt" time,
+  "updatedAt" time
 );
 
 ALTER TABLE "trip_user" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
