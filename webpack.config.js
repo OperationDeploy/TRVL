@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const path = require('path');
+
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './client/src/index.html',
   filename: 'index.html',
@@ -7,10 +8,9 @@ const htmlPlugin = new HtmlWebPackPlugin({
 module.exports = {
   entry: './client/src/index.js',
   output: {
-    // NEW
     path: path.join(__dirname, 'dist'),
     filename: '[name].js',
-  }, // NEW Ends
+  },
   plugins: [htmlPlugin],
   module: {
     rules: [
@@ -20,6 +20,13 @@ module.exports = {
         use: {
           loader: 'babel-loader',
         },
+      },
+      {
+        test: /\.(jpg|png|gif|ico|svg)$/,
+        use: [{
+          loader: 'file-loader',
+          options: { name: '[name].[ext]', publicPath: 'img/', outputPath: 'img/' },
+        }],
       },
     ],
   },
