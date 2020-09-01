@@ -1,17 +1,13 @@
-\connect test_db;
-DROP DATABASE trvl_db;
+DROP DATABASE [IF EXISTS] trvl_db;
 CREATE DATABASE trvl_db;
-\connect trvl_db;
-
 CREATE TABLE "user" (
   "id" SERIAL PRIMARY KEY,
-  "first_name" VARCHAR(20),
+  "first_name" TEXT,
   "last_name" TEXT,
   "email" TEXT,
   "profile_pic" TEXT,
   "host" boolean
 );
-
 CREATE TABLE "trip" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT,
@@ -20,13 +16,11 @@ CREATE TABLE "trip" (
   "start_date" date,
   "end_date" date
 );
-
 CREATE TABLE "trip_user" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int
 );
-
 CREATE TABLE "trip_preferences" (
   "id" int,
   "user_id" int,
@@ -37,14 +31,12 @@ CREATE TABLE "trip_preferences" (
   "int_dom" int,
   "party_hist" int
 );
-
 CREATE TABLE "trip_photo" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int,
   "photo_link" TEXT
 );
-
 CREATE TABLE "trip_proposal" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
@@ -53,7 +45,6 @@ CREATE TABLE "trip_proposal" (
   "destination_B_id" int,
   "destination_C_id" int
 );
-
 CREATE TABLE "trip_itinerary" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
@@ -61,14 +52,12 @@ CREATE TABLE "trip_itinerary" (
   "event" TEXT,
   "day" date
 );
-
 CREATE TABLE "trip_proposal_votes" (
   "id" int,
   "user_id" int,
   "trip_id" int,
   "destination" int
 );
-
 CREATE TABLE "destinations" (
   "id" SERIAL PRIMARY KEY,
   "location" TEXT,

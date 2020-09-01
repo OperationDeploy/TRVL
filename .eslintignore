@@ -1,2 +1,7 @@
+<<<<<<< HEAD
+dist/*
+node_modules/*
+=======
 # Ignore built files
 dist/*
+>>>>>>> 76c5806c8fc75a8efc39af65383088205cde5daa
