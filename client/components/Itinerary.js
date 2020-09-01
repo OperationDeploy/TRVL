@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import Typography from '@material-ui/core/Typography';
-import ActivityForm from '../components/ActivityForm';
-import ActivityList from '../components/ActivityList';
-
+import ActivityForm from './ActivityForm';
+import ActivityList from './ActivityList';
 
 const Itinerary = () => {
   const [activities, setActivities] = useState([]);
