@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Preferences from './preferences.js';
+import Preferences from './preferences';
 import Splash from './Splash';
 import SideBar from './SideBar';
 
@@ -39,8 +39,7 @@ class App extends Component {
     return (
       <div>
         <Splash />
-        <div> Hello World from Deployment </div>
-        <Preferences />
+        {/* <Preferences /> */}
       </div>
     );
   }
