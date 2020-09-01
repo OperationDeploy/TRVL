@@ -14,24 +14,19 @@ const {
 
 // create a user
 const createUser = (req, res) => {
-  const { firstName, lastName, email, profile_pic, host } = req.body;
+
   console.log('Data from post:', req.body);
 
-  User.create({
-    first_name: firstName,
-    last_name: lastName,
-    email: email,
-    profile_pic: profile_pic,
-    host: host,
-  });
-};
-
-module.exports = {
-  createUser,
+  User.create(req.body);
 };
 
 // destinations - dummy data
 
 const addDestinations = () => {
   Destinations.create({});
+};
+
+module.exports = {
+  createUser,
+  addDestinations,
 };
