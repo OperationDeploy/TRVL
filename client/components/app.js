@@ -27,7 +27,7 @@ class App extends Component {
         firstName: 'Josh',
         lastName: 'Nunez',
         email: 'joshjnunez09@gmail.com',
-        profilePic:
+        profile_pic:
           'https://ca.slack-edge.com/T02P3HQD6-URPNXJK3R-3bab56848cef-512',
         host: false,
       })

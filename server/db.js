@@ -166,7 +166,7 @@ const TripProposalVotes = sequelize.define('TripProposalVotes', {
 });
 
 const Destinations = sequelize.define('Destinations', {
-  location: Sequelize.TEXT,
+  city: Sequelize.TEXT,
   temperature: Sequelize.INTEGER,
   city_expenses: Sequelize.INTEGER,
   landscape: Sequelize.INTEGER,
