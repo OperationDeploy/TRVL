@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Preferences from './preferences.js';
 import Splash from './Splash';
 
 class App extends Component {
@@ -34,7 +35,13 @@ class App extends Component {
   }
 
   render() {
-    return <Splash />;
+    return (
+      <div>
+        <Splash />
+        <div> Hello World from Deployment </div>
+        <Preferences />
+      </div>
+    );
   }
 }
 

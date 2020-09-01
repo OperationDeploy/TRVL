@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node server/index.js",
-    "dev": "webpack --mode development && node server/index.js",
+    "dev": "webpack --mode development --open --hot --watch",
     "build": "webpack --mode production",
     "lint": "eslint . --ext .json --ext .js --ext .jsx --ext .md",
     "lint:fix": "eslint --fix . --ext .json --ext .js --ext .jsx --ext .md",
@@ -31,6 +31,8 @@
   },
   "homepage": "https://github.com/joshjnunez/thesis-travel-app#readme",
   "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "dotenv": "^8.2.0",
