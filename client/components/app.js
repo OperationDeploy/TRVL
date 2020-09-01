@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import Favicon from 'react-favicon';
 import Preferences from './preferences';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
@@ -38,6 +39,7 @@ class App extends Component {
   render() {
     return (
       <div>
+        <Favicon url="https://ibb.co/9cWgS5Z" />
         {/* <Splash /> */}
         {/* <Preferences /> */}
         <ResponsiveDrawer />
