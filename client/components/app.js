@@ -4,6 +4,7 @@ import Favicon from 'react-favicon';
 import Preferences from './preferences';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
+import Itinerary from './Itinerary';
 
 class App extends Component {
   constructor(props) {
@@ -39,10 +40,11 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Favicon url="https://ibb.co/9cWgS5Z" />
+        <Favicon url="https://i.ibb.co/CmQ8DGP/apple-icon-removebg-preview.png" />
         {/* <Splash /> */}
         {/* <Preferences /> */}
-        <ResponsiveDrawer />
+        <Itinerary />
+        {/* <ResponsiveDrawer /> */}
       </div>
     );
   }
