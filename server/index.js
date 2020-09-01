@@ -22,6 +22,8 @@ app.get('/get', (req, res) => {
 });
 
 // POST
+
+// add user
 app.post('/post', (req, res) => {
   createUser(req, res);
 });
