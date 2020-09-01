@@ -1,12 +1,19 @@
-DROP DATABASE [IF EXISTS] trvl_db;
+\connect test_db;
+DROP DATABASE trvl_db;
 CREATE DATABASE trvl_db;
-CREATE TABLE "user" (
+\connect trvl_db;
+
+
+CREATE TABLE "Users" (
   "id" SERIAL PRIMARY KEY,
   "first_name" TEXT,
   "last_name" TEXT,
   "email" TEXT,
   "profile_pic" TEXT,
-  "host" boolean
+  "host" boolean,
+  "createdAt" time,
+  "updatedAt" time
+
 );
 CREATE TABLE "trip" (
   "id" SERIAL PRIMARY KEY,
