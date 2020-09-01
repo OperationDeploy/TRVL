@@ -49,87 +49,87 @@ export default function ContinuousSlider() {
       </Typography>
       <Grid container spacing={2}>
         Temperature
-        <Grid item>
-          Hot
-        </Grid>
+        <Grid item>Hot</Grid>
         <Grid item xs>
-          <Slider value={temp} onChange={handleChangeTemp} aria-labelledby="temp" />
+          <Slider
+            value={temp}
+            onChange={handleChangeTemp}
+            aria-labelledby="temp"
+          />
         </Grid>
-        <Grid item>
-          Cold
-        </Grid>
+        <Grid item>Cold</Grid>
       </Grid>
       <Grid container spacing={2}>
         City Expenses
-        <Grid item>
-          Low
-        </Grid>
+        <Grid item>Low</Grid>
         <Grid item xs>
-          <Slider value={expense} onChange={handleChangeExpense} aria-labelledby="continuous-slider" />
+          <Slider
+            value={expense}
+            onChange={handleChangeExpense}
+            aria-labelledby="continuous-slider"
+          />
         </Grid>
-        <Grid item>
-          High
-        </Grid>
+        <Grid item>High</Grid>
       </Grid>
       <Grid container spacing={2}>
         Landscape
-        <Grid item>
-          City
-        </Grid>
+        <Grid item>City</Grid>
         <Grid item xs>
-          <Slider value={landscape} onChange={handleChangeLandscape} aria-labelledby="continuous-slider" />
+          <Slider
+            value={landscape}
+            onChange={handleChangeLandscape}
+            aria-labelledby="continuous-slider"
+          />
         </Grid>
-        <Grid item>
-          Nature
-        </Grid>
+        <Grid item>Nature</Grid>
       </Grid>
       <Grid container spacing={2}>
         City Type
-        <Grid item>
-          Party
-        </Grid>
+        <Grid item>Party</Grid>
         <Grid item xs>
-          <Slider value={cityType} onChange={handleChangeCityType} aria-labelledby="continuous-slider" />
+          <Slider
+            value={cityType}
+            onChange={handleChangeCityType}
+            aria-labelledby="continuous-slider"
+          />
         </Grid>
-        <Grid item>
-          Historical
-        </Grid>
+        <Grid item>Historical</Grid>
       </Grid>
       <Grid container spacing={2}>
         Proximity
-        <Grid item>
-          Domestic
-        </Grid>
+        <Grid item>Domestic</Grid>
         <Grid item xs>
-          <Slider value={proximity} onChange={handleChangeProximity} aria-labelledby="continuous-slider" />
+          <Slider
+            value={proximity}
+            onChange={handleChangeProximity}
+            aria-labelledby="continuous-slider"
+          />
         </Grid>
-        <Grid item>
-          International
-        </Grid>
+        <Grid item>International</Grid>
       </Grid>
       <Grid container spacing={2}>
         Group Age
-        <Grid item>
-          Young Adults
-        </Grid>
+        <Grid item>Young Adults</Grid>
         <Grid item xs>
-          <Slider value={age} onChange={handleChangeAge} aria-labelledby="continuous-slider" />
+          <Slider
+            value={age}
+            onChange={handleChangeAge}
+            aria-labelledby="continuous-slider"
+          />
         </Grid>
-        <Grid item>
-          Older Adults
-        </Grid>
+        <Grid item>Older Adults</Grid>
       </Grid>
       <Grid container spacing={2}>
         Group Relationship Status
-        <Grid item>
-          Singles
-        </Grid>
+        <Grid item>Singles</Grid>
         <Grid item xs>
-          <Slider value={relationship} onChange={handleChangeRelationship} aria-labelledby="continuous-slider" />
+          <Slider
+            value={relationship}
+            onChange={handleChangeRelationship}
+            aria-labelledby="continuous-slider"
+          />
         </Grid>
-        <Grid item>
-          Couples
-        </Grid>
+        <Grid item>Couples</Grid>
       </Grid>
     </div>
   );
