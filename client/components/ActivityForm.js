@@ -11,6 +11,7 @@ const ActivityForm = ({ saveActivity }) => {
         onSubmit={(event) => {
           event.preventDefault();
           saveActivity(value);
+          setValue('');
         }}
       >
         <TextField
