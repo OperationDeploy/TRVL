@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import Preferences from './preferences.js';
+import Preferences from './preferences';
 import Splash from './Splash';
+import ResponsiveDrawer from './ResponsiveDrawer';
 
 class App extends Component {
   constructor(props) {
@@ -37,9 +38,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Splash />
-        <div> Hello World from Deployment </div>
-        <Preferences />
+        {/* <Splash /> */}
+        {/* <Preferences /> */}
+        <ResponsiveDrawer />
       </div>
     );
   }
