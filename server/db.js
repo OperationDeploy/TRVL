@@ -16,16 +16,16 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
 });
 
 /// need to seed into db
-// const User = sequelize.define('User', {
-//   firstName: Sequelize.TEXT,
-//   lastName: Sequelize.TEXT,
-//   host: Sequelize.BOOLEAN,
-//   profile_pic: Sequelize.TEXT,
-//   email: {
-//     type: Sequelize.TEXT,
-//     unique: true,
-//   },
-// });
+const User = sequelize.define('User', {
+  firstName: Sequelize.TEXT,
+  lastName: Sequelize.TEXT,
+  profile_pic: Sequelize.TEXT,
+  email: {
+      type: Sequelize.TEXT,
+      unique: true,
+    },
+  host: Sequelize.BOOLEAN,
+});
 
 module.exports = {
   sequelize,
