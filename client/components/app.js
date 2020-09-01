@@ -25,8 +25,8 @@ class App extends Component {
     // POST
     axios
       .post('/post', {
-        firstName: 'Josh',
-        lastName: 'Nunez',
+        first_name: 'Josh',
+        last_name: 'Nunez',
         email: 'joshjnunez09@gmail.com',
         profile_pic:
           'https://ca.slack-edge.com/T02P3HQD6-URPNXJK3R-3bab56848cef-512',

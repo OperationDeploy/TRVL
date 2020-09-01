@@ -15,7 +15,7 @@ CREATE TABLE "Users" (
   "updatedAt" time
 );
 
-CREATE TABLE "trip" (
+CREATE TABLE "Trips" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT,
   "destination" TEXT,
@@ -24,13 +24,13 @@ CREATE TABLE "trip" (
   "end_date" date
 );
 
-CREATE TABLE "trip_user" (
+CREATE TABLE "TripUsers" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int
 );
 
-CREATE TABLE "trip_preferences" (
+CREATE TABLE "TripPreferences" (
   "id" int,
   "user_id" int,
   "trip_id" int,
@@ -43,14 +43,14 @@ CREATE TABLE "trip_preferences" (
   "group_relationship" int
 );
 
-CREATE TABLE "trip_photo" (
+CREATE TABLE "TripPhotos" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int,
   "photo_link" TEXT
 );
 
-CREATE TABLE "trip_proposal" (
+CREATE TABLE "TripProposals" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int,
@@ -59,7 +59,7 @@ CREATE TABLE "trip_proposal" (
   "destination_C_id" int
 );
 
-CREATE TABLE "trip_itinerary" (
+CREATE TABLE "TripItineraries" (
   "id" SERIAL PRIMARY KEY,
   "user_id" int,
   "trip_id" int,
@@ -67,7 +67,7 @@ CREATE TABLE "trip_itinerary" (
   "day" date
 );
 
-CREATE TABLE "trip_proposal_votes" (
+CREATE TABLE "TripProposalVotes" (
   "id" int,
   "user_id" int,
   "trip_id" int,
@@ -88,33 +88,33 @@ CREATE TABLE "Destinations" (
   "updatedAt" time
 );
 
-ALTER TABLE "trip_user" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
-ALTER TABLE "trip_user" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+ALTER TABLE "TripUsers" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "trip_preferences" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "TripPreferences" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
-ALTER TABLE "trip_preferences" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+ALTER TABLE "TripPreferences" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "trip_photo" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "TripPhotos" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
-ALTER TABLE "trip_photo" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+ALTER TABLE "TripPhotos" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
-ALTER TABLE "trip_proposal_votes" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+ALTER TABLE "TripProposalVotes" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "trip_proposal_votes" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "TripProposalVotes" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
-ALTER TABLE "trip_itinerary" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+ALTER TABLE "TripItineraries" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
-ALTER TABLE "trip_itinerary" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+ALTER TABLE "TripItineraries" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("destination_A_id") REFERENCES "destinations" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_A_id") REFERENCES "Destinations" ("id");
 
-ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("destination_B_id") REFERENCES "destinations" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_B_id") REFERENCES "Destinations" ("id");
 
-ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("destination_C_id") REFERENCES "destinations" ("id");
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_C_id") REFERENCES "Destinations" ("id");
 
