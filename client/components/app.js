@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Splash from './Splash';
+import SideBar from './SideBar';
 
 class App extends Component {
   constructor(props) {
