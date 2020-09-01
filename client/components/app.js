@@ -39,8 +39,8 @@ class App extends Component {
     return (
       <div>
         {/* <Splash /> */}
-        {/* <Preferences /> */}
-        <ResponsiveDrawer />
+        <Preferences />
+        {/* <ResponsiveDrawer /> */}
       </div>
     );
   }

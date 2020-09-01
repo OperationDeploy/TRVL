@@ -55,6 +55,10 @@ export default function ContinuousSlider() {
             value={temp}
             onChange={handleChangeTemp}
             aria-labelledby="temp"
+            step={10}
+            marks
+            min={0}
+            max={100}
           />
         </Grid>
         <Grid item>Cold</Grid>
@@ -67,6 +71,10 @@ export default function ContinuousSlider() {
             value={expense}
             onChange={handleChangeExpense}
             aria-labelledby="continuous-slider"
+            step={10}
+            marks
+            min={0}
+            max={100}
           />
         </Grid>
         <Grid item>High</Grid>
@@ -79,6 +87,10 @@ export default function ContinuousSlider() {
             value={landscape}
             onChange={handleChangeLandscape}
             aria-labelledby="continuous-slider"
+            step={10}
+            marks
+            min={0}
+            max={100}
           />
         </Grid>
         <Grid item>Nature</Grid>
@@ -91,6 +103,10 @@ export default function ContinuousSlider() {
             value={cityType}
             onChange={handleChangeCityType}
             aria-labelledby="continuous-slider"
+            step={10}
+            marks
+            min={0}
+            max={100}
           />
         </Grid>
         <Grid item>Historical</Grid>
@@ -103,6 +119,10 @@ export default function ContinuousSlider() {
             value={proximity}
             onChange={handleChangeProximity}
             aria-labelledby="continuous-slider"
+            step={10}
+            marks
+            min={0}
+            max={100}
           />
         </Grid>
         <Grid item>International</Grid>
@@ -115,6 +135,10 @@ export default function ContinuousSlider() {
             value={age}
             onChange={handleChangeAge}
             aria-labelledby="continuous-slider"
+            step={10}
+            marks
+            min={0}
+            max={100}
           />
         </Grid>
         <Grid item>Older Adults</Grid>
@@ -127,6 +151,10 @@ export default function ContinuousSlider() {
             value={relationship}
             onChange={handleChangeRelationship}
             aria-labelledby="continuous-slider"
+            step={10}
+            marks
+            min={0}
+            max={100}
           />
         </Grid>
         <Grid item>Couples</Grid>
