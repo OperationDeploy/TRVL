@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Preferences from './preferences';
 import Splash from './Splash';
@@ -10,7 +11,10 @@ class App extends Component {
 
     this.state = {
       item: '',
+      loginComplete: false,
     };
+
+    this.login = this.login.bind(this);
   }
 
   componentDidMount() {
@@ -35,12 +39,29 @@ class App extends Component {
       .catch((err) => console.error(err));
   }
 
+  login() {
+    this.setState({
+      loginComplete: true,
+    });
+  }
+
   render() {
+    const { loginComplete } = this.state;
+    if (!loginComplete) {
+      return (
+        <div>
+          <Splash login={this.login} />
+        </div>
+      );
+    }
     return (
       <div>
-        {/* <Splash /> */}
-        {/* <Preferences /> */}
-        <ResponsiveDrawer />
+        <Router>
+          <Switch>
+            <Route exact path="/" render={() => (<ResponsiveDrawer />)} />
+            <Route exact path="/preferences" render={() => (<Preferences />)} />
+          </Switch>
+        </Router>
       </div>
     );
   }
