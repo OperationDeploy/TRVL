@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Preferences from './preferences';
 import Splash from './Splash';
-import SideBar from './SideBar';
+import ResponsiveDrawer from './ResponsiveDrawer';
 
 class App extends Component {
   constructor(props) {
@@ -38,8 +38,9 @@ class App extends Component {
   render() {
     return (
       <div>
-        <Splash />
+        {/* <Splash /> */}
         {/* <Preferences /> */}
+        <ResponsiveDrawer />
       </div>
     );
   }
