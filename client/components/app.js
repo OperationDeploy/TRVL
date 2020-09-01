@@ -23,7 +23,12 @@ class App extends Component {
     // POST
     axios
       .post('/post', {
-        data: 'HELLO WORLD',
+        firstName: 'Josh',
+        lastName: 'Nunez',
+        email: 'joshjnunez09@gmail.com',
+        profilePic:
+          'https://ca.slack-edge.com/T02P3HQD6-URPNXJK3R-3bab56848cef-512',
+        host: false,
       })
       .then((res) => console.log('POSTED:', res))
       .catch((err) => console.error(err));

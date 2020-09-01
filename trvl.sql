@@ -66,18 +66,34 @@ CREATE TABLE "destinations" (
   "int_dom" int,
   "party_hist" int
 );
+
 ALTER TABLE "trip_user" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
 ALTER TABLE "trip_user" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+
 ALTER TABLE "trip_preferences" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
 ALTER TABLE "trip_preferences" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+
 ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+
 ALTER TABLE "trip_photo" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
 ALTER TABLE "trip_photo" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+
 ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
 ALTER TABLE "trip_proposal_votes" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+
 ALTER TABLE "trip_proposal_votes" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
 ALTER TABLE "trip_itinerary" ADD FOREIGN KEY ("user_id") REFERENCES "user" ("id");
+
 ALTER TABLE "trip_itinerary" ADD FOREIGN KEY ("trip_id") REFERENCES "trip" ("id");
+
 ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("destination_A_id") REFERENCES "destinations" ("id");
+
 ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("destination_B_id") REFERENCES "destinations" ("id");
+
 ALTER TABLE "trip_proposal" ADD FOREIGN KEY ("destination_C_id") REFERENCES "destinations" ("id");
+
