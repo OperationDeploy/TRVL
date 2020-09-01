@@ -43,6 +43,7 @@
     "pg-hstore": "^2.3.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "read-excel-file": "^4.0.7",
     "sequelize": "^6.3.4"
   },
   "devDependencies": {
