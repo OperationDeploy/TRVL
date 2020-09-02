@@ -1,9 +1,7 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
-const {
-  DB_NAME, DB_USER, DB_PASS, DB_HOST,
-} = process.env;
+const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
   dialect: 'postgres',
@@ -34,6 +32,7 @@ const User = sequelize.define('User', {
     unique: true,
   },
   host: Sequelize.BOOLEAN,
+  googleId: Sequelize.TEXT,
 });
 
 const Trip = sequelize.define('Trip', {
@@ -49,31 +48,35 @@ const TripUser = sequelize.define('TripUser', {
   trip_id: Sequelize.INTEGER,
 });
 
-const TripPreferences = sequelize.define('TripPreferences', {
-  user_id: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'user',
-      key: 'id',
+const TripPreferences = sequelize.define(
+  'TripPreferences',
+  {
+    user_id: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'user',
+        key: 'id',
+      },
     },
-  },
-  trip_id: {
-    type: Sequelize.INTEGER,
-    references: {
-      model: 'user',
-      key: 'id',
+    trip_id: {
+      type: Sequelize.INTEGER,
+      references: {
+        model: 'user',
+        key: 'id',
+      },
     },
+    temperature: Sequelize.INTEGER,
+    city_expenses: Sequelize.INTEGER,
+    landscape: Sequelize.INTEGER,
+    city_type: Sequelize.INTEGER,
+    proximity: Sequelize.INTEGER,
+    group_age: Sequelize.INTEGER,
+    group_relationship: Sequelize.INTEGER,
   },
-  temperature: Sequelize.INTEGER,
-  city_expenses: Sequelize.INTEGER,
-  landscape: Sequelize.INTEGER,
-  city_type: Sequelize.INTEGER,
-  proximity: Sequelize.INTEGER,
-  group_age: Sequelize.INTEGER,
-  group_relationship: Sequelize.INTEGER,
-}, {
-  timestamps: false,
-});
+  {
+    timestamps: false,
+  }
+);
 
 const TripPhoto = sequelize.define('TripPhoto', {
   user_id: {

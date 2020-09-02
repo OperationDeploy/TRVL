@@ -3,9 +3,9 @@ import Button from '@material-ui/core/Button';
 import Preferences from './preferences.js';
 // TODO: Handle plan a trip click
 // const [plan, setPlan] = useState(false);
-const PlanATrip = ({ clickPlan, onClickPlanTrip }) => {
+const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, currentId }) => {
   if (clickPlan) {
-    return <Preferences />;
+    return <Preferences currentUser={currentUser} currentId={currentId} />;
   }
 
   return (
