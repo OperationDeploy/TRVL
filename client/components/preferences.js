@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-export default function ContinuousSlider({ currentUser }) {
+const ContinuousSlider = ({ currentUser }) => {
   const classes = useStyles();
   // states of our preferences
   const [name, setName] = useState('');
@@ -29,6 +29,7 @@ export default function ContinuousSlider({ currentUser }) {
   const [group_relationship, setRelationship] = useState(50);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
+  const user_id = currentUser.googleId;
 
   // sets new states for our preferences upon change
   const handleChangeTemp = (event, newValue) => {
@@ -52,19 +53,6 @@ export default function ContinuousSlider({ currentUser }) {
   const handleChangeRelationship = (event, newValue) => {
     setRelationship(newValue);
   };
-  // Posts preferences to DB
-  // Need to be able to get individual user's id instead of hard coding on line 54
-  // Also need to have specific trip_id specified as well
-  // need to come back and refactor
-  const user_id = currentUser.id;
-  // useEffect(() => {
-  //   axios.post('/preferences', {
-  //     user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
-  //   })
-  //     .then((result) => {
-  //       console.log(result);
-  //     }).catch((err) => console.log('ERR', err));
-  // }, [temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship]);
 
   const handleChangeName = (event) => {
     setName(event.target.value);
@@ -78,26 +66,27 @@ export default function ContinuousSlider({ currentUser }) {
     setEndDate(event);
   };
 
+  // Posts preferences to DB
   const handleSubmit = () => {
     event.preventDefault();
-    // axios
-    //   .post('/preferences', {
-    //     user_id,
-    //     temperature,
-    //     city_expenses,
-    //     landscape,
-    //     city_type,
-    //     proximity,
-    //     group_age,
-    //     group_relationship,
-    //   })
-    //   .then((result) => {
-    //     console.log(result);
-    //   }).then(
-        axios.post('/trips', {
-        name: name, start_date: startDate, end_date: endDate,
+    axios.post('/trips', {
+      name: name, start_date: startDate, end_date: endDate,
+    })
+      .then((result) => {
+        const trip_id = result.data.id;
+        axios
+          .post('/preferences', {
+            user_id,
+            trip_id,
+            temperature,
+            city_expenses,
+            landscape,
+            city_type,
+            proximity,
+            group_age,
+            group_relationship,
+          });
       })
-      // )
       .catch((err) => console.log('ERR', err));
   };
 
@@ -268,4 +257,6 @@ export default function ContinuousSlider({ currentUser }) {
     </div>
     </div>
   );
-}
+};
+
+export default ContinuousSlider;

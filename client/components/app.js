@@ -66,7 +66,6 @@ class App extends Component {
       googleId,
     })
       .then((res) => {
-        console.log('POSTED:', res.data)
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
@@ -95,7 +94,6 @@ class App extends Component {
     return (
       <div>
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
-
         <ResponsiveDrawer
           clickPlan={clickPlan}
           onClickPlanTrip={this.onClickPlanTrip}
@@ -103,13 +101,6 @@ class App extends Component {
           onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
         />
-
-        {/* <Router>
-          <Switch>
-            <Route exact path="/" render={() => (<ResponsiveDrawer />)} />
-            <Route exact path="/preferences" render={() => (<Preferences />)} />
-          </Switch>
-        </Router> */}
       </div>
     );
   }
