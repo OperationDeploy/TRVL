@@ -5,6 +5,8 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -14,9 +16,10 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-export default function ContinuousSlider({ currentUser }) {
+const ContinuousSlider = ({ currentUser }) => {
   const classes = useStyles();
   // states of our preferences
+  const [name, setName] = useState('');
   const [temperature, setTemp] = useState(50);
   const [city_expenses, setExpense] = useState(50);
   const [landscape, setLandscape] = useState(50);
@@ -24,6 +27,9 @@ export default function ContinuousSlider({ currentUser }) {
   const [proximity, setProximity] = useState(50);
   const [group_age, setAge] = useState(50);
   const [group_relationship, setRelationship] = useState(50);
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
+  const user_id = currentUser.googleId;
 
   // sets new states for our preferences upon change
   const handleChangeTemp = (event, newValue) => {
@@ -48,39 +54,82 @@ export default function ContinuousSlider({ currentUser }) {
     setRelationship(newValue);
   };
 
-  // Posts preferences to DB
-  // Need to be able to get individual user's id instead of hard coding on line 54
-  // Also need to have specific trip_id specified as well
-  // need to come back and refactor
-  const user_id = currentUser.id;
-  // useEffect(() => {
-  //   axios.post('/preferences', {
-  //     user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
-  //   })
-  //     .then((result) => {
-  //       console.log(result);
-  //     }).catch((err) => console.log('ERR', err));
-  // }, [temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship]);
+  const handleChangeName = (event) => {
+    setName(event.target.value);
+  };
 
+  const handleChangeStartDate = (event) => {
+    setStartDate(event);
+  };
+
+  const handleChangeEndDate = (event) => {
+    setEndDate(event);
+  };
+
+  // Posts preferences to DB
   const handleSubmit = () => {
-    axios
-      .post('/preferences', {
-        user_id,
-        temperature,
-        city_expenses,
-        landscape,
-        city_type,
-        proximity,
-        group_age,
-        group_relationship,
-      })
+    event.preventDefault();
+    axios.post('/trips', {
+      name: name, start_date: startDate, end_date: endDate,
+    })
       .then((result) => {
-        console.log(result);
+        const trip_id = result.data.id;
+        axios
+          .post('/preferences', {
+            user_id,
+            trip_id,
+            temperature,
+            city_expenses,
+            landscape,
+            city_type,
+            proximity,
+            group_age,
+            group_relationship,
+          });
       })
       .catch((err) => console.log('ERR', err));
   };
 
   return (
+    <div>
+    <div>
+        <label>
+          Trip name:
+          <input type="text" value={name} onChange={handleChangeName} />
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              fullWidth
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="start-date"
+              label="Start Date"
+              value={startDate}
+              onChange={handleChangeStartDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              fullWidth
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="end-date"
+              label="End Date"
+              value={endDate}
+              onChange={handleChangeEndDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+        </label>
+    </div>
     <div className={classes.root}>
       <Typography id="continuous-slider" gutterBottom>
         Preferences:
@@ -206,5 +255,8 @@ export default function ContinuousSlider({ currentUser }) {
         Submit Preferences
       </Button>
     </div>
+    </div>
   );
-}
+};
+
+export default ContinuousSlider;
