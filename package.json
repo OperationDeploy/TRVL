@@ -47,6 +47,8 @@
     "react-burger-menu": "^2.7.1",
     "react-dom": "^16.13.1",
     "react-favicon": "0.0.18",
+    "react-router-dom": "^5.2.0",
+
     "read-excel-file": "^4.0.7",
     "sequelize": "^6.3.4"
   },

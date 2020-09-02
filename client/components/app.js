@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
 import Preferences from './preferences';
@@ -12,7 +13,10 @@ class App extends Component {
 
     this.state = {
       item: '',
+      loginComplete: false,
     };
+
+    this.login = this.login.bind(this);
   }
 
   componentDidMount() {
@@ -37,14 +41,34 @@ class App extends Component {
       .catch((err) => console.error(err));
   }
 
+  login() {
+    this.setState({
+      loginComplete: true,
+    });
+  }
+
   render() {
+    const { loginComplete } = this.state;
+    if (!loginComplete) {
+      return (
+        <div>
+          <Splash login={this.login} />
+        </div>
+      );
+    }
     return (
       <div>
+
         <Favicon url="https://i.ibb.co/CmQ8DGP/apple-icon-removebg-preview.png" />
-        {/* <Splash /> */}
-        {/* <Preferences /> */}
-        <Itinerary />
-        {/* <ResponsiveDrawer /> */}
+       
+        
+
+        <Router>
+          <Switch>
+            <Route exact path="/" render={() => (<ResponsiveDrawer />)} />
+            <Route exact path="/preferences" render={() => (<Preferences />)} />
+          </Switch>
+        </Router>
       </div>
     );
   }
