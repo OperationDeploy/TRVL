@@ -8,46 +8,60 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import { userTripsData } from '../dummyData/userTripsData';
 import Itinerary from './Itinerary';
+import Purchases from './Purchases';
 
 const UserTrips = () => {
-  const [itiernaryClicked, setitiernaryClicked] = useState(false);
+  const [clicked, setClicked] = useState('');
 
-  const getItinerary = () => {
-    setitiernaryClicked(true);
-  };
-
-  if (itiernaryClicked) {
-    return <Itinerary />;
-  } else {
-    return (
-      <div>
-        <Typography variant="h1">
-          Trips
-        </Typography>
-        {userTripsData.map((data, index) => (
-          <List>
-            <ListItem>
-              <ListItemText>{ data.tripName}</ListItemText>
-              <ListItemSecondaryAction>
-                <Button onClick={getItinerary} color="primary">
-                  Trip Itinerary
-                </Button>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              Dates:
-              <ListItemText>{ `${data.tripDates[0]} to ${data.tripDates[1]}`}</ListItemText>
-            </ListItem>
-            <ListItem>
-              Destination:
-              <ListItemText>{ data.tripDestination}</ListItemText>
-            </ListItem>
-          </List>
-        ))}
-        ;
-      </div>
-    );
+  // const render = () => {
+  //   setitiernaryClicked(true);
+  // };
+  switch (clicked) {
+    case 'itinerary':
+      return <Itinerary />;
+      break;
+    case 'purchases':
+      return <Purchases />;
+      break;
+    default:
   }
+
+  // if (itiernaryClicked) {
+  //   return <Itinerary />;
+  // }
+  return (
+    <div>
+      <Typography variant="h1">
+        Trips
+      </Typography>
+      {userTripsData.map((data, index) => (
+        <List>
+          <ListItem>
+            <ListItemText>{ data.tripName}</ListItemText>
+            <ListItemSecondaryAction>
+              <Button onClick={() => setClicked('itinerary')} color="primary">
+                Trip Itinerary
+              </Button>
+            </ListItemSecondaryAction>
+            <ListItemSecondaryAction>
+              <Button onClick={() => setClicked('purchases')} color="primary">
+                Purchases
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            Dates:
+            <ListItemText>{ `${data.tripDates[0]} to ${data.tripDates[1]}`}</ListItemText>
+          </ListItem>
+          <ListItem>
+            Destination:
+            <ListItemText>{ data.tripDestination}</ListItemText>
+          </ListItem>
+        </List>
+      ))}
+      ;
+    </div>
+  );
 };
 
 UserTrips.propTypes = {
