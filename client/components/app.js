@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
-import Preferences from './preferences';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
 import Itinerary from './Itinerary';
@@ -16,15 +15,24 @@ class App extends Component {
     this.state = {
       loginComplete: false,
       clickPlan: false,
+      clickTrips: false,
       currentUser: '',
       currentId: '',
     };
+
     this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
+    this.onClickGetTrips = this.onClickGetTrips.bind(this);
     this.responseGoogle = this.responseGoogle.bind(this);
   }
+
   onClickPlanTrip() {
     this.setState({ clickPlan: !this.state.clickPlan });
   }
+
+  onClickGetTrips() {
+    this.setState({ clickTrips: !this.state.clickTrips });
+  }
+
   // componentDidMount() {
   //   // established axios connection to backend
   //   // GET
@@ -68,11 +76,12 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, currentId } = this.state;
+    const { loginComplete, clickPlan, currentUser, currentId, clickTrips } = this.state;
     if (!loginComplete) {
       return (
         <div>
           <Splash />
+          <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
           <GoogleLogin
             clientId="882538519679-1djm34mua0vj39jocql6ncg86mric4vb.apps.googleusercontent.com"
             buttonText="Login with Google"
@@ -85,11 +94,13 @@ class App extends Component {
     }
     return (
       <div>
-        <Favicon url="https://i.ibb.co/CmQ8DGP/apple-icon-removebg-preview.png" />
+        <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
 
         <ResponsiveDrawer
           clickPlan={clickPlan}
           onClickPlanTrip={this.onClickPlanTrip}
+          clickTrips={clickTrips}
+          onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
           currentId={currentId}
         />

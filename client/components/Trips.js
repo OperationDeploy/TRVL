@@ -1,10 +1,23 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
-// TODO: Handle trips click
-const Trips = () => (
-  <div>
-    <Button variant="contained" onClick={() => { alert('clicked Trips'); }}>Trips</Button>
-  </div>
-);
+import PropTypes from 'prop-types';
+import UserTrips from './UserTrips';
+
+const Trips = ({ clickTrips, onClickGetTrips }) => {
+  if (clickTrips) {
+    return <UserTrips />;
+  }
+  return (
+    <div>
+      <Button variant="contained" onClick={() => { onClickGetTrips(); }}>Trips</Button>
+    </div>
+
+  );
+};
+
+Trips.propTypes = {
+  clickTrips: PropTypes.bool.isRequired,
+  onClickGetTrips: PropTypes.func.isRequired,
+};
 
 export default Trips;
