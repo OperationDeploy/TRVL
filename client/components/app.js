@@ -66,7 +66,7 @@ class App extends Component {
       googleId,
     })
       .then((res) => {
-        console.log('POSTED:', res.data)
+        console.log('POSTED:', res.data);
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
@@ -77,7 +77,6 @@ class App extends Component {
 
   render() {
     const { loginComplete, clickPlan, currentUser, clickTrips } = this.state;
-    console.log(currentUser);
     if (!loginComplete) {
       return (
         <div>
