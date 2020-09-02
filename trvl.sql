@@ -40,7 +40,9 @@ CREATE TABLE "TripPreferences" (
   "proximity" int,
   "city_type" int,
   "group_age" int,
-  "group_relationship" int
+  "group_relationship" int,
+  "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "TripPhotos" (

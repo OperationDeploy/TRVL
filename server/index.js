@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path'); // NEW
 const bodyParser = require('body-parser');
 
-const { createUser } = require('./queries.js');
+const { createUser, addPreferences } = require('./queries.js');
 
 const app = express();
 const { PORT } = process.env;
@@ -22,6 +22,12 @@ app.get('/get', (req, res) => {
 });
 
 // POST
+
+// add preferences
+app.post('/preferences', (req, res) => {
+  console.log('preffff req body', req.body);
+  addPreferences(req.body, res);
+});
 
 // add user
 app.post('/post', (req, res) => {
