@@ -5,9 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import DatePicker from 'react-datepicker';
-import './react-datepicker.css';
-
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
+import { KeyboardDatePicker } from "@material-ui/pickers";
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -28,8 +28,6 @@ export default function ContinuousSlider() {
   const [proximity, setProximity] = useState(50);
   const [group_age, setAge] = useState(50);
   const [group_relationship, setRelationship] = useState(50);
-  // const newDate = new Date();
-  // const [startDate, setStartDate] = useState(newDate.toLocaleDateString().split('/'));
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
 
@@ -70,18 +68,15 @@ export default function ContinuousSlider() {
   // }, [temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship]);
 
   const handleChangeName = (event) => {
-    console.log(event.target.value);
     setName(event.target.value);
   };
 
   const handleChangeStartDate = (event) => {
-    console.log(event.target);
-    setStartDate(event.target.value);
+    setStartDate(event);
   };
 
   const handleChangeEndDate = (event) => {
-    console.log(event.target);
-    setEndDate(event.target.value);
+    setEndDate(event);
   };
 
   const user_id = 90;
@@ -99,14 +94,40 @@ export default function ContinuousSlider() {
     <div>
     <div>
         <label>
-          Name:
+          Trip name:
           <input type="text" value={name} onChange={handleChangeName} />
-          Start Date:
-          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-          {/* <input type="text" value={startDate} onChange={handleChangeStartDate} /> */}
-          {/* End Date:
-          {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
-          <input type="text" value={endDate} onChange={handleChangeEndDate} /> */}
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              fullWidth
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="start-date"
+              label="Start Date"
+              value={startDate}
+              onChange={handleChangeStartDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <KeyboardDatePicker
+              disableToolbar
+              fullWidth
+              variant="inline"
+              format="MM/dd/yyyy"
+              margin="normal"
+              id="end-date"
+              label="End Date"
+              value={endDate}
+              onChange={handleChangeEndDate}
+              KeyboardButtonProps={{
+                'aria-label': 'change date',
+              }}
+            />
+          </MuiPickersUtilsProvider>
         </label>
     </div>
     <div className={classes.root}>
