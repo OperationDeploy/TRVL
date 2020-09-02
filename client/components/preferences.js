@@ -5,6 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import DatePicker from 'react-datepicker';
+import './react-datepicker.css';
+
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -17,6 +20,7 @@ const useStyles = makeStyles({
 export default function ContinuousSlider() {
   const classes = useStyles();
   // states of our preferences
+  const [name, setName] = useState('');
   const [temperature, setTemp] = useState(50);
   const [city_expenses, setExpense] = useState(50);
   const [landscape, setLandscape] = useState(50);
@@ -24,6 +28,10 @@ export default function ContinuousSlider() {
   const [proximity, setProximity] = useState(50);
   const [group_age, setAge] = useState(50);
   const [group_relationship, setRelationship] = useState(50);
+  // const newDate = new Date();
+  // const [startDate, setStartDate] = useState(newDate.toLocaleDateString().split('/'));
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(null);
 
   // sets new states for our preferences upon change
   const handleChangeTemp = (event, newValue) => {
@@ -47,14 +55,11 @@ export default function ContinuousSlider() {
   const handleChangeRelationship = (event, newValue) => {
     setRelationship(newValue);
   };
-
-
   
   // Posts preferences to DB
   // Need to be able to get individual user's id instead of hard coding on line 54
   // Also need to have specific trip_id specified as well
   // need to come back and refactor
-  const user_id = 90;
   // useEffect(() => {
   //   axios.post('/preferences', {
   //     user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
@@ -64,16 +69,46 @@ export default function ContinuousSlider() {
   //     }).catch((err) => console.log('ERR', err));
   // }, [temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship]);
 
+  const handleChangeName = (event) => {
+    console.log(event.target.value);
+    setName(event.target.value);
+  };
+
+  const handleChangeStartDate = (event) => {
+    console.log(event.target);
+    setStartDate(event.target.value);
+  };
+
+  const handleChangeEndDate = (event) => {
+    console.log(event.target);
+    setEndDate(event.target.value);
+  };
+
+  const user_id = 90;
   const handleSubmit = () => {
+    event.preventDefault();
     axios.post('/preferences', {
       user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
     })
       .then((result) => {
         console.log(result);
       }).catch((err) => console.log('ERR', err));
-  }
+  };
 
   return (
+    <div>
+    <div>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={handleChangeName} />
+          Start Date:
+          <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
+          {/* <input type="text" value={startDate} onChange={handleChangeStartDate} /> */}
+          {/* End Date:
+          {/* <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} /> */}
+          <input type="text" value={endDate} onChange={handleChangeEndDate} /> */}
+        </label>
+    </div>
     <div className={classes.root}>
       <Typography id="continuous-slider" gutterBottom>
         Preferences:
@@ -191,6 +226,7 @@ export default function ContinuousSlider() {
         <Grid item>Couples</Grid>
       </Grid>
       <Button variant="contained" onClick={() => {handleSubmit()}}>Submit Preferences</Button>
+    </div>
     </div>
   );
 }
