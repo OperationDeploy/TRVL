@@ -1,26 +1,23 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-// import Itinerary from './Itinerary';
+import PropTypes from 'prop-types';
+import UserTrips from './UserTrips';
 
-// TODO: Handle trips click
+const Trips = ({ clickTrips, onClickGetTrips }) => {
+  if (clickTrips) {
+    return <UserTrips />;
+  }
+  return (
+    <div>
+      <Button variant="contained" onClick={() => { onClickGetTrips(); }}>Trips</Button>
+    </div>
 
-const Trips = () => (
-  <div>
-    <Button component={Link} to="/UserTrips" variant="contained">Trips</Button>
-  </div>
-);
+  );
+};
 
-// import React from 'react';
-// import Button from '@material-ui/core/Button';
-// import Itinerary from './Itinerary';
-
-// // TODO: Handle trips click
-// const Trips = () => (
-//   <div>
-//     <Button variant="contained" onClick={() => { alert('clicked Trips'); }}>Trips</Button>
-//     <Itinerary />
-//   </div>
-// );
+Trips.propTypes = {
+  clickTrips: PropTypes.bool.isRequired,
+  onClickGetTrips: PropTypes.func.isRequired,
+};
 
 export default Trips;

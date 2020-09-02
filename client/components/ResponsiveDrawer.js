@@ -62,6 +62,8 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window, clickTrips, onCl
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [showMain, setShowMain] = React.useState(false);
+
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -72,7 +74,7 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window, clickTrips, onCl
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => alert("Take Home")} key={text}>
+          <ListItem button onClick={() => setShowMain(true)} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -107,7 +109,6 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window, clickTrips, onCl
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
-
   return (
     <div className={classes.root}>
       <CssBaseline />
