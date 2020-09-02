@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
+import Favicon from 'react-favicon';
 import Preferences from './preferences';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
+import Itinerary from './Itinerary';
 
 class App extends Component {
   constructor(props) {
@@ -56,6 +58,11 @@ class App extends Component {
     }
     return (
       <div>
+
+        <Favicon url="https://i.ibb.co/CmQ8DGP/apple-icon-removebg-preview.png" />
+       
+        
+
         <Router>
           <Switch>
             <Route exact path="/" render={() => (<ResponsiveDrawer />)} />
