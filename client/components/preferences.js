@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
 
 // adjusts the width of the preferences sliders
@@ -49,19 +50,28 @@ export default function ContinuousSlider() {
 
 
   
-  // Posts preferences to DB 
+  // Posts preferences to DB
   // Need to be able to get individual user's id instead of hard coding on line 54
   // Also need to have specific trip_id specified as well
   // need to come back and refactor
-  const user_id = 61;
-  useEffect(() => {
+  const user_id = 90;
+  // useEffect(() => {
+  //   axios.post('/preferences', {
+  //     user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
+  //   })
+  //     .then((result) => {
+  //       console.log(result);
+  //     }).catch((err) => console.log('ERR', err));
+  // }, [temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship]);
+
+  const handleSubmit = () => {
     axios.post('/preferences', {
       user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
     })
       .then((result) => {
         console.log(result);
       }).catch((err) => console.log('ERR', err));
-  }, [temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship]);
+  }
 
   return (
     <div className={classes.root}>
@@ -180,6 +190,7 @@ export default function ContinuousSlider() {
         </Grid>
         <Grid item>Couples</Grid>
       </Grid>
+      <Button variant="contained" onClick={() => {handleSubmit()}}>Submit Preferences</Button>
     </div>
   );
 }

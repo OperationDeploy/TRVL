@@ -5,7 +5,7 @@ import Favicon from 'react-favicon';
 import Preferences from './preferences';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
-// import Itinerary from './Itinerary';
+import Itinerary from './Itinerary';
 
 class App extends Component {
   constructor(props) {
@@ -14,11 +14,14 @@ class App extends Component {
     this.state = {
       item: '',
       loginComplete: false,
+      clickPlan: false,
     };
-
+    this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
     this.login = this.login.bind(this);
   }
-
+  onClickPlanTrip() {
+    this.setState({ clickPlan: !this.state.clickPlan });
+  }
   componentDidMount() {
     // established axios connection to backend
     // GET
@@ -48,8 +51,8 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete } = this.state;
-    if (loginComplete) {
+    const { loginComplete, clickPlan } = this.state;
+    if (!loginComplete) {
       return (
         <div>
           <Splash login={this.login} />
@@ -59,12 +62,18 @@ class App extends Component {
     return (
       <div>
         <Favicon url="https://i.ibb.co/CmQ8DGP/apple-icon-removebg-preview.png" />
-        <Router>
+
+        <ResponsiveDrawer
+          clickPlan={clickPlan}
+          onClickPlanTrip={this.onClickPlanTrip}
+        />
+
+        {/* <Router>
           <Switch>
             <Route exact path="/" render={() => (<ResponsiveDrawer />)} />
             <Route exact path="/preferences" render={() => (<Preferences />)} />
           </Switch>
-        </Router>
+        </Router> */}
       </div>
     );
   }
