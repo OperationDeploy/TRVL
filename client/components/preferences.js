@@ -17,8 +17,7 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-export default function ContinuousSlider(props) {
-  const { currentUser, currentId } = props;
+export default function ContinuousSlider({ currentUser }) {
   const classes = useStyles();
   // states of our preferences
   const [name, setName] = useState('');
@@ -58,7 +57,7 @@ export default function ContinuousSlider(props) {
   // Need to be able to get individual user's id instead of hard coding on line 54
   // Also need to have specific trip_id specified as well
   // need to come back and refactor
-
+  const user_id = currentUser.id;
   // useEffect(() => {
   //   axios.post('/preferences', {
   //     user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
@@ -80,7 +79,6 @@ export default function ContinuousSlider(props) {
     setEndDate(event);
   };
 
-  const user_id = currentId;
   const handleSubmit = () => {
     event.preventDefault();
     // axios

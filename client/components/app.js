@@ -17,7 +17,6 @@ class App extends Component {
       clickPlan: false,
       clickTrips: false,
       currentUser: '',
-      currentId: '',
     };
 
     this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
@@ -57,26 +56,27 @@ class App extends Component {
 
   responseGoogle(response) {
     console.log('google response:', response);
-    axios
-      .post('/login', {
-        first_name: response.profileObj.givenName,
-        last_name: response.profileObj.familyName,
-        email: response.profileObj.email,
-        profile_pic: response.profileObj.imageUrl,
-        host: false,
-        googleId: response.profileObj.googleId,
+    const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
+    axios.post('/login', {
+      first_name: givenName,
+      last_name: familyName,
+      email,
+      profile_pic: imageUrl,
+      host: false,
+      googleId,
+    })
+      .then((res) => {
+        console.log('POSTED:', res.data)
+        this.setState({
+          loginComplete: !this.loginComplete,
+          currentUser: res.data,
+        })
       })
-      .then((res) => console.log('POSTED:', res))
       .catch((err) => console.error(err));
-    this.setState({
-      loginComplete: !this.loginComplete,
-      currentUser: response.profileObj.givenName,
-      currentId: response.profileObj.googleId,
-    });
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, currentId, clickTrips } = this.state;
+    const { loginComplete, clickPlan, currentUser, clickTrips } = this.state;
     if (!loginComplete) {
       return (
         <div>
@@ -102,7 +102,6 @@ class App extends Component {
           clickTrips={clickTrips}
           onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
-          currentId={currentId}
         />
 
         {/* <Router>
