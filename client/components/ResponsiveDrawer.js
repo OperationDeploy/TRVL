@@ -14,6 +14,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -22,9 +23,6 @@ import PlanATrip from './PlanATrip';
 import Trips from './Trips';
 
 const drawerWidth = 240;
-// TODO: Handle click of the trip invites
-// TODO: Dynamically add user name and profile pic
-// TODO: Styling
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,10 +58,19 @@ const useStyles = makeStyles((theme) => ({
   large: {},
 }));
 
-const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
+const ResponsiveDrawer = ({
+  clickPlan,
+  onClickPlanTrip,
+  clickTrips,
+  onClickGetTrips,
+  window,
+  currentUser,
+  currentId,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [showMain, setShowMain] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -72,6 +79,16 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+      <List>
+        {['HOME'].map((text) => (
+          <ListItem button onClick={() => setShowMain(true)} key={text}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
@@ -97,9 +114,7 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
     </div>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
-
+  const container = window !== undefined ? () => window().document.body : undefined;
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -155,12 +170,16 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
         <Avatar
           alt="profilepic"
           src="https://stavica.com/wp-content/uploads/2019/11/9-Fun-and-Engaging-Activities-for-A-Diverse-Group-Travel.jpg"
-          elementType="div"
           className={classes.large}
         />
         <Typography>Hi, Josh!</Typography>
-        <PlanATrip clickPlan={clickPlan} onClickPlanTrip={onClickPlanTrip} />
-        <Trips />
+        <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
+        <PlanATrip
+          clickPlan={clickPlan}
+          onClickPlanTrip={onClickPlanTrip}
+          currentUser={currentUser}
+          currentId={currentId}
+        />
       </main>
     </div>
   );

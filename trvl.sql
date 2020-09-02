@@ -11,6 +11,7 @@ CREATE TABLE "Users" (
   "email" TEXT,
   "profile_pic" VARCHAR(200),
   "host" boolean,
+  "googleId" TEXT,
   "createdAt" time,
   "updatedAt" time
 );
@@ -19,7 +20,6 @@ CREATE TABLE "Trips" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT,
   "destination" TEXT,
-  "budget" int,
   "start_date" date,
   "end_date" date
 );
@@ -32,7 +32,7 @@ CREATE TABLE "TripUsers" (
 
 CREATE TABLE "TripPreferences" (
   "id" int,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "temperature" int,
   "city_expenses" int,

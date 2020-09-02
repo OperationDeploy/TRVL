@@ -17,7 +17,8 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-export default function ContinuousSlider() {
+export default function ContinuousSlider(props) {
+  const { currentUser, currentId } = props;
   const classes = useStyles();
   // states of our preferences
   const [name, setName] = useState('');
@@ -53,11 +54,11 @@ export default function ContinuousSlider() {
   const handleChangeRelationship = (event, newValue) => {
     setRelationship(newValue);
   };
-  
   // Posts preferences to DB
   // Need to be able to get individual user's id instead of hard coding on line 54
   // Also need to have specific trip_id specified as well
   // need to come back and refactor
+
   // useEffect(() => {
   //   axios.post('/preferences', {
   //     user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
@@ -79,15 +80,26 @@ export default function ContinuousSlider() {
     setEndDate(event);
   };
 
-  const user_id = 90;
+  const user_id = currentId;
   const handleSubmit = () => {
     event.preventDefault();
-    axios.post('/preferences', {
-      user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
-    })
+    axios
+      .post('/preferences', {
+        user_id,
+        temperature,
+        city_expenses,
+        landscape,
+        city_type,
+        proximity,
+        group_age,
+        group_relationship,
+      })
       .then((result) => {
         console.log(result);
-      }).catch((err) => console.log('ERR', err));
+      }).then(axios.post('/trips', {
+        name, startDate, endDate,
+      }))
+      .catch((err) => console.log('ERR', err));
   };
 
   return (
@@ -246,7 +258,14 @@ export default function ContinuousSlider() {
         </Grid>
         <Grid item>Couples</Grid>
       </Grid>
-      <Button variant="contained" onClick={() => {handleSubmit()}}>Submit Preferences</Button>
+      <Button
+        variant="contained"
+        onClick={() => {
+          handleSubmit();
+        }}
+      >
+        Submit Preferences
+      </Button>
     </div>
     </div>
   );

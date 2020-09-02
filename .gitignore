@@ -8,3 +8,5 @@ dist
 .env
 
 travel-app.pem
+
+config.js
