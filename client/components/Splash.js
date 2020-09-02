@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import logo from '../src/logo.png';
 
 // when user visits the domain they will see or logo and google login button

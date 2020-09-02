@@ -5,7 +5,7 @@ import Favicon from 'react-favicon';
 import Preferences from './preferences';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import Itinerary from './Itinerary';
+// import Itinerary from './Itinerary';
 
 class App extends Component {
   constructor(props) {
@@ -49,7 +49,7 @@ class App extends Component {
 
   render() {
     const { loginComplete } = this.state;
-    if (!loginComplete) {
+    if (loginComplete) {
       return (
         <div>
           <Splash login={this.login} />
@@ -60,12 +60,13 @@ class App extends Component {
       <div>
         <Favicon url="https://i.ibb.co/CmQ8DGP/apple-icon-removebg-preview.png" />
         {/* <Splash /> */}
+        {/* <Preferences /> */}
+        {/* <Itinerary /> */}
+        {/* <ResponsiveDrawer /> */}
         <Router>
           <Switch>
             <Route exact path="/" render={() => (<ResponsiveDrawer />)} />
             <Route exact path="/preferences" render={() => (<Preferences />)} />
-            <Route exact path="/Itinerary" render={() => (<Itinerary />)} />
-
           </Switch>
         </Router>
       </div>
