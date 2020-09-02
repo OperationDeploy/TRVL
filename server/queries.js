@@ -17,7 +17,10 @@ const {
 // create a user
 const createUser = async (req, res) => {
   console.log('Data from post:', req.body);
-  const user = await User.create(req.body);
+  let user = await User.findOne({ where: { googleId: req.body.googleId } });
+  if (user === null) {
+    user = await User.create(req.body);
+  }
   res.send(user);
 };
 
