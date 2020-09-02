@@ -71,6 +71,8 @@ const TripPreferences = sequelize.define('TripPreferences', {
   proximity: Sequelize.INTEGER,
   group_age: Sequelize.INTEGER,
   group_relationship: Sequelize.INTEGER,
+}, {
+  timestamps: false,
 });
 
 const TripPhoto = sequelize.define('TripPhoto', {
