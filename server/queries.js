@@ -10,6 +10,8 @@ const {
   TripItinerary,
   TripProposalVotes,
   Destinations,
+  SplitItem,
+  SplitOwedPayment
 } = require('./db.js');
 
 // create a user
