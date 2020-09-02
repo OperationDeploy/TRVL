@@ -29,14 +29,13 @@ const addDestinations = () => {
 // add preferences
 // need to come back and find where trip_id is = correct trip_id
 const addPreferences = (req, res) => {
-  TripPreferences.findOne({ where: { user_id: req.user_id } })
-    .then((obj) => {
-      if (obj) {
-        obj.update(req);
-      } else {
-        TripPreferences.create(req);
-      }
-    });
+  TripPreferences.findOne({ where: { user_id: req.user_id } }).then((obj) => {
+    if (obj) {
+      obj.update(req);
+    } else {
+      TripPreferences.create(req);
+    }
+  });
 };
 
 module.exports = {

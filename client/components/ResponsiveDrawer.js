@@ -60,7 +60,13 @@ const useStyles = makeStyles((theme) => ({
   large: {},
 }));
 
-const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
+const ResponsiveDrawer = ({
+  clickPlan,
+  onClickPlanTrip,
+  window,
+  currentUser,
+  currentId,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -159,7 +165,12 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
           className={classes.large}
         />
         <Typography>Hi, Josh!</Typography>
-        <PlanATrip clickPlan={clickPlan} onClickPlanTrip={onClickPlanTrip} />
+        <PlanATrip
+          clickPlan={clickPlan}
+          onClickPlanTrip={onClickPlanTrip}
+          currentUser={currentUser}
+          currentId={currentId}
+        />
         <Trips />
       </main>
     </div>
