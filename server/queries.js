@@ -41,8 +41,28 @@ const addPreferences = (req, res) => {
   });
 };
 
+const addSplit = async (req, res) => {
+  const {
+    purchaser_id, description, price, trip_id,
+  } = req;
+  const item = await SplitItem.create({ purchaser_id, description, price });
+  let users = await TripUser.findAll({ where: { trip_id, user_id: { [Op.ne]: purchaser_id } }, raw: true });
+  const amount = price / (users.length + 1);
+  users.map((user) => SplitOwedPayment.create({
+    ower_id: user.user_id, recipient_id: purchaser_id, amount, trip_id, item_id: item.id,
+  }));
+  // await Promise.all(users)
+  // console.log('the item', item.id);
+};
+
+const getSplit = async (trip_id, res) => {
+  let items = await SplitItem.findAll({ where: { trip_id }, raw: true });
+  res.send(items);
+}
 module.exports = {
   createUser,
   addDestinations,
   addPreferences,
+  addSplit,
+  getSplit
 };

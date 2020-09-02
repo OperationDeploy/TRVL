@@ -4,7 +4,7 @@ const express = require('express');
 const path = require('path'); // NEW
 const bodyParser = require('body-parser');
 
-const { createUser, addPreferences } = require('./queries.js');
+const { createUser, addPreferences, getSplit, addSplit } = require('./queries.js');
 
 const app = express();
 const { PORT } = process.env;
@@ -33,6 +33,14 @@ app.post('/preferences', (req, res) => {
 app.post('/login', (req, res) => {
   createUser(req, res);
 });
+
+app.post('/split', (req, res) => {
+  addSplit(req.body, res);
+});
+
+app.get('/split/:trip', (req, res) => {
+  getSplit(req.params.trip, res);
+})
 
 app.use(express.static(DIST_DIR)); // NEW
 
