@@ -21,13 +21,17 @@ CREATE TABLE "Trips" (
   "name" TEXT,
   "destination" TEXT,
   "start_date" date,
-  "end_date" date
+  "end_date" date,
+   "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "TripUsers" (
   "id" SERIAL PRIMARY KEY,
   "user_id" TEXT,
-  "trip_id" int
+  "trip_id" int,
+   "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "TripPreferences" (
@@ -49,7 +53,9 @@ CREATE TABLE "TripPhotos" (
   "id" SERIAL PRIMARY KEY,
   "user_id" TEXT,
   "trip_id" int,
-  "photo_link" TEXT
+  "photo_link" TEXT,
+   "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "TripProposals" (
@@ -58,7 +64,9 @@ CREATE TABLE "TripProposals" (
   "trip_id" int,
   "destination_A_id" int,
   "destination_B_id" int,
-  "destination_C_id" int
+  "destination_C_id" int,
+   "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "TripItineraries" (
@@ -66,14 +74,18 @@ CREATE TABLE "TripItineraries" (
   "user_id" TEXT,
   "trip_id" int,
   "event" TEXT,
-  "day" date
+  "day" date,
+   "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "TripProposalVotes" (
   "id" int,
   "user_id" TEXT,
   "trip_id" int,
-  "destination" int
+  "destination" int,
+   "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "Destinations" (
