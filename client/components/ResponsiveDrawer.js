@@ -171,7 +171,7 @@ const ResponsiveDrawer = ({
           src="https://stavica.com/wp-content/uploads/2019/11/9-Fun-and-Engaging-Activities-for-A-Diverse-Group-Travel.jpg"
           className={classes.large}
         />
-        <Typography>Hi, Josh!</Typography>
+        <Typography>{`Hi, ${currentUser}!`}</Typography>
         <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
         <PlanATrip
           clickPlan={clickPlan}

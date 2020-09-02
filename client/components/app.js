@@ -70,13 +70,14 @@ class App extends Component {
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
-        })
+        });
       })
       .catch((err) => console.error(err));
   }
 
   render() {
     const { loginComplete, clickPlan, currentUser, clickTrips } = this.state;
+    console.log(currentUser);
     if (!loginComplete) {
       return (
         <div>
