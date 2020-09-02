@@ -11,7 +11,7 @@ CREATE TABLE "Users" (
   "email" TEXT,
   "profile_pic" VARCHAR(200),
   "host" boolean,
-  "googleId" TEXT,
+  "googleId" TEXT UNIQUE,
   "createdAt" time,
   "updatedAt" time
 );
@@ -26,13 +26,13 @@ CREATE TABLE "Trips" (
 
 CREATE TABLE "TripUsers" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int
 );
 
 CREATE TABLE "TripPreferences" (
   "id" int,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "temperature" int,
   "city_expenses" int,
@@ -47,14 +47,14 @@ CREATE TABLE "TripPreferences" (
 
 CREATE TABLE "TripPhotos" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "photo_link" TEXT
 );
 
 CREATE TABLE "TripProposals" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "destination_A_id" int,
   "destination_B_id" int,
@@ -63,7 +63,7 @@ CREATE TABLE "TripProposals" (
 
 CREATE TABLE "TripItineraries" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "event" TEXT,
   "day" date
@@ -71,7 +71,7 @@ CREATE TABLE "TripItineraries" (
 
 CREATE TABLE "TripProposalVotes" (
   "id" int,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "destination" int
 );
