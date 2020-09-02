@@ -30,7 +30,7 @@ app.post('/preferences', (req, res) => {
 });
 
 // add user
-app.post('/post', (req, res) => {
+app.post('/login', (req, res) => {
   createUser(req, res);
 });
 

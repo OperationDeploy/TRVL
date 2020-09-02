@@ -14,7 +14,9 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-export default function ContinuousSlider() {
+export default function ContinuousSlider(props) {
+  const { currentUser, currentId } = props;
+  console.log(props);
   const classes = useStyles();
   // states of our preferences
   const [temperature, setTemp] = useState(50);
@@ -48,13 +50,11 @@ export default function ContinuousSlider() {
     setRelationship(newValue);
   };
 
-
-  
   // Posts preferences to DB
   // Need to be able to get individual user's id instead of hard coding on line 54
   // Also need to have specific trip_id specified as well
   // need to come back and refactor
-  const user_id = 90;
+  const user_id = currentUser;
   // useEffect(() => {
   //   axios.post('/preferences', {
   //     user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
@@ -65,13 +65,22 @@ export default function ContinuousSlider() {
   // }, [temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship]);
 
   const handleSubmit = () => {
-    axios.post('/preferences', {
-      user_id, temperature, city_expenses, landscape, city_type, proximity, group_age, group_relationship,
-    })
+    axios
+      .post('/preferences', {
+        user_id,
+        temperature,
+        city_expenses,
+        landscape,
+        city_type,
+        proximity,
+        group_age,
+        group_relationship,
+      })
       .then((result) => {
         console.log(result);
-      }).catch((err) => console.log('ERR', err));
-  }
+      })
+      .catch((err) => console.log('ERR', err));
+  };
 
   return (
     <div className={classes.root}>
@@ -190,7 +199,18 @@ export default function ContinuousSlider() {
         </Grid>
         <Grid item>Couples</Grid>
       </Grid>
+<<<<<<< HEAD
       <Button variant="contained" onClick={() => { handleSubmit(); }}>Submit Preferences</Button>
+=======
+      <Button
+        variant="contained"
+        onClick={() => {
+          handleSubmit();
+        }}
+      >
+        Submit Preferences
+      </Button>
+>>>>>>> 640349c8629a41ee270b87868f50d0963b546903
     </div>
   );
 }

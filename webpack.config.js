@@ -23,10 +23,16 @@ module.exports = {
       },
       {
         test: /\.(jpg|png|gif|ico|svg)$/,
-        use: [{
-          loader: 'file-loader',
-          options: { name: '[name].[ext]', publicPath: 'img/', outputPath: 'img/' },
-        }],
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[name].[ext]',
+              publicPath: 'img/',
+              outputPath: 'img/',
+            },
+          },
+        ],
       },
     ],
   },

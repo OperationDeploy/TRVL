@@ -58,12 +58,19 @@ const useStyles = makeStyles((theme) => ({
   large: {},
 }));
 
-const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window, clickTrips, onClickGetTrips }) => {
+const ResponsiveDrawer = ({
+  clickPlan,
+  onClickPlanTrip,
+  clickTrips,
+  onClickGetTrips,
+  window,
+  currentUser,
+  currentId,
+}) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const [showMain, setShowMain] = React.useState(false);
-
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -107,8 +114,7 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window, clickTrips, onCl
     </div>
   );
 
-  const container =
-    window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window().document.body : undefined;
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -167,8 +173,14 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window, clickTrips, onCl
           className={classes.large}
         />
         <Typography>Hi, Josh!</Typography>
-        <PlanATrip clickPlan={clickPlan} onClickPlanTrip={onClickPlanTrip} />
         <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
+        <PlanATrip
+          clickPlan={clickPlan}
+          onClickPlanTrip={onClickPlanTrip}
+          currentUser={currentUser}
+          currentId={currentId}
+        />
+        <Trips />
       </main>
     </div>
   );

@@ -11,6 +11,7 @@ CREATE TABLE "Users" (
   "email" TEXT,
   "profile_pic" VARCHAR(200),
   "host" boolean,
+  "googleId" TEXT,
   "createdAt" time,
   "updatedAt" time
 );
