@@ -22,7 +22,7 @@ CREATE TABLE "Trips" (
   "destination" TEXT,
   "start_date" date,
   "end_date" date,
-   "createdAt" time,
+  "createdAt" time,
   "updatedAt" time
 );
 
@@ -35,7 +35,7 @@ CREATE TABLE "TripUsers" (
 );
 
 CREATE TABLE "TripPreferences" (
-  "id" int,
+  "id" SERIAL PRIMARY KEY,
   "user_id" TEXT,
   "trip_id" int,
   "temperature" int,

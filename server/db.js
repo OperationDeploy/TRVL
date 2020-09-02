@@ -42,9 +42,10 @@ const User = sequelize.define('User', {
 const Trip = sequelize.define('Trip', {
   name: Sequelize.TEXT,
   destination: Sequelize.TEXT,
-  budget: Sequelize.TEXT,
   start_date: Sequelize.DATE,
   end_date: Sequelize.DATE,
+}, {
+  timestamps: false,
 });
 
 const TripUser = sequelize.define('TripUser', {
@@ -91,7 +92,7 @@ const TripPreferences = sequelize.define(
   },
   {
     timestamps: false,
-  }
+  },
 );
 
 const TripPhoto = sequelize.define('TripPhoto', {

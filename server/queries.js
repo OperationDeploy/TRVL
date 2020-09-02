@@ -14,7 +14,6 @@ const {
 
 // create a user
 const createUser = async (req, res) => {
-  console.log('Data from post:', req.body);
   let user = await User.findOne({ where: { googleId: req.body.googleId } });
   if (user === null) {
     user = await User.create(req.body);
@@ -42,8 +41,15 @@ const addPreferences = (req, res) => {
   });
 };
 
+// add planned trip 
+const planTrip = async (req, res) => {
+  const trip = await Trip.create(req);
+  res.send(trip);
+};
+
 module.exports = {
   createUser,
   addDestinations,
   addPreferences,
+  planTrip,
 };
