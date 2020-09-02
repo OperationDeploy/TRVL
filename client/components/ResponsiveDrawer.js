@@ -57,12 +57,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  large: {
-  },
+  large: {},
 }));
 
-function ResponsiveDrawer(props) {
-  const { window } = props;
+const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -78,7 +76,9 @@ function ResponsiveDrawer(props) {
       <List>
         {['Trip Invites'].map((text) => (
           <ListItem button onClick={() => alert(`${text} Clicked!`)} key={text}>
-            <ListItemIcon><MailIcon /></ListItemIcon>
+            <ListItemIcon>
+              <MailIcon />
+            </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -87,7 +87,9 @@ function ResponsiveDrawer(props) {
       <List>
         {['Login', 'Logout'].map((text, index) => (
           <ListItem button onClick={() => alert(`${text} Clicked!`)} key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <PersonIcon /> : <PersonOutlineIcon />}</ListItemIcon>
+            <ListItemIcon>
+              {index % 2 === 0 ? <PersonIcon /> : <PersonOutlineIcon />}
+            </ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -95,7 +97,8 @@ function ResponsiveDrawer(props) {
     </div>
   );
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container =
+    window !== undefined ? () => window().document.body : undefined;
 
   return (
     <div className={classes.root}>
@@ -149,16 +152,19 @@ function ResponsiveDrawer(props) {
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Avatar alt="profilepic" src="https://stavica.com/wp-content/uploads/2019/11/9-Fun-and-Engaging-Activities-for-A-Diverse-Group-Travel.jpg" elementType="div" className={classes.large} />
-        <Typography>
-          Hi, Josh!
-        </Typography>
-        <PlanATrip />
+        <Avatar
+          alt="profilepic"
+          src="https://stavica.com/wp-content/uploads/2019/11/9-Fun-and-Engaging-Activities-for-A-Diverse-Group-Travel.jpg"
+          elementType="div"
+          className={classes.large}
+        />
+        <Typography>Hi, Josh!</Typography>
+        <PlanATrip clickPlan={clickPlan} onClickPlanTrip={onClickPlanTrip} />
         <Trips />
       </main>
     </div>
   );
-}
+};
 
 ResponsiveDrawer.propTypes = {
   /**
