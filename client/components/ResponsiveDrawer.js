@@ -180,7 +180,6 @@ const ResponsiveDrawer = ({
           currentUser={currentUser}
           currentId={currentId}
         />
-        <Trips />
       </main>
     </div>
   );

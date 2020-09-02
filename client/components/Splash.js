@@ -5,7 +5,7 @@ import logo from '../src/logo.png';
 const Splash = ({ login }) => (
   <div>
     <img src={logo} alt="Logo" />
-    <div onClick={login}>google login here</div>
+    <div onClick={login} />
   </div>
 );
 

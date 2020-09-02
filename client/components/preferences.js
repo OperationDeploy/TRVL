@@ -199,9 +199,6 @@ export default function ContinuousSlider(props) {
         </Grid>
         <Grid item>Couples</Grid>
       </Grid>
-<<<<<<< HEAD
-      <Button variant="contained" onClick={() => { handleSubmit(); }}>Submit Preferences</Button>
-=======
       <Button
         variant="contained"
         onClick={() => {
@@ -210,7 +207,6 @@ export default function ContinuousSlider(props) {
       >
         Submit Preferences
       </Button>
->>>>>>> 640349c8629a41ee270b87868f50d0963b546903
     </div>
   );
 }

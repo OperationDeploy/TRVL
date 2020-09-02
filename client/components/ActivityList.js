@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 
-const AcitivityList = ({ activities, deleteActivity }) => (
+const ActivityList = ({ activities, deleteActivity }) => (
   <List>
     {activities.map((activity, index) => (
       <ListItem key={index.toString()} dense button>
@@ -27,9 +27,9 @@ const AcitivityList = ({ activities, deleteActivity }) => (
   </List>
 );
 
-AcitivityList.propTypes = {
+ActivityList.propTypes = {
   activities: PropTypes.arrayOf.isRequired,
   deleteActivity: PropTypes.func.isRequired,
 };
 
-export default AcitivityList;
+export default ActivityList;
