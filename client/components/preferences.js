@@ -190,7 +190,7 @@ export default function ContinuousSlider() {
         </Grid>
         <Grid item>Couples</Grid>
       </Grid>
-      <Button variant="contained" onClick={() => {handleSubmit()}}>Submit Preferences</Button>
+      <Button variant="contained" onClick={() => { handleSubmit(); }}>Submit Preferences</Button>
     </div>
   );
 }

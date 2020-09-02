@@ -14,6 +14,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
+import HomeIcon from '@material-ui/icons/Home';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -22,9 +23,6 @@ import PlanATrip from './PlanATrip';
 import Trips from './Trips';
 
 const drawerWidth = 240;
-// TODO: Handle click of the trip invites
-// TODO: Dynamically add user name and profile pic
-// TODO: Styling
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   large: {},
 }));
 
-const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
+const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window, clickTrips, onClickGetTrips }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -72,6 +70,16 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
   const drawer = (
     <div>
       <div className={classes.toolbar} />
+      <List>
+        {['HOME'].map((text) => (
+          <ListItem button onClick={() => alert("Take Home")} key={text}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
@@ -155,12 +163,11 @@ const ResponsiveDrawer = ({ clickPlan, onClickPlanTrip, window }) => {
         <Avatar
           alt="profilepic"
           src="https://stavica.com/wp-content/uploads/2019/11/9-Fun-and-Engaging-Activities-for-A-Diverse-Group-Travel.jpg"
-          elementType="div"
           className={classes.large}
         />
         <Typography>Hi, Josh!</Typography>
         <PlanATrip clickPlan={clickPlan} onClickPlanTrip={onClickPlanTrip} />
-        <Trips />
+        <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
       </main>
     </div>
   );
@@ -171,7 +178,7 @@ ResponsiveDrawer.propTypes = {
    * Injected by the documentation to work in an iframe.
    * You won't need it on your project.
    */
-  window: PropTypes.func.isRequired,
+  window: PropTypes.func,
 };
 
 export default ResponsiveDrawer;

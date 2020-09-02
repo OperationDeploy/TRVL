@@ -7,7 +7,7 @@ const Itinerary = () => {
   const [activities, setActivities] = useState([]);
 
   return (
-    <div className="tripitinerary">
+    <div id="tripitinerary" className="itinerary">
       <Typography component="h1" variant="h2">
         Itinerary
       </Typography>

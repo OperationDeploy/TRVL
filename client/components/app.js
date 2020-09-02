@@ -2,10 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
-import Preferences from './preferences';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import Itinerary from './Itinerary';
 
 class App extends Component {
   constructor(props) {
@@ -15,12 +13,18 @@ class App extends Component {
       item: '',
       loginComplete: false,
       clickPlan: false,
+      clickTrips: false,
     };
     this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
     this.login = this.login.bind(this);
+    this.onClickGetTrips = this.onClickGetTrips.bind(this);
   }
   onClickPlanTrip() {
     this.setState({ clickPlan: !this.state.clickPlan });
+  }
+
+  onClickGetTrips() {
+    this.setState({ clickTrips: !this.state.clickTrips });
   }
   componentDidMount() {
     // established axios connection to backend
@@ -51,8 +55,8 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan } = this.state;
-    if (!loginComplete) {
+    const { loginComplete, clickPlan, clickTrips} = this.state;
+    if (loginComplete) {
       return (
         <div>
           <Splash login={this.login} />
@@ -66,6 +70,8 @@ class App extends Component {
         <ResponsiveDrawer
           clickPlan={clickPlan}
           onClickPlanTrip={this.onClickPlanTrip}
+          clickTrips={clickTrips}
+          onClickGetTrips={this.onClickGetTrips}
         />
 
         {/* <Router>
