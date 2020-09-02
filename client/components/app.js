@@ -65,7 +65,7 @@ class App extends Component {
     }
     return (
       <div>
-        <Favicon url="https://i.ibb.co/CmQ8DGP/apple-icon-removebg-preview.png" />
+        <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
 
         <ResponsiveDrawer
           clickPlan={clickPlan}
