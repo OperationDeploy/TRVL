@@ -44,8 +44,20 @@ const Trip = sequelize.define('Trip', {
 });
 
 const TripUser = sequelize.define('TripUser', {
-  user_id: Sequelize.INTEGER,
-  trip_id: Sequelize.INTEGER,
+  user_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'user',
+      key: 'googleId',
+    },
+  },
+  trip_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'trip',
+      key: 'id',
+    },
+  },
 });
 
 const TripPreferences = sequelize.define(
@@ -55,13 +67,13 @@ const TripPreferences = sequelize.define(
       type: Sequelize.INTEGER,
       references: {
         model: 'user',
-        key: 'id',
+        key: 'googleId',
       },
     },
     trip_id: {
       type: Sequelize.INTEGER,
       references: {
-        model: 'user',
+        model: 'trip',
         key: 'id',
       },
     },
@@ -83,13 +95,13 @@ const TripPhoto = sequelize.define('TripPhoto', {
     type: Sequelize.INTEGER,
     references: {
       model: 'user',
-      key: 'id',
+      key: 'googleId',
     },
   },
   trip_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'user',
+      model: 'trip',
       key: 'id',
     },
   },
@@ -101,13 +113,13 @@ const TripProposal = sequelize.define('TripProposal', {
     type: Sequelize.INTEGER,
     references: {
       model: 'user',
-      key: 'id',
+      key: 'googleId',
     },
   },
   trip_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'user',
+      model: 'trip',
       key: 'id',
     },
   },
@@ -139,13 +151,13 @@ const TripItinerary = sequelize.define('TripItinerary', {
     type: Sequelize.INTEGER,
     references: {
       model: 'user',
-      key: 'id',
+      key: 'googleId',
     },
   },
   trip_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'user',
+      model: 'trip',
       key: 'id',
     },
   },
@@ -158,13 +170,13 @@ const TripProposalVotes = sequelize.define('TripProposalVotes', {
     type: Sequelize.INTEGER,
     references: {
       model: 'user',
-      key: 'id',
+      key: 'googleId',
     },
   },
   trip_id: {
     type: Sequelize.INTEGER,
     references: {
-      model: 'user',
+      model: 'trip',
       key: 'id',
     },
   },
