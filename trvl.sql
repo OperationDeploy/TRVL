@@ -21,7 +21,9 @@ CREATE TABLE "Trips" (
   "name" TEXT,
   "destination" TEXT,
   "start_date" date,
-  "end_date" date
+  "end_date" date,
+  "createdAt" time,
+  "updatedAt" time
 );
 
 CREATE TABLE "TripUsers" (

@@ -40,6 +40,7 @@ const addPreferences = (req, res) => {
 
 // add planned trip 
 const planTrip = (req, res) => {
+  console.log(req);
   Trip.findOne({ where: { name: req.name } }).then((obj) => {
     if (obj) {
       obj.update(req);

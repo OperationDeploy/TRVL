@@ -83,22 +83,24 @@ export default function ContinuousSlider(props) {
   const user_id = currentId;
   const handleSubmit = () => {
     event.preventDefault();
-    axios
-      .post('/preferences', {
-        user_id,
-        temperature,
-        city_expenses,
-        landscape,
-        city_type,
-        proximity,
-        group_age,
-        group_relationship,
+    // axios
+    //   .post('/preferences', {
+    //     user_id,
+    //     temperature,
+    //     city_expenses,
+    //     landscape,
+    //     city_type,
+    //     proximity,
+    //     group_age,
+    //     group_relationship,
+    //   })
+    //   .then((result) => {
+    //     console.log(result);
+    //   }).then(
+        axios.post('/trips', {
+        name: name, start_date: startDate, end_date: endDate,
       })
-      .then((result) => {
-        console.log(result);
-      }).then(axios.post('/trips', {
-        name, startDate, endDate,
-      }))
+      // )
       .catch((err) => console.log('ERR', err));
   };
 
