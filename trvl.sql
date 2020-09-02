@@ -20,7 +20,6 @@ CREATE TABLE "Trips" (
   "id" SERIAL PRIMARY KEY,
   "name" TEXT,
   "destination" TEXT,
-  "budget" int,
   "start_date" date,
   "end_date" date
 );
