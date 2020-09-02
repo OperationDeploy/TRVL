@@ -13,9 +13,10 @@ const {
 } = require('./db.js');
 
 // create a user
-const createUser = (req, res) => {
+const createUser = async (req, res) => {
   console.log('Data from post:', req.body);
-  User.create(req.body);
+  const user = await User.create(req.body);
+  res.send(user);
 };
 
 // get user
