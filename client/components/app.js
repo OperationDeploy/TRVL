@@ -56,18 +56,12 @@ class App extends Component {
     }
     return (
       <div>
-<<<<<<< HEAD
-        {/* <Splash /> */}
-        <Preferences />
-        {/* <ResponsiveDrawer /> */}
-=======
         <Router>
           <Switch>
             <Route exact path="/" render={() => (<ResponsiveDrawer />)} />
             <Route exact path="/preferences" render={() => (<Preferences />)} />
           </Switch>
         </Router>
->>>>>>> 877fe4773758ff570a80d164e724b450f99af886
       </div>
     );
   }
