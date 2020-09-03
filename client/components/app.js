@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
+import GoogleLogin from 'react-google-login';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import Itinerary from './Itinerary';
-import GoogleLogin from 'react-google-login';
 // import { OAUTH_CLIENT_ID } from '../../config.js';
 
 class App extends Component {
@@ -25,38 +23,13 @@ class App extends Component {
   }
 
   onClickPlanTrip() {
-    this.setState({ clickPlan: !this.state.clickPlan });
+    this.setState((prevState) => ({ clickPlan: !prevState.clickPlan }));
   }
 
   onClickGetTrips() {
-    this.setState({ clickTrips: !this.state.clickTrips });
+    this.setState((prevState) => ({ clickTrips: !prevState.clickTrips }));
   }
 
-  // componentDidMount() {
-  //   // established axios connection to backend
-  //   // GET
-  //   axios
-  //     .get('/get')
-  //     .then((res) => console.log('Response data:', res))
-  //     .catch((err) => console.error(err));
-
-  //   // POST
-  //   axios
-  //     .post('/post', {
-  //       first_name: 'Josh',
-  //       last_name: 'Nunez',
-  //       email: 'joshjnunez09@gmail.com',
-  //       profile_pic:
-  //         'https://ca.slack-edge.com/T02P3HQD6-URPNXJK3R-3bab56848cef-512',
-  //       host: false,
-  //     })
-  //     .then((res) => console.log('POSTED:', res))
-  //     .catch((err) => console.error(err));
-  // }
-  //husky
-  //husky2
-  //he
-  //please work
   responseGoogle(response) {
     console.log('google response:', response);
     const {
@@ -85,7 +58,9 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, clickTrips } = this.state;
+    const {
+      loginComplete, clickPlan, currentUser, clickTrips,
+    } = this.state;
     if (!loginComplete) {
       return (
         <div>
@@ -96,11 +71,11 @@ class App extends Component {
             buttonText="Login with Google"
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogle}
-            cookiePolicy={'single_host_origin'}
+            cookiePolicy="single_host_origin"
           />
         </div>
       );
-      //test husky
+      // test husky
     }
     return (
       <div>

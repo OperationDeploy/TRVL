@@ -1,8 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
-import Preferences from './preferences.js';
+import PropTypes from 'prop-types';
+import Preferences from './preferences';
 
-const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, currentId }) => {
+const PlanATrip = ({
+  clickPlan, onClickPlanTrip, currentUser, currentId,
+}) => {
   if (clickPlan) {
     return <Preferences currentUser={currentUser} currentId={currentId} />;
   }
@@ -19,6 +22,20 @@ const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, currentId }) => {
       </Button>
     </div>
   );
+};
+
+PlanATrip.defaultProps = {
+  clickPlan: false,
+  onClickPlanTrip: () => {},
+  currentUser: '',
+  currentId: 0,
+};
+
+PlanATrip.propTypes = {
+  clickPlan: PropTypes.bool,
+  onClickPlanTrip: PropTypes.func,
+  currentUser: PropTypes.objectOf(PropTypes.object()),
+  currentId: PropTypes.number,
 };
 
 export default PlanATrip;

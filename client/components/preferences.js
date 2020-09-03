@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable camelcase */
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -38,25 +40,25 @@ const ContinuousSlider = ({ currentUser }) => {
   const user_id = currentUser.googleId;
 
   // sets new states for our preferences upon change
-  const handleChangeTemp = (event, newValue) => {
+  const handleChangeTemp = (newValue) => {
     setTemp(newValue);
   };
-  const handleChangeExpense = (event, newValue) => {
+  const handleChangeExpense = (newValue) => {
     setExpense(newValue);
   };
-  const handleChangeLandscape = (event, newValue) => {
+  const handleChangeLandscape = (newValue) => {
     setLandscape(newValue);
   };
-  const handleChangeCityType = (event, newValue) => {
+  const handleChangeCityType = (newValue) => {
     setCityType(newValue);
   };
-  const handleChangeProximity = (event, newValue) => {
+  const handleChangeProximity = (newValue) => {
     setProximity(newValue);
   };
-  const handleChangeAge = (event, newValue) => {
+  const handleChangeAge = (newValue) => {
     setAge(newValue);
   };
-  const handleChangeRelationship = (event, newValue) => {
+  const handleChangeRelationship = (newValue) => {
     setRelationship(newValue);
   };
 
@@ -74,10 +76,9 @@ const ContinuousSlider = ({ currentUser }) => {
 
   // Posts preferences to DB
   const handleSubmit = () => {
-    event.preventDefault();
     axios
       .post('/trips', {
-        name: name,
+        name,
         start_date: startDate,
         end_date: endDate,
       })
@@ -100,7 +101,6 @@ const ContinuousSlider = ({ currentUser }) => {
   };
 
   const selectPlaces = () => {
-    event.preventDefault();
     setButtonClicked(true);
   };
 
@@ -111,9 +111,16 @@ const ContinuousSlider = ({ currentUser }) => {
   return (
     <div>
       <div>
-        <label>
+        <label htmlFor="text">
           Trip name:
-          <input type="text" value={name} onChange={handleChangeName} />
+          <input
+            type="text"
+            id="text"
+            name="type"
+            placeholder="text"
+            value={name}
+            onChange={handleChangeName}
+          />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
@@ -285,4 +292,5 @@ const ContinuousSlider = ({ currentUser }) => {
   );
 };
 
+ContinuousSlider.propTypes = PropTypes;
 export default ContinuousSlider;

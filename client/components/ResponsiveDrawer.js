@@ -69,7 +69,6 @@ const ResponsiveDrawer = ({
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [showMain, setShowMain] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -80,7 +79,7 @@ const ResponsiveDrawer = ({
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => setShowMain(true)} key={text}>
+          <ListItem button onClick={() => alert('open')} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -171,7 +170,11 @@ const ResponsiveDrawer = ({
           src={currentUser.profile_pic}
           className={classes.large}
         />
-        <Typography>Hi, {currentUser.first_name}!</Typography>
+        <Typography>
+          Hi,
+          {currentUser.first_name}
+          !
+        </Typography>
         <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
         <PlanATrip
           clickPlan={clickPlan}
@@ -183,12 +186,6 @@ const ResponsiveDrawer = ({
   );
 };
 
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
-};
+ResponsiveDrawer.propTypes = PropTypes;
 
 export default ResponsiveDrawer;

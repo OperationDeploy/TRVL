@@ -7,10 +7,10 @@
     "start": "nodemon server/index.js",
     "dev": "webpack --mode development --open --hot --watch",
     "build": "webpack --mode production",
-    "lint": "eslint . --ext .json --ext .js --ext .jsx --ext .md --bailOnLintError true",
+    "lint": "eslint . --ext .json --ext .js --ext .jsx --ext .md",
     "lint:fix": "eslint --fix . --ext .json --ext .js --ext .jsx --ext .md",
     "eject": "react-scripts eject",
-    "test": "cross-env CI=true react-scripts test --env=jsdom"
+    "test": ""
   },
   "husky": {
     "hooks": {

@@ -18,40 +18,35 @@ const UserTrips = () => {
 
   if (itiernaryClicked) {
     return <Itinerary />;
-  } else {
-    return (
-      <div>
-        <Typography variant="h1">
-          Trips
-        </Typography>
-        {userTripsData.map((data, index) => (
-          <List>
-            <ListItem>
-              <ListItemText>{ data.tripName}</ListItemText>
-              <ListItemSecondaryAction>
-                <Button onClick={getItinerary} color="primary">
-                  Trip Itinerary
-                </Button>
-              </ListItemSecondaryAction>
-            </ListItem>
-            <ListItem>
-              Dates:
-              <ListItemText>{ `${data.tripDates[0]} to ${data.tripDates[1]}`}</ListItemText>
-            </ListItem>
-            <ListItem>
-              Destination:
-              <ListItemText>{ data.tripDestination}</ListItemText>
-            </ListItem>
-          </List>
-        ))}
-        ;
-      </div>
-    );
   }
+  return (
+    <div>
+      <Typography variant="h1">Trips</Typography>
+      {userTripsData.map((data) => (
+        <List>
+          <ListItem>
+            <ListItemText>{data.tripName}</ListItemText>
+            <ListItemSecondaryAction>
+              <Button onClick={getItinerary} color="primary">
+                Trip Itinerary
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            Dates:
+            <ListItemText>{`${data.tripDates[0]} to ${data.tripDates[1]}`}</ListItemText>
+          </ListItem>
+          <ListItem>
+            Destination:
+            <ListItemText>{data.tripDestination}</ListItemText>
+          </ListItem>
+        </List>
+      ))}
+      ;
+    </div>
+  );
 };
 
-UserTrips.propTypes = {
-  getItinerary: PropTypes.func.isRequired,
-};
+UserTrips.propTypes = PropTypes;
 
 export default UserTrips;
