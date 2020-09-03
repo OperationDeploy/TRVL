@@ -5,17 +5,23 @@ import axios from 'axios';
 
 const Photos = ({ currentUser, currentTrip }) => {
   const [file, setFile] = useState(null);
-  useEffect(() => {
+  // useEffect(() => {
 
-  }, []);
+  // }, []);
 
+  const fileUpload = (photo) => {
+    const data = new FormData();
+    data.append('file', photo);
+    axios.post('/photos', data)
+      .then((res) => { // then print response status
+        console.log(res.data);
+      });
+  };
+  
   const fileSelectHandler = (e) => {
     setFile(e.target.files[0]);
-  }
-
-  const fileUpload = () => {
-
-  }
+    fileUpload(e.target.files[0]);
+  };
 
   const selected = file ? file.name : '';
 
@@ -34,7 +40,7 @@ const Photos = ({ currentUser, currentTrip }) => {
           style={{ display: 'none' }}
           onChange={fileSelectHandler}
         />
-      </Button >
+      </Button>
       {/* {selected}
       <div>
       <Button onClick={fileUpload} color="primary">Upload</Button>
