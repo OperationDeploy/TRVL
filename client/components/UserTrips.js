@@ -1,20 +1,39 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
-import PropTypes from 'prop-types';
+import axios from 'axios';
 import { userTripsData } from '../dummyData/userTripsData';
 import Itinerary from './Itinerary';
 
-const UserTrips = () => {
+const UserTrips = ({ currentUser }) => {
   const [itiernaryClicked, setitiernaryClicked] = useState(false);
+  const [userTrips, setUserTrips] = useState([]);
 
   const getItinerary = () => {
     setitiernaryClicked(true);
   };
+
+  const getUserTrips = (userData) => {
+    // console.log(userData, "hedsffffffffff");
+    const { googleId } = userData;
+    axios.get('/user/trips', {
+      params: {
+        user_id: googleId,
+      },
+    })
+      .then((response) => console.log(response.data))
+      .catch(err => console.error(err));
+  };
+
+  useEffect(() => {
+    setUserTrips(userTripsData);
+    getUserTrips(currentUser);
+  }, []);
 
   if (itiernaryClicked) {
     return <Itinerary />;
@@ -24,7 +43,7 @@ const UserTrips = () => {
       <Typography variant="h1">
         Trips
       </Typography>
-      {userTripsData.map((data, index) => (
+      {userTrips.map((data, index) => (
         <List>
           <ListItem>
             <ListItemText>{ data.tripName}</ListItemText>
@@ -47,10 +66,6 @@ const UserTrips = () => {
       ;
     </div>
   );
-};
-
-UserTrips.propTypes = {
-  getItinerary: PropTypes.func.isRequired,
 };
 
 export default UserTrips;

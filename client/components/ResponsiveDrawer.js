@@ -1,5 +1,5 @@
+/* eslint-disable react/prop-types */
 import React from 'react';
-import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -69,7 +69,6 @@ const ResponsiveDrawer = ({
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [showMain, setShowMain] = React.useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -80,7 +79,7 @@ const ResponsiveDrawer = ({
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => setShowMain(true)} key={text}>
+          <ListItem button onClick={() => alert('FixMe')} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -172,7 +171,11 @@ const ResponsiveDrawer = ({
           className={classes.large}
         />
         <Typography>{`Hi ${currentUser.first_name}, where to?`}</Typography>
-        <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
+        <Trips
+          clickTrips={clickTrips}
+          onClickGetTrips={onClickGetTrips}
+          currentUser={currentUser}
+        />
         <PlanATrip
           clickPlan={clickPlan}
           onClickPlanTrip={onClickPlanTrip}
@@ -181,14 +184,6 @@ const ResponsiveDrawer = ({
       </main>
     </div>
   );
-};
-
-ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
 };
 
 export default ResponsiveDrawer;

@@ -4,7 +4,8 @@ const express = require('express');
 const path = require('path'); // NEW
 const bodyParser = require('body-parser');
 
-const { createUser, addPreferences, planTrip } = require('./queries.js');
+const { createUser, addPreferences, planTrip, getUserTrips } = require('./queries.js');
+// const { default: Trips } = require('../client/components/Trips.js');
 
 const app = express();
 const { PORT } = process.env;
@@ -19,6 +20,16 @@ app.use(bodyParser.json());
 // GET
 app.get('/get', (req, res) => {
   res.send('HELLO WORLD');
+});
+
+// get current user trips
+app.get('/user/trips', (req, res) => {
+  const { user_id } = req.query;
+  getUserTrips(user_id)
+    .then((list) => {
+      res.send(list);
+    })
+    .catch((err) => res.statusCode(500).send("cannot query get user trips", err));
 });
 
 // POST

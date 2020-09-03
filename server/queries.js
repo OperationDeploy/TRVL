@@ -21,7 +21,19 @@ const createUser = async (req, res) => {
   res.send(user);
 };
 
-// get user
+// get user trips
+const getUserTrips = async (id) => {
+  const userTrips = await TripUser.findAll({
+    where: {
+      user_id: id,
+    },
+  });
+  if(userTrips === null) {
+    console.log("errrrrrr", userTrips);
+  } else {
+    console.log("success!!", userTrips);
+  }
+};
 
 // destinations - dummy data
 
@@ -52,4 +64,5 @@ module.exports = {
   addDestinations,
   addPreferences,
   planTrip,
+  getUserTrips,
 };
