@@ -40,18 +40,19 @@ const User = sequelize.define('User', {
   },
 });
 
-const Trip = sequelize.define(
-  'Trip',
-  {
-    name: Sequelize.TEXT,
-    destination: Sequelize.TEXT,
-    start_date: Sequelize.DATE,
-    end_date: Sequelize.DATE,
+const Trip = sequelize.define('Trip', {
+  name: Sequelize.TEXT,
+  destination: Sequelize.TEXT,
+  start_date: Sequelize.DATE,
+  end_date: Sequelize.DATE,
+  googleId: {
+    type: Sequelize.TEXT,
+    references: {
+      model: 'user',
+      key: 'googleId',
+    },
   },
-  {
-    timestamps: false,
-  },
-);
+});
 
 const TripUser = sequelize.define('TripUser', {
   user_id: {
