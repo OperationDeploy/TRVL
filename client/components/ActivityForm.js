@@ -26,20 +26,14 @@ const ActivityForm = ({ saveActivity }) => {
           }}
           margin="normal"
         />
-        {/* <OutlinedInput
-          value={value}
-          variant="outlined"
-          placeholder="add activity"
-          onChange={(event) => {
-            setValue(event.target.value);
-          }}
-          margin="normal"
-          endAdorment={(
-            <InputAdornment position="end">
-              <IconButton aria-label="add activity" edge="end">,jh</IconButton>
-            </InputAdornment>
-          )}
-        /> */}
+        <IconButton onClick={(event) => {
+          event.preventDefault();
+          saveActivity(value);
+          setValue('');
+        }}
+        >
+          <AddIcon />
+        </IconButton>
       </form>
     </div>
   );
