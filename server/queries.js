@@ -12,8 +12,6 @@ const createUser = async (req, res) => {
   res.send(user);
 };
 
-// get user
-
 // destinations - dummy data
 
 const addDestinations = () => {
