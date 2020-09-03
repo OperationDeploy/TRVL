@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { Op } = require("sequelize");
 
 const {
   User,
@@ -46,9 +47,9 @@ const addPreferences = (req, res) => {
 
 const addSplit = async (req, res) => {
   const {
-    purchaser_id, description, price, trip_id,
+    purchaser_id, price, trip_id,
   } = req;
-  const item = await SplitItem.create({ purchaser_id, description, price });
+  const item = await SplitItem.create(req);
   let users = await TripUser.findAll({ where: { trip_id, user_id: { [Op.ne]: purchaser_id } }, raw: true });
   const amount = price / (users.length + 1);
   users.map((user) => SplitOwedPayment.create({
@@ -58,9 +59,29 @@ const addSplit = async (req, res) => {
   // console.log('the item', item.id);
 };
 
-const getSplit = async (trip_id, res) => {
+const getSplit = async ({ trip, user }, res) => {
+  // let payments = SplitOwedPayment.findAll({ where: { trip_id } });
+  const response = {};
+  const trip_id = trip;
+  const recipient_id = user;
   let items = await SplitItem.findAll({ where: { trip_id }, raw: true });
-  res.send(items);
+  let users = items.map((item) => User.findByPk(item.purchaser_id, { raw: true }));
+  await Promise.all(users).then((result) => { users = result });
+  items = items.map((item, i) => {
+    item.purchaser = users[i].first_name;
+    return item;
+  })
+  const payments = await SplitOwedPayment.findAll({ where: { trip_id, recipient_id }, raw: true });
+  users = payments.map((payment) => User.findByPk(payment.ower_id, { raw: true }));
+  await Promise.all(users).then((result) => { users = result });
+  const debts = {};
+  payments.forEach((payment, i) => {
+    const name = `${users[i].first_name} ${users[i].last_name}`
+    debts[name] = debts[name] ? debts[name] + payment.amount : payment.amount;
+  })
+  response.items = items;
+  response.debts = debts;
+  res.send(response);
 }
 module.exports = {
   createUser,

@@ -3,9 +3,9 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import UserTrips from './UserTrips';
 
-const Trips = ({ clickTrips, onClickGetTrips }) => {
+const Trips = ({ clickTrips, onClickGetTrips, currentUser, currentTrip }) => {
   if (clickTrips) {
-    return <UserTrips />;
+    return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
   }
   return (
     <div>

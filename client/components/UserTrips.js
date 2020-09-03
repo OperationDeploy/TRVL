@@ -10,7 +10,7 @@ import { userTripsData } from '../dummyData/userTripsData';
 import Itinerary from './Itinerary';
 import Purchases from './Purchases';
 
-const UserTrips = () => {
+const UserTrips = ({ currentUser, currentTrip }) => {
   const [clicked, setClicked] = useState('');
 
   // const render = () => {
@@ -21,7 +21,7 @@ const UserTrips = () => {
       return <Itinerary />;
       break;
     case 'purchases':
-      return <Purchases />;
+      return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
       break;
     default:
   }

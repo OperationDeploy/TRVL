@@ -42,7 +42,6 @@ const User = sequelize.define('User', {
 const Trip = sequelize.define('Trip', {
   name: Sequelize.TEXT,
   destination: Sequelize.TEXT,
-  budget: Sequelize.TEXT,
   start_date: Sequelize.DATE,
   end_date: Sequelize.DATE,
 });
@@ -202,6 +201,7 @@ const SplitItem = sequelize.define('SplitItem', {
   purchaser_id: Sequelize.INTEGER,
   description: Sequelize.TEXT,
   price: Sequelize.FLOAT,
+  trip_id: Sequelize.INTEGER
 });
 
 const SplitOwedPayment = sequelize.define('SplitOwedPayment', {

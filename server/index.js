@@ -38,8 +38,8 @@ app.post('/split', (req, res) => {
   addSplit(req.body, res);
 });
 
-app.get('/split/:trip', (req, res) => {
-  getSplit(req.params.trip, res);
+app.get('/split/:trip/:user', (req, res) => {
+  getSplit(req.params, res);
 })
 
 app.use(express.static(DIST_DIR)); // NEW

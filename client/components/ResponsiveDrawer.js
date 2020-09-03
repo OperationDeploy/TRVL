@@ -65,6 +65,7 @@ const ResponsiveDrawer = ({
   onClickGetTrips,
   window,
   currentUser,
+  currentTrip
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -172,7 +173,7 @@ const ResponsiveDrawer = ({
           className={classes.large}
         />
         <Typography>Hi, Josh!</Typography>
-        <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
+        <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} currentUser={currentUser} currentTrip={currentTrip} />
         <PlanATrip
           clickPlan={clickPlan}
           onClickPlanTrip={onClickPlanTrip}
