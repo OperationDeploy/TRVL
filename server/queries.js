@@ -23,9 +23,30 @@ const addDestinations = () => {
 // add preferences
 // need to come back and find where trip_id is = correct trip_id
 const addPreferences = (req) => {
-  TripPreferences.findOne({ where: { user_id: req.user_id } }).then((obj) => {
+  const {
+    userId,
+    tripId,
+    temperature,
+    cityExpenses,
+    landscape,
+    cityType,
+    proximity,
+    groupAge,
+    groupRelationship,
+  } = req;
+  TripPreferences.findOne({ where: { user_id: userId } }).then((obj) => {
     if (obj) {
-      obj.update(req);
+      obj.update({
+        user_id: userId,
+        trip_id: tripId,
+        temperature,
+        city_expenses: cityExpenses,
+        landscape,
+        city_type: cityType,
+        proximity,
+        group_age: groupAge,
+        group_relationship: groupRelationship,
+      });
     } else {
       TripPreferences.create(req);
     }
