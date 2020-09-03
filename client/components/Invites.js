@@ -1,21 +1,18 @@
 import React, { useState } from 'react';
 import Button from '@material-ui/core/Button';
-import Preferences from './preferences.js';
 
 const Invites = () => {
-  if (clickPlan) {
-    return <Preferences currentUser={currentUser} currentId={currentId} />;
-  }
 
   return (
     <div>
+      Invited Trips:
       <Button
         variant="contained"
         onClick={() => {
-          onClickPlanTrip();
+          console.log('OFIFF');
         }}
       >
-        Plan A Trip
+        Check me out
       </Button>
     </div>
   );

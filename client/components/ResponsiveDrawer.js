@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -21,6 +21,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import Invites from './Invites';
 
 const drawerWidth = 240;
 
@@ -68,8 +69,9 @@ const ResponsiveDrawer = ({
 }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
-  const [showMain, setShowMain] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [showMain, setShowMain] = useState(false);
+  const [showInvites, setShowInvite] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -91,7 +93,7 @@ const ResponsiveDrawer = ({
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => alert(`${text} Clicked!`)} key={text}>
+          <ListItem button onClick={() => setShowInvite(!showInvites)} key={text}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -112,6 +114,10 @@ const ResponsiveDrawer = ({
       </List>
     </div>
   );
+
+  if (showInvites === true) {
+    return <Invites />;
+  }
 
   const container = window !== undefined ? () => window().document.body : undefined;
   return (
@@ -171,7 +177,11 @@ const ResponsiveDrawer = ({
           src={currentUser.profile_pic}
           className={classes.large}
         />
-        <Typography>Hi, {currentUser.first_name}!</Typography>
+        <Typography>
+          Hi,
+          {currentUser.first_name}
+          !
+        </Typography>
         <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
         <PlanATrip
           clickPlan={clickPlan}

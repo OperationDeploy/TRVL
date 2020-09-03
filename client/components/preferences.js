@@ -104,6 +104,7 @@ const ContinuousSlider = ({ currentUser }) => {
     setButtonClicked(true);
   };
 
+
   if (buttonClicked) {
     return <SelectPlaces trip={trip} currentUser={currentUser} />;
   }

@@ -16,6 +16,8 @@ const UserTrips = () => {
     setitiernaryClicked(true);
   };
 
+  use
+
   if (itiernaryClicked) {
     return <Itinerary />;
   } else {

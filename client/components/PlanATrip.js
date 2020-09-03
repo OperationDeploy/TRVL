@@ -17,6 +17,14 @@ const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, currentId }) => {
       >
         Plan A Trip
       </Button>
+      <Button
+        variant="contained"
+        onClick={() => {
+          console.log('OFIFF');
+        }}
+      >
+        Invite Users
+      </Button>
     </div>
   );
 };

@@ -11,6 +11,7 @@ const {
   grabPreferences,
   setDest,
   getOtherUsers,
+  enterProposal,
 } = require('./queries.js');
 
 const app = express();
@@ -53,6 +54,11 @@ app.post('/grabPlaces', (req, res) => {
 
 app.post('/setDest', (req, res) => {
   setDest(req, res);
+});
+
+app.post('/proposals', (req, res) => {
+  console.log('REQ BODY', req.body);
+  enterProposal(req.body, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

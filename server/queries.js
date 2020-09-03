@@ -75,6 +75,17 @@ const getOtherUsers = async (req, res) => {
   res.send(inviteThem);
 };
 
+const enterProposal = async (req, res) => {
+  console.log('REQ', req);
+  // await TripProposal.findOne({ where: { trip_id: req.trip} }).then((obj) => {
+  //   if (obj) {
+  //     obj.update(req);
+  //   } else {
+  //     TripProposal.create(req);
+  //   }
+  // });
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -82,5 +93,6 @@ module.exports = {
   planTrip,
   grabPreferences,
   setDest,
+  enterProposal,
   getOtherUsers,
 };

@@ -38,7 +38,7 @@ class App extends Component {
         console.log('RESPONSE!', response);
         this.setState({
           otherUsers: response.data,
-        })
+        });
       })
       .catch((err) => console.log('ERRR', err));
   }
