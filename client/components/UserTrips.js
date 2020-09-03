@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
 import { userTripsData } from '../dummyData/userTripsData';
 import Itinerary from './Itinerary';
 import Purchases from './Purchases';
+import Photos from './Photos';
 
 const UserTrips = ({ currentUser, currentTrip }) => {
   const [clicked, setClicked] = useState('');
@@ -19,10 +20,10 @@ const UserTrips = ({ currentUser, currentTrip }) => {
   switch (clicked) {
     case 'itinerary':
       return <Itinerary />;
-      break;
     case 'purchases':
       return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
-      break;
+    case 'photos':
+      return <Photos currentUser={currentUser} currentTrip={currentTrip} />
     default:
   }
 
@@ -38,14 +39,25 @@ const UserTrips = ({ currentUser, currentTrip }) => {
         <List>
           <ListItem>
             <ListItemText>{ data.tripName}</ListItemText>
+          </ListItem>
+          <ListItem>
             <ListItemSecondaryAction>
               <Button onClick={() => setClicked('itinerary')} color="primary">
                 Trip Itinerary
               </Button>
             </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
             <ListItemSecondaryAction>
               <Button onClick={() => setClicked('purchases')} color="primary">
                 Purchases
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button onClick={() => setClicked('photos')} color="primary">
+                Photos
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
