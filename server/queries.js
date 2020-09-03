@@ -60,8 +60,12 @@ const planTrip = async (req, res) => {
   res.send(trip);
 };
 
-const setDest = async (req, res) => {
-  const dest = await Trip.update({}, req);
+const setDest = (req, res) => {
+  Trip.findOne({ where: { id: req.body.trip_id } }).then((obj) => {
+    if (obj) {
+      obj.update({ destination: req.body.destination });
+    }
+  });
 };
 
 module.exports = {

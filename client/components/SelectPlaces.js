@@ -17,9 +17,8 @@ const SelectPlaces = ({ currentUser, trip }) => {
       });
   }, []);
 
+  //updates destination on trips table onclick
   const handleClick = (event) => {
-    // sends update to Trips table by updating dest of trip
-    console.log('EVENT', event);
     axios.post('./setDest', { destination: event, trip_id: trip }, (req, res) => {
     });
   };
