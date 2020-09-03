@@ -9,6 +9,7 @@ const {
   addPreferences,
   planTrip,
   grabPreferences,
+  setDest,
 } = require('./queries.js');
 
 const app = express();
@@ -46,8 +47,13 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/grabPlaces', (req, res) => {
-  console.log(req);
+  // console.log(req);
   grabPreferences(req, res);
+});
+
+app.post('/setDest', (req, res) => {
+  console.log(req);
+  // setDest(req, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

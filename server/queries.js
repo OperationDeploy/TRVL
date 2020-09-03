@@ -60,10 +60,15 @@ const planTrip = async (req, res) => {
   res.send(trip);
 };
 
+const setDest = async (req, res) => {
+  const dest = await Trip.update({}, req);
+};
+
 module.exports = {
   createUser,
   addDestinations,
   addPreferences,
   planTrip,
   grabPreferences,
+  setDest,
 };
