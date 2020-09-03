@@ -17,6 +17,7 @@ class App extends Component {
       clickPlan: false,
       clickTrips: false,
       currentUser: '',
+      otherUsers: [],
     };
 
     this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
@@ -25,34 +26,26 @@ class App extends Component {
   }
 
   onClickPlanTrip() {
+    const { currentUser } = this.state;
     this.setState({ clickPlan: !this.state.clickPlan });
+    //axios to get the current users who aren't users
+    axios.get('/inviteUsers', {
+      params: {
+        currentUser: currentUser.googleId,
+      },
+    })
+      .then((response) => {
+        console.log('RESPONSE!', response);
+        this.setState({
+          otherUsers: response.data,
+        })
+      })
+      .catch((err) => console.log('ERRR', err));
   }
 
   onClickGetTrips() {
     this.setState({ clickTrips: !this.state.clickTrips });
   }
-
-  // componentDidMount() {
-  //   // established axios connection to backend
-  //   // GET
-  //   axios
-  //     .get('/get')
-  //     .then((res) => console.log('Response data:', res))
-  //     .catch((err) => console.error(err));
-
-  //   // POST
-  //   axios
-  //     .post('/post', {
-  //       first_name: 'Josh',
-  //       last_name: 'Nunez',
-  //       email: 'joshjnunez09@gmail.com',
-  //       profile_pic:
-  //         'https://ca.slack-edge.com/T02P3HQD6-URPNXJK3R-3bab56848cef-512',
-  //       host: false,
-  //     })
-  //     .then((res) => console.log('POSTED:', res))
-  //     .catch((err) => console.error(err));
-  // }
 
   responseGoogle(response) {
     console.log('google response:', response);

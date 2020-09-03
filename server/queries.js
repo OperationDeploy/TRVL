@@ -1,4 +1,5 @@
 require('dotenv').config();
+const { Op } = require("sequelize");
 
 const {
   User,
@@ -68,6 +69,12 @@ const setDest = (req, res) => {
   });
 };
 
+// Gets the users from the db who are not the current user
+const getOtherUsers = async (req, res) => {
+  const inviteThem = await User.findAll({ where: { [Op.not]: [{ googleId: req.currentUser }] } });
+  res.send(inviteThem);
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -75,4 +82,5 @@ module.exports = {
   planTrip,
   grabPreferences,
   setDest,
+  getOtherUsers,
 };

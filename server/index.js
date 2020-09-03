@@ -10,6 +10,7 @@ const {
   planTrip,
   grabPreferences,
   setDest,
+  getOtherUsers,
 } = require('./queries.js');
 
 const app = express();
@@ -23,8 +24,10 @@ app.use(bodyParser.json());
 
 // established axios connection to front end
 // GET
-app.get('/get', (req, res) => {
-  res.send('HELLO WORLD');
+
+// gets the users who aren't the current user from the db
+app.get('/inviteUsers', (req, res) => {
+  getOtherUsers(req.query, res);
 });
 
 // POST
