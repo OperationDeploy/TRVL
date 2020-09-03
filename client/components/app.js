@@ -53,7 +53,7 @@ class App extends Component {
   //     .then((res) => console.log('POSTED:', res))
   //     .catch((err) => console.error(err));
   // }
-
+//husky
   responseGoogle(response) {
     console.log('google response:', response);
     const {
