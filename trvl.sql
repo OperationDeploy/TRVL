@@ -22,6 +22,7 @@ CREATE TABLE "Trips" (
   "destination" TEXT,
   "start_date" date,
   "end_date" date,
+  "googleId" TEXT,
   "createdAt" time,
   "updatedAt" time
 );
@@ -105,6 +106,8 @@ CREATE TABLE "Destinations" (
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
+
+ALTER TABLE "Trips" ADD FOREIGN KEY ("googleId") REFERENCES "Users" ("id");
 
 ALTER TABLE "TripPreferences" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
