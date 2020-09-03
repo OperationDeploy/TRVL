@@ -25,13 +25,15 @@ const ActivityForm = ({ saveActivity }) => {
           }}
           margin="normal"
         />
-      <IconButton>
-        <AddIcon onClick={(event) => {
-          event.preventDefault();
-          saveActivity(value);
-          setValue('');
-        }}/>
-      </IconButton>
+        <IconButton>
+          <AddIcon
+            onClick={(event) => {
+              event.preventDefault();
+              saveActivity(value);
+              setValue('');
+            }}
+          />
+        </IconButton>
       </form>
     </div>
   );
