@@ -56,20 +56,27 @@ class App extends Component {
 
   responseGoogle(response) {
     console.log('google response:', response);
-    const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
-    axios.post('/login', {
-      first_name: givenName,
-      last_name: familyName,
+    const {
+      givenName,
+      familyName,
       email,
-      profile_pic: imageUrl,
-      host: false,
+      imageUrl,
       googleId,
-    })
+    } = response.profileObj;
+    axios
+      .post('/login', {
+        first_name: givenName,
+        last_name: familyName,
+        email,
+        profile_pic: imageUrl,
+        host: false,
+        googleId,
+      })
       .then((res) => {
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
-        })
+        });
       })
       .catch((err) => console.error(err));
   }
@@ -90,6 +97,7 @@ class App extends Component {
           />
         </div>
       );
+      //test husky
     }
     return (
       <div>

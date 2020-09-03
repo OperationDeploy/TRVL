@@ -10,12 +10,12 @@
     "lint": "eslint . --ext .json --ext .js --ext .jsx --ext .md",
     "lint:fix": "eslint --fix . --ext .json --ext .js --ext .jsx --ext .md",
     "pretest": "npm run lint",
-    "test": "echo \"No tests\""
+    "test": "cross-env CI=true react-scripts test --env=jsdom"
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint",
-      "pre-push": "npm test",
+      "pre-commit": "npm run lint && npm test",
+      "pre-push": "npm run lint && npm test",
       "...": "..."
     }
   },
@@ -61,6 +61,7 @@
     "@babel/preset-env": "^7.11.0",
     "@babel/preset-react": "^7.10.4",
     "babel-loader": "^8.1.0",
+    "cross-env": "^7.0.2",
     "css-loader": "^4.2.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.2.0",
