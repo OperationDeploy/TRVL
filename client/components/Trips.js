@@ -12,7 +12,6 @@ const Trips = ({ clickTrips, onClickGetTrips, currentUser }) => {
     <div>
       <Button variant="contained" onClick={() => { onClickGetTrips(); }}>Trips</Button>
     </div>
-
   );
 };
 

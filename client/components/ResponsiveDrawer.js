@@ -170,7 +170,7 @@ const ResponsiveDrawer = ({
           src={currentUser.profile_pic}
           className={classes.large}
         />
-        <Typography>{`Hi ${currentUser.first_name}, where to?`}</Typography>
+        <Typography>{`Hi ${currentUser.first_name}!`}</Typography>
         <Trips
           clickTrips={clickTrips}
           onClickGetTrips={onClickGetTrips}
