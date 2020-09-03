@@ -24,16 +24,20 @@ const createUser = async (req, res) => {
 
 // get user trips
 const getUserTrips = async (id) => {
-  const userTrips = await TripUser.findAll({
+  const userPrefs = await TripPreferences.findAll({
     where: {
       user_id: id,
     },
-  });
-  if(userTrips === null) {
-    console.log("errrrrrr", userTrips);
-  } else {
-    console.log("success!!", userTrips);
-  }
+  })
+    .then((data) => { 
+      console.log("success!", data.get({ plain: true }));
+      const userTrips = Trip.findAll({
+        // where: {
+        //   id: data[dataValues][trip_id]
+        // }
+      });
+    })
+    .catch(() => {console.error("ERORRRRRRRR")});
 };
 
 // destinations - dummy data
