@@ -1,19 +1,7 @@
 require('dotenv').config();
 const { Op } = require("sequelize");
 
-const {
-  User,
-  Trip,
-  TripUser,
-  TripPreferences,
-  TripPhoto,
-  TripProposal,
-  TripItinerary,
-  TripProposalVotes,
-  Destinations,
-  SplitItem,
-  SplitOwedPayment
-} = require('./db.js');
+const { User, Trip, TripPreferences, Destinations, SplitItem, SplitOwedPayment } = require('./db.js');
 
 const { generatePlaces } = require('./algo.js');
 // create a user
@@ -35,7 +23,7 @@ const addDestinations = () => {
 
 // add preferences
 // need to come back and find where trip_id is = correct trip_id
-const addPreferences = (req, res) => {
+const addPreferences = (req) => {
   TripPreferences.findOne({ where: { user_id: req.user_id } }).then((obj) => {
     if (obj) {
       obj.update(req);
@@ -104,7 +92,7 @@ const planTrip = async (req, res) => {
   res.send(trip);
 };
 
-const setDest = (req, res) => {
+const setDest = (req) => {
   Trip.findOne({ where: { id: req.body.trip_id } }).then((obj) => {
     if (obj) {
       obj.update({ destination: req.body.destination });

@@ -102,32 +102,7 @@ const generatePlaces = (object) => {
     },
   ];
 
-  const userPrefObj1 = {
-    id: 1,
-    user_id: 1,
-    trip_id: 1,
-    temperature: 100,
-    city_expenses: 50,
-    landscape: 75,
-    proximity: 100,
-    city_type: 25,
-    group_age: 20,
-    group_relationship: 10,
-  };
-
-  const userPrefObj2 = {
-    id: 1,
-    user_id: 1,
-    trip_id: 1,
-    temperature: 0,
-    city_expenses: 80,
-    landscape: 35,
-    proximity: 10,
-    city_type: 100,
-    group_age: 0,
-    group_relationship: 100,
-  };
-  let resultArray = [];
+  const resultArray = [];
 
   const userTemp = object.temperature;
   const userCityExpenses = object.city_expenses;
@@ -138,26 +113,24 @@ const generatePlaces = (object) => {
   const userGroupRelationship = object.group_relationship;
 
   citiesArray.forEach((place) => {
-    let finalScore;
+    const tempScore = Math.abs(place.temperature - userTemp);
 
-    let tempScore = Math.abs(place.temperature - userTemp);
+    const cityExpensesScore = Math.abs(place.city_expenses - userCityExpenses);
 
-    let cityExpensesScore = Math.abs(place.city_expenses - userCityExpenses);
+    const landscapeScore = Math.abs(place.landscape - userLandscape);
 
-    let landscapeScore = Math.abs(place.landscape - userLandscape);
+    const cityTypeScore = Math.abs(place.city_type - userCityType);
 
-    let cityTypeScore = Math.abs(place.city_type - userCityType);
+    const proximityScore = Math.abs(place.proximity - userProximity);
 
-    let proximityScore = Math.abs(place.proximity - userProximity);
+    const groupAgeScore = Math.abs(place.group_age - userGroupAge);
 
-    let groupAgeScore = Math.abs(place.group_age - userGroupAge);
-
-    let groupRelationshipScore = Math.abs(
-      place.group_relationship - userGroupRelationship
+    const groupRelationshipScore = Math.abs(
+      place.group_relationship - userGroupRelationship,
     );
 
     // // add up score
-    finalScore =
+    const finalScore =
       tempScore +
       cityExpensesScore +
       landscapeScore +
@@ -169,9 +142,7 @@ const generatePlaces = (object) => {
     resultArray.push({ city: place.city, score: finalScore });
   });
 
-  let sorted = resultArray.sort((a, b) => {
-    return a.score - b.score;
-  });
+  const sorted = resultArray.sort((a, b) => a.score - b.score);
 
   return [sorted[0].city, sorted[1].city, sorted[2].city];
 };

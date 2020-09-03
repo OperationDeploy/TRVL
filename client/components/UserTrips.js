@@ -76,8 +76,6 @@ const UserTrips = ({ currentUser, currentTrip }) => {
   );
 };
 
-UserTrips.propTypes = {
-  getItinerary: PropTypes.func.isRequired,
-};
+UserTrips.propTypes = PropTypes;
 
 export default UserTrips;

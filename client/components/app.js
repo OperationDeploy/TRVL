@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
+import GoogleLogin from 'react-google-login';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import Itinerary from './Itinerary';
-import GoogleLogin from 'react-google-login';
 // import { OAUTH_CLIENT_ID } from '../../config.js';
 
 class App extends Component {
@@ -26,53 +24,32 @@ class App extends Component {
   }
 
   onClickPlanTrip() {
-    this.setState({ clickPlan: !this.state.clickPlan });
+    this.setState((prevState) => ({ clickPlan: !prevState.clickPlan }));
   }
 
   onClickGetTrips() {
-    this.setState({ clickTrips: !this.state.clickTrips });
+    this.setState((prevState) => ({ clickTrips: !prevState.clickTrips }));
   }
 
-  // componentDidMount() {
-  //   // established axios connection to backend
-  //   // GET
-  //   axios
-  //     .get('/get')
-  //     .then((res) => console.log('Response data:', res))
-  //     .catch((err) => console.error(err));
-
-  //   // POST
-  //   axios
-  //     .post('/post', {
-  //       first_name: 'Josh',
-  //       last_name: 'Nunez',
-  //       email: 'joshjnunez09@gmail.com',
-  //       profile_pic:
-  //         'https://ca.slack-edge.com/T02P3HQD6-URPNXJK3R-3bab56848cef-512',
-  //       host: false,
-  //     })
-  //     .then((res) => console.log('POSTED:', res))
-  //     .catch((err) => console.error(err));
-  // }
-
   responseGoogle(response) {
-    console.log('google response:', response);
     const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
-    axios.post('/login', {
-      first_name: givenName,
-      last_name: familyName,
-      email,
-      profile_pic: imageUrl,
-      host: false,
-      googleId,
-    })
+
+    axios
+      .post('/login', {
+        first_name: givenName,
+        last_name: familyName,
+        email,
+        profile_pic: imageUrl,
+        host: false,
+        googleId,
+      })
       .then((res) => {
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
-        })
+        });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.warn(err));
   }
 
   render() {
@@ -87,7 +64,7 @@ class App extends Component {
             buttonText="Login with Google"
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogle}
-            cookiePolicy={'single_host_origin'}
+            cookiePolicy="single_host_origin"
           />
         </div>
       );
