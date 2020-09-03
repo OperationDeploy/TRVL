@@ -15,9 +15,9 @@ const {
   SplitOwedPayment
 } = require('./db.js');
 
+const { generatePlaces } = require('./algo.js');
 // create a user
 const createUser = async (req, res) => {
-  console.log('Data from post:', req.body);
   let user = await User.findOne({ where: { googleId: req.body.googleId } });
   if (user === null) {
     user = await User.create(req.body);
@@ -86,10 +86,39 @@ const getSplit = async ({ trip, user }, res) => {
   response.debts = debts;
   res.send(response);
 }
+// grab preferences
+const grabPreferences = async (req, res) => {
+  // console.log(req);
+  const tripPrefs = await TripPreferences.findAll({
+    where: { trip_id: req.body.trip_id },
+  });
+
+  // console.log('trip pref', tripPrefs[0].dataValues);
+  const prefObj = tripPrefs[0].dataValues;
+  res.send(generatePlaces(prefObj));
+};
+
+// add planned trip
+const planTrip = async (req, res) => {
+  const trip = await Trip.create(req);
+  res.send(trip);
+};
+
+const setDest = (req, res) => {
+  Trip.findOne({ where: { id: req.body.trip_id } }).then((obj) => {
+    if (obj) {
+      obj.update({ destination: req.body.destination });
+    }
+  });
+};
+
 module.exports = {
   createUser,
   addDestinations,
   addPreferences,
   addSplit,
-  getSplit
+  getSplit,
+  planTrip,
+  grabPreferences,
+  setDest,
 };

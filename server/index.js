@@ -4,7 +4,15 @@ const express = require('express');
 const path = require('path'); // NEW
 const bodyParser = require('body-parser');
 
-const { createUser, addPreferences, getSplit, addSplit } = require('./queries.js');
+const {
+  createUser,
+  addPreferences,
+  planTrip,
+  grabPreferences,
+  setDest,
+  getSplit, 
+  addSplit
+} = require('./queries.js');
 
 const app = express();
 const { PORT } = process.env;
@@ -25,8 +33,12 @@ app.get('/get', (req, res) => {
 
 // add preferences
 app.post('/preferences', (req, res) => {
-  console.log('preffff req body', req.body);
   addPreferences(req.body, res);
+});
+
+// plan a trip
+app.post('/trips', (req, res) => {
+  planTrip(req.body, res);
 });
 
 // add user
@@ -41,6 +53,13 @@ app.post('/split', (req, res) => {
 app.get('/split/:trip/:user', (req, res) => {
   getSplit(req.params, res);
 })
+app.post('/grabPlaces', (req, res) => {
+  grabPreferences(req, res);
+});
+
+app.post('/setDest', (req, res) => {
+  setDest(req, res);
+});
 
 app.use(express.static(DIST_DIR)); // NEW
 
