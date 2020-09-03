@@ -1,7 +1,7 @@
 require('dotenv').config();
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 
-const { User, Trip, TripPreferences, Destinations, SplitItem, SplitOwedPayment } = require('./db.js');
+const { User, Trip, TripUser, TripPreferences, Destinations, SplitItem, SplitOwedPayment } = require('./db.js');
 
 const { generatePlaces } = require('./algo.js');
 // create a user
@@ -34,46 +34,51 @@ const addPreferences = (req) => {
 };
 
 const addSplit = async (req, res) => {
-  const {
-    purchaser_id, price, trip_id,
-  } = req;
+  const purchaserId = req.purchaser_id;
+  const tripId = req.trip_id;
+  const { price } = req;
   const item = await SplitItem.create(req);
-  let users = await TripUser.findAll({ where: { trip_id, user_id: { [Op.ne]: purchaser_id } }, raw: true });
+  let users = await TripUser.findAll(
+    { where: { trip_id: tripId, user_id: { [Op.ne]: purchaserId } }, raw: true },
+  );
   const amount = price / (users.length + 1);
   const userObjs = users.map((user) => ({
-    ower_id: user.user_id, recipient_id: purchaser_id, amount, trip_id, item_id: item.id,
+    ower_id: user.user_id, recipient_id: purchaserId, amount, trip_id: tripId, item_id: item.id,
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
   users = users.map((user) => User.findByPk(user.user_id, { raw: true }));
-  await Promise.all(users).then((result) => { users = result });
-  res.send(userObjs.map((user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount })));
+  await Promise.all(users).then((result) => { users = result; });
+  res.send(userObjs.map(
+    (user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount }),
+  ));
   // console.log('the item', item.id);
 };
 
 const getSplit = async ({ trip, user }, res) => {
   // let payments = SplitOwedPayment.findAll({ where: { trip_id } });
   const response = {};
-  const trip_id = trip;
-  const recipient_id = user;
-  let items = await SplitItem.findAll({ where: { trip_id }, raw: true });
+  let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
   let users = items.map((item) => User.findByPk(item.purchaser_id, { raw: true }));
-  await Promise.all(users).then((result) => { users = result });
+  await Promise.all(users).then((result) => { users = result; });
   items = items.map((item, i) => {
-    item.purchaser = users[i].first_name;
-    return item;
-  })
-  const payments = await SplitOwedPayment.findAll({ where: { trip_id, recipient_id }, raw: true });
+    const newItem = item;
+    newItem.purchaser = users[i].first_name;
+    return newItem;
+  });
+  const payments = await SplitOwedPayment.findAll(
+    { where: { trip_id: trip, recipient_id: user }, raw: true },
+  );
   users = payments.map((payment) => User.findByPk(payment.ower_id, { raw: true }));
-  await Promise.all(users).then((result) => { users = result });
+  await Promise.all(users).then((result) => { users = result; });
   const debts = {};
   payments.forEach((payment, i) => {
-    const name = `${users[i].first_name} ${users[i].last_name}`
+    const name = `${users[i].first_name} ${users[i].last_name}`;
     debts[name] = debts[name] ? debts[name] + payment.amount : payment.amount;
-  })
+  });
   response.items = items;
   response.debts = debts;
   res.send(response);
-}
+};
 // grab preferences
 const grabPreferences = async (req, res) => {
   // console.log(req);

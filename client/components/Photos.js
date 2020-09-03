@@ -1,29 +1,36 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
-const Photos = ({ currentUser, currentTrip }) => {
-  const [file, setFile] = useState(null);
-  // useEffect(() => {
+const Photos = ({ currentTrip }) => {
+  // const [file, setFile] = useState(null);
+  // const [photos, setPhotos] = useState([]);
 
-  // }, []);
+  useEffect(() => {
+    axios.get(`/photos/${currentTrip.id}`)
+      .then(() => {
+        // currentUser
+        // setPhotos(data);
+      });
+  }, []);
 
   const fileUpload = (photo) => {
     const data = new FormData();
     data.append('file', photo);
     axios.post('/photos', data)
-      .then((res) => { // then print response status
-        console.log(res.data);
+      .then(() => {
+        // console.log(res.data);
       });
   };
-  
+
   const fileSelectHandler = (e) => {
-    setFile(e.target.files[0]);
+    // setFile(e.target.files[0]);
     fileUpload(e.target.files[0]);
   };
 
-  const selected = file ? file.name : '';
+  // const selected = file ? file.name : '';
 
   return (
     <div>
@@ -47,6 +54,11 @@ const Photos = ({ currentUser, currentTrip }) => {
       </div> */}
     </div>
   );
+};
+
+Photos.propTypes = {
+  currentTrip: PropTypes.objectOf.isRequired,
+  // currentUser: PropTypes.objectOf.isRequired,
 };
 
 export default Photos;

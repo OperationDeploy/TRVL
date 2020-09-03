@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import PurchasesForm from './PurchasesForm';
 import PurchasesList from './PurchasesList';
@@ -12,9 +13,8 @@ const Purchases = ({ currentUser, currentTrip }) => {
   useEffect(() => {
     axios.get(`/split/${currentTrip.id}/${currentUser.id}`)
       .then(({ data }) => {
-        const { items, debts } = data;
-        setPurchases(items.map((item) => `${item.description}: $${item.price} (${item.purchaser})`));
-        setDebts(debts);
+        setPurchases(data.items.map((item) => `${item.description}: $${item.price} (${item.purchaser})`));
+        setDebts(data.debts);
       });
   }, []);
   return (
@@ -33,10 +33,10 @@ const Purchases = ({ currentUser, currentTrip }) => {
               .then(({ data }) => {
                 if (Array.isArray(data)) {
                   data.forEach((payment) => {
-                    const name = `${payment.first_name} ${payment.last_name}`
+                    const name = `${payment.first_name} ${payment.last_name}`;
                     debts[name] = debts[name] ? debts[name] + payment.amount : payment.amount;
-                  })
-                  setDebts((debts) => debts);
+                  });
+                  setDebts(debts);
                   setPurchases([...purchases, text]);
                 }
               });
@@ -58,6 +58,11 @@ const Purchases = ({ currentUser, currentTrip }) => {
       />
     </div>
   );
+};
+
+Purchases.propTypes = {
+  currentTrip: PropTypes.objectOf.isRequired,
+  currentUser: PropTypes.objectOf.isRequired,
 };
 
 export default Purchases;

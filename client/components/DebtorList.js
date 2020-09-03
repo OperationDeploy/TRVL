@@ -1,14 +1,11 @@
 import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 
 const DebtorList = ({ debts }) => {
-  const debtViews = Object.keys(debts).map((name) => `${name}: ${debts[name]}`)
+  const debtViews = Object.keys(debts).map((name) => `${name}: ${debts[name]}`);
   if (debtViews.length) {
     return (
       <List>
@@ -23,11 +20,14 @@ const DebtorList = ({ debts }) => {
   return (
     <List>
       <ListItem dense button>
-        <ListItemText primary={'No one yet.'} />
+        <ListItemText primary="No one yet." />
       </ListItem>
   </List>
-  )
-}
-  
+  );
+};
+
+DebtorList.propTypes = {
+  debts: PropTypes.arrayOf.isRequired,
+};
 
 export default DebtorList;

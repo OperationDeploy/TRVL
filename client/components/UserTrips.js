@@ -14,28 +14,22 @@ import Photos from './Photos';
 const UserTrips = ({ currentUser, currentTrip }) => {
   const [clicked, setClicked] = useState('');
 
-  // const render = () => {
-  //   setitiernaryClicked(true);
-  // };
   switch (clicked) {
     case 'itinerary':
       return <Itinerary />;
     case 'purchases':
       return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
     case 'photos':
-      return <Photos currentUser={currentUser} currentTrip={currentTrip} />
+      return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
     default:
   }
 
-  // if (itiernaryClicked) {
-  //   return <Itinerary />;
-  // }
   return (
     <div>
       <Typography variant="h1">
         Trips
       </Typography>
-      {userTripsData.map((data, index) => (
+      {userTripsData.map((data) => (
         <List>
           <ListItem>
             <ListItemText>{ data.tripName}</ListItemText>

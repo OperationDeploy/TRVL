@@ -51,4 +51,8 @@ const PurchasesForm = ({ savePurchase }) => {
   );
 };
 
+PurchasesForm.propTypes = {
+  savePurchase: PropTypes.func.isRequired,
+};
+
 export default PurchasesForm;

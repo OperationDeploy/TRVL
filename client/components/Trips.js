@@ -24,6 +24,8 @@ const Trips = ({ clickTrips, onClickGetTrips, currentUser, currentTrip }) => {
 Trips.propTypes = {
   clickTrips: PropTypes.bool.isRequired,
   onClickGetTrips: PropTypes.func.isRequired,
+  currentTrip: PropTypes.objectOf.isRequired,
+  currentUser: PropTypes.objectOf.isRequired,
 };
 
 export default Trips;

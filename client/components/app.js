@@ -15,7 +15,7 @@ class App extends Component {
       clickPlan: false,
       clickTrips: false,
       currentUser: '',
-      currentTrip: { id: 2 }
+      currentTrip: { id: 2 },
     };
 
     this.onClickPlanTrip = this.onClickPlanTrip.bind(this);

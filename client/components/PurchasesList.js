@@ -27,4 +27,9 @@ const PurchasesList = ({ purchases, deletePurchase }) => (
   </List>
 );
 
+PurchasesList.propTypes = {
+  purchases: PropTypes.arrayOf.isRequired,
+  deletePurchase: PropTypes.func.isRequired,
+};
+
 export default PurchasesList;

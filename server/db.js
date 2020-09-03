@@ -208,7 +208,7 @@ const SplitItem = sequelize.define('SplitItem', {
   purchaser_id: Sequelize.INTEGER,
   description: Sequelize.TEXT,
   price: Sequelize.FLOAT,
-  trip_id: Sequelize.INTEGER
+  trip_id: Sequelize.INTEGER,
 });
 
 const SplitOwedPayment = sequelize.define('SplitOwedPayment', {
@@ -216,7 +216,7 @@ const SplitOwedPayment = sequelize.define('SplitOwedPayment', {
   recipient_id: Sequelize.INTEGER,
   amount: Sequelize.FLOAT,
   trip_id: Sequelize.INTEGER,
-  item_id: Sequelize.INTEGER
+  item_id: Sequelize.INTEGER,
 });
 
 module.exports = {
