@@ -1,3 +1,7 @@
+# TODO:
+
+- no need for .eslintr and .eslintrc.js pick one
+
 # thesis-travel-app
 
 # TRVL
