@@ -5,13 +5,12 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const Photos = ({ currentTrip }) => {
-  // const [file, setFile] = useState(null);
+  // TODO: CONNECT PHOTOS TO DB
   // const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
     axios.get(`/photos/${currentTrip.id}`)
       .then(() => {
-        // currentUser
         // setPhotos(data);
       });
   }, []);
@@ -20,17 +19,14 @@ const Photos = ({ currentTrip }) => {
     const data = new FormData();
     data.append('file', photo);
     axios.post('/photos', data)
-      .then(() => {
-        // console.log(res.data);
+      .then((res) => {
+        console.info(res.data);
       });
   };
 
   const fileSelectHandler = (e) => {
-    // setFile(e.target.files[0]);
     fileUpload(e.target.files[0]);
   };
-
-  // const selected = file ? file.name : '';
 
   return (
     <div>
@@ -48,17 +44,12 @@ const Photos = ({ currentTrip }) => {
           onChange={fileSelectHandler}
         />
       </Button>
-      {/* {selected}
-      <div>
-      <Button onClick={fileUpload} color="primary">Upload</Button>
-      </div> */}
     </div>
   );
 };
 
 Photos.propTypes = {
   currentTrip: PropTypes.objectOf.isRequired,
-  // currentUser: PropTypes.objectOf.isRequired,
 };
 
 export default Photos;
