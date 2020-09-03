@@ -1,7 +1,9 @@
 const xlsxFile = require('read-excel-file/node');
-const { Destinations } = require('./server/db');
+const {
+  Destinations, Trip, TripUser, User,
+} = require('./server/db');
 
-xlsxFile('./travelapp_spreadsheet.xlsx')
+xlsxFile('./users.xlsx')
   .then(async (rows) => {
     const columnNames = rows.shift();
     const promises = rows.map((row) => {
@@ -9,7 +11,31 @@ xlsxFile('./travelapp_spreadsheet.xlsx')
       row.forEach((cell, i) => {
         obj[columnNames[i]] = cell;
       });
-      return Destinations.create(obj);
+      return User.create(obj);
     });
     await Promise.all(promises);
+    xlsxFile('./trips.xlsx')
+      .then(async (rows) => {
+        const columnNames = rows.shift();
+        const promises = rows.map((row) => {
+          const obj = {};
+          row.forEach((cell, i) => {
+            obj[columnNames[i]] = cell;
+          });
+          return Trip.create(obj);
+        });
+        await Promise.all(promises);
+        xlsxFile('./tripuser.xlsx')
+          .then(async (rows) => {
+            const columnNames = rows.shift();
+            const promises = rows.map((row) => {
+              const obj = {};
+              row.forEach((cell, i) => {
+                obj[columnNames[i]] = cell;
+              });
+              return TripUser.create(obj);
+            });
+            await Promise.all(promises);
+          });
+      });
   });
