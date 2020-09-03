@@ -52,10 +52,13 @@ const addSplit = async (req, res) => {
   const item = await SplitItem.create(req);
   let users = await TripUser.findAll({ where: { trip_id, user_id: { [Op.ne]: purchaser_id } }, raw: true });
   const amount = price / (users.length + 1);
-  users.map((user) => SplitOwedPayment.create({
+  const userObjs = users.map((user) => ({
     ower_id: user.user_id, recipient_id: purchaser_id, amount, trip_id, item_id: item.id,
   }));
-  // await Promise.all(users)
+  await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
+  users = users.map((user) => User.findByPk(user.user_id, { raw: true }));
+  await Promise.all(users).then((result) => { users = result });
+  res.send(userObjs.map((user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount })));
   // console.log('the item', item.id);
 };
 

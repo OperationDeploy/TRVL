@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 import PurchasesForm from './PurchasesForm';
 import PurchasesList from './PurchasesList';
 import DebtorList from './DebtorList';
-import axios from 'axios';
 
 const Purchases = ({ currentUser, currentTrip }) => {
   const [purchases, setPurchases] = useState([]);
@@ -14,7 +14,7 @@ const Purchases = ({ currentUser, currentTrip }) => {
       .then(({ data }) => {
         const { items, debts } = data;
         setPurchases(items.map((item) => `${item.description}: $${item.price} (${item.purchaser})`));
-        setDebts(Object.keys(debts).map((name) => `${name}: ${debts[name]}`));
+        setDebts(debts);
       });
   }, []);
   return (
@@ -22,13 +22,24 @@ const Purchases = ({ currentUser, currentTrip }) => {
       <Typography component="h1" variant="h2">
         Purchases
       </Typography>
-  
+
       <PurchasesForm
         savePurchase={({ description, price }) => {
           const text = `${description}: $${price}`;
           if (text.length > 0) {
-            axios.post('/split', { purchaser_id: currentUser.id, trip_id: currentTrip.id, description, price })
-            setPurchases([...purchases, text]);
+            axios.post('/split', {
+              purchaser_id: currentUser.id, trip_id: currentTrip.id, description, price,
+            })
+              .then(({ data }) => {
+                if (Array.isArray(data)) {
+                  data.forEach((payment) => {
+                    const name = `${payment.first_name} ${payment.last_name}`
+                    debts[name] = debts[name] ? debts[name] + payment.amount : payment.amount;
+                  })
+                  setDebts((debts) => debts);
+                  setPurchases([...purchases, text]);
+                }
+              });
           }
         }}
       />
@@ -47,6 +58,6 @@ const Purchases = ({ currentUser, currentTrip }) => {
       />
     </div>
   );
-}
+};
 
 export default Purchases;

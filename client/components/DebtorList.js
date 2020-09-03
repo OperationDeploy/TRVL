@@ -7,24 +7,27 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 
-const DebtorList = ({ debts }) => (
-  <List>
-    {debts.map((debt, index) => (
-      <ListItem key={index.toString()} dense button>
-        <ListItemText primary={debt} />
-        {/* <ListItemSecondaryAction>
-          <IconButton
-            aria-label="Delete"
-            onClick={() => {
-              deletePurchase(index);
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </ListItemSecondaryAction> */}
+const DebtorList = ({ debts }) => {
+  const debtViews = Object.keys(debts).map((name) => `${name}: ${debts[name]}`)
+  if (debtViews.length) {
+    return (
+      <List>
+        {debtViews.map((debt, index) => (
+          <ListItem key={index.toString()} dense button>
+            <ListItemText primary={debt} />
+          </ListItem>
+        ))}
+      </List>
+    );
+  }
+  return (
+    <List>
+      <ListItem dense button>
+        <ListItemText primary={'No one yet.'} />
       </ListItem>
-    ))}
   </List>
-);
+  )
+}
+  
 
 export default DebtorList;
