@@ -3,9 +3,9 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Preferences from './preferences';
 
-const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, currentId }) => {
+const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser }) => {
   if (clickPlan) {
-    return <Preferences currentUser={currentUser} currentId={currentId} />;
+    return <Preferences currentUser={currentUser} />;
   }
 
   return (
@@ -25,7 +25,6 @@ const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, currentId }) => {
 PlanATrip.propTypes = {
   clickPlan: PropTypes.bool.isRequired,
   onClickPlanTrip: PropTypes.func.isRequired,
-  currentId: PropTypes.number.isRequired,
   currentUser: PropTypes.shape({
     first_name: PropTypes.string,
     last_name: PropTypes.string,

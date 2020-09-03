@@ -28,7 +28,7 @@ const SelectPlaces = ({ trip }) => {
       <header>Here are Your Places:</header>
       <ul>
         {places.map((dest) => (
-          <button type="submit" onClick={() => handleClick(dest)}>
+          <button type="submit" key={dest} onClick={() => handleClick(dest)}>
             {dest}
           </button>
         ))}
