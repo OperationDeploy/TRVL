@@ -4,8 +4,13 @@ const express = require('express');
 const path = require('path'); // NEW
 const bodyParser = require('body-parser');
 
-const { createUser, addPreferences, planTrip, getUserTrips } = require('./queries.js');
-// const { default: Trips } = require('../client/components/Trips.js');
+const {
+  createUser,
+  addPreferences,
+  planTrip,
+  grabPreferences,
+  getUserTrips,
+} = require('./queries.js');
 
 const app = express();
 const { PORT } = process.env;
@@ -49,6 +54,11 @@ app.post('/trips', (req, res) => {
 // add user
 app.post('/login', (req, res) => {
   createUser(req, res);
+});
+
+app.post('/grabPlaces', (req, res) => {
+  console.log(req);
+  grabPreferences(req, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW
