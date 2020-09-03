@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+/* eslint-disable camelcase */
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import SelectPlaces from './SelectPlaces';
 
@@ -38,25 +37,25 @@ const ContinuousSlider = ({ currentUser }) => {
   const user_id = currentUser.googleId;
 
   // sets new states for our preferences upon change
-  const handleChangeTemp = (event, newValue) => {
+  const handleChangeTemp = (_, newValue) => {
     setTemp(newValue);
   };
-  const handleChangeExpense = (event, newValue) => {
+  const handleChangeExpense = (_, newValue) => {
     setExpense(newValue);
   };
-  const handleChangeLandscape = (event, newValue) => {
+  const handleChangeLandscape = (_, newValue) => {
     setLandscape(newValue);
   };
-  const handleChangeCityType = (event, newValue) => {
+  const handleChangeCityType = (_, newValue) => {
     setCityType(newValue);
   };
-  const handleChangeProximity = (event, newValue) => {
+  const handleChangeProximity = (_, newValue) => {
     setProximity(newValue);
   };
-  const handleChangeAge = (event, newValue) => {
+  const handleChangeAge = (_, newValue) => {
     setAge(newValue);
   };
-  const handleChangeRelationship = (event, newValue) => {
+  const handleChangeRelationship = (_, newValue) => {
     setRelationship(newValue);
   };
 
@@ -74,10 +73,9 @@ const ContinuousSlider = ({ currentUser }) => {
 
   // Posts preferences to DB
   const handleSubmit = () => {
-    event.preventDefault();
     axios
       .post('/trips', {
-        name: name,
+        name,
         start_date: startDate,
         end_date: endDate,
       })
@@ -96,14 +94,12 @@ const ContinuousSlider = ({ currentUser }) => {
           group_relationship,
         });
       })
-      .catch((err) => console.log('ERR', err));
+      .catch((err) => console.warn('ERR', err));
   };
 
   const selectPlaces = () => {
-    event.preventDefault();
     setButtonClicked(true);
   };
-
 
   if (buttonClicked) {
     return <SelectPlaces trip={trip} currentUser={currentUser} />;
@@ -112,9 +108,16 @@ const ContinuousSlider = ({ currentUser }) => {
   return (
     <div>
       <div>
-        <label>
+        <label htmlFor="text">
           Trip name:
-          <input type="text" value={name} onChange={handleChangeName} />
+          <input
+            type="text"
+            id="text"
+            name="type"
+            placeholder="text"
+            value={name}
+            onChange={handleChangeName}
+          />
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
@@ -286,4 +289,14 @@ const ContinuousSlider = ({ currentUser }) => {
   );
 };
 
+ContinuousSlider.propTypes = {
+  currentUser: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
+};
 export default ContinuousSlider;

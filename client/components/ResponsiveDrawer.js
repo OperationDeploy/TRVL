@@ -64,13 +64,12 @@ const ResponsiveDrawer = ({
   onClickPlanTrip,
   clickTrips,
   onClickGetTrips,
-  window,
   currentUser,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [showMain, setShowMain] = useState(false);
+  // const [showMain, setShowMain] = useState(false);
   const [showInvites, setShowInvite] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -82,7 +81,7 @@ const ResponsiveDrawer = ({
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => setShowMain(true)} key={text}>
+          <ListItem button onClick={() => console.info('open')} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -104,7 +103,7 @@ const ResponsiveDrawer = ({
       <Divider />
       <List>
         {['Login', 'Logout'].map((text, index) => (
-          <ListItem button onClick={() => alert(`${text} Clicked!`)} key={text}>
+          <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <PersonIcon /> : <PersonOutlineIcon />}
             </ListItemIcon>
@@ -119,7 +118,8 @@ const ResponsiveDrawer = ({
     return <Invites />;
   }
 
-  const container = window !== undefined ? () => window().document.body : undefined;
+  const container = window !== undefined ? () => window.document.body : undefined;
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -177,11 +177,7 @@ const ResponsiveDrawer = ({
           src={currentUser.profile_pic}
           className={classes.large}
         />
-        <Typography>
-          Hi,
-          {currentUser.first_name}
-          !
-        </Typography>
+        <Typography>{`Hi,${currentUser.first_name}!`}</Typography>
         <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
         <PlanATrip
           clickPlan={clickPlan}
@@ -194,11 +190,18 @@ const ResponsiveDrawer = ({
 };
 
 ResponsiveDrawer.propTypes = {
-  /**
-   * Injected by the documentation to work in an iframe.
-   * You won't need it on your project.
-   */
-  window: PropTypes.func,
+  onClickGetTrips: PropTypes.func.isRequired,
+  clickTrips: PropTypes.bool.isRequired,
+  clickPlan: PropTypes.bool.isRequired,
+  onClickPlanTrip: PropTypes.func.isRequired,
+  currentUser: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
 };
 
 export default ResponsiveDrawer;

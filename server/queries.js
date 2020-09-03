@@ -1,17 +1,7 @@
 require('dotenv').config();
-const { Op } = require("sequelize");
+const { Op } = require('sequelize');
 
-const {
-  User,
-  Trip,
-  TripUser,
-  TripPreferences,
-  TripPhoto,
-  TripProposal,
-  TripItinerary,
-  TripProposalVotes,
-  Destinations,
-} = require('./db.js');
+const { User, Trip, TripPreferences, Destinations, TripProposal } = require('./db.js');
 
 const { generatePlaces } = require('./algo.js');
 // create a user
@@ -33,7 +23,7 @@ const addDestinations = () => {
 
 // add preferences
 // need to come back and find where trip_id is = correct trip_id
-const addPreferences = (req, res) => {
+const addPreferences = (req) => {
   TripPreferences.findOne({ where: { user_id: req.user_id } }).then((obj) => {
     if (obj) {
       obj.update(req);
@@ -49,10 +39,9 @@ const grabPreferences = async (req, res) => {
   const tripPrefs = await TripPreferences.findAll({
     where: { trip_id: req.body.trip_id },
   });
-
-  // console.log('trip pref', tripPrefs[0].dataValues);
+  const dest = await Destinations.findAll({});
   const prefObj = tripPrefs[0].dataValues;
-  res.send(generatePlaces(prefObj));
+  res.send(generatePlaces(prefObj, dest));
 };
 
 // add planned trip
@@ -61,7 +50,7 @@ const planTrip = async (req, res) => {
   res.send(trip);
 };
 
-const setDest = (req, res) => {
+const setDest = (req) => {
   Trip.findOne({ where: { id: req.body.trip_id } }).then((obj) => {
     if (obj) {
       obj.update({ destination: req.body.destination });
@@ -71,19 +60,51 @@ const setDest = (req, res) => {
 
 // Gets the users from the db who are not the current user
 const getOtherUsers = async (req, res) => {
-  const inviteThem = await User.findAll({ where: { [Op.not]: [{ googleId: req.currentUser }] } });
+  const inviteThem = await User.findAll({
+    where: { [Op.not]: [{ googleId: req.currentUser }] },
+  });
   res.send(inviteThem);
 };
 
-const enterProposal = async (req, res) => {
-  console.log('REQ', req);
-  // await TripProposal.findOne({ where: { trip_id: req.trip} }).then((obj) => {
-  //   if (obj) {
-  //     obj.update(req);
-  //   } else {
-  //     TripProposal.create(req);
-  //   }
-  // });
+// putting tip proposal into the db
+const enterProposal = async (req) => {
+  let city1;
+  let city2;
+  let city3;
+  await Destinations.findOne({ where: { city: req.destination_A_id } }).then(
+    (response) => {
+      city1 = response;
+    },
+  );
+  await Destinations.findOne({ where: { city: req.destination_B_id } }).then(
+    (response) => {
+      city2 = response;
+    },
+  );
+  await Destinations.findOne({ where: { city: req.destination_C_id } }).then(
+    (response) => {
+      city3 = response;
+    },
+  );
+  await TripProposal.findOne({ where: { trip_id: req.trip_id } }).then((obj) => {
+    if (obj) {
+      obj.update({
+        user_id: req.user_id,
+        trip_id: req.trip_id,
+        destination_A_id: city1.dataValues.id,
+        destination_B_id: city2.dataValues.id,
+        destination_C_id: city3.dataValues.id,
+      });
+    } else {
+      TripProposal.create({
+        user_id: req.user_id,
+        trip_id: req.trip_id,
+        destination_A_id: city1.dataValues.id,
+        destination_B_id: city2.dataValues.id,
+        destination_C_id: city3.dataValues.id,
+      });
+    }
+  });
 };
 
 module.exports = {

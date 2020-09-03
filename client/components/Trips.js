@@ -9,7 +9,14 @@ const Trips = ({ clickTrips, onClickGetTrips }) => {
   }
   return (
     <div>
-      <Button variant="contained" onClick={() => { onClickGetTrips(); }}>Trips</Button>
+      <Button
+        variant="contained"
+        onClick={() => {
+          onClickGetTrips();
+        }}
+      >
+        Trips
+      </Button>
     </div>
   );
 };

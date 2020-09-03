@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
+import GoogleLogin from 'react-google-login';
 import Splash from './Splash';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import Itinerary from './Itinerary';
-import GoogleLogin from 'react-google-login';
-// import { OAUTH_CLIENT_ID } from '../../config.js';
 
 class App extends Component {
   constructor(props) {
@@ -26,49 +23,51 @@ class App extends Component {
   }
 
   onClickPlanTrip() {
-    const { currentUser } = this.state;
-    this.setState({ clickPlan: !this.state.clickPlan });
-    //axios to get the current users who aren't users
+    const { currentUser, clickPlan, otherUsers } = this.state;
+    this.setState({ clickPlan: !clickPlan });
+    // axios to get the current users who aren't users
     axios.get('/inviteUsers', {
       params: {
         currentUser: currentUser.googleId,
       },
     })
       .then((response) => {
-        console.log('RESPONSE!', response);
         this.setState({
           otherUsers: response.data,
         });
+        console.info(otherUsers);
       })
-      .catch((err) => console.log('ERRR', err));
+      .catch((err) => console.warn('ERRR', err));
   }
 
   onClickGetTrips() {
-    this.setState({ clickTrips: !this.state.clickTrips });
+    this.setState((prevState) => ({ clickTrips: !prevState.clickTrips }));
   }
 
   responseGoogle(response) {
-    console.log('google response:', response);
     const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
-    axios.post('/login', {
-      first_name: givenName,
-      last_name: familyName,
-      email,
-      profile_pic: imageUrl,
-      host: false,
-      googleId,
-    })
+
+    axios
+      .post('/login', {
+        first_name: givenName,
+        last_name: familyName,
+        email,
+        profile_pic: imageUrl,
+        host: false,
+        googleId,
+      })
       .then((res) => {
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
-        })
+        });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.warn(err));
   }
 
   render() {
     const { loginComplete, clickPlan, currentUser, clickTrips } = this.state;
+
     if (!loginComplete) {
       return (
         <div>
@@ -79,7 +78,7 @@ class App extends Component {
             buttonText="Login with Google"
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogle}
-            cookiePolicy={'single_host_origin'}
+            cookiePolicy="single_host_origin"
           />
         </div>
       );

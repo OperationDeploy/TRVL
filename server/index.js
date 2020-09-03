@@ -57,7 +57,6 @@ app.post('/setDest', (req, res) => {
 });
 
 app.post('/proposals', (req, res) => {
-  console.log('REQ BODY', req.body);
   enterProposal(req.body, res);
 });
 
@@ -65,5 +64,5 @@ app.use(express.static(DIST_DIR)); // NEW
 
 // listening on localhost:3000
 app.listen(PORT, () => {
-  console.log(`App listening on port:${PORT}`);
+  console.info(`App listening on port:${PORT}`);
 });

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
 
 const SelectPlaces = ({ currentUser, trip }) => {
   const [places, setPlaces] = useState([]);
@@ -8,41 +9,24 @@ const SelectPlaces = ({ currentUser, trip }) => {
     setPlaces(response);
   };
 
-  const proposal = () => {
-    axios.post('./proposals', {
-      user_id: currentUser.googleId,
-      trip_id: trip,
-      destination_A_id: places[0],
-      destination_B_id: places[1],
-      destination_C_id: places[2],
-    }).then((response) => {
-      console.log(response);
-    }).catch((err) => console.log(err));
-  };
-
   useEffect(() => {
     axios
-      .post('./grabPlaces', { trip_id: trip }, (req, res) => {
-      })
+      .post('./grabPlaces', { trip_id: trip }, () => {})
       .then((response) => {
         handleChange(response.data);
-      }).then(() => {
         axios.post('./proposals', {
           user_id: currentUser.googleId,
           trip_id: trip,
-          destination_A_id: places[0],
-          destination_B_id: places[1],
-          destination_C_id: places[2],
-        }).then((response) => {
-          console.log(response);
+          destination_A_id: response.data[0],
+          destination_B_id: response.data[1],
+          destination_C_id: response.data[2],
         });
-        }).catch((err) => console.log(err));
+      }).catch((err) => console.warn(err));
   }, []);
 
   // updates destination on trips table onclick
   const handleClick = (event) => {
-    axios.post('./setDest', { destination: event, trip_id: trip }, (req, res) => {
-    });
+    axios.post('./setDest', { destination: event, trip_id: trip }, () => {});
   };
 
   return (
@@ -50,13 +34,29 @@ const SelectPlaces = ({ currentUser, trip }) => {
       <header>Here are Your Places:</header>
       <ul>
         {places.map((dest) => (
-          <li value={dest} onClick={() => handleClick(dest)}>
+          <button type="submit" key={dest} onClick={() => handleClick(dest)}>
             {dest}
-          </li>
+          </button>
         ))}
       </ul>
     </div>
   );
+};
+
+SelectPlaces.defaultProps = {
+  trip: 0,
+};
+
+SelectPlaces.propTypes = {
+  trip: PropTypes.number,
+  currentUser: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
 };
 
 export default SelectPlaces;
