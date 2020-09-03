@@ -56,5 +56,5 @@ app.use(express.static(DIST_DIR)); // NEW
 
 // listening on localhost:3000
 app.listen(PORT, () => {
-  console.log(`App listening on port:${PORT}`);
+  console.info(`App listening on port:${PORT}`);
 });

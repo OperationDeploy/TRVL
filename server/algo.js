@@ -130,13 +130,14 @@ const generatePlaces = (object) => {
     );
 
     // // add up score
-    const finalScore = tempScore
-      + cityExpensesScore
-      + landscapeScore
-      + cityTypeScore
-      + proximityScore
-      + groupAgeScore
-      + groupRelationshipScore;
+    const finalScore =
+      tempScore +
+      cityExpensesScore +
+      landscapeScore +
+      cityTypeScore +
+      proximityScore +
+      groupAgeScore +
+      groupRelationshipScore;
 
     resultArray.push({ city: place.city, score: finalScore });
   });

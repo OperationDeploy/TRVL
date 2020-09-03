@@ -7,16 +7,21 @@
     "start": "nodemon server/index.js",
     "dev": "webpack --mode development --open --hot --watch",
     "build": "webpack --mode production",
-    "lint": "eslint . --ext .json --ext .js --ext .jsx --ext .md",
-    "lint:fix": "eslint --fix . --ext .json --ext .js --ext .jsx --ext .md",
+    "lint": "eslint . --ext .json --ext .js",
+    "lint:fix": "eslint --fix . --ext .json --ext .js",
     "eject": "react-scripts eject",
+    "format": "prettier --write \"**/*.+(js|json|yml|yaml|css)\"",
     "test": ""
+  },
+  "prettier": {
+    "printWidth": 90,
+    "bracketSpacing": true,
+    "trailingComma": "all",
+    "singleQuote": true
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint && npm test",
-      "pre-push": "npm run lint && npm test",
-      "...": "..."
+      "pre-commit": "npm run lint && npm run format"
     }
   },
   "repository": {
@@ -65,16 +70,20 @@
     "css-loader": "^4.2.2",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.2.0",
+    "eslint-config-prettier": "^6.11.0",
     "eslint-config-standard": "^14.1.1",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-json": "^2.1.2",
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-markdown": "^1.0.2",
     "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-prettier": "^3.1.4",
     "eslint-plugin-react": "^7.20.6",
     "eslint-plugin-react-hooks": "^4.1.0",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
+    "prettier": "^2.1.1",
+    "prettier-eslint": "^11.0.0",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"

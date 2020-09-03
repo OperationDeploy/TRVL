@@ -31,14 +31,8 @@ class App extends Component {
   }
 
   responseGoogle(response) {
-    console.log('google response:', response);
-    const {
-      givenName,
-      familyName,
-      email,
-      imageUrl,
-      googleId,
-    } = response.profileObj;
+    const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
+
     axios
       .post('/login', {
         first_name: givenName,
@@ -54,13 +48,12 @@ class App extends Component {
           currentUser: res.data,
         });
       })
-      .catch((err) => console.error(err));
+      .catch((err) => console.warn(err));
   }
 
   render() {
-    const {
-      loginComplete, clickPlan, currentUser, clickTrips,
-    } = this.state;
+    const { loginComplete, clickPlan, currentUser, clickTrips } = this.state;
+
     if (!loginComplete) {
       return (
         <div>
@@ -75,7 +68,6 @@ class App extends Component {
           />
         </div>
       );
-      // test husky
     }
     return (
       <div>

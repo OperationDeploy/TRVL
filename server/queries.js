@@ -1,8 +1,6 @@
 require('dotenv').config();
 
-const {
-  User, Trip, TripPreferences, Destinations,
-} = require('./db.js');
+const { User, Trip, TripPreferences, Destinations } = require('./db.js');
 
 const { generatePlaces } = require('./algo.js');
 // create a user

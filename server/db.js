@@ -1,9 +1,8 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
-const {
-  DB_NAME, DB_USER, DB_PASS, DB_HOST,
-} = process.env;
+const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
+
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
   dialect: 'postgres',
@@ -17,10 +16,10 @@ const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
 sequelize
   .authenticate()
   .then(() => {
-    console.log('Successful DB connection!');
+    console.info('Successful DB connection!');
   })
   .catch((err) => {
-    console.log(err);
+    console.warn(err);
   });
 
 /// need to seed into db
@@ -41,14 +40,18 @@ const User = sequelize.define('User', {
   },
 });
 
-const Trip = sequelize.define('Trip', {
-  name: Sequelize.TEXT,
-  destination: Sequelize.TEXT,
-  start_date: Sequelize.DATE,
-  end_date: Sequelize.DATE,
-}, {
-  timestamps: false,
-});
+const Trip = sequelize.define(
+  'Trip',
+  {
+    name: Sequelize.TEXT,
+    destination: Sequelize.TEXT,
+    start_date: Sequelize.DATE,
+    end_date: Sequelize.DATE,
+  },
+  {
+    timestamps: false,
+  },
+);
 
 const TripUser = sequelize.define('TripUser', {
   user_id: {

@@ -7,10 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
+import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import SelectPlaces from './SelectPlaces';
 
@@ -40,25 +37,25 @@ const ContinuousSlider = ({ currentUser }) => {
   const user_id = currentUser.googleId;
 
   // sets new states for our preferences upon change
-  const handleChangeTemp = (newValue) => {
+  const handleChangeTemp = (_, newValue) => {
     setTemp(newValue);
   };
-  const handleChangeExpense = (newValue) => {
+  const handleChangeExpense = (_, newValue) => {
     setExpense(newValue);
   };
-  const handleChangeLandscape = (newValue) => {
+  const handleChangeLandscape = (_, newValue) => {
     setLandscape(newValue);
   };
-  const handleChangeCityType = (newValue) => {
+  const handleChangeCityType = (_, newValue) => {
     setCityType(newValue);
   };
-  const handleChangeProximity = (newValue) => {
+  const handleChangeProximity = (_, newValue) => {
     setProximity(newValue);
   };
-  const handleChangeAge = (newValue) => {
+  const handleChangeAge = (_, newValue) => {
     setAge(newValue);
   };
-  const handleChangeRelationship = (newValue) => {
+  const handleChangeRelationship = (_, newValue) => {
     setRelationship(newValue);
   };
 
@@ -97,7 +94,7 @@ const ContinuousSlider = ({ currentUser }) => {
           group_relationship,
         });
       })
-      .catch((err) => console.log('ERR', err));
+      .catch((err) => console.warn('ERR', err));
   };
 
   const selectPlaces = () => {
