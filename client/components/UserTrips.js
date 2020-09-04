@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
@@ -6,26 +6,40 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import { userTripsData } from '../dummyData/userTripsData';
+import axios from 'axios';
 import Itinerary from './Itinerary';
 
-const UserTrips = () => {
-  const [itiernaryClicked, setitiernaryClicked] = useState(false);
+const UserTrips = ({ currentUser }) => {
+  const [itineraryClicked, setItineraryClicked] = useState(false);
 
-  const getItinerary = () => {
-    setitiernaryClicked(true);
+  const [trips, setTrips] = useState([]);
+
+  const handleChange = (response) => {
+    setTrips(response);
   };
 
-  if (itiernaryClicked) {
+  useEffect(() => {
+    axios
+      .post('./getAllTrips', { user_id: currentUser.googleId }, () => {})
+      .then((response) => {
+        handleChange(response.data);
+      });
+  }, []);
+
+  const getItinerary = () => {
+    setItineraryClicked(true);
+  };
+
+  if (itineraryClicked) {
     return <Itinerary />;
   }
   return (
     <div>
       <Typography variant="h1">Trips</Typography>
-      {userTripsData.map((data) => (
+      {trips.map((data) => (
         <List>
           <ListItem>
-            <ListItemText>{data.tripName}</ListItemText>
+            <ListItemText>{data.name}</ListItemText>
             <ListItemSecondaryAction>
               <Button onClick={getItinerary} color="primary">
                 Trip Itinerary
@@ -34,19 +48,27 @@ const UserTrips = () => {
           </ListItem>
           <ListItem>
             Dates:
-            <ListItemText>{`${data.tripDates[0]} to ${data.tripDates[1]}`}</ListItemText>
+            <ListItemText>{`${data.start_date} to ${data.end_date}`}</ListItemText>
           </ListItem>
           <ListItem>
             Destination:
-            <ListItemText>{data.tripDestination}</ListItemText>
+            <ListItemText>{data.destination}</ListItemText>
           </ListItem>
         </List>
       ))}
-      ;
     </div>
   );
 };
 
-UserTrips.propTypes = PropTypes;
+UserTrips.propTypes = {
+  currentUser: PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
+};
 
 export default UserTrips;

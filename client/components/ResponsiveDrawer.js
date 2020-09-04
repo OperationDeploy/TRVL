@@ -178,7 +178,11 @@ const ResponsiveDrawer = ({
           className={classes.large}
         />
         <Typography>{`Hi,${currentUser.first_name}!`}</Typography>
-        <Trips clickTrips={clickTrips} onClickGetTrips={onClickGetTrips} />
+        <Trips
+          clickTrips={clickTrips}
+          onClickGetTrips={onClickGetTrips}
+          currentUser={currentUser}
+        />
         <PlanATrip
           clickPlan={clickPlan}
           onClickPlanTrip={onClickPlanTrip}
