@@ -15,6 +15,8 @@ class App extends Component {
       clickTrips: false,
       currentUser: '',
       otherUsers: [],
+      currentTrip: { id: 2 },
+
     };
 
     this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
@@ -67,8 +69,7 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, clickTrips } = this.state;
-
+    const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips } = this.state;
     if (!loginComplete) {
       return (
         <div>
@@ -93,6 +94,7 @@ class App extends Component {
           clickTrips={clickTrips}
           onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
+          currentTrip={currentTrip}
         />
       </div>
     );

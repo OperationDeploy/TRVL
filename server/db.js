@@ -205,6 +205,21 @@ const Destinations = sequelize.define('Destinations', {
   group_relationship: Sequelize.INTEGER,
 });
 
+const SplitItem = sequelize.define('SplitItem', {
+  purchaser_id: Sequelize.INTEGER,
+  description: Sequelize.TEXT,
+  price: Sequelize.FLOAT,
+  trip_id: Sequelize.INTEGER,
+});
+
+const SplitOwedPayment = sequelize.define('SplitOwedPayment', {
+  ower_id: Sequelize.INTEGER,
+  recipient_id: Sequelize.INTEGER,
+  amount: Sequelize.FLOAT,
+  trip_id: Sequelize.INTEGER,
+  item_id: Sequelize.INTEGER,
+});
+
 module.exports = {
   User,
   Trip,
@@ -215,5 +230,7 @@ module.exports = {
   TripItinerary,
   TripProposalVotes,
   Destinations,
+  SplitItem,
+  SplitOwedPayment,
   sequelize,
 };
