@@ -284,14 +284,14 @@ const ContinuousSlider = ({ currentUser }) => {
         >
           Generate Places
         </Button>
-      <Button
-        variant="contained"
-        onClick={() => {
-          console.info('OFIFF');
-        }}
-      >
-        Invite Users
-      </Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            console.info('OFIFF');
+          }}
+        >
+          Invite Users
+        </Button>
       </div>
     </div>
   );
