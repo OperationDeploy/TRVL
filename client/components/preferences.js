@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
+import Container from '@material-ui/core/Container';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -106,8 +107,8 @@ const ContinuousSlider = ({ currentUser }) => {
   }
 
   return (
-    <div>
-      <div>
+    <Container fixed>
+      <div >
         <label htmlFor="text">
           Trip name:
           <input
@@ -285,7 +286,7 @@ const ContinuousSlider = ({ currentUser }) => {
           Generate Places
         </Button>
       </div>
-    </div>
+    </Container>
   );
 };
 
