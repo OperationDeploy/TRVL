@@ -64,7 +64,8 @@ const addSplit = async (req, res) => {
     ower_id: user.user_id, recipient_id: purchaserId, amount, trip_id: tripId, item_id: item.id,
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
-  users = users.map((user) => User.findByPk(user.user_id, { raw: true }));
+  // users = users.map((user) => User.findByPk(user.user_id, { raw: true }));
+  users = users.map((user) => User.findOne({ where: { googleId: user.user_id }, raw: true }));
   await Promise.all(users).then((result) => { users = result; });
   res.send(userObjs.map(
     (user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount }),
@@ -74,7 +75,7 @@ const addSplit = async (req, res) => {
 const getSplit = async ({ trip, user }, res) => {
   const response = {};
   let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
-  let users = items.map((item) => User.findByPk(item.purchaser_id, { raw: true }));
+  let users = items.map((item) => User.findOne({ where: { googleId: item.purchaser_id }, raw: true }));
   await Promise.all(users).then((result) => { users = result; });
   items = items.map((item, i) => {
     const newItem = item;
@@ -84,7 +85,9 @@ const getSplit = async ({ trip, user }, res) => {
   const payments = await SplitOwedPayment.findAll(
     { where: { trip_id: trip, recipient_id: user }, raw: true },
   );
-  users = payments.map((payment) => User.findByPk(payment.ower_id, { raw: true }));
+  users = payments.map((payment) => User.findOne(
+    { where: { googleId: payment.ower_id }, raw: true },
+  ));
   await Promise.all(users).then((result) => { users = result; });
   const debts = {};
   payments.forEach((payment, i) => {
@@ -124,8 +127,9 @@ const setDest = (req) => {
   });
 };
 
-const getPhotos = () => {
-  TripPhoto.findAll();
+const getPhotos = async ({ trip }, res) => {
+  const photos = await TripPhoto.findAll({ where: { trip_id: trip } });
+  res.send(photos);
 };
 
 const addPhoto = ({ file, body }, res) => {

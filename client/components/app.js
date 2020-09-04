@@ -44,6 +44,7 @@ class App extends Component {
         googleId,
       })
       .then((res) => {
+        res.data.id = res.data.googleId;
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
