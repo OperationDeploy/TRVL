@@ -8,8 +8,9 @@ const {
   createUser,
   addPreferences,
   planTrip,
-  grabPreferences,
+  grabPlaces,
   setDest,
+  getAllTrips,
 } = require('./queries.js');
 
 const app = express();
@@ -45,11 +46,15 @@ app.post('/login', (req, res) => {
 });
 
 app.post('/grabPlaces', (req, res) => {
-  grabPreferences(req, res);
+  grabPlaces(req, res);
 });
 
 app.post('/setDest', (req, res) => {
   setDest(req, res);
+});
+
+app.post('/getAllTrips', (req, res) => {
+  getAllTrips(req, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

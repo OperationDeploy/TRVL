@@ -23,39 +23,37 @@ const addDestinations = () => {
 // add preferences
 // need to come back and find where trip_id is = correct trip_id
 const addPreferences = (req) => {
-  const {
-    userId,
-    tripId,
-    temperature,
-    cityExpenses,
-    landscape,
-    cityType,
-    proximity,
-    groupAge,
-    groupRelationship,
-  } = req;
-  TripPreferences.findOne({ where: { user_id: userId } }).then((obj) => {
+  TripPreferences.findOne({ where: { user_id: req.user_id } }).then((obj) => {
     if (obj) {
       obj.update({
-        user_id: userId,
-        trip_id: tripId,
-        temperature,
-        city_expenses: cityExpenses,
-        landscape,
-        city_type: cityType,
-        proximity,
-        group_age: groupAge,
-        group_relationship: groupRelationship,
+        user_id: req.user_id,
+        trip_id: req.trip_id,
+        temperature: req.temperature,
+        city_expenses: req.city_expenses,
+        landscape: req.landscape,
+        city_type: req.city_type,
+        proximity: req.proximity,
+        group_age: req.group_age,
+        group_relationship: req.group_relationship,
       });
     } else {
-      TripPreferences.create(req);
+      TripPreferences.create({
+        user_id: req.user_id,
+        trip_id: req.trip_id,
+        temperature: req.temperature,
+        city_expenses: req.city_expenses,
+        landscape: req.landscape,
+        city_type: req.city_type,
+        proximity: req.proximity,
+        group_age: req.group_age,
+        group_relationship: req.group_relationship,
+      });
     }
   });
 };
 
 // grab preferences
-const grabPreferences = async (req, res) => {
-  // console.log(req);
+const grabPlaces = async (req, res) => {
   const tripPrefs = await TripPreferences.findAll({
     where: { trip_id: req.body.trip_id },
   });
@@ -79,11 +77,16 @@ const setDest = (req) => {
   });
 };
 
+const getAllTrips = async (req, res) => {
+  const trips = await Trip.findAll({ where: { googleId: req.body.user_id } });
+  res.send(trips);
+};
 module.exports = {
   createUser,
   addDestinations,
   addPreferences,
   planTrip,
-  grabPreferences,
+  grabPlaces,
   setDest,
+  getAllTrips,
 };

@@ -77,6 +77,7 @@ const ContinuousSlider = ({ currentUser }) => {
         name,
         start_date: startDate,
         end_date: endDate,
+        googleId: currentUser.googleId,
       })
       .then((result) => {
         const tripId = result.data.id;
