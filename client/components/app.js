@@ -62,7 +62,7 @@ class App extends Component {
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
           <Container fixed width={1} style={{ justifyContent: 'center' }}>
             <div className="card">
-                <img src={logo} alt="Logo" styles={{ width: '200', height: '121' }} />
+              <img src={logo} alt="Logo" styles={{ width: '200', height: '121' }} />
               <div className="container">
                 <GoogleLogin
                   clientId="882538519679-1djm34mua0vj39jocql6ncg86mric4vb.apps.googleusercontent.com"
