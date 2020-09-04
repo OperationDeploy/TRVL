@@ -116,7 +116,17 @@ const ResponsiveDrawer = ({
   );
 
   if (showInvites === true) {
-    return <Preferences currentUser={currentUser} />;
+    return (
+    <div>
+    <Preferences currentUser={currentUser} />
+    <Trips
+    clickTrips={clickTrips}
+    onClickGetTrips={onClickGetTrips}
+    currentUser={currentUser}
+    currentTrip={currentTrip}
+    />
+    </div>
+    );
   }
 
   const container = window !== undefined ? () => window.document.body : undefined;

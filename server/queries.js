@@ -201,6 +201,10 @@ const getAllTrips = async (req, res) => {
   res.send(trips);
 };
 
+const tripUser = async (req, res) => {
+  console.log('LEGGOO', req);
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -214,4 +218,5 @@ module.exports = {
   getOtherUsers,
   getPhotos,
   getAllTrips,
+  tripUser,
 };
