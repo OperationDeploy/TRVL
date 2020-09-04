@@ -21,7 +21,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
-import Invites from './Invites';
+import Preferences from './preferences';
 
 const drawerWidth = 240;
 
@@ -116,7 +116,7 @@ const ResponsiveDrawer = ({
   );
 
   if (showInvites === true) {
-    return <Invites />;
+    return <Preferences currentUser={currentUser} />;
   }
 
   const container = window !== undefined ? () => window.document.body : undefined;
