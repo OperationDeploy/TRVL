@@ -2,6 +2,21 @@
 
 # TRVL
 
+Elevator pitch
+Ever have trouble planning a trip with your friends or family? Well, trvl will solve your problem by automating this process, while adapting to the unique desires, goals, circumstances of each potential traveller. Trvl is the future of travel planning. More travel, less headache!
+Major concepts
+Logging in and Out with your google account
+View trip invites
+Planning a trip
+	choosing your preferences, dates, trip name
+	Inviting a User
+Generating the best location choices for your group based off of everyones preferences
+Allow travelers to vote on the their top choice out of the generated location choices from our algorithm
+View Past, Current, and future trips
+Add activities or notes to the tip itinerary
+Upload and view trip photos
+Add purchases, split payments, and keep track of who owes you money and how much
+
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
@@ -15,10 +30,11 @@ A step by step series of examples that tell you how to get a development env run
 3. Next, **_git clone_** your fork of the repo.
 4. Then, **_cd_** into the repo.
 5. Run the command **_npm install_** in the root directory to download dependencies defined in the package.json file.
-6. Be sure to add a .env file to your root directory that contains the following environmental variables: PORT, DB_NAME, DB_USER, DB_PASS, DB_HOST.
-7. Run the command **_npm run start_** to just start the server/index.js.
-8. Run the command **_npm run build_** to begin starting frontend.
-9. Run the command **_npm run dev_** to start development server.
+6. Run the command **_brew install postgresql_** to install the PostgreSQL database management system.
+7. Be sure to add a .env file to your root directory that contains the following environmental variables: PORT, DB_NAME, DB_USER, DB_PASS, DB_HOST.
+8. Run the command **_npm run start_** to just start the server/index.js.
+9. Run the command **_npm run build_** to begin starting frontend.
+10. Run the command **_npm run dev_** to start development server.
 
 ## Deployment
 
