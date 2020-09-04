@@ -81,7 +81,7 @@ CREATE TABLE "TripItineraries" (
 );
 
 CREATE TABLE "TripProposalVotes" (
-  "id" int,
+  "id" SERIAL PRIMARY KEY,
   "user_id" TEXT,
   "trip_id" int,
   "destination" int,

@@ -68,7 +68,7 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips } = this.state;
+    const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips, otherUsers } = this.state;
     if (!loginComplete) {
       return (
         <div>
@@ -94,6 +94,7 @@ class App extends Component {
           onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
           currentTrip={currentTrip}
+          otherUsers={otherUsers}
         />
       </div>
     );

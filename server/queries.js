@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
-
+const { generatePlaces } = require('./algo.js');
 const {
   User,
   Trip,
@@ -10,9 +10,9 @@ const {
   SplitItem,
   TripProposal,
   SplitOwedPayment,
+  TripProposalVotes,
 } = require('./db.js');
 
-const { generatePlaces } = require('./algo.js');
 // create a user
 const createUser = async (req, res) => {
   let user = await User.findOne({ where: { googleId: req.body.googleId } });
@@ -120,8 +120,8 @@ const getSplit = async ({ trip, user }, res) => {
   response.debts = debts;
   res.send(response);
 };
-// grab preferences
 
+// grab preferences
 const grabPlaces = async (req, res) => {
   const tripPrefs = await TripPreferences.findAll({
     where: { trip_id: req.body.trip_id },
@@ -202,7 +202,6 @@ const getAllTrips = async (req, res) => {
 };
 
 const tripUser = async (req, res) => {
-  console.info('LEGGOO', req);
   let user = await TripUser.findOne({
     where: { user_id: req.currentUser.id, trip_id: req.trip_id },
   });
@@ -212,9 +211,23 @@ const tripUser = async (req, res) => {
       trip_id: req.trip_id,
     });
   }
-  // await User.create({ userId: req.googleId, trip_id: req.trip_id });
   const users = await TripUser.findAll({});
   res.send(users);
+};
+
+const inviteAllOtherUsers = async (req) => {
+  req.otherUsers.forEach((user) => {
+    TripProposalVotes.create({
+      user_id: user.googleId,
+      trip_id: req.trip,
+    }).catch((err) => console.warn(err));
+  });
+};
+
+const getMyInvites = async (req, res) => {
+  const invites = await TripProposalVotes.findAll({ where: { user_id: req.googleId } })
+    .catch((err) => console.warn(err));
+  res.send(invites);
 };
 
 module.exports = {
@@ -230,5 +243,7 @@ module.exports = {
   getOtherUsers,
   getPhotos,
   getAllTrips,
+  inviteAllOtherUsers,
   tripUser,
+  getMyInvites,
 };

@@ -15,9 +15,11 @@ const {
   getOtherUsers,
   enterProposal,
   getSplit,
+  getMyInvites,
   addSplit,
   getAllTrips,
   tripUser,
+  inviteAllOtherUsers,
 } = require('./queries.js');
 
 const app = express();
@@ -52,6 +54,12 @@ app.get('/inviteUsers', (req, res) => {
 app.get('/split/:trip/:user', (req, res) => {
   getSplit(req.params, res);
 });
+
+app.get('/getInvites', (req, res) => {
+  console.log('QUERY ', req.query)
+  getMyInvites(req.query, res);
+});
+
 // POST
 
 // add preferences
@@ -100,7 +108,10 @@ app.post('/getAllTrips', (req, res) => {
 
 app.post('/tripUser', (req, res) => {
   tripUser(req.body, res);
-  // console.log('RES', res);
+});
+
+app.post('/inviteAllOtherUsers', (req, res) => {
+  inviteAllOtherUsers(req.body, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

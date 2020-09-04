@@ -22,6 +22,7 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
 import Preferences from './preferences';
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -66,6 +67,7 @@ const ResponsiveDrawer = ({
   onClickGetTrips,
   currentUser,
   currentTrip,
+  otherUsers,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -116,9 +118,13 @@ const ResponsiveDrawer = ({
   );
 
   if (showInvites === true) {
+    axios.get('/getInvites', { params: { googleId: currentUser.googleId } })
+      .then((response) => console.log(response))
+      .catch((err) => console.warn('ERRR', err));
+
     return (
       <div>
-        <Preferences currentUser={currentUser} />
+        <Preferences currentUser={currentUser} otherUsers={otherUsers} />
         <Trips
           clickTrips={clickTrips}
           onClickGetTrips={onClickGetTrips}
@@ -194,11 +200,13 @@ const ResponsiveDrawer = ({
           onClickGetTrips={onClickGetTrips}
           currentUser={currentUser}
           currentTrip={currentTrip}
+          otherUsers={otherUsers}
         />
         <PlanATrip
           clickPlan={clickPlan}
           onClickPlanTrip={onClickPlanTrip}
           currentUser={currentUser}
+          otherUsers={otherUsers}
         />
       </main>
     </div>
@@ -206,6 +214,14 @@ const ResponsiveDrawer = ({
 };
 
 ResponsiveDrawer.propTypes = {
+  otherUsers: PropTypes.arrayOf(PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  })).isRequired,
   onClickGetTrips: PropTypes.func.isRequired,
   clickTrips: PropTypes.bool.isRequired,
   clickPlan: PropTypes.bool.isRequired,

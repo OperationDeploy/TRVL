@@ -9,6 +9,7 @@ import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import SelectPlaces from './SelectPlaces';
+import Invites from './Invites';
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -18,7 +19,7 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-const ContinuousSlider = ({ currentUser }) => {
+const ContinuousSlider = ({ currentUser, otherUsers }) => {
   const classes = useStyles();
   // states of our preferences
   const [name, setName] = useState('');
@@ -291,20 +292,21 @@ const ContinuousSlider = ({ currentUser }) => {
         >
           Generate Places
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            console.info('invites sent');
-          }}
-        >
-          Invite Users
-        </Button>
+        <Invites otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
       </div>
     </div>
   );
 };
 
 ContinuousSlider.propTypes = {
+  otherUsers: PropTypes.arrayOf(PropTypes.shape({
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  })).isRequired,
   currentUser: PropTypes.shape({
     first_name: PropTypes.string,
     last_name: PropTypes.string,
