@@ -26,7 +26,7 @@ const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'fixed',
+    display: 'flex',
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -56,23 +56,6 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   large: {},
-  marginAutoContainer: {
-    width: 500,
-    height: 80,
-    display: 'fixed',
-    backgroundColor: 'gold',
-  },
-  marginAutoItem: {
-    margin: 'auto',
-  },
-  alignItemsAndJustifyContent: {
-    width: 500,
-    height: 80,
-    display: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'pink',
-  },
 }));
 
 const ResponsiveDrawer = ({

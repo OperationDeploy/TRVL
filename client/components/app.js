@@ -60,7 +60,7 @@ class App extends Component {
       return (
         <div>
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
-          <Container fixed width={1} style={{ justifyContent: 'center' }}>
+          <Container width={1} style={{ justifyContent: 'center' }}>
             <div className="card">
               <img src={logo} alt="Logo" styles={{ width: '200', height: '121' }} />
               <div className="container">

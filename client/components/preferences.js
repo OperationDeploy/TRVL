@@ -108,7 +108,7 @@ const ContinuousSlider = ({ currentUser }) => {
 
   return (
     <Container fixed>
-      <div >
+      <div>
         <label htmlFor="text">
           Trip name:
           <input
