@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -24,17 +23,17 @@ const ContinuousSlider = ({ currentUser }) => {
   // states of our preferences
   const [name, setName] = useState('');
   const [temperature, setTemp] = useState(50);
-  const [city_expenses, setExpense] = useState(50);
+  const [cityExpenses, setExpense] = useState(50);
   const [landscape, setLandscape] = useState(50);
-  const [city_type, setCityType] = useState(50);
+  const [cityType, setCityType] = useState(50);
   const [proximity, setProximity] = useState(50);
-  const [group_age, setAge] = useState(50);
-  const [group_relationship, setRelationship] = useState(50);
+  const [groupAge, setAge] = useState(50);
+  const [groupRelationship, setRelationship] = useState(50);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [trip, setTrip] = useState(0);
-  const user_id = currentUser.googleId;
+  const userId = currentUser.googleId;
 
   // sets new states for our preferences upon change
   const handleChangeTemp = (_, newValue) => {
@@ -78,20 +77,21 @@ const ContinuousSlider = ({ currentUser }) => {
         name,
         start_date: startDate,
         end_date: endDate,
+        googleId: currentUser.googleId,
       })
       .then((result) => {
-        const trip_id = result.data.id;
-        setTrip(trip_id);
+        const tripId = result.data.id;
+        setTrip(tripId);
         axios.post('/preferences', {
-          user_id,
-          trip_id,
+          user_id: userId,
+          trip_id: tripId,
           temperature,
-          city_expenses,
+          city_expenses: cityExpenses,
           landscape,
-          city_type,
+          city_type: cityType,
           proximity,
-          group_age,
-          group_relationship,
+          group_age: groupAge,
+          group_relationship: groupRelationship,
         });
       })
       .catch((err) => console.warn('ERR', err));
@@ -177,7 +177,7 @@ const ContinuousSlider = ({ currentUser }) => {
           <Grid item>Low</Grid>
           <Grid item xs>
             <Slider
-              value={city_expenses}
+              value={cityExpenses}
               onChange={handleChangeExpense}
               aria-labelledby="city_expenses"
               step={10}
@@ -209,7 +209,7 @@ const ContinuousSlider = ({ currentUser }) => {
           <Grid item>Party</Grid>
           <Grid item xs>
             <Slider
-              value={city_type}
+              value={cityType}
               onChange={handleChangeCityType}
               aria-labelledby="city_type"
               step={10}
@@ -241,7 +241,7 @@ const ContinuousSlider = ({ currentUser }) => {
           <Grid item>Young Adults</Grid>
           <Grid item xs>
             <Slider
-              value={group_age}
+              value={groupAge}
               onChange={handleChangeAge}
               aria-labelledby="group_age"
               step={10}
@@ -257,7 +257,7 @@ const ContinuousSlider = ({ currentUser }) => {
           <Grid item>Singles</Grid>
           <Grid item xs>
             <Slider
-              value={group_relationship}
+              value={groupRelationship}
               onChange={handleChangeRelationship}
               aria-labelledby="group_relationship"
               step={10}
