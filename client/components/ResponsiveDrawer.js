@@ -64,6 +64,7 @@ const ResponsiveDrawer = ({
   clickTrips,
   onClickGetTrips,
   currentUser,
+  currentTrip,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -170,12 +171,12 @@ const ResponsiveDrawer = ({
           src={currentUser.profile_pic}
           className={classes.large}
         />
-        <Typography>{`Hi,${currentUser.first_name}!`}</Typography>
+        <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
         <Trips
           clickTrips={clickTrips}
           onClickGetTrips={onClickGetTrips}
           currentUser={currentUser}
-        />
+          currentTrip={currentTrip} />
         <PlanATrip
           clickPlan={clickPlan}
           onClickPlanTrip={onClickPlanTrip}
@@ -192,6 +193,16 @@ ResponsiveDrawer.propTypes = {
   clickPlan: PropTypes.bool.isRequired,
   onClickPlanTrip: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
+    id: PropTypes.number,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
+  currentTrip: PropTypes.shape({
+    id: PropTypes.number,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,

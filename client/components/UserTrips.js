@@ -8,10 +8,11 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Itinerary from './Itinerary';
+import Purchases from './Purchases';
+import Photos from './Photos';
 
-const UserTrips = ({ currentUser }) => {
-  const [itineraryClicked, setItineraryClicked] = useState(false);
-
+const UserTrips = ({ currentUser, currentTrip }) => {
+  const [clicked, setClicked] = useState('');
   const [trips, setTrips] = useState([]);
 
   const handleChange = (response) => {
@@ -26,13 +27,16 @@ const UserTrips = ({ currentUser }) => {
       });
   }, []);
 
-  const getItinerary = () => {
-    setItineraryClicked(true);
-  };
-
-  if (itineraryClicked) {
-    return <Itinerary />;
+  switch (clicked) {
+    case 'itinerary':
+      return <Itinerary />;
+    case 'purchases':
+      return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
+    case 'photos':
+      return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
+    default:
   }
+
   return (
     <div>
       <Typography variant="h1">Trips</Typography>
@@ -41,8 +45,22 @@ const UserTrips = ({ currentUser }) => {
           <ListItem>
             <ListItemText>{data.name}</ListItemText>
             <ListItemSecondaryAction>
-              <Button onClick={getItinerary} color="primary">
+              <Button onClick={() => setClicked('itinerary')} color="primary">
                 Trip Itinerary
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button onClick={() => setClicked('purchases')} color="primary">
+                Purchases
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button onClick={() => setClicked('photos')} color="primary">
+                Photos
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
@@ -69,6 +87,7 @@ UserTrips.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
+  currentTrip: PropTypes.objectOf.isRequired,
 };
 
 export default UserTrips;
