@@ -29,9 +29,9 @@ CREATE TABLE "Trips" (
 
 CREATE TABLE "TripUsers" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" TEXT,
+  "user_id" int,
   "trip_id" int,
-   "createdAt" time,
+  "createdAt" time,
   "updatedAt" time
 );
 
@@ -124,7 +124,7 @@ CREATE TABLE "SplitOwedPayments" (
   "updatedAt" time
 );
 
-ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
+ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 

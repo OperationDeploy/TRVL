@@ -99,7 +99,8 @@ const ContinuousSlider = ({ currentUser }) => {
 
   useEffect(() => {
     axios.post('./tripUser', {
-      currentUser, trip_id: trip,
+      currentUser,
+      trip_id: trip,
     });
   }, [trip]);
 

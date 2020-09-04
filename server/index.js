@@ -100,6 +100,7 @@ app.post('/getAllTrips', (req, res) => {
 
 app.post('/tripUser', (req, res) => {
   tripUser(req.body, res);
+  // console.log('RES', res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

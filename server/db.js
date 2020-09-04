@@ -56,10 +56,10 @@ const Trip = sequelize.define('Trip', {
 
 const TripUser = sequelize.define('TripUser', {
   user_id: {
-    type: Sequelize.TEXT,
+    type: Sequelize.INTEGER,
     references: {
       model: 'user',
-      key: 'googleId',
+      key: 'id',
     },
   },
   trip_id: {

@@ -202,7 +202,19 @@ const getAllTrips = async (req, res) => {
 };
 
 const tripUser = async (req, res) => {
-  console.log('LEGGOO', req);
+  console.info('LEGGOO', req);
+  let user = await TripUser.findOne({
+    where: { user_id: req.currentUser.id, trip_id: req.trip_id },
+  });
+  if (user === null) {
+    user = await TripUser.create({
+      user_id: req.currentUser.id,
+      trip_id: req.trip_id,
+    });
+  }
+  // await User.create({ userId: req.googleId, trip_id: req.trip_id });
+  const users = await TripUser.findAll({});
+  res.send(users);
 };
 
 module.exports = {

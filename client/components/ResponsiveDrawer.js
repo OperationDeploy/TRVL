@@ -117,15 +117,15 @@ const ResponsiveDrawer = ({
 
   if (showInvites === true) {
     return (
-    <div>
-    <Preferences currentUser={currentUser} />
-    <Trips
-    clickTrips={clickTrips}
-    onClickGetTrips={onClickGetTrips}
-    currentUser={currentUser}
-    currentTrip={currentTrip}
-    />
-    </div>
+      <div>
+        <Preferences currentUser={currentUser} />
+        <Trips
+          clickTrips={clickTrips}
+          onClickGetTrips={onClickGetTrips}
+          currentUser={currentUser}
+          currentTrip={currentTrip}
+        />
+      </div>
     );
   }
 
