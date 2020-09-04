@@ -66,7 +66,7 @@ CREATE TABLE "TripProposals" (
   "destination_A_id" int,
   "destination_B_id" int,
   "destination_C_id" int,
-   "createdAt" time,
+  "createdAt" time,
   "updatedAt" time
 );
 
@@ -76,7 +76,7 @@ CREATE TABLE "TripItineraries" (
   "trip_id" int,
   "event" TEXT,
   "day" date,
-   "createdAt" time,
+  "createdAt" time,
   "updatedAt" time
 );
 
@@ -85,7 +85,7 @@ CREATE TABLE "TripProposalVotes" (
   "user_id" TEXT,
   "trip_id" int,
   "destination" int,
-   "createdAt" time,
+  "createdAt" time,
   "updatedAt" time
 );
 

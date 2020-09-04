@@ -13,8 +13,6 @@ const createUser = async (req, res) => {
   res.send(user);
 };
 
-// get user
-
 // destinations - dummy data
 
 const addDestinations = () => {
@@ -22,7 +20,7 @@ const addDestinations = () => {
 };
 
 // add preferences
-// need to come back and find where trip_id is = correct trip_id
+// TODO: need to come back and find where trip_id is = correct trip_id
 const addPreferences = (req) => {
   const {
     userId,
@@ -72,11 +70,9 @@ const addSplit = async (req, res) => {
   res.send(userObjs.map(
     (user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount }),
   ));
-  // console.log('the item', item.id);
 };
 
 const getSplit = async ({ trip, user }, res) => {
-  // let payments = SplitOwedPayment.findAll({ where: { trip_id } });
   const response = {};
   let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
   let users = items.map((item) => User.findByPk(item.purchaser_id, { raw: true }));
@@ -102,12 +98,10 @@ const getSplit = async ({ trip, user }, res) => {
 };
 // grab preferences
 const grabPreferences = async (req, res) => {
-  // console.log(req);
   const tripPrefs = await TripPreferences.findAll({
     where: { trip_id: req.body.trip_id },
   });
 
-  // console.log('trip pref', tripPrefs[0].dataValues);
   const prefObj = tripPrefs[0].dataValues;
   res.send(generatePlaces(prefObj));
 };
@@ -126,6 +120,9 @@ const setDest = (req) => {
   });
 };
 
+const getPhotos = () => {
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -135,4 +132,5 @@ module.exports = {
   planTrip,
   grabPreferences,
   setDest,
+  getPhotos,
 };
