@@ -21,7 +21,8 @@ const SelectPlaces = ({ currentUser, trip }) => {
           destination_B_id: response.data[1],
           destination_C_id: response.data[2],
         });
-      }).catch((err) => console.warn(err));
+      })
+      .catch((err) => console.warn(err));
   }, []);
 
   // updates destination on trips table onclick

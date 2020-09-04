@@ -26,11 +26,12 @@ class App extends Component {
     const { currentUser, clickPlan, otherUsers } = this.state;
     this.setState({ clickPlan: !clickPlan });
     // axios to get the current users who aren't users
-    axios.get('/inviteUsers', {
-      params: {
-        currentUser: currentUser.googleId,
-      },
-    })
+    axios
+      .get('/inviteUsers', {
+        params: {
+          currentUser: currentUser.googleId,
+        },
+      })
       .then((response) => {
         this.setState({
           otherUsers: response.data,
