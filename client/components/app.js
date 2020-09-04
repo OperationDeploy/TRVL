@@ -16,7 +16,6 @@ class App extends Component {
       currentUser: '',
       otherUsers: [],
       currentTrip: { id: 2 },
-
     };
 
     this.onClickPlanTrip = this.onClickPlanTrip.bind(this);

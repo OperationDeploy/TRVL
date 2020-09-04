@@ -183,7 +183,8 @@ const ResponsiveDrawer = ({
           clickTrips={clickTrips}
           onClickGetTrips={onClickGetTrips}
           currentUser={currentUser}
-          currentTrip={currentTrip} />
+          currentTrip={currentTrip}
+        />
         <PlanATrip
           clickPlan={clickPlan}
           onClickPlanTrip={onClickPlanTrip}
