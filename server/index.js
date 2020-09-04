@@ -15,6 +15,8 @@ const {
   getSplit,
   addSplit,
   getAllTrips,
+  getPhotos,
+  addPhoto,
 } = require('./queries.js');
 
 const app = express();
@@ -47,6 +49,11 @@ app.get('/get', (req, res) => {
 app.get('/split/:trip/:user', (req, res) => {
   getSplit(req.params, res);
 });
+
+app.get('/photos/:trip', (req, res) => {
+  getPhotos(req.params, res);
+});
+
 // POST
 
 // add preferences
@@ -81,7 +88,8 @@ app.post('/photos', (req, res) => {
     if (err) {
       res.sendStatus(500);
     }
-    res.send(req.file.filename);
+    addPhoto(req, res);
+    // res.send(req.file.filename);
   });
 });
 
