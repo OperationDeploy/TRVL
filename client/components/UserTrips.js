@@ -80,7 +80,7 @@ const UserTrips = ({ currentUser, currentTrip }) => {
 
 UserTrips.propTypes = {
   currentUser: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
@@ -88,7 +88,13 @@ UserTrips.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
-  currentTrip: PropTypes.objectOf.isRequired,
+  currentTrip: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+  }).isRequired,
 };
 
 export default UserTrips;

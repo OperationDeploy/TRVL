@@ -31,7 +31,7 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'photos');
+    cb(null, 'public');
   },
   filename(req, file, cb) {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -97,6 +97,7 @@ app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
 });
 
+app.use(express.static('public'));
 app.use(express.static(DIST_DIR)); // NEW
 
 app.listen(PORT, () => {

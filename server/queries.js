@@ -75,7 +75,9 @@ const addSplit = async (req, res) => {
 const getSplit = async ({ trip, user }, res) => {
   const response = {};
   let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
-  let users = items.map((item) => User.findOne({ where: { googleId: item.purchaser_id }, raw: true }));
+  let users = items.map((item) => User.findOne(
+    { where: { googleId: item.purchaser_id }, raw: true },
+  ));
   await Promise.all(users).then((result) => { users = result; });
   items = items.map((item, i) => {
     const newItem = item;
@@ -128,13 +130,17 @@ const setDest = (req) => {
 };
 
 const getPhotos = async ({ trip }, res) => {
-  const photos = await TripPhoto.findAll({ where: { trip_id: trip } });
+  const photos = await TripPhoto.findAll({ where: { trip_id: trip },
+    order: [
+      ['createdAt', 'DESC'],
+    ] });
   res.send(photos);
 };
 
-const addPhoto = ({ file, body }, res) => {
+const addPhoto = async ({ file, body }, res) => {
   const { user, trip } = body;
-  TripPhoto.create({ user_id: user, trip_id: trip, photo_link: file.filename });
+  const photo = await TripPhoto.create({ user_id: user, trip_id: trip, photo_link: file.filename });
+  res.send(photo);
 };
 
 const getAllTrips = async (req, res) => {

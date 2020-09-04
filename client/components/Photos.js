@@ -23,7 +23,7 @@ const Photos = ({ currentTrip, currentUser }) => {
     data.append('trip', currentTrip.id);
     axios.post('/photos', data)
       .then((res) => {
-        console.info(res.data);
+        setPhotos([res.data, ...photos]);
       });
   };
 
@@ -48,15 +48,29 @@ const Photos = ({ currentTrip, currentUser }) => {
         />
       </Button>
       {photos.map((photo, i) => (
-        <img alt={i} src={`http://localhost:3000/photos/${photo.photo_link}`} />
+        <img alt={i} src={`http://localhost:3000/${photo.photo_link}`} width="330" />
       ))}
     </div>
   );
 };
 
 Photos.propTypes = {
-  currentTrip: PropTypes.objectOf.isRequired,
-  currentUser: PropTypes.objectOf.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.string,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
+  currentTrip: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+  }).isRequired,
 };
 
 export default Photos;

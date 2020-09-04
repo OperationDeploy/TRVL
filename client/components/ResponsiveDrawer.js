@@ -193,7 +193,7 @@ ResponsiveDrawer.propTypes = {
   clickPlan: PropTypes.bool.isRequired,
   onClickPlanTrip: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
@@ -203,12 +203,10 @@ ResponsiveDrawer.propTypes = {
   }).isRequired,
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
   }).isRequired,
 };
 
