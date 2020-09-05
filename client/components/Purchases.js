@@ -21,7 +21,7 @@ const Purchases = ({ currentUser, currentTrip }) => {
     });
   }, []);
   return (
-    <div>
+    <div className="purchase-container">
       <Typography component="h1" variant="h2">
         Purchases
       </Typography>

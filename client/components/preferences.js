@@ -107,8 +107,8 @@ const ContinuousSlider = ({ currentUser }) => {
   }
 
   return (
-    <Container fixed>
-      <div>
+    <Container fixed classes={{ root: 'preferences-container' }}>
+      <div className="prefs">
         <label htmlFor="text">
           Trip name:
           <input

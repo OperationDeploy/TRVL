@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Favicon from 'react-favicon';
 import GoogleLogin from 'react-google-login';
-// import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
-
-// import { flexbox } from '@material-ui/system';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import logo from '../src/logo.png';
 // import { Typography } from '@material-ui/core';
 
 // import { OAUTH_CLIENT_ID } from '../../config.js';
@@ -68,15 +63,21 @@ class App extends Component {
     const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips } = this.state;
     if (!loginComplete) {
       return (
-        <Grid container justify="center" alignItems="center" className="splash-page" style={{ minHeight: '100vh'}}>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className="splash-page-container"
+          style={{ minHeight: '100vh' }}
+        >
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
           <Grid item xs={6}>
             <Card className="splash-card" alignItems="center">
-                <CardMedia
-                  className="splashlogo"
-                  image="https://i.ibb.co/bJkYJX1/TRVLsqlogo-2.png"
-                  style={{ height: 500 }}
-                />
+              <CardMedia
+                className="splashlogo"
+                image="https://i.ibb.co/bJkYJX1/TRVLsqlogo-2.png"
+                style={{ height: 500 }}
+              />
               <CardActions alignItems="stretch">
                 <Button fullWidth variant="outlined" color="default">
                   <GoogleLogin
@@ -94,7 +95,7 @@ class App extends Component {
       );
     }
     return (
-      <Container className="">
+      <Container className="main-container">
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
           clickPlan={clickPlan}
