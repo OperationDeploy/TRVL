@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import apiKey from './config';
 
 const Flights = ({ currentUser, currentTrip }) => {
   const [flightData, setFlightData] = useState({});
@@ -36,7 +37,7 @@ const Flights = ({ currentUser, currentTrip }) => {
         'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/US/USD/en-US/MSY-sky/BNA-sky/2020-09-10',
         {
           headers: {
-            'x-rapidapi-key': '0bab63c571mshc3c168e88ae6b44p14c63fjsn0a3bbb552a96',
+            'x-rapidapi-key': apiKey,
             'x-rapidapi-host': 'skyscanner-skyscanner-flight-search-v1.p.rapidapi.com',
             useQueryString: true,
             'content-type': 'application/octet-stream',
