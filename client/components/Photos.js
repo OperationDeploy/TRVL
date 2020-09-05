@@ -12,7 +12,7 @@ const Photos = ({ currentTrip, currentUser }) => {
     axios.get(`/photos/${currentTrip.id}`)
       .then(({ data }) => {
         setPhotos(data);
-        console.log('photos from server', data);
+        console.info('photos from server', data);
       });
   }, []);
 
@@ -23,6 +23,7 @@ const Photos = ({ currentTrip, currentUser }) => {
     data.append('trip', currentTrip.id);
     axios.post('/photos', data)
       .then((res) => {
+        res.data.userName = `${currentUser.first_name}`
         setPhotos([res.data, ...photos]);
       });
   };
@@ -48,7 +49,12 @@ const Photos = ({ currentTrip, currentUser }) => {
         />
       </Button>
       {photos.map((photo, i) => (
-        <img alt={i} src={`http://localhost:3000/${photo.photo_link}`} width="330" />
+        <div>
+          <img alt={i} src={`http://localhost:3000/${photo.photo_link}`} width="330" />
+          <Typography component="h7" variant="h7">
+            {`Posted by ${photo.userName} on ${new Date(photo.createdAt).toDateString()}`}
+          </Typography>
+        </div>
       ))}
     </div>
   );

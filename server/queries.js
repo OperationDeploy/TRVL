@@ -131,10 +131,17 @@ const setDest = (req) => {
 
 const getPhotos = async ({ trip }, res) => {
   const photos = await TripPhoto.findAll({ where: { trip_id: trip },
+    raw: true,
     order: [
       ['createdAt', 'DESC'],
     ] });
-  res.send(photos);
+  let users = photos.map((photo) => User.findOne(
+    { where: { googleId: photo.user_id }, raw: true },
+  ));
+  await Promise.all(users).then((results) => { users = results; });
+  res.send(
+    photos.map((photo, i) => ({ ...photo, userName: `${users[i].first_name} ${users[i].last_name}` })),
+  );
 };
 
 const addPhoto = async ({ file, body }, res) => {
