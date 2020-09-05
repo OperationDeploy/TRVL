@@ -101,7 +101,7 @@ const ResponsiveDrawer = ({
       </List>
       <Divider />
       <List>
-        {['Login', 'Logout'].map((text, index) => (
+        {['Logout'].map((text, index) => (
           <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
             <ListItemIcon>
               {index % 2 === 0 ? <PersonIcon /> : <PersonOutlineIcon />}
