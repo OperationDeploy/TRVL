@@ -20,6 +20,7 @@ const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, otherUsers }) => {
           Plan A Trip
         </Button>
       </div>
+
     </div>
   );
 };

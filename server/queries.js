@@ -1,5 +1,6 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
+
 const { generatePlaces } = require('./algo.js');
 const {
   User,
@@ -147,6 +148,7 @@ const setDest = (req) => {
   });
 };
 
+
 // Gets the users from the db who are not the current user
 const getOtherUsers = async (req, res) => {
   const inviteThem = await User.findAll({
@@ -195,6 +197,7 @@ const enterProposal = async (req) => {
     }
   });
 };
+
 
 const getPhotos = () => {};
 

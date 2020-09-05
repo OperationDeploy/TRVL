@@ -8,7 +8,7 @@ const Trips = ({ clickTrips, onClickGetTrips, currentUser, currentTrip }) => {
     return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
   }
   return (
-    <div>
+    <div className="trip-container">
       <Button
         variant="contained"
         onClick={() => {

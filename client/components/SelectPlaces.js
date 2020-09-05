@@ -31,7 +31,7 @@ const SelectPlaces = ({ currentUser, trip }) => {
   };
 
   return (
-    <div>
+    <div className="places-container">
       <header>Here are Your Places:</header>
       <ul>
         {places.map((dest) => (

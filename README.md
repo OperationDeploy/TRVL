@@ -44,7 +44,7 @@ Please read \_CONTRIBUTING.md for details on our code of conduct, and the proces
 
 ## Team: Operation Deploy
 
-[Josh Junez](https://github.com/joshjnunez)
+[Josh Nunez](https://github.com/joshjnunez)
 [Garrett Jones](https://github.com/gjones2019)
 [Jessa Daggs](https://github.com/jldaggs88)
 [Austin Brown](https://github.com/austinbrown-opspark)

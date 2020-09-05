@@ -38,7 +38,7 @@ const UserTrips = ({ currentUser, currentTrip }) => {
   }
 
   return (
-    <div>
+    <div classNAme="itinerary-container">
       <Typography variant="h1">Trips</Typography>
       {trips.map((data) => (
         <List>
