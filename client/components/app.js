@@ -5,8 +5,6 @@ import GoogleLogin from 'react-google-login';
 import ResponsiveDrawer from './ResponsiveDrawer';
 import logo from '../src/logo.png';
 
-// import { OAUTH_CLIENT_ID } from '../../config.js';
-
 class App extends Component {
   constructor(props) {
     super(props);
