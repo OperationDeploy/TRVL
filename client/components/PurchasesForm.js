@@ -40,7 +40,7 @@ const PurchasesForm = ({ savePurchase }) => {
           variant="standard"
           value={price}
           currencySymbol="$"
-     // minimumValue="0"
+          // minimumValue="0"
           outputFormat="string"
           decimalCharacter="."
           digitGroupSeparator=","

@@ -1,9 +1,0 @@
-.splash-card-square.mdl-card {
-  display: flex;
-  justify-content: center;
-  width: 320px;
-  height: 320px;
-}
-.splash-card-square > .mdl-card__actions {
-  justify-content: center;
-}

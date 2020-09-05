@@ -22,7 +22,7 @@ const DebtorList = ({ debts }) => {
       <ListItem dense button>
         <ListItemText primary="No one yet." />
       </ListItem>
-  </List>
+    </List>
   );
 };
 

@@ -2,9 +2,13 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import Favicon from 'react-favicon';
 import GoogleLogin from 'react-google-login';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import ResponsiveDrawer from './ResponsiveDrawer';
-import logo from '../src/logo.png';
 
 // import { OAUTH_CLIENT_ID } from '../../config.js';
 
@@ -58,28 +62,33 @@ class App extends Component {
     const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips } = this.state;
     if (!loginComplete) {
       return (
-        <div>
+        <Grid container justify="center" alignItems="center" className="splash-page" style={{ minHeight: '100vh' }}>
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
-          <Container width={1} style={{ justifyContent: 'center' }}>
-            <div className="card">
-              <img src={logo} alt="Logo" styles={{ width: '200', height: '121' }} />
-              <div className="container">
-                <GoogleLogin
-                  clientId="882538519679-1djm34mua0vj39jocql6ncg86mric4vb.apps.googleusercontent.com"
-                  buttonText="Login with Google"
-                  onSuccess={this.responseGoogle}
-                  onFailure={this.responseGoogle}
-                  cookiePolicy="single_host_origin"
-                  style={{ position: 'center' }}
+          <Grid item xs={12}>
+            <Card className="splash-card" justifyContent="center" alignItems="center">
+                <CardMedia
+                  className="splashlogo"
+                  image="https://i.ibb.co/DkQHwwJ/Untitled-drawing-1.png"
+                  style={{ height: 280, padding: 100 }}
                 />
-              </div>
-            </div>
-          </Container>
-        </div>
+              <CardActions alignItems="stretch">
+                <Button fullWidth variant="outlined" color="default">
+                  <GoogleLogin
+                    clientId="882538519679-1djm34mua0vj39jocql6ncg86mric4vb.apps.googleusercontent.com"
+                    buttonText="Login with Google"
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.responseGoogle}
+                    cookiePolicy="single_host_origin"
+                  />
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+        </Grid>
       );
     }
     return (
-      <div>
+      <Container className="">
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
           clickPlan={clickPlan}
@@ -89,7 +98,7 @@ class App extends Component {
           currentUser={currentUser}
           currentTrip={currentTrip}
         />
-      </div>
+      </Container>
     );
   }
 }
