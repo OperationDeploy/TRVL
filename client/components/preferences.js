@@ -100,10 +100,12 @@ const ContinuousSlider = ({ currentUser, otherUsers }) => {
   };
 
   useEffect(() => {
-    axios.post('./tripUser', {
-      currentUser,
-      trip_id: trip,
-    });
+    if (trip !== 0) {
+      axios.post('./tripUser', {
+        currentUser,
+        trip_id: trip,
+      });
+    }
   }, [trip]);
 
   const selectPlaces = () => {
