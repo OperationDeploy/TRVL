@@ -18,7 +18,7 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-const ContinuousSlider = ({ currentUser }) => {
+const ContinuousSlider = ({ currentUser, setClickedPage }) => {
   const classes = useStyles();
   // states of our preferences
   const [name, setName] = useState('');
@@ -81,7 +81,7 @@ const ContinuousSlider = ({ currentUser }) => {
       })
       .then((result) => {
         const tripId = result.data.id;
-        setTrip(tripId);
+        setTrip(result.data);
         axios.post('/preferences', {
           user_id: userId,
           trip_id: tripId,
@@ -102,7 +102,7 @@ const ContinuousSlider = ({ currentUser }) => {
   };
 
   if (buttonClicked) {
-    return <SelectPlaces trip={trip} currentUser={currentUser} />;
+    return <SelectPlaces trip={trip} currentUser={currentUser} setClickedPage={setClickedPage} />;
   }
 
   return (
@@ -290,6 +290,7 @@ const ContinuousSlider = ({ currentUser }) => {
 };
 
 ContinuousSlider.propTypes = {
+  setClickedPage: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.number,
     first_name: PropTypes.string,

@@ -3,27 +3,21 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import UserTrips from './UserTrips';
 
-const Trips = ({ clickTrips, onClickGetTrips, currentUser, currentTrip }) => {
-  if (clickTrips) {
-    return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
-  }
-  return (
+const Trips = ({ setClickedPage, currentUser, currentTrip }) => (
     <div>
       <Button
         variant="contained"
         onClick={() => {
-          onClickGetTrips();
+          setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
         }}
       >
         Trips
       </Button>
     </div>
-  );
-};
+);
 
 Trips.propTypes = {
-  clickTrips: PropTypes.bool.isRequired,
-  onClickGetTrips: PropTypes.func.isRequired,
+  setClickedPage: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.string,
     first_name: PropTypes.string,

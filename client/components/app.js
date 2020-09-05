@@ -12,23 +12,11 @@ class App extends Component {
 
     this.state = {
       loginComplete: false,
-      clickPlan: false,
-      clickTrips: false,
       currentUser: '',
       currentTrip: { id: 2 },
     };
 
-    this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
-    this.onClickGetTrips = this.onClickGetTrips.bind(this);
     this.responseGoogle = this.responseGoogle.bind(this);
-  }
-
-  onClickPlanTrip() {
-    this.setState((prevState) => ({ clickPlan: !prevState.clickPlan }));
-  }
-
-  onClickGetTrips() {
-    this.setState((prevState) => ({ clickTrips: !prevState.clickTrips }));
   }
 
   responseGoogle(response) {
@@ -54,7 +42,7 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips } = this.state;
+    const { loginComplete, currentUser, currentTrip } = this.state;
     if (!loginComplete) {
       return (
         <div>
@@ -74,10 +62,6 @@ class App extends Component {
       <div>
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
-          clickPlan={clickPlan}
-          onClickPlanTrip={this.onClickPlanTrip}
-          clickTrips={clickTrips}
-          onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
           currentTrip={currentTrip}
         />

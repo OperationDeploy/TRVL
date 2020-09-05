@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import { HOST, PORT } from '../../config';
 
 const Photos = ({ currentTrip, currentUser }) => {
   const [photos, setPhotos] = useState([]);
@@ -36,25 +37,25 @@ const Photos = ({ currentTrip, currentUser }) => {
       <Typography component="h1" variant="h2">
         Photos
       </Typography>
-      <Button
-        variant="contained"
-        component="label"
-      >
-        Upload File
-        <input
-          type="file"
-          style={{ display: 'none' }}
-          onChange={fileSelectHandler}
-        />
-      </Button>
+      <div>
+        <Button
+          variant="contained"
+          component="label"
+        >
+          Upload Photo
+          <input
+            type="file"
+            style={{ display: 'none' }}
+            onChange={fileSelectHandler}
+          />
+        </Button>
+      </div>
       {photos.map((photo, i) => (
         <div>
           <div>
-            <Typography component="h7" variant="h7">
-            {`Posted by ${photo.userName} on ${new Date(photo.createdAt).toDateString()}`}
-          </Typography>
+            {`Uploaded by ${photo.userName} on ${new Date(photo.createdAt).toDateString()}`}
           </div>
-          <img alt={i} src={`http://localhost:3000/${photo.photo_link}`} width="330" />
+          <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
         </div>
       ))}
     </div>

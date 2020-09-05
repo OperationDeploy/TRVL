@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -59,10 +59,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResponsiveDrawer = ({
-  clickPlan,
-  onClickPlanTrip,
-  clickTrips,
-  onClickGetTrips,
   currentUser,
   currentTrip,
 }) => {
@@ -74,12 +70,17 @@ const ResponsiveDrawer = ({
     setMobileOpen(!mobileOpen);
   };
 
+  const [clickedPage, setClickedPage] = useState(null);
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => console.info('open')} key={text}>
+          <ListItem button onClick={() => {
+            setClickedPage(null);
+            setMobileOpen(!mobileOpen);
+          }} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -113,6 +114,22 @@ const ResponsiveDrawer = ({
   );
 
   const container = window !== undefined ? () => window.document.body : undefined;
+
+  const landingPage = (<div>
+  <Avatar
+    alt="profilepic"
+    src={currentUser.profile_pic}
+    className={classes.large}
+  />
+  <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
+  <Trips
+    currentUser={currentUser}
+    currentTrip={currentTrip}
+    setClickedPage={setClickedPage} />
+  <PlanATrip
+    currentUser={currentUser}
+    setClickedPage={setClickedPage} />
+  </div>);
 
   return (
     <div className={classes.root}>
@@ -166,32 +183,13 @@ const ResponsiveDrawer = ({
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Avatar
-          alt="profilepic"
-          src={currentUser.profile_pic}
-          className={classes.large}
-        />
-        <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
-        <Trips
-          clickTrips={clickTrips}
-          onClickGetTrips={onClickGetTrips}
-          currentUser={currentUser}
-          currentTrip={currentTrip} />
-        <PlanATrip
-          clickPlan={clickPlan}
-          onClickPlanTrip={onClickPlanTrip}
-          currentUser={currentUser}
-        />
+        {clickedPage || landingPage}
       </main>
     </div>
   );
 };
 
 ResponsiveDrawer.propTypes = {
-  onClickGetTrips: PropTypes.func.isRequired,
-  clickTrips: PropTypes.bool.isRequired,
-  clickPlan: PropTypes.bool.isRequired,
-  onClickPlanTrip: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.string,
     first_name: PropTypes.string,

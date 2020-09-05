@@ -49,6 +49,7 @@ const addPreferences = (req) => {
       });
     }
   });
+  TripUser.create({ trip_id: req.trip_id, user_id: req.user_id });
 };
 
 const addSplit = async (req, res) => {
@@ -116,7 +117,6 @@ const planTrip = async (req, res) => {
   const trip = await Trip.create(
     { name: req.name, start_date: req.start_date, end_date: req.end_date },
   );
-  await TripUser.create({ trip_id: req.trip_id, user_id: req.user_id });
 
   res.send(trip);
 };
