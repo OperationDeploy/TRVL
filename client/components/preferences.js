@@ -77,7 +77,7 @@ const ContinuousSlider = ({ currentUser }) => {
         name,
         start_date: startDate,
         end_date: endDate,
-        googleId: currentUser.googleId,
+        user_id: currentUser.id,
       })
       .then((result) => {
         const tripId = result.data.id;
@@ -291,6 +291,7 @@ const ContinuousSlider = ({ currentUser }) => {
 
 ContinuousSlider.propTypes = {
   currentUser: PropTypes.shape({
+    id: PropTypes.number,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
