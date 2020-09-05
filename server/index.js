@@ -15,6 +15,7 @@ const {
   getSplit,
   addSplit,
   getAllTrips,
+  getTripForFlight,
 } = require('./queries.js');
 
 const app = express();
@@ -87,6 +88,10 @@ app.post('/photos', (req, res) => {
 
 app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
+});
+
+app.post('/getTripForFlight', (req, res) => {
+  getTripForFlight(req, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

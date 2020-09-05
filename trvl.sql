@@ -22,6 +22,8 @@ CREATE TABLE "Trips" (
   "destination" TEXT,
   "start_date" date,
   "end_date" date,
+  "departure_city" TEXT,
+  "airport_code" TEXT UNIQUE,
   "googleId" TEXT,
   "createdAt" time,
   "updatedAt" time
@@ -99,6 +101,7 @@ CREATE TABLE "Destinations" (
   "city_type" int,
   "group_age" int,
   "group_relationship" int,
+  "airport_code" TEXT UNIQUE,
   "createdAt" time,
   "updatedAt" time
 );
@@ -127,6 +130,8 @@ CREATE TABLE "SplitOwedPayments" (
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
 
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
+
+ALTER TABLE "Trips" ADD FOREIGN KEY ("airport_code") REFERENCES "Destinations" ("airport_code");
 
 ALTER TABLE "Trips" ADD FOREIGN KEY ("googleId") REFERENCES "Users" ("googleId");
 

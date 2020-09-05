@@ -10,10 +10,12 @@ import axios from 'axios';
 import Itinerary from './Itinerary';
 import Purchases from './Purchases';
 import Photos from './Photos';
+import Flights from './Flights';
 
-const UserTrips = ({ currentUser, currentTrip }) => {
+const UserTrips = ({ currentUser }) => {
   const [clicked, setClicked] = useState('');
   const [trips, setTrips] = useState([]);
+  const [currentTrip, setCurrentTrip] = useState({});
 
   const handleChange = (response) => {
     setTrips(response);
@@ -29,11 +31,13 @@ const UserTrips = ({ currentUser, currentTrip }) => {
 
   switch (clicked) {
     case 'itinerary':
-      return <Itinerary />;
+      return <Itinerary currentUser={currentUser} currentTrip={currentTrip} />;
     case 'purchases':
       return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
     case 'photos':
       return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
+    case 'flights':
+      return <Flights currentUser={currentUser} currentTrip={currentTrip} />;
     default:
   }
 
@@ -45,22 +49,57 @@ const UserTrips = ({ currentUser, currentTrip }) => {
           <ListItem>
             <ListItemText>{data.name}</ListItemText>
             <ListItemSecondaryAction>
-              <Button onClick={() => setClicked('itinerary')} color="primary">
+              <Button
+                onClick={() => {
+                  const trip = { id: data.id, city: data.destination };
+                  setCurrentTrip(trip);
+                  setClicked('itinerary');
+                }}
+                color="primary"
+              >
                 Trip Itinerary
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
             <ListItemSecondaryAction>
-              <Button onClick={() => setClicked('purchases')} color="primary">
+              <Button
+                onClick={() => {
+                  const trip = { id: data.id, city: data.destination };
+                  setCurrentTrip(trip);
+                  setClicked('purchases');
+                }}
+                color="primary"
+              >
                 Purchases
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
             <ListItemSecondaryAction>
-              <Button onClick={() => setClicked('photos')} color="primary">
+              <Button
+                onClick={() => {
+                  const trip = { id: data.id, city: data.destination };
+                  setCurrentTrip(trip);
+                  setClicked('photos');
+                }}
+                color="primary"
+              >
                 Photos
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button
+                onClick={() => {
+                  const trip = { id: data.id, city: data.destination };
+                  setCurrentTrip(trip);
+                  setClicked('flights');
+                }}
+                color="primary"
+              >
+                Flights
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
@@ -87,7 +126,10 @@ UserTrips.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
-  currentTrip: PropTypes.objectOf.isRequired,
+  currentTrip: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+  }).isRequired,
 };
 
 export default UserTrips;

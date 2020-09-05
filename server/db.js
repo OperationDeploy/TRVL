@@ -1,12 +1,7 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
-const {
-  DB_NAME,
-  DB_USER,
-  DB_PASS,
-  DB_HOST,
-} = process.env;
+const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
@@ -50,6 +45,14 @@ const Trip = sequelize.define('Trip', {
   destination: Sequelize.TEXT,
   start_date: Sequelize.DATE,
   end_date: Sequelize.DATE,
+  departure_city: Sequelize.TEXT,
+  airport_code: {
+    type: Sequelize.TEXT,
+    references: {
+      model: 'destinations',
+      key: 'airport_code',
+    },
+  },
   googleId: {
     type: Sequelize.TEXT,
     references: {
@@ -208,6 +211,7 @@ const Destinations = sequelize.define('Destinations', {
   proximity: Sequelize.INTEGER,
   group_age: Sequelize.INTEGER,
   group_relationship: Sequelize.INTEGER,
+  airport_code: Sequelize.TEXT,
 });
 
 const SplitItem = sequelize.define('SplitItem', {
