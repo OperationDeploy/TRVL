@@ -5,7 +5,6 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 
 const Photos = ({ currentTrip, currentUser }) => {
-  // TODO: CONNECT PHOTOS TO DB
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const Photos = ({ currentTrip, currentUser }) => {
     data.append('trip', currentTrip.id);
     axios.post('/photos', data)
       .then((res) => {
-        res.data.userName = `${currentUser.first_name}`
+        res.data.userName = `${currentUser.first_name} ${currentUser.last_name}`;
         setPhotos([res.data, ...photos]);
       });
   };
@@ -50,10 +49,12 @@ const Photos = ({ currentTrip, currentUser }) => {
       </Button>
       {photos.map((photo, i) => (
         <div>
-          <img alt={i} src={`http://localhost:3000/${photo.photo_link}`} width="330" />
-          <Typography component="h7" variant="h7">
+          <div>
+            <Typography component="h7" variant="h7">
             {`Posted by ${photo.userName} on ${new Date(photo.createdAt).toDateString()}`}
           </Typography>
+          </div>
+          <img alt={i} src={`http://localhost:3000/${photo.photo_link}`} width="330" />
         </div>
       ))}
     </div>
