@@ -41,11 +41,7 @@ const Purchases = ({ currentUser, currentTrip }) => {
                 if (Array.isArray(data)) {
                   data.forEach((payment) => {
                     const name = `${payment.first_name} ${payment.last_name}`;
-                    debts[name] = debts[name]
-                      // eslint-disable-next-line operator-linebreak
-                      ? debts[name] + payment.amount
-                      // eslint-disable-next-line operator-linebreak
-                      : payment.amount;
+                    debts[name] = debts[name] ? debts[name] + payment.amount : payment.amount;
                   });
                   setDebts(debts);
                   setPurchases([...purchases, text]);

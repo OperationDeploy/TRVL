@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import ResponsiveDrawer from './ResponsiveDrawer';
+import './App.scss';
 
 // import { OAUTH_CLIENT_ID } from '../../config.js';
 
@@ -62,15 +63,21 @@ class App extends Component {
     const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips } = this.state;
     if (!loginComplete) {
       return (
-        <Grid container justify="center" alignItems="center" className="splash-page" style={{ minHeight: '100vh' }}>
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          className="splash-page"
+          style={{ minHeight: '100vh' }}
+        >
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
           <Grid item xs={7}>
             <Card className="splash-card" alignItems="center">
-                <CardMedia
-                  className="splash-logo"
-                  image="https://i.ibb.co/bJkYJX1/TRVLsqlogo-2.png"
-                  style={{ height: 500 }}
-                />
+              <CardMedia
+                className="splash-logo"
+                image="https://i.ibb.co/bJkYJX1/TRVLsqlogo-2.png"
+                style={{ height: 500 }}
+              />
               <CardActions alignItems="stretch">
                 <Button fullWidth variant="outlined" color="default">
                   <GoogleLogin
@@ -88,7 +95,7 @@ class App extends Component {
       );
     }
     return (
-      <Container className="">
+      <Container className="content-container">
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
           clickPlan={clickPlan}
