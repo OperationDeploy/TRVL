@@ -47,13 +47,9 @@ const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
         {invitedTripsArray.map((invite) => (
           <button
             type="submit"
-            key={invite}
+            key={invite.id}
             onClick={(e) => handleClick(
-              e,
-              invite.name,
-              invite.id,
-              invite.start_date,
-              invite.end_date,
+              e, invite.name, invite.id, invite.start_date, invite.end_date,
             )
             }
           >

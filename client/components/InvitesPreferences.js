@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,7 +33,6 @@ const InvitesPreferences = ({
   const [groupRelationship, setRelationship] = useState(50);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const [trip, setTrip] = useState(0);
   const userId = currentUser.googleId;
 
   // sets new states for our preferences upon change
@@ -68,8 +66,9 @@ const InvitesPreferences = ({
 
   // remove trip invite from myInvites and invitedTripsArray
   // after invited trip preferences submission
-  const remove = (id) => {
-    axios.post('/removeInvite', { trip_id: inviteTripId, user: currentUser.googleId })
+  const remove = () => {
+    axios
+      .post('/removeInvite', { trip_id: inviteTripId, user: currentUser.googleId })
       .catch((err) => console.warn(err));
   };
 
@@ -82,8 +81,8 @@ const InvitesPreferences = ({
         end_date: endDate,
         googleId: currentUser.googleId,
       })
-      .then(axios
-        .post('/preferences', {
+      .then(
+        axios.post('/preferences', {
           user_id: userId,
           trip_id: inviteTripId,
           temperature,
@@ -93,13 +92,15 @@ const InvitesPreferences = ({
           proximity,
           group_age: groupAge,
           group_relationship: groupRelationship,
-        }))
+        }),
+      )
       .then(
         axios.post('./tripUser', {
           currentUser,
           trip_id: inviteTripId,
         }),
-      ).then(remove())
+      )
+      .then(remove())
       .catch((err) => console.warn('ERR', err));
   };
 

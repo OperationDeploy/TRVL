@@ -204,11 +204,10 @@ const getAllTrips = async (req, res) => {
 };
 
 const tripUser = async (req) => {
-  // console.log(req, 'REQ');
   await TripUser.create({
     user_id: req.currentUser.googleId || req.currentUser.user_id,
     trip_id: req.trip_id,
-  });
+  }).catch((err) => console.warn(err, 'ERRRRRRRR!!@#$'));
 };
 
 const inviteAllOtherUsers = async (req) => {
