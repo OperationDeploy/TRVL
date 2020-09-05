@@ -41,7 +41,6 @@ const Photos = ({ currentTrip }) => {
 
 Photos.propTypes = {
   currentTrip: PropTypes.objectOf.isRequired,
-  // currentUser: PropTypes.objectOf.isRequired,
 };
 
 export default Photos;

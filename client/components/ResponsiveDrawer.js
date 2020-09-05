@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { StylesProvider } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
@@ -21,8 +21,12 @@ import HomeIcon from '@material-ui/icons/Home';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import axios from 'axios';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+
+import InvitesPage from './InvitesPage';
+
 import './App.scss';
 
 const drawerWidth = 240;
@@ -68,10 +72,13 @@ const ResponsiveDrawer = ({
   onClickGetTrips,
   currentUser,
   currentTrip,
+  otherUsers,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [showInvites, setShowInvite] = useState(false);
+  const [myInvites, setMyInvites] = useState([]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -93,7 +100,7 @@ const ResponsiveDrawer = ({
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
+          <ListItem button onClick={() => setShowInvite(!showInvites)} key={text}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -115,88 +122,126 @@ const ResponsiveDrawer = ({
     </div>
   );
 
+  useEffect(() => {
+    axios
+      .get('/getInvites', { params: { googleId: currentUser.googleId } })
+      .then((response) => setMyInvites(response.data))
+      .catch((err) => console.warn('ERRR', err));
+  }, [showInvites]);
+
+  if (showInvites === true) {
+    // set state for invited trips
+    // pass state to preferences
+    // refactor prefs to use state from invited trip
+
+    return (
+      <div>
+        <InvitesPage
+          currentUser={currentUser}
+          otherUsers={otherUsers}
+          myInvites={myInvites}
+        />
+        <Trips
+          clickTrips={clickTrips}
+          onClickGetTrips={onClickGetTrips}
+          currentUser={currentUser}
+          currentTrip={currentTrip}
+        />
+      </div>
+    );
+  }
+
   const container = window !== undefined ? () => window.document.body : undefined;
 
   return (
-    <StylesProvider>
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar position="fixed" className={classes.appBar}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              edge="start"
-              onClick={handleDrawerToggle}
-              className={classes.menuButton}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap>
-              TRVL
-            </Typography>
-          </Toolbar>
-        </AppBar>
-        <nav className={classes.drawer} aria-label="mailbox folders">
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-          <Hidden smUp implementation="css">
-            <Drawer
-              container={container}
-              variant="temporary"
-              anchor={theme.direction === 'rtl' ? 'right' : 'left'}
-              open={mobileOpen}
-              onClose={handleDrawerToggle}
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
-              }}
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-          <Hidden xsDown implementation="css">
-            <Drawer
-              classes={{
-                paper: classes.drawerPaper,
-              }}
-              variant="permanent"
-              open
-            >
-              {drawer}
-            </Drawer>
-          </Hidden>
-        </nav>
-        <Grid className={classes.content} >
-          <Grid item className={classes.toolbar} />
-          <Grid item>
-            <Avatar
-              alt="profile-pic"
-              src={currentUser.profile_pic}
-              className="avatar"
-            />
-            <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
-            <Trips
-              clickTrips={clickTrips}
-              onClickGetTrips={onClickGetTrips}
-              currentUser={currentUser}
-              currentTrip={currentTrip}
-            />
-            <br />
-            <PlanATrip
-              clickPlan={clickPlan}
-              onClickPlanTrip={onClickPlanTrip}
-              currentUser={currentUser}
-            />
-          </Grid>
-        </Grid>
-      </div>
-    </StylesProvider>
+    <div className={classes.root}>
+      <CssBaseline />
+      <AppBar position="fixed" className={classes.appBar}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            className={classes.menuButton}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap>
+            TRVL
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <nav className={classes.drawer} aria-label="mailbox folders">
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Hidden smUp implementation="css">
+          <Drawer
+            container={container}
+            variant="temporary"
+            anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+        <Hidden xsDown implementation="css">
+          <Drawer
+            classes={{
+              paper: classes.drawerPaper,
+            }}
+            variant="permanent"
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Hidden>
+      </nav>
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Avatar
+          alt="profilepic"
+          src={currentUser.profile_pic}
+          className={classes.large}
+        />
+        <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
+        <Trips
+          clickTrips={clickTrips}
+          onClickGetTrips={onClickGetTrips}
+          currentUser={currentUser}
+          currentTrip={currentTrip}
+          otherUsers={otherUsers}
+        />
+        <PlanATrip
+          clickPlan={clickPlan}
+          onClickPlanTrip={onClickPlanTrip}
+          currentUser={currentUser}
+          otherUsers={otherUsers}
+        />
+      </main>
+    </div>
+
+    
   );
 };
 
 ResponsiveDrawer.propTypes = {
+  otherUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string,
+      profile_pic: PropTypes.string,
+      host: PropTypes.bool,
+      googleId: PropTypes.string,
+    }),
+  ).isRequired,
   onClickGetTrips: PropTypes.func.isRequired,
   clickTrips: PropTypes.bool.isRequired,
   clickPlan: PropTypes.bool.isRequired,

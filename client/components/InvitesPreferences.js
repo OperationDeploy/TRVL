@@ -5,12 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
-import Container from '@material-ui/core/Container';
 import axios from 'axios';
-import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
-import DateFnsUtils from '@date-io/date-fns';
-import SelectPlaces from './SelectPlaces';
-import InvitesButton from './InvitesButton';
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -19,8 +14,13 @@ const useStyles = makeStyles({
   },
 });
 
-// exports our ContinuousSlider
-const ContinuousSlider = ({ currentUser, otherUsers }) => {
+const InvitesPreferences = ({
+  currentUser,
+  inviteTripId,
+  invitedStartDate,
+  invitedEndDate,
+  inviteTripName,
+}) => {
   const classes = useStyles();
   // states of our preferences
   const [name, setName] = useState('');
@@ -33,8 +33,6 @@ const ContinuousSlider = ({ currentUser, otherUsers }) => {
   const [groupRelationship, setRelationship] = useState(50);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const [buttonClicked, setButtonClicked] = useState(false);
-  const [trip, setTrip] = useState(0);
   const userId = currentUser.googleId;
 
   // sets new states for our preferences upon change
@@ -60,16 +58,18 @@ const ContinuousSlider = ({ currentUser, otherUsers }) => {
     setRelationship(newValue);
   };
 
-  const handleChangeName = (event) => {
-    setName(event.target.value);
-  };
+  useEffect(() => {
+    setName(inviteTripName);
+    setStartDate(invitedStartDate);
+    setEndDate(invitedEndDate);
+  }, []);
 
-  const handleChangeStartDate = (event) => {
-    setStartDate(event);
-  };
-
-  const handleChangeEndDate = (event) => {
-    setEndDate(event);
+  // remove trip invite from myInvites and invitedTripsArray
+  // after invited trip preferences submission
+  const remove = () => {
+    axios
+      .post('/removeInvite', { trip_id: inviteTripId, user: currentUser.googleId })
+      .catch((err) => console.warn(err));
   };
 
   // Posts preferences to DB
@@ -81,12 +81,10 @@ const ContinuousSlider = ({ currentUser, otherUsers }) => {
         end_date: endDate,
         googleId: currentUser.googleId,
       })
-      .then((result) => {
-        const tripId = result.data.id;
-        setTrip(tripId);
+      .then(
         axios.post('/preferences', {
           user_id: userId,
-          trip_id: tripId,
+          trip_id: inviteTripId,
           temperature,
           city_expenses: cityExpenses,
           landscape,
@@ -94,73 +92,21 @@ const ContinuousSlider = ({ currentUser, otherUsers }) => {
           proximity,
           group_age: groupAge,
           group_relationship: groupRelationship,
-        });
-      })
+        }),
+      )
+      .then(
+        axios.post('./tripUser', {
+          currentUser,
+          trip_id: inviteTripId,
+        }),
+      )
+      .then(remove())
       .catch((err) => console.warn('ERR', err));
   };
 
-  useEffect(() => {
-    axios.post('./tripUser', {
-      currentUser,
-      trip_id: trip,
-    });
-  }, [trip]);
-
-  const selectPlaces = () => {
-    setButtonClicked(true);
-  };
-
-  if (buttonClicked) {
-    return <SelectPlaces trip={trip} currentUser={currentUser} />;
-  }
-
   return (
-    <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className="prefs">
-        <label htmlFor="text">
-          Trip name:
-          <input
-            type="text"
-            id="text"
-            name="type"
-            placeholder="text"
-            value={name}
-            onChange={handleChangeName}
-          />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              fullWidth
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="start-date"
-              label="Start Date"
-              value={startDate}
-              onChange={handleChangeStartDate}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-          </MuiPickersUtilsProvider>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              fullWidth
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="end-date"
-              label="End Date"
-              value={endDate}
-              onChange={handleChangeEndDate}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-          </MuiPickersUtilsProvider>
-        </label>
-      </div>
+    <div>
+      <div> {inviteTripName} </div>
       <div className={classes.root}>
         <Typography id="continuous-slider" gutterBottom>
           Preferences:
@@ -285,31 +231,16 @@ const ContinuousSlider = ({ currentUser, otherUsers }) => {
         >
           Submit Preferences
         </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            selectPlaces();
-          }}
-        >
-          Generate Places
-        </Button>
-        <InvitesButton otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
       </div>
-    </Container>
+    </div>
   );
 };
 
-ContinuousSlider.propTypes = {
-  otherUsers: PropTypes.arrayOf(
-    PropTypes.shape({
-      first_name: PropTypes.string,
-      last_name: PropTypes.string,
-      email: PropTypes.string,
-      profile_pic: PropTypes.string,
-      host: PropTypes.bool,
-      googleId: PropTypes.string,
-    }),
-  ).isRequired,
+InvitesPreferences.propTypes = {
+  inviteTripId: PropTypes.number.isRequired,
+  invitedStartDate: PropTypes.string.isRequired,
+  invitedEndDate: PropTypes.string.isRequired,
+  inviteTripName: PropTypes.string.isRequired,
   currentUser: PropTypes.shape({
     first_name: PropTypes.string,
     last_name: PropTypes.string,
@@ -319,4 +250,4 @@ ContinuousSlider.propTypes = {
     googleId: PropTypes.string,
   }).isRequired,
 };
-export default ContinuousSlider;
+export default InvitesPreferences;

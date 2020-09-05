@@ -19,6 +19,7 @@ A step by step series of examples that tell you how to get a development env run
 7. Run the command **_npm run start_** to just start the server/index.js.
 8. Run the command **_npm run build_** to begin starting frontend.
 9. Run the command **_npm run dev_** to start development server.
+10. Run the command **_npm run seed_** to seed the database with destinations.
 
 ## Deployment
 

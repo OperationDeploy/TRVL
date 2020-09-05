@@ -22,6 +22,7 @@ class App extends Component {
       clickPlan: false,
       clickTrips: false,
       currentUser: '',
+      otherUsers: [],
       currentTrip: { id: 2 },
     };
 
@@ -31,7 +32,22 @@ class App extends Component {
   }
 
   onClickPlanTrip() {
-    this.setState((prevState) => ({ clickPlan: !prevState.clickPlan }));
+    const { currentUser, clickPlan, otherUsers } = this.state;
+    this.setState({ clickPlan: !clickPlan });
+    // axios to get the current users who aren't users
+    axios
+      .get('/inviteUsers', {
+        params: {
+          currentUser: currentUser.googleId,
+        },
+      })
+      .then((response) => {
+        this.setState({
+          otherUsers: response.data,
+        });
+        console.info(otherUsers);
+      })
+      .catch((err) => console.warn('ERRR', err));
   }
 
   onClickGetTrips() {
@@ -60,7 +76,14 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips } = this.state;
+    const {
+      loginComplete,
+      clickPlan,
+      currentUser,
+      currentTrip,
+      clickTrips,
+      otherUsers,
+    } = this.state;
     if (!loginComplete) {
       return (
         <Grid
@@ -104,6 +127,7 @@ class App extends Component {
           onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
           currentTrip={currentTrip}
+          otherUsers={otherUsers}
         />
       </Container>
     );
