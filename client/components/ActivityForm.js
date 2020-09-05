@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
 
 const ActivityForm = ({ saveActivity }) => {
   const [value, setValue] = useState('');
@@ -23,6 +25,15 @@ const ActivityForm = ({ saveActivity }) => {
           }}
           margin="normal"
         />
+        <IconButton>
+          <AddIcon
+            onClick={(event) => {
+              event.preventDefault();
+              saveActivity(value);
+              setValue('');
+            }}
+          />
+        </IconButton>
       </form>
     </div>
   );
