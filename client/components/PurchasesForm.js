@@ -8,7 +8,7 @@ const PurchasesForm = ({ savePurchase }) => {
   const [price, setPrice] = useState('');
 
   return (
-    <div>
+    <div className="purchase-form-container">
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -40,7 +40,7 @@ const PurchasesForm = ({ savePurchase }) => {
           variant="standard"
           value={price}
           currencySymbol="$"
-     // minimumValue="0"
+          // minimumValue="0"
           outputFormat="string"
           decimalCharacter="."
           digitGroupSeparator=","

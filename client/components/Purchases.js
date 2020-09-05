@@ -11,14 +11,17 @@ const Purchases = ({ currentUser, currentTrip }) => {
   const [debts, setDebts] = useState([]);
 
   useEffect(() => {
-    axios.get(`/split/${currentTrip.id}/${currentUser.id}`)
-      .then(({ data }) => {
-        setPurchases(data.items.map((item) => `${item.description}: $${item.price} (${item.purchaser})`));
-        setDebts(data.debts);
-      });
+    axios.get(`/split/${currentTrip.id}/${currentUser.id}`).then(({ data }) => {
+      setPurchases(
+        data.items.map(
+          (item) => `${item.description}: $${item.price} (${item.purchaser})`,
+        ),
+      );
+      setDebts(data.debts);
+    });
   }, []);
   return (
-    <div>
+    <div className="purchase-container">
       <Typography component="h1" variant="h2">
         Purchases
       </Typography>
@@ -27,9 +30,13 @@ const Purchases = ({ currentUser, currentTrip }) => {
         savePurchase={({ description, price }) => {
           const text = `${description}: $${price}`;
           if (text.length > 0) {
-            axios.post('/split', {
-              purchaser_id: currentUser.id, trip_id: currentTrip.id, description, price,
-            })
+            axios
+              .post('/split', {
+                purchaser_id: currentUser.id,
+                trip_id: currentTrip.id,
+                description,
+                price,
+              })
               .then(({ data }) => {
                 if (Array.isArray(data)) {
                   data.forEach((payment) => {
@@ -53,9 +60,7 @@ const Purchases = ({ currentUser, currentTrip }) => {
       <Typography component="h4" variant="h5">
         Who owes you?
       </Typography>
-      <DebtorList
-        debts={debts}
-      />
+      <DebtorList debts={debts} />
     </div>
   );
 };

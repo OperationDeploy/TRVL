@@ -9,7 +9,7 @@ const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser }) => {
   }
 
   return (
-    <div>
+    <div className="pat-container">
       <Button
         variant="contained"
         onClick={() => {

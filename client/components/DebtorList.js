@@ -8,7 +8,7 @@ const DebtorList = ({ debts }) => {
   const debtViews = Object.keys(debts).map((name) => `${name}: ${debts[name]}`);
   if (debtViews.length) {
     return (
-      <List>
+      <List className="debts-container">
         {debtViews.map((debt, index) => (
           <ListItem key={index.toString()} dense button>
             <ListItemText primary={debt} />
@@ -22,7 +22,7 @@ const DebtorList = ({ debts }) => {
       <ListItem dense button>
         <ListItemText primary="No one yet." />
       </ListItem>
-  </List>
+    </List>
   );
 };
 

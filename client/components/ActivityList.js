@@ -8,7 +8,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import PropTypes from 'prop-types';
 
 const ActivityList = ({ activities, deleteActivity }) => (
-  <List>
+  <List className="activity-list-container">
     {activities.map((activity, index) => (
       <ListItem key={index.toString()} dense button>
         <ListItemText primary={activity} />
