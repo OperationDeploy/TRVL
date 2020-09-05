@@ -12,6 +12,7 @@ const {
   planTrip,
   grabPlaces,
   setDest,
+  getTripNames,
   getOtherUsers,
   enterProposal,
   getSplit,
@@ -56,7 +57,6 @@ app.get('/split/:trip/:user', (req, res) => {
 });
 
 app.get('/getInvites', (req, res) => {
-  console.log('QUERY ', req.query)
   getMyInvites(req.query, res);
 });
 
@@ -112,6 +112,10 @@ app.post('/tripUser', (req, res) => {
 
 app.post('/inviteAllOtherUsers', (req, res) => {
   inviteAllOtherUsers(req.body, res);
+});
+
+app.post('/tripNames', (req, res) => {
+  getTripNames(req.body, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

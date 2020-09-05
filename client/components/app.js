@@ -68,7 +68,14 @@ class App extends Component {
   }
 
   render() {
-    const { loginComplete, clickPlan, currentUser, currentTrip, clickTrips, otherUsers } = this.state;
+    const {
+      loginComplete,
+      clickPlan,
+      currentUser,
+      currentTrip,
+      clickTrips,
+      otherUsers,
+    } = this.state;
     if (!loginComplete) {
       return (
         <div>

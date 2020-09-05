@@ -10,16 +10,16 @@ const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser, otherUsers }) => {
 
   return (
     <div>
-    <div>
-      <Button
-        variant="contained"
-        onClick={() => {
-          onClickPlanTrip();
-        }}
-      >
-        Plan A Trip
-      </Button>
-    </div>
+      <div>
+        <Button
+          variant="contained"
+          onClick={() => {
+            onClickPlanTrip();
+          }}
+        >
+          Plan A Trip
+        </Button>
+      </div>
     </div>
   );
 };
@@ -35,14 +35,16 @@ PlanATrip.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
-  otherUsers: PropTypes.arrayOf(PropTypes.shape({
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
-  })).isRequired,
+  otherUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string,
+      profile_pic: PropTypes.string,
+      host: PropTypes.bool,
+      googleId: PropTypes.string,
+    }),
+  ).isRequired,
 };
 
 export default PlanATrip;

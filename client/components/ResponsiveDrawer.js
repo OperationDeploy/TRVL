@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -19,10 +19,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import axios from 'axios';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
-import Preferences from './preferences';
-import axios from 'axios';
+import InvitesPage from './InvitesPage';
 
 const drawerWidth = 240;
 
@@ -72,8 +72,8 @@ const ResponsiveDrawer = ({
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
-  // const [showMain, setShowMain] = useState(false);
   const [showInvites, setShowInvite] = useState(false);
+  const [myInvites, setMyInvites] = useState([]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -117,14 +117,21 @@ const ResponsiveDrawer = ({
     </div>
   );
 
-  if (showInvites === true) {
-    axios.get('/getInvites', { params: { googleId: currentUser.googleId } })
-      .then((response) => console.log(response))
+  useEffect(() => {
+    axios
+      .get('/getInvites', { params: { googleId: currentUser.googleId } })
+      .then((response) => setMyInvites(response.data))
       .catch((err) => console.warn('ERRR', err));
+  }, [showInvites]);
+
+  if (showInvites === true) {
+    // set state for invited trips
+    // pass state to preferences
+    // refactor prefs to use state from invited trip
 
     return (
       <div>
-        <Preferences currentUser={currentUser} otherUsers={otherUsers} />
+        <InvitesPage currentUser={currentUser} otherUsers={otherUsers} myInvites={myInvites} />
         <Trips
           clickTrips={clickTrips}
           onClickGetTrips={onClickGetTrips}
@@ -214,14 +221,16 @@ const ResponsiveDrawer = ({
 };
 
 ResponsiveDrawer.propTypes = {
-  otherUsers: PropTypes.arrayOf(PropTypes.shape({
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
-  })).isRequired,
+  otherUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string,
+      profile_pic: PropTypes.string,
+      host: PropTypes.bool,
+      googleId: PropTypes.string,
+    }),
+  ).isRequired,
   onClickGetTrips: PropTypes.func.isRequired,
   clickTrips: PropTypes.bool.isRequired,
   clickPlan: PropTypes.bool.isRequired,

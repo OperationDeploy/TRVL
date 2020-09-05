@@ -31,7 +31,8 @@ const addDestinations = () => {
 // add preferences
 // TODO: need to come back and find where trip_id is = correct trip_id
 const addPreferences = (req) => {
-  TripPreferences.findOne({ where: { user_id: req.user_id } }).then((obj) => {
+  TripPreferences.findOne({ where: { user_id: req.user_id, trip_id: req.trip_id } }).then((obj) => {
+    console.log(req);
     if (obj) {
       obj.update({
         user_id: req.user_id,
@@ -201,18 +202,12 @@ const getAllTrips = async (req, res) => {
   res.send(trips);
 };
 
-const tripUser = async (req, res) => {
-  let user = await TripUser.findOne({
-    where: { user_id: req.currentUser.id, trip_id: req.trip_id },
+const tripUser = async (req) => {
+  console.log(req, 'REQ')
+  await TripUser.create({
+    user_id: req.currentUser.googleId || req.currentUser.user_id,
+    trip_id: req.trip_id,
   });
-  if (user === null) {
-    user = await TripUser.create({
-      user_id: req.currentUser.id,
-      trip_id: req.trip_id,
-    });
-  }
-  const users = await TripUser.findAll({});
-  res.send(users);
 };
 
 const inviteAllOtherUsers = async (req) => {
@@ -225,9 +220,20 @@ const inviteAllOtherUsers = async (req) => {
 };
 
 const getMyInvites = async (req, res) => {
-  const invites = await TripProposalVotes.findAll({ where: { user_id: req.googleId } })
-    .catch((err) => console.warn(err));
+  const invites = await TripProposalVotes.findAll({
+    where: { user_id: req.googleId },
+  }).catch((err) => console.warn(err));
+
   res.send(invites);
+};
+
+const getTripNames = async (req, res) => {
+  const invitedTrips = [];
+  await Promise.all(req.myInvites.map(async (invite) => {
+    const invitedTrip = await Trip.findOne({ where: { id: invite.trip_id } });
+    invitedTrips.push(invitedTrip);
+  }));
+  res.send(invitedTrips);
 };
 
 module.exports = {
@@ -241,6 +247,7 @@ module.exports = {
   setDest,
   enterProposal,
   getOtherUsers,
+  getTripNames,
   getPhotos,
   getAllTrips,
   inviteAllOtherUsers,
