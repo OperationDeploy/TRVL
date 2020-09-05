@@ -1,9 +1,20 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
 
-const { User, Trip, TripUser, TripPreferences, Destinations, SplitItem, SplitOwedPayment, TripPhoto } = require('./db.js');
-
 const { generatePlaces } = require('./algo.js');
+const {
+  User,
+  Trip,
+  TripUser,
+  TripPreferences,
+  Destinations,
+  SplitItem,
+  TripProposal,
+  SplitOwedPayment,
+  TripProposalVotes,
+  TripPhoto,
+} = require('./db.js');
+
 // create a user
 const createUser = async (req, res) => {
   let user = await User.findOne({ where: { googleId: req.body.googleId } });
@@ -22,34 +33,35 @@ const addDestinations = () => {
 // add preferences
 // TODO: need to come back and find where trip_id is = correct trip_id
 const addPreferences = (req) => {
-  TripPreferences.findOne({ where: { user_id: req.user_id } }).then((obj) => {
-    if (obj) {
-      obj.update({
-        user_id: req.user_id,
-        trip_id: req.trip_id,
-        temperature: req.temperature,
-        city_expenses: req.city_expenses,
-        landscape: req.landscape,
-        city_type: req.city_type,
-        proximity: req.proximity,
-        group_age: req.group_age,
-        group_relationship: req.group_relationship,
-      });
-    } else {
-      TripPreferences.create({
-        user_id: req.user_id,
-        trip_id: req.trip_id,
-        temperature: req.temperature,
-        city_expenses: req.city_expenses,
-        landscape: req.landscape,
-        city_type: req.city_type,
-        proximity: req.proximity,
-        group_age: req.group_age,
-        group_relationship: req.group_relationship,
-      });
-    }
-  });
-  TripUser.create({ trip_id: req.trip_id, googleId: req.user_id });
+  TripPreferences.findOne({ where: { user_id: req.user_id, trip_id: req.trip_id } }).then(
+    (obj) => {
+      if (obj) {
+        obj.update({
+          user_id: req.user_id,
+          trip_id: req.trip_id,
+          temperature: req.temperature,
+          city_expenses: req.city_expenses,
+          landscape: req.landscape,
+          city_type: req.city_type,
+          proximity: req.proximity,
+          group_age: req.group_age,
+          group_relationship: req.group_relationship,
+        });
+      } else {
+        TripPreferences.create({
+          user_id: req.user_id,
+          trip_id: req.trip_id,
+          temperature: req.temperature,
+          city_expenses: req.city_expenses,
+          landscape: req.landscape,
+          city_type: req.city_type,
+          proximity: req.proximity,
+          group_age: req.group_age,
+          group_relationship: req.group_relationship,
+        });
+      }
+    },
+  );
 };
 
 const addSplit = async (req, res) => {
@@ -58,14 +70,14 @@ const addSplit = async (req, res) => {
   const { price } = req;
   const item = await SplitItem.create(req);
   let users = await TripUser.findAll(
-    { where: { trip_id: tripId, googleId: { [Op.ne]: purchaserId } }, raw: true },
+    { where: { trip_id: tripId, user_id: { [Op.ne]: purchaserId } }, raw: true },
   );
   const amount = price / (users.length + 1);
   const userObjs = users.map((user) => ({
-    ower_id: user.googleId, recipient_id: purchaserId, amount, trip_id: tripId, item_id: item.id,
+    ower_id: user.user_id, recipient_id: purchaserId, amount, trip_id: tripId, item_id: item.id,
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
-  users = users.map((user) => User.findOne({ where: { googleId: user.googleId }, raw: true }));
+  users = users.map((user) => User.findOne({ where: { googleId: user.user_id }, raw: true }));
   await Promise.all(users).then((result) => { users = result; });
   res.send(userObjs.map(
     (user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount }),
@@ -100,23 +112,20 @@ const getSplit = async ({ trip, user }, res) => {
   response.debts = debts;
   res.send(response);
 };
-// grab preferences
 
+// grab preferences
 const grabPlaces = async (req, res) => {
   const tripPrefs = await TripPreferences.findAll({
     where: { trip_id: req.body.trip_id },
   });
-
+  const dest = await Destinations.findAll({});
   const prefObj = tripPrefs[0].dataValues;
-  res.send(generatePlaces(prefObj));
+  res.send(generatePlaces(prefObj, dest));
 };
 
 // add planned trip
 const planTrip = async (req, res) => {
-  const trip = await Trip.create(
-    { name: req.name, start_date: req.start_date, end_date: req.end_date },
-  );
-
+  const trip = await Trip.create(req);
   res.send(trip);
 };
 
@@ -150,12 +159,102 @@ const addPhoto = async ({ file, body }, res) => {
 };
 
 const getAllTrips = async (req, res) => {
-  const tripIds = await TripUser.findAll({ where: { googleId: req.body.user_id } });
+  const tripIds = await TripUser.findAll({ where: { user_id: req.body.user_id } });
   let trips = tripIds.map((item) => Trip.findByPk(item.trip_id));
   await Promise.all(trips).then((response) => { trips = response; });
-
   res.send(trips);
 };
+
+// Gets the users from the db who are not the current user
+const getOtherUsers = async (req, res) => {
+  const inviteThem = await User.findAll({
+    where: { [Op.not]: [{ googleId: req.currentUser }] },
+  });
+  res.send(inviteThem);
+};
+
+// putting tip proposal into the db
+const enterProposal = async (req) => {
+  let city1;
+  let city2;
+  let city3;
+  await Destinations.findOne({ where: { city: req.destination_A_id } }).then(
+    (response) => {
+      city1 = response;
+    },
+  );
+  await Destinations.findOne({ where: { city: req.destination_B_id } }).then(
+    (response) => {
+      city2 = response;
+    },
+  );
+  await Destinations.findOne({ where: { city: req.destination_C_id } }).then(
+    (response) => {
+      city3 = response;
+    },
+  );
+  await TripProposal.findOne({ where: { trip_id: req.trip_id } }).then((obj) => {
+    if (obj) {
+      obj.update({
+        user_id: req.user_id,
+        trip_id: req.trip_id,
+        destination_A_id: city1.dataValues.id,
+        destination_B_id: city2.dataValues.id,
+        destination_C_id: city3.dataValues.id,
+      });
+    } else {
+      TripProposal.create({
+        user_id: req.user_id,
+        trip_id: req.trip_id,
+        destination_A_id: city1.dataValues.id,
+        destination_B_id: city2.dataValues.id,
+        destination_C_id: city3.dataValues.id,
+      });
+    }
+  });
+};
+
+const tripUser = async (req) => {
+  await TripUser.create({
+    user_id: req.currentUser.googleId || req.currentUser.user_id,
+    trip_id: req.trip_id,
+  }).catch((err) => console.warn(err, 'ERRRRRRRR!!@#$'));
+};
+
+const inviteAllOtherUsers = async (req) => {
+  req.otherUsers.forEach((user) => {
+    TripProposalVotes.create({
+      user_id: user.googleId,
+      trip_id: req.trip,
+    }).catch((err) => console.warn(err));
+  });
+};
+
+const getMyInvites = async (req, res) => {
+  const invites = await TripProposalVotes.findAll({
+    where: { user_id: req.googleId },
+  }).catch((err) => console.warn(err));
+
+  res.send(invites);
+};
+
+const getTripNames = async (req, res) => {
+  const invitedTrips = [];
+  await Promise.all(
+    req.myInvites.map(async (invite) => {
+      const invitedTrip = await Trip.findOne({ where: { id: invite.trip_id } });
+      invitedTrips.push(invitedTrip);
+    }),
+  );
+  res.send(invitedTrips);
+};
+
+const removeInvite = async (req) => {
+  await TripProposalVotes.destroy({
+    where: { user_id: req.user, trip_id: req.trip_id },
+  }).catch((err) => console.warn(err));
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -163,9 +262,16 @@ module.exports = {
   addSplit,
   getSplit,
   planTrip,
+  removeInvite,
   grabPlaces,
   setDest,
+  enterProposal,
+  getOtherUsers,
+  getTripNames,
   getPhotos,
-  addPhoto,
   getAllTrips,
+  inviteAllOtherUsers,
+  tripUser,
+  getMyInvites,
+  addPhoto,
 };

@@ -33,7 +33,7 @@ const Photos = ({ currentTrip, currentUser }) => {
   };
 
   return (
-    <div>
+    <div className="photos-container">
       <Typography component="h1" variant="h2">
         Photos
       </Typography>

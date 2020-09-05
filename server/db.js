@@ -1,12 +1,7 @@
 require('dotenv').config();
 const Sequelize = require('sequelize');
 
-const {
-  DB_NAME,
-  DB_USER,
-  DB_PASS,
-  DB_HOST,
-} = process.env;
+const { DB_NAME, DB_USER, DB_PASS, DB_HOST } = process.env;
 
 const sequelize = new Sequelize(DB_NAME, DB_USER, DB_PASS, {
   host: DB_HOST,
@@ -60,11 +55,11 @@ const Trip = sequelize.define('Trip', {
 });
 
 const TripUser = sequelize.define('TripUser', {
-  googleId: {
-    type: Sequelize.TEXT,
+  user_id: {
+    type: Sequelize.INTEGER,
     references: {
       model: 'user',
-      key: 'googleId',
+      key: 'id',
     },
   },
   trip_id: {

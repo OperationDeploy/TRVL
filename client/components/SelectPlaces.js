@@ -15,18 +15,25 @@ const SelectPlaces = ({ trip, currentUser, setClickedPage }) => {
       .post('./grabPlaces', { trip_id: trip.id }, () => {})
       .then((response) => {
         handleChange(response.data);
-      });
+        axios.post('./proposals', {
+          user_id: currentUser.googleId,
+          trip_id: trip,
+          destination_A_id: response.data[0],
+          destination_B_id: response.data[1],
+          destination_C_id: response.data[2],
+        });
+      })
+      .catch((err) => console.warn(err));
   }, []);
 
   // updates destination on trips table onclick
-
   const handleClick = (event) => {
     axios.post('./setDest', { destination: event, trip_id: trip.id }, () => {});
     setClickedPage(<UserTrips currentUser={currentUser} currentTrip={trip} />);
   };
 
   return (
-    <div>
+    <div className="places-container">
       <header>Here are Your Places:</header>
       <ul>
         {places.map((dest) => (

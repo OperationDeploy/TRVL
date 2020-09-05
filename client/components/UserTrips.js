@@ -21,7 +21,7 @@ const UserTrips = ({ currentUser, currentTrip }) => {
 
   useEffect(() => {
     axios
-      .post('./getAllTrips', { user_id: currentUser.id }, () => {})
+      .post('./getAllTrips', { user_id: currentUser.googleId }, () => {})
       .then((response) => {
         handleChange(response.data);
       });
