@@ -4,7 +4,7 @@ import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 
-const Photos = ({ currentTrip, currentUser }) => {
+const Photos = ({ currentTrip }) => {
   // TODO: CONNECT PHOTOS TO DB
   // const [photos, setPhotos] = useState([]);
 
@@ -18,8 +18,6 @@ const Photos = ({ currentTrip, currentUser }) => {
   const fileUpload = (photo) => {
     const data = new FormData();
     data.append('file', photo);
-    data.append('user', currentUser.id);
-    data.append('trip', currentTrip.id);
     axios.post('/photos', data)
       .then((res) => {
         console.info(res.data);
@@ -52,7 +50,7 @@ const Photos = ({ currentTrip, currentUser }) => {
 
 Photos.propTypes = {
   currentTrip: PropTypes.objectOf.isRequired,
-  currentUser: PropTypes.objectOf.isRequired,
+  // currentUser: PropTypes.objectOf.isRequired,
 };
 
 export default Photos;

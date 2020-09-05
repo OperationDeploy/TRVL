@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
 
-const { User, Trip, TripUser, TripPreferences, Destinations, SplitItem, SplitOwedPayment, TripPhoto } = require('./db.js');
+const { User, Trip, TripUser, TripPreferences, Destinations, SplitItem, SplitOwedPayment } = require('./db.js');
 
 const { generatePlaces } = require('./algo.js');
 // create a user
@@ -108,11 +108,7 @@ const grabPlaces = async (req, res) => {
 
 // add planned trip
 const planTrip = async (req, res) => {
-  const trip = await Trip.create(
-    { name: req.name, start_date: req.start_date, end_date: req.end_date },
-  );
-  await TripUser.create({ trip_id: req.trip_id, user_id: req.user_id });
-
+  const trip = await Trip.create(req);
   res.send(trip);
 };
 
@@ -125,19 +121,10 @@ const setDest = (req) => {
 };
 
 const getPhotos = () => {
-  TripPhoto.findAll();
-};
-
-const addPhoto = ({ file, body }, res) => {
-  const { user, trip } = body;
-  TripPhoto.create({ user_id: user, trip_id: trip, photo_link: file.filename });
 };
 
 const getAllTrips = async (req, res) => {
-  const tripIds = await TripUser.findAll({ where: { user_id: req.body.user_id } });
-  let trips = tripIds.map((item) => Trip.findByPk(item.trip_id));
-  await Promise.all(trips).then((response) => { trips = response; });
-
+  const trips = await Trip.findAll({ where: { googleId: req.body.user_id } });
   res.send(trips);
 };
 module.exports = {
@@ -150,6 +137,5 @@ module.exports = {
   grabPlaces,
   setDest,
   getPhotos,
-  addPhoto,
   getAllTrips,
 };
