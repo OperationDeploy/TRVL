@@ -37,7 +37,7 @@ CREATE TABLE "TripUsers" (
 
 CREATE TABLE "TripPreferences" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "temperature" int,
   "city_expenses" int,
@@ -52,7 +52,7 @@ CREATE TABLE "TripPreferences" (
 
 CREATE TABLE "TripPhotos" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "photo_link" TEXT,
    "createdAt" time,
@@ -61,7 +61,7 @@ CREATE TABLE "TripPhotos" (
 
 CREATE TABLE "TripProposals" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "destination_A_id" int,
   "destination_B_id" int,
@@ -72,7 +72,7 @@ CREATE TABLE "TripProposals" (
 
 CREATE TABLE "TripItineraries" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "event" TEXT,
   "day" date,
@@ -82,7 +82,7 @@ CREATE TABLE "TripItineraries" (
 
 CREATE TABLE "TripProposalVotes" (
   "id" int,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
   "destination" int,
   "createdAt" time,
@@ -130,23 +130,23 @@ ALTER TABLE "TripUsers" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
 ALTER TABLE "Trips" ADD FOREIGN KEY ("googleId") REFERENCES "Users" ("googleId");
 
-ALTER TABLE "TripPreferences" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");;
+ALTER TABLE "TripPreferences" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
 ALTER TABLE "TripPreferences" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
 ALTER TABLE "TripProposals" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "TripPhotos" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");;
+ALTER TABLE "TripPhotos" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
 ALTER TABLE "TripPhotos" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "TripProposals" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");;
+ALTER TABLE "TripProposals" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
 ALTER TABLE "TripProposalVotes" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
-ALTER TABLE "TripProposalVotes" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");;
+ALTER TABLE "TripProposalVotes" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
-ALTER TABLE "TripItineraries" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");;
+ALTER TABLE "TripItineraries" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
 ALTER TABLE "TripItineraries" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 
