@@ -87,8 +87,10 @@
     "eslint-plugin-react-hooks": "^4.1.0",
     "html-webpack-plugin": "^4.3.0",
     "husky": "^4.2.5",
+    "node-sass": "^4.14.1",
     "prettier": "^2.1.1",
     "prettier-eslint": "^11.0.0",
+    "sass-loader": "^10.0.2",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12"
