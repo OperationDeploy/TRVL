@@ -49,7 +49,7 @@ const addPreferences = (req) => {
       });
     }
   });
-  TripUser.create({ trip_id: req.trip_id, user_id: req.user_id });
+  TripUser.create({ trip_id: req.trip_id, googleId: req.user_id });
 };
 
 const addSplit = async (req, res) => {
@@ -58,15 +58,14 @@ const addSplit = async (req, res) => {
   const { price } = req;
   const item = await SplitItem.create(req);
   let users = await TripUser.findAll(
-    { where: { trip_id: tripId, user_id: { [Op.ne]: purchaserId } }, raw: true },
+    { where: { trip_id: tripId, googleId: { [Op.ne]: purchaserId } }, raw: true },
   );
   const amount = price / (users.length + 1);
   const userObjs = users.map((user) => ({
-    ower_id: user.user_id, recipient_id: purchaserId, amount, trip_id: tripId, item_id: item.id,
+    ower_id: user.googleId, recipient_id: purchaserId, amount, trip_id: tripId, item_id: item.id,
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
-  // users = users.map((user) => User.findByPk(user.user_id, { raw: true }));
-  users = users.map((user) => User.findOne({ where: { googleId: user.user_id }, raw: true }));
+  users = users.map((user) => User.findOne({ where: { googleId: user.googleId }, raw: true }));
   await Promise.all(users).then((result) => { users = result; });
   res.send(userObjs.map(
     (user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount }),
@@ -151,7 +150,7 @@ const addPhoto = async ({ file, body }, res) => {
 };
 
 const getAllTrips = async (req, res) => {
-  const tripIds = await TripUser.findAll({ where: { user_id: req.body.user_id } });
+  const tripIds = await TripUser.findAll({ where: { googleId: req.body.user_id } });
   let trips = tripIds.map((item) => Trip.findByPk(item.trip_id));
   await Promise.all(trips).then((response) => { trips = response; });
 

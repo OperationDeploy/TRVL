@@ -60,7 +60,7 @@ const Trip = sequelize.define('Trip', {
 });
 
 const TripUser = sequelize.define('TripUser', {
-  user_id: {
+  googleId: {
     type: Sequelize.TEXT,
     references: {
       model: 'user',
