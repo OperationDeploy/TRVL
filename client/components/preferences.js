@@ -299,14 +299,16 @@ const ContinuousSlider = ({ currentUser, otherUsers }) => {
 };
 
 ContinuousSlider.propTypes = {
-  otherUsers: PropTypes.arrayOf(PropTypes.shape({
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
-  })).isRequired,
+  otherUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string,
+      profile_pic: PropTypes.string,
+      host: PropTypes.bool,
+      googleId: PropTypes.string,
+    }),
+  ).isRequired,
   currentUser: PropTypes.shape({
     first_name: PropTypes.string,
     last_name: PropTypes.string,

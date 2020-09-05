@@ -131,7 +131,11 @@ const ResponsiveDrawer = ({
 
     return (
       <div>
-        <InvitesPage currentUser={currentUser} otherUsers={otherUsers} myInvites={myInvites} />
+        <InvitesPage
+          currentUser={currentUser}
+          otherUsers={otherUsers}
+          myInvites={myInvites}
+        />
         <Trips
           clickTrips={clickTrips}
           onClickGetTrips={onClickGetTrips}

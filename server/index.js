@@ -10,6 +10,7 @@ const {
   createUser,
   addPreferences,
   planTrip,
+  removeInvite,
   grabPlaces,
   setDest,
   getTripNames,
@@ -116,6 +117,10 @@ app.post('/inviteAllOtherUsers', (req, res) => {
 
 app.post('/tripNames', (req, res) => {
   getTripNames(req.body, res);
+});
+
+app.post('/removeInvite', (req, res) => {
+  removeInvite(req.body, res);
 });
 
 app.use(express.static(DIST_DIR)); // NEW

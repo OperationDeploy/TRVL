@@ -31,34 +31,35 @@ const addDestinations = () => {
 // add preferences
 // TODO: need to come back and find where trip_id is = correct trip_id
 const addPreferences = (req) => {
-  TripPreferences.findOne({ where: { user_id: req.user_id, trip_id: req.trip_id } }).then((obj) => {
-    console.log(req);
-    if (obj) {
-      obj.update({
-        user_id: req.user_id,
-        trip_id: req.trip_id,
-        temperature: req.temperature,
-        city_expenses: req.city_expenses,
-        landscape: req.landscape,
-        city_type: req.city_type,
-        proximity: req.proximity,
-        group_age: req.group_age,
-        group_relationship: req.group_relationship,
-      });
-    } else {
-      TripPreferences.create({
-        user_id: req.user_id,
-        trip_id: req.trip_id,
-        temperature: req.temperature,
-        city_expenses: req.city_expenses,
-        landscape: req.landscape,
-        city_type: req.city_type,
-        proximity: req.proximity,
-        group_age: req.group_age,
-        group_relationship: req.group_relationship,
-      });
-    }
-  });
+  TripPreferences.findOne({ where: { user_id: req.user_id, trip_id: req.trip_id } }).then(
+    (obj) => {
+      if (obj) {
+        obj.update({
+          user_id: req.user_id,
+          trip_id: req.trip_id,
+          temperature: req.temperature,
+          city_expenses: req.city_expenses,
+          landscape: req.landscape,
+          city_type: req.city_type,
+          proximity: req.proximity,
+          group_age: req.group_age,
+          group_relationship: req.group_relationship,
+        });
+      } else {
+        TripPreferences.create({
+          user_id: req.user_id,
+          trip_id: req.trip_id,
+          temperature: req.temperature,
+          city_expenses: req.city_expenses,
+          landscape: req.landscape,
+          city_type: req.city_type,
+          proximity: req.proximity,
+          group_age: req.group_age,
+          group_relationship: req.group_relationship,
+        });
+      }
+    },
+  );
 };
 
 const addSplit = async (req, res) => {
@@ -203,7 +204,7 @@ const getAllTrips = async (req, res) => {
 };
 
 const tripUser = async (req) => {
-  console.log(req, 'REQ')
+  // console.log(req, 'REQ');
   await TripUser.create({
     user_id: req.currentUser.googleId || req.currentUser.user_id,
     trip_id: req.trip_id,
@@ -229,11 +230,19 @@ const getMyInvites = async (req, res) => {
 
 const getTripNames = async (req, res) => {
   const invitedTrips = [];
-  await Promise.all(req.myInvites.map(async (invite) => {
-    const invitedTrip = await Trip.findOne({ where: { id: invite.trip_id } });
-    invitedTrips.push(invitedTrip);
-  }));
+  await Promise.all(
+    req.myInvites.map(async (invite) => {
+      const invitedTrip = await Trip.findOne({ where: { id: invite.trip_id } });
+      invitedTrips.push(invitedTrip);
+    }),
+  );
   res.send(invitedTrips);
+};
+
+const removeInvite = async (req) => {
+  await TripProposalVotes.destroy({
+    where: { user_id: req.user, trip_id: req.trip_id },
+  }).catch((err) => console.warn(err));
 };
 
 module.exports = {
@@ -243,6 +252,7 @@ module.exports = {
   addSplit,
   getSplit,
   planTrip,
+  removeInvite,
   grabPlaces,
   setDest,
   enterProposal,

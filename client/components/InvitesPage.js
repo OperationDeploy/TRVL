@@ -21,30 +21,42 @@ const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
   };
 
   useEffect(() => {
-    axios.post('./tripNames', {
-      myInvites,
-    }).then((response) => setInvitedTripsArray(response.data));
+    axios
+      .post('./tripNames', {
+        myInvites,
+      })
+      .then((response) => setInvitedTripsArray(response.data));
   }, []);
 
   if (invitedTripClicked) {
     return (
-        <InvitesPreferences
-          inviteTripId={inviteTripId}
-          currentUser={currentUser}
-          otherUsers={otherUsers}
-          invitedStartDate={invitedStartDate}
-          invitedEndDate={invitedEndDate}
-          inviteTripName={inviteTripName}
-        />
+      <InvitesPreferences
+        inviteTripId={inviteTripId}
+        currentUser={currentUser}
+        otherUsers={otherUsers}
+        invitedStartDate={invitedStartDate}
+        invitedEndDate={invitedEndDate}
+        inviteTripName={inviteTripName}
+      />
     );
   }
   return (
     <div>
-          <header>Here are your trip invites:</header>
+      <header>Here are your trip invites:</header>
       <ul>
         {invitedTripsArray.map((invite) => (
-          // eslint-disable-next-line no-restricted-globals
-          <button type="submit" key={invite} onClick={() => handleClick(event, invite.name, invite.id, invite.start_date, invite.end_date)}>
+          <button
+            type="submit"
+            key={invite}
+            onClick={(e) => handleClick(
+              e,
+              invite.name,
+              invite.id,
+              invite.start_date,
+              invite.end_date,
+            )
+            }
+          >
             {invite.name}
           </button>
         ))}
