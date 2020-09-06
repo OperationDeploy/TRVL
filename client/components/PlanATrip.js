@@ -9,7 +9,7 @@ const PlanATrip = ({ setClickedPage, currentUser, otherUsers }) => (
         variant="contained"
         onClick={() => {
           setClickedPage(
-          <Preferences 
+          <Preferences
             currentUser={currentUser}
             otherUsers={otherUsers}
             setClickedPage={setClickedPage} />,
