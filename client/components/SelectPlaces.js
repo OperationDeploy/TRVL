@@ -17,7 +17,7 @@ const SelectPlaces = ({ trip, currentUser, setClickedPage }) => {
         handleChange(response.data);
         axios.post('./proposals', {
           user_id: currentUser.googleId,
-          trip_id: trip,
+          trip_id: trip.id,
           destination_A_id: response.data[0],
           destination_B_id: response.data[1],
           destination_C_id: response.data[2],

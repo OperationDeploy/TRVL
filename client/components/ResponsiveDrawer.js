@@ -145,6 +145,7 @@ const ResponsiveDrawer = ({
         <Trips
           currentUser={currentUser}
           currentTrip={currentTrip}
+          setClickedPage={setClickedPage}
         />
       </div>
     );

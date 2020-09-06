@@ -222,7 +222,10 @@ const tripUser = async (req) => {
 };
 
 const inviteAllOtherUsers = async (req) => {
-  req.otherUsers.forEach((user) => {
+  const inviteThem = await User.findAll({
+    where: { [Op.not]: [{ googleId: req.currentUser }] }, raw: true,
+  });
+  inviteThem.forEach((user) => {
     TripProposalVotes.create({
       user_id: user.googleId,
       trip_id: req.trip,
