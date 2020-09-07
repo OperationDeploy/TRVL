@@ -10,10 +10,11 @@ const Trips = ({ clickTrips, onClickGetTrips, currentUser, currentTrip }) => {
   return (
     <div className="trip-container">
       <Button
-        variant="contained"
+        variant="outlined"
         onClick={() => {
           onClickGetTrips();
         }}
+        color="primary"
       >
         Trips
       </Button>

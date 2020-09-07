@@ -5,6 +5,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Itinerary from './Itinerary';
@@ -38,8 +39,8 @@ const UserTrips = ({ currentUser, currentTrip }) => {
   }
 
   return (
-    <div classNAme="itinerary-container">
-      <Typography variant="h1">Trips</Typography>
+    <div className="itinerary-container">
+      <Typography variant="h2">Trips</Typography>
       {trips.map((data) => (
         <List>
           <ListItem>
@@ -57,6 +58,7 @@ const UserTrips = ({ currentUser, currentTrip }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button onClick={() => setClicked('photos')} color="primary">

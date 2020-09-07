@@ -48,10 +48,6 @@ Please read \_CONTRIBUTING.md for details on our code of conduct, and the proces
 [Jessa Daggs](https://github.com/jldaggs88)
 [Austin Brown](https://github.com/austinbrown-opspark)
 
-## License
-
-This project is licensed under the ISC License.
-
 ## Acknowledgments
 
 Thank you to the staff and our peers at Operation Spark for inspiring us daily.
