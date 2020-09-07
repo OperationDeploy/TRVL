@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import Preferences from './preferences';
 
 const PlanATrip = ({ clickPlan, onClickPlanTrip, currentUser }) => {
-
   if (clickPlan) {
     return <Preferences currentUser={currentUser} />;
   }

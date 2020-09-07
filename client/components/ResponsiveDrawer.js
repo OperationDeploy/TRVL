@@ -24,7 +24,6 @@ import PlanATrip from './PlanATrip';
 import Trips from './Trips';
 import UserTrips from './UserTrips';
 import Preferences from './preferences';
-import App from './app';
 import './App.scss';
 
 const drawerWidth = 240;
@@ -100,9 +99,7 @@ const ResponsiveDrawer = ({
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => {
-            return <App />;
-          }} key={text}>
+          <ListItem button onClick={() => console.info('open')} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -113,13 +110,17 @@ const ResponsiveDrawer = ({
       <Divider />
       <List>
         {['Plan A Trip'].map((text) => (
-          <ListItem button onClick={() => {
-            onClickPlanTrip();
-            if (clickPlan) {
-              return <Preferences currentUser={currentUser} />;
-            }
-            return null;
-          }} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              onClickPlanTrip();
+              if (clickPlan) {
+                return <Preferences currentUser={currentUser} />;
+              }
+              return null;
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <EventIcon />
             </ListItemIcon>
@@ -130,13 +131,17 @@ const ResponsiveDrawer = ({
       <Divider />
       <List>
         {['Trips'].map((text) => (
-          <ListItem button onClick={() => {
-            onClickGetTrips();
-            if (clickTrips) {
-              return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
-            }
-            return null;
-          }} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              onClickGetTrips();
+              if (clickTrips) {
+                return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
+              }
+              return null;
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <FlightIcon />
             </ListItemIcon>
@@ -175,7 +180,11 @@ const ResponsiveDrawer = ({
       <CssBaseline />
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar position="fixed" styles={{ background: 'secondary', boxShadow: 'none' }} className={classes.appBar}>
+        <AppBar
+          position="fixed"
+          styles={{ background: 'secondary', boxShadow: 'none' }}
+          className={classes.appBar}
+        >
           <Toolbar>
             <IconButton
               color="secondary"
@@ -223,7 +232,7 @@ const ResponsiveDrawer = ({
             </Drawer>
           </Hidden>
         </nav>
-        <main className={classes.content} >
+        <main className={classes.content}>
           <div className={classes.toolbar} />
           <div style={{ textAlign: 'center', justifyContent: 'center' }}>
             <img
@@ -232,7 +241,10 @@ const ResponsiveDrawer = ({
               className="profile-pic"
             />
           </div>
-          <Typography className="welcome-message" variant="h6">{`Hi, ${currentUser.first_name}!`}</Typography>
+          <Typography
+            className="welcome-message"
+            variant="h6"
+          >{`Hi, ${currentUser.first_name}!`}</Typography>
           <br />
           <Trips
             clickTrips={clickTrips}
