@@ -25,7 +25,6 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
-
 } = require('./queries.js');
 
 const app = express();
@@ -114,7 +113,6 @@ app.post('/photos', (req, res) => {
 app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
 });
-
 
 app.post('/getTripForFlight', (req, res) => {
   getTripForFlight(req, res);

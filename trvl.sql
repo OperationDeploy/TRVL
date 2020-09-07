@@ -108,7 +108,6 @@ CREATE TABLE "Destinations" (
   "city_type" int,
   "group_age" int,
   "group_relationship" int,
-
   "airport_code" TEXT UNIQUE,
   "createdAt" TIMESTAMP DEFAULT NOW(),
   "updatedAt" TIMESTAMP DEFAULT NOW()

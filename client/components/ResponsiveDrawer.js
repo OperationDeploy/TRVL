@@ -63,11 +63,7 @@ const useStyles = makeStyles((theme) => ({
   large: {},
 }));
 
-const ResponsiveDrawer = ({
-  currentUser,
-  currentTrip,
-  otherUsers,
-}) => {
+const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -85,10 +81,14 @@ const ResponsiveDrawer = ({
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => {
-            setClickedPage(null);
-            setMobileOpen(!mobileOpen);
-          }} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              setClickedPage(null);
+              setMobileOpen(!mobileOpen);
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -151,22 +151,22 @@ const ResponsiveDrawer = ({
 
   const container = window !== undefined ? () => window.document.body : undefined;
 
-  const landingPage = (<div>
-  <Avatar
-    alt="profilepic"
-    src={currentUser.profile_pic}
-    className={classes.large}
-  />
-  <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
-  <Trips
-    currentUser={currentUser}
-    currentTrip={currentTrip}
-    setClickedPage={setClickedPage} />
-  <PlanATrip
-    otherUsers={otherUsers}
-    currentUser={currentUser}
-    setClickedPage={setClickedPage} />
-  </div>);
+  const landingPage = (
+    <div>
+      <Avatar alt="profilepic" src={currentUser.profile_pic} className={classes.large} />
+      <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
+      <Trips
+        currentUser={currentUser}
+        currentTrip={currentTrip}
+        setClickedPage={setClickedPage}
+      />
+      <PlanATrip
+        otherUsers={otherUsers}
+        currentUser={currentUser}
+        setClickedPage={setClickedPage}
+      />
+    </div>
+  );
 
   return (
     <div className={classes.root}>
