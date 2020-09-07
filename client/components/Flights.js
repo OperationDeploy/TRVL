@@ -1,17 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+// import apiKey from './config';
 
 const Flights = ({ currentUser, currentTrip }) => {
   const [flightData, setFlightData] = useState({});
-  const [trip, setTrip] = useState({});
+  // const [trip, setTrip] = useState({});
 
-  const handleChange = (response) => {
-    console.info('line 12', response);
-    setTrip(response);
-    console.info('here is trip', trip);
-    console.info(trip.airport_code, trip.start_date);
-  };
+  // const handleChange = (response) => {
+  //   setTrip(response);
+  // };
 
   useEffect(() => {
     axios
@@ -24,39 +22,39 @@ const Flights = ({ currentUser, currentTrip }) => {
           );
         },
       )
-      .then((response) => {
-        console.info(response);
-        handleChange(response.data);
+      .then(() => {
+        // console.info(response);
+        // handleChange(response.data);
       });
   }, []);
 
   const onClickShowMeFlight = () => {
-    axios
-      .get(
-        'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/US/USD/en-US/MSY-sky/BNA-sky/2020-09-10',
-        {
-          headers: {
-            'x-rapidapi-key': '0bab63c571mshc3c168e88ae6b44p14c63fjsn0a3bbb552a96',
-            'x-rapidapi-host': 'skyscanner-skyscanner-flight-search-v1.p.rapidapi.com',
-            useQueryString: true,
-            'content-type': 'application/octet-stream',
-          },
-        },
-      )
-      .then((res) => {
-        console.info('API RESPONSE', res);
-        let carrier;
-        for (let i = 0; i < res.data.Carriers.length; i += 1) {
-          if (
-            res.data.Carriers[i].CarrierId ===
-            res.data.Quotes[0].OutboundLeg.CarrierIds[0]
-          ) {
-            carrier = res.data.Carriers[i].Name;
-          }
-        }
-        console.info(carrier);
-        setFlightData({ airline: carrier, price: res.data.Quotes[0].MinPrice });
-      });
+    // axios
+    //   .get(
+    //     'https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/US/USD/en-US/MSY-sky/BNA-sky/2020-09-10',
+    //     {
+    //       headers: {
+    //         'x-rapidapi-key': apiKey,
+    //         'x-rapidapi-host': 'skyscanner-skyscanner-flight-search-v1.p.rapidapi.com',
+    //         useQueryString: true,
+    //         'content-type': 'application/octet-stream',
+    //       },
+    //     },
+    //   )
+    //   .then((res) => {
+    //     console.info('API RESPONSE', res);
+    //     let carrier;
+    //     for (let i = 0; i < res.data.Carriers.length; i += 1) {
+    //       if (
+    //         res.data.Carriers[i].CarrierId ===
+    //         res.data.Quotes[0].OutboundLeg.CarrierIds[0]
+    //       ) {
+    //         carrier = res.data.Carriers[i].Name;
+    //       }
+    //     }
+    //     console.info(carrier);
+    setFlightData({ airline: 'United Airlines', price: 138 });
+    // });
   };
 
   return (
