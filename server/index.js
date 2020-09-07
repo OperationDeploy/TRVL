@@ -20,8 +20,12 @@ const {
   getMyInvites,
   addSplit,
   getAllTrips,
+  getTripForFlight,
   tripUser,
   inviteAllOtherUsers,
+  getPhotos,
+  addPhoto,
+
 } = require('./queries.js');
 
 const app = express();
@@ -36,7 +40,7 @@ app.use(cors());
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, 'photos');
+    cb(null, 'public');
   },
   filename(req, file, cb) {
     cb(null, `${Date.now()}-${file.originalname}`);
@@ -59,6 +63,10 @@ app.get('/split/:trip/:user', (req, res) => {
 
 app.get('/getInvites', (req, res) => {
   getMyInvites(req.query, res);
+});
+
+app.get('/photos/:trip', (req, res) => {
+  getPhotos(req.params, res);
 });
 
 // POST
@@ -99,12 +107,17 @@ app.post('/photos', (req, res) => {
     if (err) {
       res.sendStatus(500);
     }
-    res.send(req.file.filename);
+    addPhoto(req, res);
   });
 });
 
 app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
+});
+
+
+app.post('/getTripForFlight', (req, res) => {
+  getTripForFlight(req, res);
 });
 
 app.post('/tripUser', (req, res) => {
@@ -122,6 +135,8 @@ app.post('/tripNames', (req, res) => {
 app.post('/removeInvite', (req, res) => {
   removeInvite(req.body, res);
 });
+
+app.use(express.static('public'));
 
 app.use(express.static(DIST_DIR)); // NEW
 

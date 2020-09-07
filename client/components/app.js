@@ -11,47 +11,18 @@ import Grid from '@material-ui/core/Grid';
 import ResponsiveDrawer from './ResponsiveDrawer';
 import './App.scss';
 
-// import { OAUTH_CLIENT_ID } from '../../config.js';
-
 class App extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
       loginComplete: false,
-      clickPlan: false,
-      clickTrips: false,
       currentUser: '',
       otherUsers: [],
       currentTrip: { id: 2 },
     };
 
-    this.onClickPlanTrip = this.onClickPlanTrip.bind(this);
-    this.onClickGetTrips = this.onClickGetTrips.bind(this);
     this.responseGoogle = this.responseGoogle.bind(this);
-  }
-
-  onClickPlanTrip() {
-    const { currentUser, clickPlan, otherUsers } = this.state;
-    this.setState({ clickPlan: !clickPlan });
-    // axios to get the current users who aren't users
-    axios
-      .get('/inviteUsers', {
-        params: {
-          currentUser: currentUser.googleId,
-        },
-      })
-      .then((response) => {
-        this.setState({
-          otherUsers: response.data,
-        });
-        console.info(otherUsers);
-      })
-      .catch((err) => console.warn('ERRR', err));
-  }
-
-  onClickGetTrips() {
-    this.setState((prevState) => ({ clickTrips: !prevState.clickTrips }));
   }
 
   responseGoogle(response) {
@@ -67,6 +38,7 @@ class App extends Component {
         googleId,
       })
       .then((res) => {
+        res.data.id = res.data.googleId;
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
@@ -76,14 +48,7 @@ class App extends Component {
   }
 
   render() {
-    const {
-      loginComplete,
-      clickPlan,
-      currentUser,
-      currentTrip,
-      clickTrips,
-      otherUsers,
-    } = this.state;
+    const { loginComplete, currentUser, currentTrip, otherUsers } = this.state;
     if (!loginComplete) {
       return (
         <Grid
@@ -121,10 +86,6 @@ class App extends Component {
       <Container className="content-container">
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
-          clickPlan={clickPlan}
-          onClickPlanTrip={this.onClickPlanTrip}
-          clickTrips={clickTrips}
-          onClickGetTrips={this.onClickGetTrips}
           currentUser={currentUser}
           currentTrip={currentTrip}
           otherUsers={otherUsers}

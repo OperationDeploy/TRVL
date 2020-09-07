@@ -64,10 +64,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResponsiveDrawer = ({
-  clickPlan,
-  onClickPlanTrip,
-  clickTrips,
-  onClickGetTrips,
   currentUser,
   currentTrip,
   otherUsers,
@@ -82,12 +78,17 @@ const ResponsiveDrawer = ({
     setMobileOpen(!mobileOpen);
   };
 
+  const [clickedPage, setClickedPage] = useState(null);
+
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => console.info('open')} key={text}>
+          <ListItem button onClick={() => {
+            setClickedPage(null);
+            setMobileOpen(!mobileOpen);
+          }} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -140,16 +141,32 @@ const ResponsiveDrawer = ({
           myInvites={myInvites}
         />
         <Trips
-          clickTrips={clickTrips}
-          onClickGetTrips={onClickGetTrips}
           currentUser={currentUser}
           currentTrip={currentTrip}
+          setClickedPage={setClickedPage}
         />
       </div>
     );
   }
 
   const container = window !== undefined ? () => window.document.body : undefined;
+
+  const landingPage = (<div>
+  <Avatar
+    alt="profilepic"
+    src={currentUser.profile_pic}
+    className={classes.large}
+  />
+  <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
+  <Trips
+    currentUser={currentUser}
+    currentTrip={currentTrip}
+    setClickedPage={setClickedPage} />
+  <PlanATrip
+    otherUsers={otherUsers}
+    currentUser={currentUser}
+    setClickedPage={setClickedPage} />
+  </div>);
 
   return (
     <div className={classes.root}>
@@ -203,25 +220,7 @@ const ResponsiveDrawer = ({
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Avatar
-          alt="profilepic"
-          src={currentUser.profile_pic}
-          className={classes.large}
-        />
-        <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
-        <Trips
-          clickTrips={clickTrips}
-          onClickGetTrips={onClickGetTrips}
-          currentUser={currentUser}
-          currentTrip={currentTrip}
-          otherUsers={otherUsers}
-        />
-        <PlanATrip
-          clickPlan={clickPlan}
-          onClickPlanTrip={onClickPlanTrip}
-          currentUser={currentUser}
-          otherUsers={otherUsers}
-        />
+        {clickedPage || landingPage}
       </main>
     </div>
   );
@@ -238,12 +237,8 @@ ResponsiveDrawer.propTypes = {
       googleId: PropTypes.string,
     }),
   ).isRequired,
-  onClickGetTrips: PropTypes.func.isRequired,
-  clickTrips: PropTypes.bool.isRequired,
-  clickPlan: PropTypes.bool.isRequired,
-  onClickPlanTrip: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
@@ -253,12 +248,10 @@ ResponsiveDrawer.propTypes = {
   }).isRequired,
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
   }).isRequired,
 };
 
