@@ -1,7 +1,6 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
 
-
 const { generatePlaces } = require('./algo.js');
 const {
   User,
@@ -84,11 +83,16 @@ const addSplit = async (req, res) => {
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
   users = users.map((user) => User.findOne({ where: { googleId: user.user_id }, raw: true }));
-  await Promise.all(users).then((result) => { users = result; });
-  res.send(userObjs.map(
-    (user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount }),
-  ));
-
+  await Promise.all(users).then((result) => {
+    users = result;
+  });
+  res.send(
+    userObjs.map((user, i) => ({
+      first_name: users[i].first_name,
+      last_name: users[i].last_name,
+      amount,
+    })),
+  );
 };
 
 const getSplit = async ({ trip, user }, res) => {
@@ -97,20 +101,25 @@ const getSplit = async ({ trip, user }, res) => {
   let users = items.map((item) => User.findOne(
     { where: { googleId: item.purchaser_id }, raw: true },
   ));
-  await Promise.all(users).then((result) => { users = result; });
+  await Promise.all(users).then((result) => {
+    users = result;
+  });
 
   items = items.map((item, i) => {
     const newItem = item;
     newItem.purchaser = users[i].first_name;
     return newItem;
   });
-  const payments = await SplitOwedPayment.findAll(
-    { where: { trip_id: trip, recipient_id: user }, raw: true },
-  );
+  const payments = await SplitOwedPayment.findAll({
+    where: { trip_id: trip, recipient_id: user },
+    raw: true,
+  });
   users = payments.map((payment) => User.findOne(
     { where: { googleId: payment.ower_id }, raw: true },
   ));
-  await Promise.all(users).then((result) => { users = result; });
+  await Promise.all(users).then((result) => {
+    users = result;
+  });
   const debts = {};
   payments.forEach((payment, i) => {
     const name = `${users[i].first_name} ${users[i].last_name}`;
@@ -157,42 +166,51 @@ const setDest = async (req) => {
   });
 };
 
-
 const getPhotos = async ({ trip }, res) => {
-  const photos = await TripPhoto.findAll({ where: { trip_id: trip },
+  const photos = await TripPhoto.findAll({
+    where: { trip_id: trip },
     raw: true,
-    order: [
-      ['createdAt', 'DESC'],
-    ] });
+    order: [['createdAt', 'DESC']],
+  });
   let users = photos.map((photo) => User.findOne(
     { where: { googleId: photo.user_id }, raw: true },
   ));
-  await Promise.all(users).then((results) => { users = results; });
+  await Promise.all(users).then((results) => {
+    users = results;
+  });
   res.send(
-    photos.map((photo, i) => ({ ...photo, userName: `${users[i].first_name} ${users[i].last_name}` })),
+    photos.map((photo, i) => ({
+      ...photo,
+      userName: `${users[i].first_name} ${users[i].last_name}`,
+    })),
   );
 };
 
 const addPhoto = async ({ file, body }, res) => {
   const { user, trip } = body;
-  const photo = await TripPhoto.create({ user_id: user, trip_id: trip, photo_link: file.filename });
+  const photo = await TripPhoto.create({
+    user_id: user,
+    trip_id: trip,
+    photo_link: file.filename,
+  });
   res.send(photo);
 };
-
 
 const getAllTrips = async (req, res) => {
   const tripIds = await TripUser.findAll({ where: { user_id: req.body.user_id } });
   let trips = tripIds.map((item) => Trip.findByPk(item.trip_id));
-  await Promise.all(trips).then((response) => { trips = response; });
+  await Promise.all(trips).then((response) => {
+    trips = response;
+  });
   res.send(trips);
 };
-
 
 const getTripForFlight = async (req, res) => {
   const getTrip = await Trip.findOne({
     where: { id: req.body.id, googleId: req.body.googleId },
   });
   res.send(getTrip);
+};
 
 // Gets the users from the db who are not the current user
 const getOtherUsers = async (req, res) => {
@@ -252,7 +270,8 @@ const tripUser = async (req) => {
 
 const inviteAllOtherUsers = async (req) => {
   const inviteThem = await User.findAll({
-    where: { [Op.not]: [{ googleId: req.currentUser }] }, raw: true,
+    where: { [Op.not]: [{ googleId: req.currentUser }] },
+    raw: true,
   });
   inviteThem.forEach((user) => {
     TripProposalVotes.create({

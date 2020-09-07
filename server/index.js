@@ -115,7 +115,6 @@ app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
 });
 
-
 app.post('/getTripForFlight', (req, res) => {
   getTripForFlight(req, res);
 });
