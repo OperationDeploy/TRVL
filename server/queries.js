@@ -1,6 +1,7 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
 
+
 const { generatePlaces } = require('./algo.js');
 const {
   User,
@@ -69,12 +70,17 @@ const addSplit = async (req, res) => {
   const tripId = req.trip_id;
   const { price } = req;
   const item = await SplitItem.create(req);
-  let users = await TripUser.findAll(
-    { where: { trip_id: tripId, user_id: { [Op.ne]: purchaserId } }, raw: true },
-  );
+  let users = await TripUser.findAll({
+    where: { trip_id: tripId, user_id: { [Op.ne]: purchaserId } },
+    raw: true,
+  });
   const amount = price / (users.length + 1);
   const userObjs = users.map((user) => ({
-    ower_id: user.user_id, recipient_id: purchaserId, amount, trip_id: tripId, item_id: item.id,
+    ower_id: user.user_id,
+    recipient_id: purchaserId,
+    amount,
+    trip_id: tripId,
+    item_id: item.id,
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
   users = users.map((user) => User.findOne({ where: { googleId: user.user_id }, raw: true }));
@@ -82,6 +88,7 @@ const addSplit = async (req, res) => {
   res.send(userObjs.map(
     (user, i) => ({ first_name: users[i].first_name, last_name: users[i].last_name, amount }),
   ));
+
 };
 
 const getSplit = async ({ trip, user }, res) => {
@@ -91,6 +98,7 @@ const getSplit = async ({ trip, user }, res) => {
     { where: { googleId: item.purchaser_id }, raw: true },
   ));
   await Promise.all(users).then((result) => { users = result; });
+
   items = items.map((item, i) => {
     const newItem = item;
     newItem.purchaser = users[i].first_name;
@@ -129,13 +137,26 @@ const planTrip = async (req, res) => {
   res.send(trip);
 };
 
-const setDest = (req) => {
+const setDest = async (req) => {
+  const destinations = await Destinations.findAll({});
+  let code;
+  for (let place = 0; place < destinations.length; place += 1) {
+    const dest = destinations[place].city.substr(
+      0,
+      destinations[place].city.indexOf(','),
+    );
+    if (dest === req.body.destination) {
+      code = destinations[place].airport_code;
+    }
+  }
+
   Trip.findOne({ where: { id: req.body.trip_id } }).then((obj) => {
     if (obj) {
-      obj.update({ destination: req.body.destination });
+      obj.update({ destination: req.body.destination, airport_code: code });
     }
   });
 };
+
 
 const getPhotos = async ({ trip }, res) => {
   const photos = await TripPhoto.findAll({ where: { trip_id: trip },
@@ -158,12 +179,20 @@ const addPhoto = async ({ file, body }, res) => {
   res.send(photo);
 };
 
+
 const getAllTrips = async (req, res) => {
   const tripIds = await TripUser.findAll({ where: { user_id: req.body.user_id } });
   let trips = tripIds.map((item) => Trip.findByPk(item.trip_id));
   await Promise.all(trips).then((response) => { trips = response; });
   res.send(trips);
 };
+
+
+const getTripForFlight = async (req, res) => {
+  const getTrip = await Trip.findOne({
+    where: { id: req.body.id, googleId: req.body.googleId },
+  });
+  res.send(getTrip);
 
 // Gets the users from the db who are not the current user
 const getOtherUsers = async (req, res) => {
@@ -273,6 +302,7 @@ module.exports = {
   getTripNames,
   getPhotos,
   getAllTrips,
+  getTripForFlight,
   inviteAllOtherUsers,
   tripUser,
   getMyInvites,

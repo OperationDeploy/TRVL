@@ -10,7 +10,7 @@ const Purchases = ({ currentUser, currentTrip }) => {
   const [purchases, setPurchases] = useState([]);
   const [debts, setDebts] = useState([]);
 
-  useEffect(() => {
+  useEffect(() => 
     axios.get(`/split/${currentTrip.id}/${currentUser.id}`).then(({ data }) => {
       setPurchases(
         data.items.map(

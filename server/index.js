@@ -20,10 +20,12 @@ const {
   getMyInvites,
   addSplit,
   getAllTrips,
+  getTripForFlight,
   tripUser,
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+
 } = require('./queries.js');
 
 const app = express();
@@ -113,6 +115,11 @@ app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
 });
 
+
+app.post('/getTripForFlight', (req, res) => {
+  getTripForFlight(req, res);
+});
+
 app.post('/tripUser', (req, res) => {
   tripUser(req.body, res);
 });
@@ -130,6 +137,7 @@ app.post('/removeInvite', (req, res) => {
 });
 
 app.use(express.static('public'));
+
 app.use(express.static(DIST_DIR)); // NEW
 
 app.listen(PORT, () => {
