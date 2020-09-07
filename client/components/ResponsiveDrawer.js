@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+// import { StylesProvider } from '@material-ui/styles';
 import AppBar from '@material-ui/core/AppBar';
+import Avatar from '@material-ui/core/Avatar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
+// import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import IconButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
@@ -17,10 +20,14 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import axios from 'axios';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+
+import InvitesPage from './InvitesPage';
+
+import './App.scss';
 
 const drawerWidth = 240;
 
@@ -59,27 +66,31 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const ResponsiveDrawer = ({
-  clickPlan,
-  onClickPlanTrip,
-  clickTrips,
-  onClickGetTrips,
   currentUser,
   currentTrip,
+  otherUsers,
 }) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [showInvites, setShowInvite] = useState(false);
+  const [myInvites, setMyInvites] = useState([]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const [clickedPage, setClickedPage] = useState(null);
 
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => console.info('open')} key={text}>
+          <ListItem button onClick={() => {
+            setClickedPage(null);
+            setMobileOpen(!mobileOpen);
+          }} key={text}>
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -90,7 +101,7 @@ const ResponsiveDrawer = ({
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
+          <ListItem button onClick={() => setShowInvite(!showInvites)} key={text}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -112,7 +123,52 @@ const ResponsiveDrawer = ({
     </div>
   );
 
+  useEffect(() => {
+    axios
+      .get('/getInvites', { params: { googleId: currentUser.googleId } })
+      .then((response) => setMyInvites(response.data))
+      .catch((err) => console.warn('ERRR', err));
+  }, [showInvites]);
+
+  if (showInvites === true) {
+    // set state for invited trips
+    // pass state to preferences
+    // refactor prefs to use state from invited trip
+
+    return (
+      <div>
+        <InvitesPage
+          currentUser={currentUser}
+          otherUsers={otherUsers}
+          myInvites={myInvites}
+        />
+        <Trips
+          currentUser={currentUser}
+          currentTrip={currentTrip}
+          setClickedPage={setClickedPage}
+        />
+      </div>
+    );
+  }
+
   const container = window !== undefined ? () => window.document.body : undefined;
+
+  const landingPage = (<div>
+  <Avatar
+    alt="profilepic"
+    src={currentUser.profile_pic}
+    className={classes.large}
+  />
+  <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
+  <Trips
+    currentUser={currentUser}
+    currentTrip={currentTrip}
+    setClickedPage={setClickedPage} />
+  <PlanATrip
+    otherUsers={otherUsers}
+    currentUser={currentUser}
+    setClickedPage={setClickedPage} />
+  </div>);
 
   return (
     <div className={classes.root}>
@@ -166,35 +222,25 @@ const ResponsiveDrawer = ({
       </nav>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Avatar
-          alt="profilepic"
-          src={currentUser.profile_pic}
-          className={classes.large}
-        />
-        <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
-        <Trips
-          clickTrips={clickTrips}
-          onClickGetTrips={onClickGetTrips}
-          currentUser={currentUser}
-          currentTrip={currentTrip}
-        />
-        <PlanATrip
-          clickPlan={clickPlan}
-          onClickPlanTrip={onClickPlanTrip}
-          currentUser={currentUser}
-        />
+        {clickedPage || landingPage}
       </main>
     </div>
   );
 };
 
 ResponsiveDrawer.propTypes = {
-  onClickGetTrips: PropTypes.func.isRequired,
-  clickTrips: PropTypes.bool.isRequired,
-  clickPlan: PropTypes.bool.isRequired,
-  onClickPlanTrip: PropTypes.func.isRequired,
+  otherUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string,
+      profile_pic: PropTypes.string,
+      host: PropTypes.bool,
+      googleId: PropTypes.string,
+    }),
+  ).isRequired,
   currentUser: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
@@ -204,12 +250,10 @@ ResponsiveDrawer.propTypes = {
   }).isRequired,
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
   }).isRequired,
 };
 

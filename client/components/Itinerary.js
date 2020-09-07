@@ -10,7 +10,7 @@ const Itinerary = ({ currentUser, currentTrip }) => {
   useEffect(() => console.info('currentTrip:', currentTrip));
 
   return (
-    <div id="tripitinerary" className="itinerary">
+    <div id="trip-itinerary" className="itinerary-container">
       <Typography component="h1" variant="h2">
         Itinerary
       </Typography>

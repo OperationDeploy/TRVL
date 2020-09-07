@@ -12,8 +12,9 @@ import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
 
-const UserTrips = ({ currentUser }) => {
-  const [clicked, setClicked] = useState('');
+
+const UserTrips = ({ currentUser, currentTrip }) => {
+  const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
 
@@ -42,6 +43,7 @@ const UserTrips = ({ currentUser }) => {
   }
 
   return (
+
     <div>
       <Typography variant="h1">Trips</Typography>
       {trips.map((data) => (
@@ -49,6 +51,7 @@ const UserTrips = ({ currentUser }) => {
           <ListItem>
             <ListItemText>{data.name}</ListItemText>
             <ListItemSecondaryAction>
+
               <Button
                 onClick={() => {
                   const trip = { id: data.id, city: data.destination };
@@ -57,6 +60,7 @@ const UserTrips = ({ currentUser }) => {
                 }}
                 color="primary"
               >
+
                 Trip Itinerary
               </Button>
             </ListItemSecondaryAction>
@@ -119,6 +123,7 @@ const UserTrips = ({ currentUser }) => {
 
 UserTrips.propTypes = {
   currentUser: PropTypes.shape({
+    id: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
@@ -129,6 +134,10 @@ UserTrips.propTypes = {
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
     name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+
   }).isRequired,
 };
 

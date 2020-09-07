@@ -8,7 +8,7 @@ const ActivityForm = ({ saveActivity }) => {
   const [value, setValue] = useState('');
 
   return (
-    <div>
+    <div className="activity-form-container">
       <form
         onSubmit={(event) => {
           event.preventDefault();

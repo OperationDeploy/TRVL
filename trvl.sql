@@ -3,17 +3,24 @@ DROP DATABASE trvl_db;
 CREATE DATABASE trvl_db;
 \connect trvl_db;
 
+CREATE OR REPLACE FUNCTION trigger_set_timestamp()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
 
 CREATE TABLE "Users" (
-  "id" SERIAL PRIMARY KEY,
+  "id" int,
   "first_name" TEXT,
   "last_name" TEXT,
   "email" TEXT,
   "profile_pic" VARCHAR(200),
   "host" boolean,
-  "googleId" TEXT UNIQUE,
-  "createdAt" time,
-  "updatedAt" time
+  "googleId" TEXT PRIMARY KEY,
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "Trips" (
@@ -25,16 +32,16 @@ CREATE TABLE "Trips" (
   "departure_city" TEXT,
   "airport_code" TEXT UNIQUE,
   "googleId" TEXT,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "TripUsers" (
   "id" SERIAL PRIMARY KEY,
-  "user_id" int,
+  "user_id" TEXT,
   "trip_id" int,
-   "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "TripPreferences" (
@@ -48,8 +55,8 @@ CREATE TABLE "TripPreferences" (
   "city_type" int,
   "group_age" int,
   "group_relationship" int,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "TripPhotos" (
@@ -57,8 +64,8 @@ CREATE TABLE "TripPhotos" (
   "user_id" TEXT,
   "trip_id" int,
   "photo_link" TEXT,
-   "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "TripProposals" (
@@ -68,8 +75,8 @@ CREATE TABLE "TripProposals" (
   "destination_A_id" int,
   "destination_B_id" int,
   "destination_C_id" int,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "TripItineraries" (
@@ -78,8 +85,8 @@ CREATE TABLE "TripItineraries" (
   "trip_id" int,
   "event" TEXT,
   "day" date,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "TripProposalVotes" (
@@ -87,8 +94,8 @@ CREATE TABLE "TripProposalVotes" (
   "user_id" TEXT,
   "trip_id" int,
   "destination" int,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "Destinations" (
@@ -101,33 +108,35 @@ CREATE TABLE "Destinations" (
   "city_type" int,
   "group_age" int,
   "group_relationship" int,
+
   "airport_code" TEXT UNIQUE,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
+
 );
 
 CREATE TABLE "SplitItems" (
   "id" SERIAL PRIMARY KEY,
-  "purchaser_id" int,
+  "purchaser_id" TEXT,
   "description" TEXT,
   "price" real,
   "trip_id" int,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
 CREATE TABLE "SplitOwedPayments" (
   "id" SERIAL PRIMARY KEY,
-  "ower_id" int,
-  "recipient_id" int,
+  "ower_id" TEXT,
+  "recipient_id" TEXT,
   "amount" real,
   "trip_id" int,
   "item_id" int,
-  "createdAt" time,
-  "updatedAt" time
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
-ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("id");
+ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
 

@@ -8,7 +8,7 @@ const PurchasesForm = ({ savePurchase }) => {
   const [price, setPrice] = useState('');
 
   return (
-    <div>
+    <div className="purchase-form-container">
       <form
         onSubmit={(event) => {
           event.preventDefault();

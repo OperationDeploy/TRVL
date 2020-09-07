@@ -10,9 +10,8 @@ const Purchases = ({ currentUser, currentTrip }) => {
   const [purchases, setPurchases] = useState([]);
   const [debts, setDebts] = useState([]);
 
-  useEffect(() => {
-    console.info(currentTrip);
-    axios.get(`/split/${currentTrip.id}/${currentUser.id}`).theni(({ data }) => {
+  useEffect(() => 
+    axios.get(`/split/${currentTrip.id}/${currentUser.id}`).then(({ data }) => {
       setPurchases(
         data.items.map(
           (item) => `${item.description}: $${item.price} (${item.purchaser})`,
@@ -22,7 +21,7 @@ const Purchases = ({ currentUser, currentTrip }) => {
     });
   }, []);
   return (
-    <div>
+    <div className="purchase-container">
       <Typography component="h1" variant="h2">
         Purchases
       </Typography>
@@ -69,8 +68,22 @@ const Purchases = ({ currentUser, currentTrip }) => {
 };
 
 Purchases.propTypes = {
-  currentTrip: PropTypes.objectOf.isRequired,
-  currentUser: PropTypes.objectOf.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.string,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
+  currentTrip: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+  }).isRequired,
 };
 
 export default Purchases;
