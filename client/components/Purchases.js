@@ -12,7 +12,7 @@ const Purchases = ({ currentUser, currentTrip }) => {
 
   useEffect(() => {
     console.info(currentTrip);
-    axios.get(`/split/${currentTrip.id}/${currentUser.id}`).then(({ data }) => {
+    axios.get(`/split/${currentTrip.id}/${currentUser.id}`).theni(({ data }) => {
       setPurchases(
         data.items.map(
           (item) => `${item.description}: $${item.price} (${item.purchaser})`,
