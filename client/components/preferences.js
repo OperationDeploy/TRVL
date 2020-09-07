@@ -104,7 +104,6 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
       axios.post('./tripUser', {
         currentUser,
         trip_id: trip.id,
-
       });
     }
   }, [trip]);
@@ -114,7 +113,13 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
   };
 
   if (buttonClicked) {
-    return <SelectPlaces trip={trip} currentUser={currentUser} setClickedPage={setClickedPage} />;
+    return (
+      <SelectPlaces
+        trip={trip}
+        currentUser={currentUser}
+        setClickedPage={setClickedPage}
+      />
+    );
   }
 
   return (

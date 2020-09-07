@@ -4,21 +4,22 @@ import PropTypes from 'prop-types';
 import Preferences from './preferences';
 
 const PlanATrip = ({ setClickedPage, currentUser, otherUsers }) => (
-    <div>
-      <Button
-        variant="contained"
-        onClick={() => {
-          setClickedPage(
+  <div>
+    <Button
+      variant="contained"
+      onClick={() => {
+        setClickedPage(
           <Preferences
             currentUser={currentUser}
             otherUsers={otherUsers}
-            setClickedPage={setClickedPage} />,
-          );
-        }}
-      >
-        Plan A Trip
-      </Button>
-    </div>
+            setClickedPage={setClickedPage}
+          />,
+        );
+      }}
+    >
+      Plan A Trip
+    </Button>
+  </div>
 );
 
 PlanATrip.propTypes = {

@@ -9,11 +9,10 @@ const Photos = ({ currentTrip, currentUser }) => {
   const [photos, setPhotos] = useState([]);
 
   useEffect(() => {
-    axios.get(`/photos/${currentTrip.id}`)
-      .then(({ data }) => {
-        setPhotos(data);
-        console.info('photos from server', data);
-      });
+    axios.get(`/photos/${currentTrip.id}`).then(({ data }) => {
+      setPhotos(data);
+      console.info('photos from server', data);
+    });
   }, []);
 
   const fileUpload = (photo) => {
@@ -21,11 +20,10 @@ const Photos = ({ currentTrip, currentUser }) => {
     data.append('file', photo);
     data.append('user', currentUser.id);
     data.append('trip', currentTrip.id);
-    axios.post('/photos', data)
-      .then((res) => {
-        res.data.userName = `${currentUser.first_name} ${currentUser.last_name}`;
-        setPhotos([res.data, ...photos]);
-      });
+    axios.post('/photos', data).then((res) => {
+      res.data.userName = `${currentUser.first_name} ${currentUser.last_name}`;
+      setPhotos([res.data, ...photos]);
+    });
   };
 
   const fileSelectHandler = (e) => {
@@ -38,22 +36,17 @@ const Photos = ({ currentTrip, currentUser }) => {
         Photos
       </Typography>
       <div>
-        <Button
-          variant="contained"
-          component="label"
-        >
+        <Button variant="contained" component="label">
           Upload Photo
-          <input
-            type="file"
-            style={{ display: 'none' }}
-            onChange={fileSelectHandler}
-          />
+          <input type="file" style={{ display: 'none' }} onChange={fileSelectHandler} />
         </Button>
       </div>
       {photos.map((photo, i) => (
         <div>
           <div>
-            {`Uploaded by ${photo.userName} on ${new Date(photo.createdAt).toDateString()}`}
+            {`Uploaded by ${photo.userName} on ${new Date(
+              photo.createdAt,
+            ).toDateString()}`}
           </div>
           <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
         </div>

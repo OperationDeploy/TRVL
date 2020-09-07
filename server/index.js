@@ -25,7 +25,6 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
-
 } = require('./queries.js');
 
 const app = express();
