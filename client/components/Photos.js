@@ -11,12 +11,10 @@ const Photos = ({ currentTrip, currentUser }) => {
   useEffect(() => {
     axios.get(`/photos/${currentTrip.id}`).then(({ data }) => {
       setPhotos(data);
-      console.info('photos from server', data);
     });
   }, []);
 
   const fileUpload = (files) => {
-    console.info('the files inside fileUpload', Array.isArray(files), files);
     const data = new FormData();
     Object.values(files).forEach((file) => data.append('file', file));
     data.append('user', currentUser.id);
