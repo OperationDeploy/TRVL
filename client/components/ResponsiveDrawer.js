@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -20,10 +20,12 @@ import EventIcon from '@material-ui/icons/Event';
 import FlightIcon from '@material-ui/icons/Flight';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { indigo, orange } from '@material-ui/core/colors';
+import axios from 'axios';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
-import UserTrips from './UserTrips';
-import Preferences from './preferences';
+
+import InvitesPage from './InvitesPage';
+
 import './App.scss';
 
 const drawerWidth = 240;
@@ -62,16 +64,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ResponsiveDrawer = ({
-  clickPlan,
-  onClickPlanTrip,
-  clickTrips,
-  onClickGetTrips,
-  currentUser,
-  currentTrip,
-}) => {
+const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const classes = useStyles();
-  // const theme = useTheme();
   const theme = createMuiTheme({
     palette: {
       primary: {
@@ -89,17 +83,28 @@ const ResponsiveDrawer = ({
   });
 
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showInvites, setShowInvite] = useState(false);
+  const [myInvites, setMyInvites] = useState([]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+
+  const [clickedPage, setClickedPage] = useState(null);
 
   const drawer = (
     <div>
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => console.info('open')} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              setClickedPage(null);
+              setMobileOpen(!mobileOpen);
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -113,11 +118,11 @@ const ResponsiveDrawer = ({
           <ListItem
             button
             onClick={() => {
-              onClickPlanTrip();
-              if (clickPlan) {
-                return <Preferences currentUser={currentUser} />;
-              }
-              return null;
+              // onClickPlanTrip();
+              // if (clickPlan) {
+              //   return <Preferences currentUser={currentUser} />;
+              // }
+              // return null;
             }}
             key={text}
           >
@@ -134,11 +139,11 @@ const ResponsiveDrawer = ({
           <ListItem
             button
             onClick={() => {
-              onClickGetTrips();
-              if (clickTrips) {
-                return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
-              }
-              return null;
+              // onClickGetTrips();
+              // if (clickTrips) {
+              //   return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
+              // }
+              // return null;
             }}
             key={text}
           >
@@ -152,7 +157,7 @@ const ResponsiveDrawer = ({
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
+          <ListItem button onClick={() => setShowInvite(!showInvites)} key={text}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -173,7 +178,61 @@ const ResponsiveDrawer = ({
     </div>
   );
 
+  useEffect(() => {
+    axios
+      .get('/getInvites', { params: { googleId: currentUser.googleId } })
+      .then((response) => setMyInvites(response.data))
+      .catch((err) => console.warn('ERRR', err));
+  }, [showInvites]);
+
+  if (showInvites === true) {
+    // set state for invited trips
+    // pass state to preferences
+    // refactor prefs to use state from invited trip
+
+    return (
+      <div>
+        <InvitesPage
+          currentUser={currentUser}
+          otherUsers={otherUsers}
+          myInvites={myInvites}
+        />
+        <Trips
+          currentUser={currentUser}
+          currentTrip={currentTrip}
+          setClickedPage={setClickedPage}
+        />
+      </div>
+    );
+  }
+
   const container = window !== undefined ? () => window.document.body : undefined;
+
+  const landingPage = (
+    <div style={{ textAlign: 'center', justifyContent: 'center' }}>
+      <img
+        src={currentUser.profile_pic}
+        alt="user loaded from google login"
+        className="profile-pic"
+      />
+      <Typography
+        className="welcome-message"
+        variant="h6"
+      >
+        {`Hi, ${currentUser.first_name}!`}
+      </Typography>
+      <Trips
+        currentUser={currentUser}
+        currentTrip={currentTrip}
+        setClickedPage={setClickedPage}
+      />
+      <PlanATrip
+        otherUsers={otherUsers}
+        currentUser={currentUser}
+        setClickedPage={setClickedPage}
+      />
+    </div>
+  );
 
   return (
     <ThemeProvider theme={theme}>
@@ -234,30 +293,7 @@ const ResponsiveDrawer = ({
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div style={{ textAlign: 'center', justifyContent: 'center' }}>
-            <img
-              src={currentUser.profile_pic}
-              alt="user loaded from google login"
-              className="profile-pic"
-            />
-          </div>
-          <Typography
-            className="welcome-message"
-            variant="h6"
-          >{`Hi, ${currentUser.first_name}!`}</Typography>
-          <br />
-          <Trips
-            clickTrips={clickTrips}
-            onClickGetTrips={onClickGetTrips}
-            currentUser={currentUser}
-            currentTrip={currentTrip}
-          />
-          <br />
-          <PlanATrip
-            clickPlan={clickPlan}
-            onClickPlanTrip={onClickPlanTrip}
-            currentUser={currentUser}
-          />
+          {clickedPage || landingPage}
         </main>
       </div>
     </ThemeProvider>
@@ -265,12 +301,18 @@ const ResponsiveDrawer = ({
 };
 
 ResponsiveDrawer.propTypes = {
-  onClickGetTrips: PropTypes.func.isRequired,
-  clickTrips: PropTypes.bool.isRequired,
-  clickPlan: PropTypes.bool.isRequired,
-  onClickPlanTrip: PropTypes.func.isRequired,
+  otherUsers: PropTypes.arrayOf(
+    PropTypes.shape({
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
+      email: PropTypes.string,
+      profile_pic: PropTypes.string,
+      host: PropTypes.bool,
+      googleId: PropTypes.string,
+    }),
+  ).isRequired,
   currentUser: PropTypes.shape({
-    id: PropTypes.number,
+    id: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
@@ -280,12 +322,10 @@ ResponsiveDrawer.propTypes = {
   }).isRequired,
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
   }).isRequired,
 };
 

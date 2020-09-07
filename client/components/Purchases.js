@@ -41,9 +41,9 @@ const Purchases = ({ currentUser, currentTrip }) => {
                 if (Array.isArray(data)) {
                   data.forEach((payment) => {
                     const name = `${payment.first_name} ${payment.last_name}`;
-                    debts[name] = debts[name]
-                      ? debts[name] + payment.amount
-                      : payment.amount;
+                    debts[name] = debts[name] ?
+                      debts[name] + payment.amount :
+                      payment.amount;
                   });
                   setDebts(debts);
                   setPurchases([...purchases, text]);
@@ -68,8 +68,22 @@ const Purchases = ({ currentUser, currentTrip }) => {
 };
 
 Purchases.propTypes = {
-  currentTrip: PropTypes.objectOf.isRequired,
-  currentUser: PropTypes.objectOf.isRequired,
+  currentUser: PropTypes.shape({
+    id: PropTypes.string,
+    first_name: PropTypes.string,
+    last_name: PropTypes.string,
+    email: PropTypes.string,
+    profile_pic: PropTypes.string,
+    host: PropTypes.bool,
+    googleId: PropTypes.string,
+  }).isRequired,
+  currentTrip: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+  }).isRequired,
 };
 
 export default Purchases;
