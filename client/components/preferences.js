@@ -104,6 +104,7 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
       axios.post('./tripUser', {
         currentUser,
         trip_id: trip.id,
+
       });
     }
   }, [trip]);
