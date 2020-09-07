@@ -186,14 +186,15 @@ const getPhotos = async ({ trip }, res) => {
   );
 };
 
-const addPhoto = async ({ file, body }, res) => {
+const addPhoto = async ({ files, body }, res) => {
   const { user, trip } = body;
-  const photo = await TripPhoto.create({
+  let photos = files.map((photo) => TripPhoto.create({
     user_id: user,
     trip_id: trip,
-    photo_link: file.filename,
-  });
-  res.send(photo);
+    photo_link: photo.filename,
+  }));
+  await Promise.all(photos).then((response) => { photos = response; });
+  res.send(photos);
 };
 
 const getAllTrips = async (req, res) => {
