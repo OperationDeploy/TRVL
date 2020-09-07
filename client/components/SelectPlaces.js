@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import UserTrips from './UserTrips';
 
-const SelectPlaces = ({ currentUser, trip }) => {
+const SelectPlaces = ({ trip, currentUser, setClickedPage }) => {
   const [places, setPlaces] = useState([]);
 
   const handleChange = (response) => {
@@ -11,12 +12,12 @@ const SelectPlaces = ({ currentUser, trip }) => {
 
   useEffect(() => {
     axios
-      .post('./grabPlaces', { trip_id: trip }, () => {})
+      .post('./grabPlaces', { trip_id: trip.id }, () => {})
       .then((response) => {
         handleChange(response.data);
         axios.post('./proposals', {
           user_id: currentUser.googleId,
-          trip_id: trip,
+          trip_id: trip.id,
           destination_A_id: response.data[0],
           destination_B_id: response.data[1],
           destination_C_id: response.data[2],
@@ -27,7 +28,8 @@ const SelectPlaces = ({ currentUser, trip }) => {
 
   // updates destination on trips table onclick
   const handleClick = (event) => {
-    axios.post('./setDest', { destination: event, trip_id: trip }, () => {});
+    axios.post('./setDest', { destination: event, trip_id: trip.id }, () => {});
+    setClickedPage(<UserTrips currentUser={currentUser} currentTrip={trip} />);
   };
 
   return (
@@ -45,11 +47,14 @@ const SelectPlaces = ({ currentUser, trip }) => {
 };
 
 SelectPlaces.defaultProps = {
-  trip: 0,
+  trip: { id: 0 },
 };
 
 SelectPlaces.propTypes = {
-  trip: PropTypes.number,
+  trip: PropTypes.shape({
+    id: PropTypes.number,
+  }),
+  setClickedPage: PropTypes.func.isRequired,
   currentUser: PropTypes.shape({
     first_name: PropTypes.string,
     last_name: PropTypes.string,

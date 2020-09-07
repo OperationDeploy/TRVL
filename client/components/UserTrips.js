@@ -12,7 +12,7 @@ import Purchases from './Purchases';
 import Photos from './Photos';
 
 const UserTrips = ({ currentUser, currentTrip }) => {
-  const [clicked, setClicked] = useState('');
+  const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
 
   const handleChange = (response) => {
@@ -27,39 +27,29 @@ const UserTrips = ({ currentUser, currentTrip }) => {
       });
   }, []);
 
-  switch (clicked) {
-    case 'itinerary':
-      return <Itinerary />;
-    case 'purchases':
-      return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
-    case 'photos':
-      return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
-    default:
-  }
-
-  return (
-    <div classNAme="itinerary-container">
+  return clicked || (
+    <div>
       <Typography variant="h1">Trips</Typography>
       {trips.map((data) => (
         <List>
           <ListItem>
             <ListItemText>{data.name}</ListItemText>
             <ListItemSecondaryAction>
-              <Button onClick={() => setClicked('itinerary')} color="primary">
+              <Button onClick={() => setClicked(<Itinerary />)} color="primary">
                 Trip Itinerary
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
             <ListItemSecondaryAction>
-              <Button onClick={() => setClicked('purchases')} color="primary">
+              <Button onClick={() => setClicked(<Purchases currentUser={currentUser} currentTrip={currentTrip} />)} color="primary">
                 Purchases
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem>
             <ListItemSecondaryAction>
-              <Button onClick={() => setClicked('photos')} color="primary">
+              <Button onClick={() => setClicked(<Photos currentUser={currentUser} currentTrip={currentTrip} />)} color="primary">
                 Photos
               </Button>
             </ListItemSecondaryAction>
@@ -80,6 +70,7 @@ const UserTrips = ({ currentUser, currentTrip }) => {
 
 UserTrips.propTypes = {
   currentUser: PropTypes.shape({
+    id: PropTypes.string,
     first_name: PropTypes.string,
     last_name: PropTypes.string,
     email: PropTypes.string,
@@ -89,12 +80,10 @@ UserTrips.propTypes = {
   }).isRequired,
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
   }).isRequired,
 };
 

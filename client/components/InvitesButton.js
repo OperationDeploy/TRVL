@@ -11,7 +11,8 @@ const InvitesButton = ({ otherUsers, currentUser, trip }) => {
       axios
         .post('/inviteAllOtherUsers', {
           otherUsers,
-          trip,
+          trip: trip.id,
+          currentUser: currentUser.googleId,
         })
         .then((response) => {
           console.info(response);
@@ -35,7 +36,13 @@ const InvitesButton = ({ otherUsers, currentUser, trip }) => {
 };
 
 InvitesButton.propTypes = {
-  trip: PropTypes.number.isRequired,
+  trip: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
+  }).isRequired,
   otherUsers: PropTypes.arrayOf(
     PropTypes.shape({
       first_name: PropTypes.string,
