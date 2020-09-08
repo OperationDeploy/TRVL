@@ -8,33 +8,34 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
   const [allOtherUsers, setAllOtherUsers] = useState([]);
 
   useEffect(() => {
-    axios.get('/inviteUsers', {
-      params: {
-        currentUser: currentUser.googleId,
-      },
-    })
+    axios
+      .get('/inviteUsers', {
+        params: {
+          currentUser: currentUser.googleId,
+        },
+      })
       .then((response) => {
         setAllOtherUsers(response.data);
       })
       .catch((err) => console.warn('ERRR', err));
   });
   return (
-  <div>
-    <Button
-      variant="contained"
-      onClick={() => {
-        setClickedPage(
-          <Preferences
-            currentUser={currentUser}
-            otherUsers={allOtherUsers}
-            setClickedPage={setClickedPage}
-          />,
-        );
-      }}
-    >
-      Plan A Trip
-    </Button>
-  </div>
+    <div>
+      <Button
+        variant="contained"
+        onClick={() => {
+          setClickedPage(
+            <Preferences
+              currentUser={currentUser}
+              otherUsers={allOtherUsers}
+              setClickedPage={setClickedPage}
+            />,
+          );
+        }}
+      >
+        Plan A Trip
+      </Button>
+    </div>
   );
 };
 

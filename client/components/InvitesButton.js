@@ -13,9 +13,7 @@ const InvitesButton = ({ otherUsers, trip }) => {
         user,
         trip: trip.id,
       })
-      .then((response) => {
-        console.info(response);
-      })
+      .then(axios.post('/sendTwilio', { user }))
       .catch((err) => console.warn(err));
   };
 
@@ -25,14 +23,9 @@ const InvitesButton = ({ otherUsers, trip }) => {
         <header>Click on a user to send them a invite to this trip!</header>
         <ul>
           {otherUsers.map((user) => (
-          <button
-          type="submit"
-          key={user}
-          onClick={(e) => handleClick(e, user)
-          }
-        >
-          {user.last_name}, {user.first_name}
-        </button>
+            <button type="submit" key={user} onClick={(e) => handleClick(e, user)}>
+              {user.last_name}, {user.first_name}
+            </button>
           ))}
         </ul>
       </div>
