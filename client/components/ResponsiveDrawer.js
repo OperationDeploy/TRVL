@@ -84,13 +84,17 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   };
 
   const handleSubmitPhone = () => {
-    axios.post('/addPhoneNumber', {
-      phone, currentUser,
-    }).then((response) => {
-      if (response.data.length !== 0) {
-        setPhoneRegistered(true);
-      }
-    }).catch((err) => console.warn(err));
+    axios
+      .post('/addPhoneNumber', {
+        phone,
+        currentUser,
+      })
+      .then((response) => {
+        if (response.data.length !== 0) {
+          setPhoneRegistered(true);
+        }
+      })
+      .catch((err) => console.warn(err));
   };
 
   const drawer = (
@@ -149,7 +153,10 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
     axios
       .get('/phone', { params: { googleId: currentUser.googleId } })
       .then((response) => {
-        if (Object.keys(response.data).length !== 0 && response.data.constructor === Object) {
+        if (
+          Object.keys(response.data).length !== 0 &&
+          response.data.constructor === Object
+        ) {
           setPhoneRegistered(true);
         }
       })
@@ -198,17 +205,16 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   if (!phoneRegistered) {
     return (
       <Typography>
-        **Link you phone number to your account**
-        Phone Number:
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            placeholder="number"
-            value={phone}
-            onChange={handleChangePhone}
-          />
-          <Button
+        **Link you phone number to your account** Phone Number:
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          placeholder="number"
+          value={phone}
+          onChange={handleChangePhone}
+        />
+        <Button
           variant="contained"
           onClick={() => {
             handleSubmitPhone();
