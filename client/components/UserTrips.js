@@ -42,8 +42,8 @@ const UserTrips = ({ currentUser }) => {
   }
 
   return (
-    <div>
-      <Typography variant="h1">Trips</Typography>
+    <div className="itinerary-container">
+      <Typography variant="h2">Trips</Typography>
       {trips.map((data) => (
         <List>
           <ListItem>
@@ -75,6 +75,7 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button

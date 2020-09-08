@@ -1,6 +1,25 @@
-$myColor: red;
+$myColor:#24255f;
 
-body {
-  color: $myColor;
-  // margin-right: ;
+.welcome-message {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center'
+}
+
+.trip-container {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+  overflow:'visible';
+  float:'right';
+}
+
+.pat-container {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+}
+
+.profile-pic {
+  border-radius: 50%;
 }
