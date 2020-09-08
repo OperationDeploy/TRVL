@@ -2,13 +2,29 @@
 
 const axios = require('axios');
 const { WEATHER_API, GEO_API } = require('../config');
-const { Trip } = require('./db');
+const { Trip, TripUser, User } = require('./db');
 
 const compareISODates = (date1, date2 = new Date().toISOString().slice(0, 10)) => (
   Math.abs(new Date(date1) - new Date(date2)) / 86400000
 );
 
 const toISO = (date) => new Date(date * 1000).toISOString().slice(0, 10);
+
+const alertUsers = async (trips) => {
+  let userIds = trips.map((trip) => TripUser.findOne({ where: { trip_id: trip.id }, raw: true }));
+  await Promise.all(userIds)
+    .then((response) => {
+      userIds = response;
+    });
+  let users = userIds.map((userId) => User.findOne(
+    { where: { googleId: userId.user_id }, raw: true },
+  ));
+  await Promise.all(users)
+    .then((response) => {
+      users = response;
+    });
+  console.info(users);
+};
 
 const getWeather = async () => {
   let trips = await Trip.findAll({ raw: true });
@@ -43,7 +59,7 @@ const getWeather = async () => {
   await Promise.all(weatherData)
     .then((res) => {
       const result = res.map(({ data }, i) => {
-        const trip = { name: trips[i].name, location: trips[i].destination, rain: false };
+        const trip = { ...trips[i], rain: false };
         const forecast = {};
         let startIndex = 0;
         const tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
@@ -65,6 +81,7 @@ const getWeather = async () => {
         return trip;
       });
       console.info(result);
+      alertUsers(result);
     });
 };
 
