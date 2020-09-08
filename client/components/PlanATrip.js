@@ -6,7 +6,8 @@ import Preferences from './preferences';
 const PlanATrip = ({ setClickedPage, currentUser, otherUsers }) => (
   <div>
     <Button
-      variant="contained"
+      variant="outlined"
+      color="primary"
       onClick={() => {
         setClickedPage(
           <Preferences

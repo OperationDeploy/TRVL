@@ -125,6 +125,7 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
       <div className="prefs">
+        <Typography variant="h2">Plan a Trip</Typography>
         <label htmlFor="text">
           Trip name:
           <input
