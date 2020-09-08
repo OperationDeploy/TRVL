@@ -83,7 +83,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   });
 
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [showInvites, setShowInvite] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
 
   const handleDrawerToggle = () => {
@@ -101,7 +100,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             button
             onClick={() => {
               setClickedPage(null);
-              setMobileOpen(!mobileOpen);
+              setMobileOpen(false);
             }}
             key={text}
           >
@@ -157,7 +156,21 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => setShowInvite(!showInvites)} key={text}>
+          <ListItem button onClick={() => {
+            setClickedPage(<div>
+            <InvitesPage
+              currentUser={currentUser}
+              otherUsers={otherUsers}
+              myInvites={myInvites}
+            />
+            <Trips
+              currentUser={currentUser}
+              currentTrip={currentTrip}
+              setClickedPage={setClickedPage}
+            />
+          </div>);
+            setMobileOpen(false);
+          }} key={text}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -183,28 +196,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       .get('/getInvites', { params: { googleId: currentUser.googleId } })
       .then((response) => setMyInvites(response.data))
       .catch((err) => console.warn('ERRR', err));
-  }, [showInvites]);
-
-  if (showInvites === true) {
-    // set state for invited trips
-    // pass state to preferences
-    // refactor prefs to use state from invited trip
-
-    return (
-      <div>
-        <InvitesPage
-          currentUser={currentUser}
-          otherUsers={otherUsers}
-          myInvites={myInvites}
-        />
-        <Trips
-          currentUser={currentUser}
-          currentTrip={currentTrip}
-          setClickedPage={setClickedPage}
-        />
-      </div>
-    );
-  }
+  }, []);
 
   const container = window !== undefined ? () => window.document.body : undefined;
 
