@@ -4,10 +4,16 @@ const axios = require('axios');
 const { WEATHER_API, GEO_API } = require('../config');
 const { Trip } = require('./db');
 
+const compareISODates = (date1, date2 = new Date().toISOString().slice(0, 10)) => (
+  Math.abs(new Date(date1) - new Date(date2)) / 86400000
+);
+
+const toISO = (date) => new Date(date * 1000).toISOString().slice(0, 10);
+
 const getWeather = async () => {
   let trips = await Trip.findAll({ raw: true });
-  trips = trips.filter((trip) => trip.destination);
-  // NEED TO FIND OUT WHY THERE ARE 2 ENTRIES AND ONE IS NULL FOR DESTINATION ETC
+  trips = trips.filter((trip) => compareISODates(trip.start_date) <= 7);
+
   const coordinates = trips.map((trip) => {
     const destination = trip.destination.split(' ');
     let state = destination.pop();
@@ -37,14 +43,26 @@ const getWeather = async () => {
   await Promise.all(weatherData)
     .then((res) => {
       const result = res.map(({ data }, i) => {
-        const city = { name: trips[i].destination };
+        const trip = { name: trips[i].name, location: trips[i].destination, rain: false };
         const forecast = {};
-        data.daily.forEach((day) => {
-          const date = new Date(day.dt * 1000).toString().slice(4, 15);
+        let startIndex = 0;
+        const tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
+        for (let j = 0; j < data.daily.length; j += 1) {
+          if (toISO(data.daily[j].dt) === trips[i].start_date) {
+            startIndex = j;
+            break;
+          }
+        }
+        const days = data.daily.slice(startIndex, startIndex + tripLength);
+        days.forEach((day) => {
+          const date = toISO(day.dt);
           forecast[date] = day.weather[0].main;
-          city.forecast = forecast;
+          if (forecast[date] === 'Rain') {
+            trip.rain = true; // TRIP HAS RAIN ON THIS DATE
+          }
         });
-        return city;
+        trip.forecast = forecast;
+        return trip;
       });
       console.info(result);
     });
