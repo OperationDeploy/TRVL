@@ -46,6 +46,7 @@ const addPreferences = (req) => {
           proximity: req.proximity,
           group_age: req.group_age,
           group_relationship: req.group_relationship,
+          phoneNumber: req.phoneNumber,
         });
       } else {
         TripPreferences.create({
@@ -58,6 +59,7 @@ const addPreferences = (req) => {
           proximity: req.proximity,
           group_age: req.group_age,
           group_relationship: req.group_relationship,
+          phoneNumber: req.phoneNumber,
         });
       }
     },
@@ -306,6 +308,19 @@ const removeInvite = async (req) => {
   }).catch((err) => console.warn(err));
 };
 
+const getPhone = (req, res) => {
+  User.findOne({ where: { googleId: req.googleId, phoneNumber: { [Op.not]: null } },
+  }).then((response) => res.send(response)).catch((err) => console.warn(err));
+};
+
+const addPhone = async (req, res) => {
+  const num = `+1${req.phone}`;
+  await User.update({ phoneNumber: num }, { where: { googleId: req.currentUser.googleId } })
+    .then((response) => {
+      res.send(response);
+    }).catch((err) => console.warn(err));
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -326,4 +341,6 @@ module.exports = {
   tripUser,
   getMyInvites,
   addPhoto,
+  addPhone,
+  getPhone,
 };

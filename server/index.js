@@ -9,6 +9,8 @@ const cors = require('cors');
 const {
   createUser,
   addPreferences,
+  getPhone,
+  addPhone,
   planTrip,
   removeInvite,
   grabPlaces,
@@ -68,7 +70,15 @@ app.get('/photos/:trip', (req, res) => {
   getPhotos(req.params, res);
 });
 
+app.get('/phone', (req, res) => {
+  getPhone(req.query, res);
+});
+
 // POST
+
+app.post('/addPhoneNumber', (req, res) => {
+  addPhone(req.body, res);
+});
 
 // add preferences
 app.post('/preferences', (req, res) => {

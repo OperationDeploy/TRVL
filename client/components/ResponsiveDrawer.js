@@ -14,6 +14,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
+import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -69,12 +70,28 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showInvites, setShowInvite] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
+  const [clickedPage, setClickedPage] = useState(null);
+  const [phoneRegistered, setPhoneRegistered] = useState(false);
+  const [phone, setPhone] = useState('');
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const [clickedPage, setClickedPage] = useState(null);
+  const handleChangePhone = (event) => {
+    setPhone(event.target.value);
+    console.info(phone);
+  };
+
+  const handleSubmitPhone = () => {
+    axios.post('/addPhoneNumber', {
+      phone, currentUser,
+    }).then((response) => {
+      if (response.data.length !== 0) {
+        setPhoneRegistered(true);
+      }
+    }).catch((err) => console.warn(err));
+  };
 
   const drawer = (
     <div>
@@ -128,6 +145,17 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       .catch((err) => console.warn('ERRR', err));
   }, [showInvites]);
 
+  useEffect(() => {
+    axios
+      .get('/phone', { params: { googleId: currentUser.googleId } })
+      .then((response) => {
+        if (Object.keys(response.data).length !== 0 && response.data.constructor === Object) {
+          setPhoneRegistered(true);
+        }
+      })
+      .catch((err) => console.warn('ERRR', err));
+  }, [phoneRegistered]);
+
   if (showInvites === true) {
     // set state for invited trips
     // pass state to preferences
@@ -167,6 +195,30 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       />
     </div>
   );
+  if (!phoneRegistered) {
+    return (
+      <Typography>
+        **Link you phone number to your account**
+        Phone Number:
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="number"
+            value={phone}
+            onChange={handleChangePhone}
+          />
+          <Button
+          variant="contained"
+          onClick={() => {
+            handleSubmitPhone();
+          }}
+        >
+          Submit Phone Number
+        </Button>
+      </Typography>
+    );
+  }
 
   return (
     <div className={classes.root}>
