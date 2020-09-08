@@ -38,7 +38,7 @@ const Photos = ({ currentTrip, currentUser }) => {
       <div>
         <Button variant="contained" component="label">
           Upload Photo
-          <input type="file" style={{ display: 'none' }} multiple onChange={fileSelectHandler} />
+          <input type="file" multiple onChange={fileSelectHandler} />
         </Button>
       </div>
       {photos.map((photo, i) => (

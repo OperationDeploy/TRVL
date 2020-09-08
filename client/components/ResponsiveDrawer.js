@@ -100,7 +100,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             button
             onClick={() => {
               setClickedPage(null);
-              setMobileOpen(!mobileOpen);
+              setMobileOpen(false);
             }}
             key={text}
           >
@@ -156,7 +156,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => setClickedPage(<div>
+          <ListItem button onClick={() => {
+            setClickedPage(<div>
             <InvitesPage
               currentUser={currentUser}
               otherUsers={otherUsers}
@@ -167,7 +168,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               currentTrip={currentTrip}
               setClickedPage={setClickedPage}
             />
-          </div>)} key={text}>
+          </div>);
+            setMobileOpen(false);
+          }} key={text}>
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
