@@ -25,11 +25,6 @@ const ChatComponent = ({ currentUser }) => {
     });
   };
 
-  // return (
-  //   <div>
-  //     <h3>chat ChatComponent</h3>
-  //     <button onClick={sendMessage}></button>
-  //   </div>
   return (
     <div className="container">
       <div className="row">

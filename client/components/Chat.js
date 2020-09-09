@@ -51,7 +51,6 @@ const Chat = ({ currentUser }) => {
                   const trip = data;
                   setCurrentTrip(trip);
                   setClicked(true);
-                  console.info(currentTrip);
                 }}
                 color="primary"
               >
