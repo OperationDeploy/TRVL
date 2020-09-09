@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import UserTrips from './UserTrips';
 
 const Trips = ({ setClickedPage, currentUser, currentTrip }) => (
-  <div>
+
+  <div className="trip-container">
     <Button
-      variant="contained"
+      variant="outlined"
+      color="primary"
       onClick={() => {
         setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
       }}

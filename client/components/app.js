@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+// import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
 import GoogleLogin from 'react-google-login';
@@ -62,7 +63,7 @@ class App extends Component {
             <Card className="splash-card" alignItems="center">
               <CardMedia
                 className="splash-logo"
-                image="https://i.ibb.co/bJkYJX1/TRVLsqlogo-2.png"
+                image="https://i.ibb.co/dj9N37R/trvl.png"
                 style={{ height: 500 }}
               />
               <CardActions alignItems="stretch">
@@ -82,7 +83,12 @@ class App extends Component {
       );
     }
     return (
-      <Container className="content-container">
+      <Container
+        justify="center"
+        alignItems="center"
+        className="content-container"
+        alignText="center"
+      >
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
           currentUser={currentUser}

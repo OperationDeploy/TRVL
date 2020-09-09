@@ -11,23 +11,27 @@ const Photos = ({ currentTrip, currentUser }) => {
   useEffect(() => {
     axios.get(`/photos/${currentTrip.id}`).then(({ data }) => {
       setPhotos(data);
-      console.info('photos from server', data);
+
     });
   }, []);
 
-  const fileUpload = (photo) => {
+  const fileUpload = (files) => {
     const data = new FormData();
-    data.append('file', photo);
+    Object.values(files).forEach((file) => data.append('file', file));
     data.append('user', currentUser.id);
     data.append('trip', currentTrip.id);
     axios.post('/photos', data).then((res) => {
-      res.data.userName = `${currentUser.first_name} ${currentUser.last_name}`;
-      setPhotos([res.data, ...photos]);
+
+      const newPhotos = res.data.map((photo) => ({
+        ...photo,
+        userName: `${currentUser.first_name} ${currentUser.last_name}`,
+      }));
+      setPhotos([...newPhotos, ...photos]);
     });
   };
 
   const fileSelectHandler = (e) => {
-    fileUpload(e.target.files[0]);
+    fileUpload(e.target.files);
   };
 
   return (
@@ -38,7 +42,9 @@ const Photos = ({ currentTrip, currentUser }) => {
       <div>
         <Button variant="contained" component="label">
           Upload Photo
-          <input type="file" style={{ display: 'none' }} onChange={fileSelectHandler} />
+
+          <input type="file" multiple onChange={fileSelectHandler} />
+
         </Button>
       </div>
       {photos.map((photo, i) => (

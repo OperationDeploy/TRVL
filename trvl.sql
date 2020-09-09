@@ -19,6 +19,7 @@ CREATE TABLE "Users" (
   "profile_pic" VARCHAR(200),
   "host" boolean,
   "googleId" TEXT PRIMARY KEY,
+  "phoneNumber" TEXT,
   "createdAt" TIMESTAMP DEFAULT NOW(),
   "updatedAt" TIMESTAMP DEFAULT NOW()
 );
