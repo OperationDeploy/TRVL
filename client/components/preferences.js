@@ -116,10 +116,10 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
   if (inviteButtonClicked) {
     return (
       <InvitesButton
-      otherUsers={otherUsers}
-      currentUser={currentUser}
-      trip={trip}
-      setClickedPage={setClickedPage}
+        otherUsers={otherUsers}
+        currentUser={currentUser}
+        trip={trip}
+        setClickedPage={setClickedPage}
       />
     );
   }

@@ -35,26 +35,28 @@ const InvitesButton = ({ currentUser, otherUsers, trip, setClickedPage }) => {
 
   return (
     <div>
-    <div>
-    <Button color="secondary" aria-label="outlined primary button group"
-      variant="contained"
-      onClick={() => {
-        selectPlaces();
-      }}
-    >
-      Generate Places
-    </Button>
-    </div>
-    <div>
-      <header>Click on a user to send them a invite to this trip!</header>
-      <ul>
-        {otherUsers.map((user) => (
-          <button type="submit" key={user} onClick={(e) => handleClick(e, user)}>
-            {user.last_name}, {user.first_name}
-          </button>
-        ))}
-      </ul>
-    </div>
+      <div>
+        <Button
+          color="secondary"
+          aria-label="outlined primary button group"
+          variant="contained"
+          onClick={() => {
+            selectPlaces();
+          }}
+        >
+          Generate Places
+        </Button>
+      </div>
+      <div>
+        <header>Click on a user to send them a invite to this trip!</header>
+        <ul>
+          {otherUsers.map((user) => (
+            <button type="submit" key={user} onClick={(e) => handleClick(e, user)}>
+              {user.last_name}, {user.first_name}
+            </button>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
