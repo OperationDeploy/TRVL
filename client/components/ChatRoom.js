@@ -1,21 +1,15 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import ChatComponent from './ChatComponent';
 
-const ChatRoom = ({ currentUser, currentTrip }) => {
-  useEffect(() => {
-    console.info(currentUser, currentTrip);
-  }, []);
-
-  return (
-    <div>
-      <h2>CHAT ROOM: {currentTrip.name}</h2>
-      <h4>{`Welcome, ${currentUser.first_name}`}</h4>
-      <p>{`Your group is going to ${currentTrip.destination}`}</p>
-      <ChatComponent currentUser={currentUser} />
-    </div>
-  );
-};
+const ChatRoom = ({ currentUser, currentTrip }) => (
+  <div>
+    <h2>CHAT ROOM: {currentTrip.name}</h2>
+    <h4>{`Welcome, ${currentUser.first_name}`}</h4>
+    <p>{`Your group is going to ${currentTrip.destination}`}</p>
+    <ChatComponent currentUser={currentUser} currentTrip={currentTrip} />
+  </div>
+);
 
 ChatRoom.propTypes = {
   currentUser: PropTypes.shape({

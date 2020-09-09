@@ -26,6 +26,8 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  getMessages,
+  postMessages,
 } = require('./queries.js');
 
 const app = express();
@@ -148,6 +150,15 @@ app.post('/tripNames', (req, res) => {
 
 app.post('/removeInvite', (req, res) => {
   removeInvite(req.body, res);
+});
+
+// get all messages for trip
+app.post('/getMessages', (req, res) => {
+  getMessages(req, res);
+});
+// post message
+app.post('/postMessages', (req, res) => {
+  postMessages(req, res);
 });
 
 app.use(express.static('public'));

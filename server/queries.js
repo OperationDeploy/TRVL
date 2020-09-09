@@ -13,6 +13,7 @@ const {
   SplitOwedPayment,
   TripProposalVotes,
   TripPhoto,
+  Message,
 } = require('./db.js');
 
 // create a user
@@ -306,6 +307,21 @@ const removeInvite = async (req) => {
   }).catch((err) => console.warn(err));
 };
 
+const getMessages = async (req, res) => {
+  const messages = await Message.findAll({ where: { trip_id: req.body.trip_id } });
+
+  res.send(messages);
+};
+
+const postMessages = (req, res) => {
+  Message.create({
+    text: req.body.text,
+    user_google_id: req.body.user_google_id,
+    trip_id: req.body.trip_id,
+  });
+  res.send(console.info('Message table updated'));
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -326,4 +342,6 @@ module.exports = {
   tripUser,
   getMyInvites,
   addPhoto,
+  getMessages,
+  postMessages,
 };

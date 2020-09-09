@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
-const ChatComponent = ({ currentUser }) => {
+const ChatComponent = ({ currentUser, currentTrip }) => {
+  useEffect(() => {
+    console.info(currentTrip);
+    axios
+      .post('/getMessages', { trip_id: currentTrip.id }, () => {})
+      .then((response) => {
+        console.info(response);
+      });
+  }, []);
+
   const socket = io('localhost:8080');
 
   const [messages, setMessages] = useState([]);
@@ -22,6 +32,11 @@ const ChatComponent = ({ currentUser }) => {
     socket.emit('SEND_MESSAGE', {
       author: currentUser.first_name,
       message: messageText,
+    });
+    axios.post('/postMessages', {
+      text: messageText,
+      user_google_id: currentUser.googleId,
+      trip_id: currentTrip.id,
     });
   };
 
@@ -74,6 +89,12 @@ ChatComponent.propTypes = {
     profile_pic: PropTypes.string,
     host: PropTypes.bool,
     googleId: PropTypes.string,
+  }).isRequired,
+  currentTrip: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    destination: PropTypes.string,
+    city: PropTypes.string,
   }).isRequired,
 };
 export default ChatComponent;
