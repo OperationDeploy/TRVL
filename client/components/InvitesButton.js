@@ -36,6 +36,7 @@ const InvitesButton = ({ otherUsers, trip }) => {
     <div>
       <Button
         variant="contained"
+        color="primary"
         onClick={() => {
           setInviteClicked(!inviteClicked);
         }}
