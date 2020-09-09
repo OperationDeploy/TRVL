@@ -20,8 +20,10 @@ const Photos = ({ currentTrip, currentUser }) => {
     data.append('user', currentUser.id);
     data.append('trip', currentTrip.id);
     axios.post('/photos', data).then((res) => {
-      const newPhotos = res.data.map((photo) => (
-        { ...photo, userName: `${currentUser.first_name} ${currentUser.last_name}` }));
+      const newPhotos = res.data.map((photo) => ({
+        ...photo,
+        userName: `${currentUser.first_name} ${currentUser.last_name}`,
+      }));
       setPhotos([...newPhotos, ...photos]);
     });
   };

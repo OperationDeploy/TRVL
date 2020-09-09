@@ -89,6 +89,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const [clickedPage, setClickedPage] = useState(null);
   const [phoneRegistered, setPhoneRegistered] = useState(false);
   const [phone, setPhone] = useState('');
+  const [toggleIcon, setToggleIcon] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -178,26 +179,35 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => {
-            setClickedPage(<div>
-            <InvitesPage
-              currentUser={currentUser}
-              otherUsers={otherUsers}
-              myInvites={myInvites}
-            />
-            <Trips
-              currentUser={currentUser}
-              currentTrip={currentTrip}
-              setClickedPage={setClickedPage}
-            />
-          </div>);
-            setMobileOpen(false);
-          }} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              if (myInvites.length !== 0) {
+                setToggleIcon(true);
+              }
+              setClickedPage(
+                <div>
+                  <InvitesPage
+                    currentUser={currentUser}
+                    otherUsers={otherUsers}
+                    myInvites={myInvites}
+                  />
+                  <Trips
+                    currentUser={currentUser}
+                    currentTrip={currentTrip}
+                    setClickedPage={setClickedPage}
+                  />
+                </div>,
+              );
+              setMobileOpen(false);
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
             <ListItemText primary={text} />
-            {myInvites.length > 0 ? <FiberNewIcon color="primary" /> : null}
+            {myInvites.length !== 0 && toggleIcon === false ? <FiberNewIcon color="primary" /> : null}
           </ListItem>
         ))}
       </List>
@@ -244,10 +254,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         alt="user loaded from google login"
         className="profile-pic"
       />
-      <Typography
-        className="welcome-message"
-        variant="h6"
-      >
+      <Typography className="welcome-message" variant="h6">
         {`Hi, ${currentUser.first_name}!`}
       </Typography>
       <Trips
@@ -301,7 +308,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               color="secondary"
               aria-label="open drawer"
               edge="start"
-              onClick={handleDrawerToggle}
+              onClick={
+                handleDrawerToggle}
               className={classes.menuButton}
             >
               <MenuIcon />

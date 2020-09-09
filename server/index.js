@@ -4,10 +4,7 @@ const express = require('express');
 const path = require('path'); // NEW
 
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
-const client = require('twilio')(
-  TWILIO_ACCOUNT_SID,
-  TWILIO_AUTH_TOKEN,
-);
+const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const cors = require('cors');

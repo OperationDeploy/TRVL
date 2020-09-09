@@ -82,7 +82,12 @@ class App extends Component {
       );
     }
     return (
-      <Container justify="center" alignItems="center" className="content-container" alignText="center">
+      <Container
+        justify="center"
+        alignItems="center"
+        className="content-container"
+        alignText="center"
+      >
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
           currentUser={currentUser}
