@@ -1,6 +1,7 @@
 require('dotenv').config();
 // import db
 const express = require('express');
+const socket = require('socket.io');
 const path = require('path'); // NEW
 const bodyParser = require('body-parser');
 const multer = require('multer');
@@ -25,7 +26,6 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
-
 } = require('./queries.js');
 
 const app = express();
@@ -35,6 +35,21 @@ const DIST_DIR = path.join(__dirname, '../dist'); // NEW
 // parse application/json
 app.use(bodyParser.json());
 app.use(cors());
+
+/** SOCKET.IO - CHAT ROOM CONNECTIONS* */
+const server = app.listen(8080, () => {
+  console.info('socket server running on 8080');
+});
+
+const io = socket(server);
+
+io.on('connection', (sock) => {
+  console.info(sock.id, 'socket id');
+
+  sock.on('SEND_MESSAGE', (data) => {
+    io.emit('RECEIVE_MESSAGE', data);
+  });
+});
 
 /** ************************************************** */
 

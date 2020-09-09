@@ -16,12 +16,14 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
+import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import axios from 'axios';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import Chat from './Chat';
 
 import InvitesPage from './InvitesPage';
 
@@ -63,16 +65,13 @@ const useStyles = makeStyles((theme) => ({
   large: {},
 }));
 
-const ResponsiveDrawer = ({
-  currentUser,
-  currentTrip,
-  otherUsers,
-}) => {
+const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showInvites, setShowInvite] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
+  const [showChat, setShowChat] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -85,10 +84,14 @@ const ResponsiveDrawer = ({
       <div className={classes.toolbar} />
       <List>
         {['HOME'].map((text) => (
-          <ListItem button onClick={() => {
-            setClickedPage(null);
-            setMobileOpen(!mobileOpen);
-          }} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              setClickedPage(null);
+              setMobileOpen(!mobileOpen);
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
@@ -114,6 +117,15 @@ const ResponsiveDrawer = ({
             <ListItemIcon>
               {index % 2 === 0 ? <PersonIcon /> : <PersonOutlineIcon />}
             </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['Chat'].map((text, index) => (
+          <ListItem button onClick={() => setShowChat(!showChat)} key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -149,24 +161,32 @@ const ResponsiveDrawer = ({
     );
   }
 
+  if (showChat === true) {
+    return (
+      <div>
+        <Chat currentUser={currentUser} />
+      </div>
+    );
+  }
+
   const container = window !== undefined ? () => window.document.body : undefined;
 
-  const landingPage = (<div>
-  <Avatar
-    alt="profilepic"
-    src={currentUser.profile_pic}
-    className={classes.large}
-  />
-  <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
-  <Trips
-    currentUser={currentUser}
-    currentTrip={currentTrip}
-    setClickedPage={setClickedPage} />
-  <PlanATrip
-    otherUsers={otherUsers}
-    currentUser={currentUser}
-    setClickedPage={setClickedPage} />
-  </div>);
+  const landingPage = (
+    <div>
+      <Avatar alt="profilepic" src={currentUser.profile_pic} className={classes.large} />
+      <Typography>{`Hi, ${currentUser.first_name}!`}</Typography>
+      <Trips
+        currentUser={currentUser}
+        currentTrip={currentTrip}
+        setClickedPage={setClickedPage}
+      />
+      <PlanATrip
+        otherUsers={otherUsers}
+        currentUser={currentUser}
+        setClickedPage={setClickedPage}
+      />
+    </div>
+  );
 
   return (
     <div className={classes.root}>
