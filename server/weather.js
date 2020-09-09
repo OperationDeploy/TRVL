@@ -11,6 +11,7 @@ const compareISODates = (date1 = new Date().toISOString().slice(0, 10), date2) =
 );
 
 const toISO = (date) => new Date(date * 1000).toISOString().slice(0, 10);
+const toDegF = (temp) => Math.floor((temp - 273) * (9 / 5) + 32);
 
 const alertUsers = async (trips) => {
   let userIds = trips.map((trip) => TripUser.findOne({ where: { trip_id: trip.id }, raw: true }));
@@ -69,9 +70,9 @@ const getWeather = async () => {
     .catch((err) => console.warn(err));
   await Promise.all(weatherData)
     .then((res) => {
-      const result = res.map(({ data }, i) => {
+      const results = res.map(({ data }, i) => {
         const trip = { ...trips[i], rain: false };
-        const forecast = {};
+        const dates = {};
         let startIndex = 0;
         const tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
         for (let j = 0; j < data.daily.length; j += 1) {
@@ -82,17 +83,25 @@ const getWeather = async () => {
         }
         const days = data.daily.slice(startIndex, startIndex + tripLength);
         days.forEach((day) => {
+          const { weather, temp } = day;
+          const forecast = { weather: weather[0].main,
+            temp: {
+              low: toDegF(temp.min),
+              high: toDegF(temp.max),
+            } };
           const date = toISO(day.dt);
-          forecast[date] = day.weather[0].main;
-          if (forecast[date] === 'Rain') {
+          dates[date] = forecast;
+          if (dates[date] === 'Rain') {
             trip.rain = true; // TRIP HAS RAIN ON THIS DATE
           }
         });
-        trip.forecast = forecast;
+        trip.forecast = dates;
         return trip;
       });
-      console.info(result);
-      alertUsers(result);
+      results.forEach((result) => {
+        console.info(result.forecast);
+      });
+      alertUsers(results);
     })
     .catch((err) => console.warn(err));
 };
