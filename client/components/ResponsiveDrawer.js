@@ -6,6 +6,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 import IconButton from '@material-ui/core/IconButton';
 import PersonIcon from '@material-ui/icons/Person';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
@@ -125,6 +126,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               <MailIcon />
             </ListItemIcon>
             <ListItemText primary={text} />
+            {myInvites.length > 0 ? <FiberNewIcon color="primary" /> : null}
           </ListItem>
         ))}
       </List>
