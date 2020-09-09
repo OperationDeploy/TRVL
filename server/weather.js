@@ -6,13 +6,15 @@ const { Trip, TripUser, User } = require('./db');
 
 const _ = undefined;
 
+// Returns total number of days between 2 'YYYY-MM-DD' string dates
 const compareISODates = (date1 = new Date().toISOString().slice(0, 10), date2) => (
   (new Date(date2) - new Date(date1)) / 86400000
 );
-
+// Helper functions for converting data received from weather API
 const toISO = (date) => new Date(date * 1000).toISOString().slice(0, 10);
 const toDegF = (temp) => Math.floor((temp - 273) * (9 / 5) + 32);
 
+// Gets users on each trip to alert them of bad weather
 const alertUsers = async (trips) => {
   let userIds = trips.map((trip) => TripUser.findOne({ where: { trip_id: trip.id }, raw: true }));
   await Promise.all(userIds)
@@ -31,14 +33,8 @@ const alertUsers = async (trips) => {
   console.info(users);
 };
 
-const getWeather = async () => {
-  let trips = await Trip.findAll({ raw: true });
-  trips = trips.filter((trip) => {
-    const date = compareISODates(_, trip.start_date) < 0 ? trip.end_date : trip.start_date;
-    const diff = compareISODates(_, date);
-    return diff >= 0 && diff <= 7;
-  });
-
+// Gets weather data from array of trips
+const getWeather = async (trips) => {
   const coordinates = trips.map((trip) => {
     const destination = trip.destination.split(' ');
     let state = destination.pop();
@@ -106,7 +102,18 @@ const getWeather = async () => {
     .catch((err) => console.warn(err));
 };
 
-getWeather();
+// Gets all trips from DB that will have weather info available based on dates
+const getTrips = async () => {
+  let trips = await Trip.findAll({ raw: true });
+  trips = trips.filter((trip) => {
+    const date = compareISODates(_, trip.start_date) < 0 ? trip.end_date : trip.start_date;
+    const diff = compareISODates(_, date);
+    return diff >= 0 && diff <= 7;
+  });
+  getWeather(trips);
+};
+
+getTrips();
 
 module.exports = {
   getWeather,
