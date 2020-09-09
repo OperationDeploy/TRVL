@@ -48,8 +48,10 @@ const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
           <button
             type="submit"
             key={invite.id}
-            onClick={(e) =>
-              handleClick(e, invite.name, invite.id, invite.start_date, invite.end_date)
+            onClick={(e) => {
+              handleClick(e, invite.name, invite.id, invite.start_date, invite.end_date);
+            }
+
             }
           >
             {invite.name}

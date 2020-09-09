@@ -64,7 +64,8 @@
     "react-google-login": "^5.1.21",
     "react-router-dom": "^5.2.0",
     "read-excel-file": "^4.0.7",
-    "sequelize": "^6.3.4"
+    "sequelize": "^6.3.4",
+    "twilio": "^3.49.1"
   },
   "devDependencies": {
     "@babel/core": "^7.11.4",
