@@ -36,6 +36,7 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
   const [endDate, setEndDate] = useState(null);
   const [buttonClicked, setButtonClicked] = useState(false);
   const [trip, setTrip] = useState(0);
+  const [inviteButtonClicked, setInviteButtonClicked] = useState(false);
   const userId = currentUser.googleId;
 
   // sets new states for our preferences upon change
@@ -120,6 +121,16 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
+    );
+  }
+
+  const inviteUsers = () => {
+    setInviteButtonClicked(true);
+  };
+
+  if (inviteButtonClicked) {
+    return (
+      <InvitesButton otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
     );
   }
 
@@ -306,7 +317,14 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
             Generate Places
           </Button>
           <br />
-          <InvitesButton otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
+          <Button
+            variant="contained"
+            onClick={() => {
+              inviteUsers();
+            }}
+          >
+            Invite Users
+          </Button>
         </ButtonGroup>
       </div>
     </Container>

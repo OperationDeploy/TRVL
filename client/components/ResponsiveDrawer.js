@@ -202,7 +202,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               <MailIcon />
             </ListItemIcon>
             <ListItemText primary={text} />
-            {myInvites.length !== 0 && toggleIcon === false ? <FiberNewIcon color="primary" /> : null}
+            {myInvites.length !== 0 && toggleIcon === false ? (
+              <FiberNewIcon color="primary" />
+            ) : null}
           </ListItem>
         ))}
       </List>
@@ -266,8 +268,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               color="secondary"
               aria-label="open drawer"
               edge="start"
-              onClick={
-                handleDrawerToggle}
+              onClick={handleDrawerToggle}
               className={classes.menuButton}
             >
               <MenuIcon />
