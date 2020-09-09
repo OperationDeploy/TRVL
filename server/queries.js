@@ -316,6 +316,7 @@ const getMessages = async (req, res) => {
 const postMessages = (req, res) => {
   Message.create({
     text: req.body.text,
+    author: req.body.author,
     user_google_id: req.body.user_google_id,
     trip_id: req.body.trip_id,
   });

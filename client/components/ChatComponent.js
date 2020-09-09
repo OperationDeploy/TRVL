@@ -4,19 +4,23 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 
 const ChatComponent = ({ currentUser, currentTrip }) => {
-  useEffect(() => {
-    console.info(currentTrip);
-    axios
-      .post('/getMessages', { trip_id: currentTrip.id }, () => {})
-      .then((response) => {
-        console.info(response);
-      });
-  }, []);
-
   const socket = io('localhost:8080');
 
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState('');
+  const [oldMessages, setOldMessages] = useState([]);
+
+  const handleChange = (response) => {
+    setOldMessages(response);
+  };
+
+  useEffect(() => {
+    axios
+      .post('/getMessages', { trip_id: currentTrip.id }, () => {})
+      .then((response) => {
+        handleChange(response.data);
+      });
+  }, []);
 
   const addMessage = (data) => {
     console.info(data, 'Message added');
@@ -35,6 +39,7 @@ const ChatComponent = ({ currentUser, currentTrip }) => {
     });
     axios.post('/postMessages', {
       text: messageText,
+      author: currentUser.first_name,
       user_google_id: currentUser.googleId,
       trip_id: currentTrip.id,
     });
@@ -49,6 +54,11 @@ const ChatComponent = ({ currentUser, currentTrip }) => {
               <div className="card-title">CHAT</div>
               <hr />
               <div className="messages">
+                {oldMessages.map((message) => (
+                  <div>
+                    {message.author}: {message.text}
+                  </div>
+                ))}
                 {messages.map((message) => (
                   <div>
                     {message.author}: {message.message}

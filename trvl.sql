@@ -138,6 +138,7 @@ CREATE TABLE "SplitOwedPayments" (
 CREATE TABLE "Messages" (
   "id" SERIAL PRIMARY KEY,
   "text" TEXT,
+  "author" TEXT,
   "user_google_id" TEXT,
   "trip_id" int,
   "createdAt" TIMESTAMP DEFAULT NOW(),
