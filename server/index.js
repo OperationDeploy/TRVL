@@ -56,7 +56,7 @@ const storage = multer.diskStorage({
   },
 });
 
-const upload = multer({ storage }).single('file');
+const upload = multer({ storage }).array('file', 10);
 
 // established axios connection to front end
 // GET
