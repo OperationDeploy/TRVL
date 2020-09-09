@@ -4,8 +4,10 @@ const axios = require('axios');
 const { WEATHER_API, GEO_API } = require('../config');
 const { Trip, TripUser, User } = require('./db');
 
-const compareISODates = (date1, date2 = new Date().toISOString().slice(0, 10)) => (
-  Math.abs(new Date(date1) - new Date(date2)) / 86400000
+const _ = undefined;
+
+const compareISODates = (date1 = new Date().toISOString().slice(0, 10), date2) => (
+  (new Date(date2) - new Date(date1)) / 86400000
 );
 
 const toISO = (date) => new Date(date * 1000).toISOString().slice(0, 10);
@@ -15,20 +17,26 @@ const alertUsers = async (trips) => {
   await Promise.all(userIds)
     .then((response) => {
       userIds = response;
-    });
+    })
+    .catch((err) => console.warn(err));
   let users = userIds.map((userId) => User.findOne(
     { where: { googleId: userId.user_id }, raw: true },
   ));
   await Promise.all(users)
     .then((response) => {
       users = response;
-    });
+    })
+    .catch((err) => console.warn(err));
   console.info(users);
 };
 
 const getWeather = async () => {
   let trips = await Trip.findAll({ raw: true });
-  trips = trips.filter((trip) => compareISODates(trip.start_date) <= 7);
+  trips = trips.filter((trip) => {
+    const date = compareISODates(_, trip.start_date) < 0 ? trip.end_date : trip.start_date;
+    const diff = compareISODates(_, date);
+    return diff >= 0 && diff <= 7;
+  });
 
   const coordinates = trips.map((trip) => {
     const destination = trip.destination.split(' ');
@@ -52,10 +60,13 @@ const getWeather = async () => {
     .then((res) => {
       weatherData = res.map((response) => {
         const { data } = response.data;
+        // console.log('coordinates', response.data, 'the lat',
+        // data[0].latitude, 'the lon', data[0].longitude);
         return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${data[0].latitude}&lon=${data[0].longitude}&
         exclude=minutely,hourly&appid=${WEATHER_API}`);
       });
-    });
+    })
+    .catch((err) => console.warn(err));
   await Promise.all(weatherData)
     .then((res) => {
       const result = res.map(({ data }, i) => {
@@ -82,7 +93,8 @@ const getWeather = async () => {
       });
       console.info(result);
       alertUsers(result);
-    });
+    })
+    .catch((err) => console.warn(err));
 };
 
 getWeather();
