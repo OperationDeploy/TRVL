@@ -25,6 +25,7 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  getWeatherForTrip,
 } = require('./queries.js');
 
 const app = express();
@@ -66,6 +67,10 @@ app.get('/getInvites', (req, res) => {
 
 app.get('/photos/:trip', (req, res) => {
   getPhotos(req.params, res);
+});
+
+app.get('/weather/:trip', async (req, res) => {
+  getWeatherForTrip(req.params, res);
 });
 
 // POST
