@@ -25,6 +25,9 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  addActivity,
+  getTripActivities,
+  deleteActivity,
 } = require('./queries.js');
 
 const app = express();
@@ -66,6 +69,12 @@ app.get('/getInvites', (req, res) => {
 
 app.get('/photos/:trip', (req, res) => {
   getPhotos(req.params, res);
+});
+
+// get all trip activities
+app.get('/activities/:trip', (req, res) => {
+  console.info(req, 'in index js');
+  getTripActivities(req.params, res);
 });
 
 // POST
@@ -130,8 +139,16 @@ app.post('/tripNames', (req, res) => {
   getTripNames(req.body, res);
 });
 
+app.post('/activities', (req, res) => {
+  addActivity(req.body, res);
+});
+
 app.post('/removeInvite', (req, res) => {
   removeInvite(req.body, res);
+});
+
+app.delete('/removeActivity', (req, res) => {
+  deleteActivity(req.body, res);
 });
 
 app.use(express.static('public'));
