@@ -21,8 +21,10 @@ import FlightIcon from '@material-ui/icons/Flight';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { indigo, orange } from '@material-ui/core/colors';
 import axios from 'axios';
+import Preferences from './preferences';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import UserTrips from './UserTrips';
 
 import InvitesPage from './InvitesPage';
 
@@ -84,9 +86,32 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
+  const [showTrips, setShowTrips] = useState(false);
+  const [showPlan, setShowPlan] = useState(false);
+  const [showHome, setShowHome] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleNavClick = (page) => {
+    if (page === 'plan') {
+      setShowPlan(true);
+      setShowTrips(false);
+      setShowHome(false);
+    }
+    if (page === 'trips') {
+      setShowTrips(true);
+      setShowHome(false);
+      setShowPlan(false);
+    }
+    if (page === 'home') {
+      if (!showHome) {
+        setShowHome(true);
+        setShowTrips(false);
+        setShowPlan(false);
+      }
+    }
   };
 
   const [clickedPage, setClickedPage] = useState(null);
@@ -100,6 +125,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             button
             onClick={() => {
               setClickedPage(null);
+              handleNavClick('home');
               setMobileOpen(false);
             }}
             key={text}
@@ -117,11 +143,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
-              // onClickPlanTrip();
-              // if (clickPlan) {
-              //   return <Preferences currentUser={currentUser} />;
-              // }
-              // return null;
+              handleNavClick('plan');
             }}
             key={text}
           >
@@ -138,11 +160,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
-              // onClickGetTrips();
-              // if (clickTrips) {
-              //   return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
-              // }
-              // return null;
+              handleNavClick('trips');
             }}
             key={text}
           >
@@ -207,10 +225,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         alt="user loaded from google login"
         className="profile-pic"
       />
-      <Typography
-        className="welcome-message"
-        variant="h6"
-      >
+      <Typography className="welcome-message" variant="h6">
         {`Hi, ${currentUser.first_name}!`}
       </Typography>
       <Trips
@@ -269,6 +284,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               }}
             >
               {drawer}
+              {}
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -285,7 +301,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {clickedPage || landingPage}
+          <div style={{ textAlign: 'center', justifyContent: 'center' }}>
+            {clickedPage || landingPage}
+            {showTrips ? (
+              <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
+            ) : null}
+            {showPlan ? (
+              <Preferences currentUser={currentUser} currentTrip={currentTrip} />
+            ) : null}
+          </div>
         </main>
       </div>
     </ThemeProvider>

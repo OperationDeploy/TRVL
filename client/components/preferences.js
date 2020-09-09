@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -286,23 +287,27 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
           </Grid>
           <Grid item>Couples</Grid>
         </Grid>
-        <Button
-          variant="contained"
-          onClick={() => {
-            handleSubmit();
-          }}
-        >
-          Submit Preferences
-        </Button>
-        <Button
-          variant="contained"
-          onClick={() => {
-            selectPlaces();
-          }}
-        >
-          Generate Places
-        </Button>
-        <InvitesButton otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
+        <ButtonGroup color="secondary" aria-label="outlined primary button group">
+          <Button
+            variant="contained"
+            onClick={() => {
+              handleSubmit();
+            }}
+          >
+            Submit Preferences
+          </Button>
+          <br />
+          <Button
+            variant="contained"
+            onClick={() => {
+              selectPlaces();
+            }}
+          >
+            Generate Places
+          </Button>
+          <br />
+          <InvitesButton otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
+        </ButtonGroup>
       </div>
     </Container>
   );
