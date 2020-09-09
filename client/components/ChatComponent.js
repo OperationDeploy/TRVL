@@ -40,9 +40,9 @@ const ChatComponent = ({ currentUser }) => {
               <hr />
               <div className="messages">
                 {messages.map((message) => (
-                    <div>
-                      {message.author}: {message.message}
-                    </div>
+                  <div>
+                    {message.author}: {message.message}
+                  </div>
                 ))}
               </div>
             </div>

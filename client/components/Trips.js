@@ -4,16 +4,16 @@ import PropTypes from 'prop-types';
 import UserTrips from './UserTrips';
 
 const Trips = ({ setClickedPage, currentUser, currentTrip }) => (
-    <div>
-      <Button
-        variant="contained"
-        onClick={() => {
-          setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
-        }}
-      >
-        Trips
-      </Button>
-    </div>
+  <div>
+    <Button
+      variant="contained"
+      onClick={() => {
+        setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
+      }}
+    >
+      Trips
+    </Button>
+  </div>
 );
 
 Trips.propTypes = {
