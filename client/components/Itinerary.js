@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 import ActivityForm from './ActivityForm';
 import ActivityList from './ActivityList';
-import axios from 'axios';
 
 const Itinerary = ({ currentUser, currentTrip }) => {
   const [activities, setActivities] = useState([]);
-  const [weather, setWeather] = useState({});
+  const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     console.info('currentTrip:', currentTrip);
@@ -17,9 +17,15 @@ const Itinerary = ({ currentUser, currentTrip }) => {
     //   });
     axios.get(`/weather/${currentTrip.id}`)
       .then(({ data }) => {
-        console.info('weather for this trip', data[0].forecast);
+        setWeather(data[0].forecast);
       });
-  });
+  }, []);
+
+  const weatherDisplay = weather ? (<div>
+  <div>Weather for Day 1: {weather[Object.keys(weather)[0]].weather}</div>
+  <div>High: {weather[Object.keys(weather)[0]].temp.high}</div>
+  <div>Low: {weather[Object.keys(weather)[0]].temp.low}</div>
+</div>) : <div>Loading Weather...</div>;
 
   return (
     <div id="trip-itinerary" className="itinerary-container">
@@ -44,9 +50,7 @@ const Itinerary = ({ currentUser, currentTrip }) => {
           setActivities(newActivities);
         }}
       />
-      {/* <div>
-        Weather For {currentTrip.start_date}: {weather[currentTrip.start_date].weather}
-      </div> */}
+      {weatherDisplay}
     </div>
   );
 };

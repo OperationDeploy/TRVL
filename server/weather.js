@@ -4,12 +4,11 @@ const axios = require('axios');
 const { WEATHER_API, GEO_API } = require('../config');
 const { Trip, TripUser, User } = require('./db');
 
-const _ = undefined;
-
 // Returns total number of days between 2 'YYYY-MM-DD' string dates
-const compareISODates = (date1 = new Date().toISOString().slice(0, 10), date2) => (
-  (new Date(date2) - new Date(date1)) / 86400000
-);
+const compareISODates = (date1, date2) => {
+  const today = date1 === 'today' ? new Date().toISOString().slice(0, 10) : null;
+  return (new Date(date2) - new Date(today || date1)) / 86400000;
+};
 // Helper functions for converting data received from weather API
 const toISO = (date) => new Date(date * 1000).toISOString().slice(0, 10);
 const toDegF = (temp) => Math.floor((temp - 273) * (9 / 5) + 32);
@@ -102,8 +101,8 @@ const getWeather = async (trips, weatherOnly = true) => {
 const getTrips = async () => {
   let trips = await Trip.findAll({ raw: true });
   trips = trips.filter((trip) => {
-    const date = compareISODates(_, trip.start_date) < 0 ? trip.end_date : trip.start_date;
-    const diff = compareISODates(_, date);
+    const date = compareISODates('today', trip.start_date) < 0 ? trip.end_date : trip.start_date;
+    const diff = compareISODates('today', date);
     return diff >= 0 && diff <= 7;
   });
   getWeather(trips, false);
