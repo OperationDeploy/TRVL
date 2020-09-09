@@ -10,7 +10,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import SelectPlaces from './SelectPlaces';
+// import SelectPlaces from './SelectPlaces';
 import InvitesButton from './InvitesButton';
 
 // adjusts the width of the preferences sliders
@@ -34,7 +34,6 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
   const [groupRelationship, setRelationship] = useState(50);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [trip, setTrip] = useState(0);
   const [inviteButtonClicked, setInviteButtonClicked] = useState(false);
   const userId = currentUser.googleId;
@@ -110,27 +109,18 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
     }
   }, [trip]);
 
-  const selectPlaces = () => {
-    setButtonClicked(true);
-  };
-
-  if (buttonClicked) {
-    return (
-      <SelectPlaces
-        trip={trip}
-        currentUser={currentUser}
-        setClickedPage={setClickedPage}
-      />
-    );
-  }
-
   const inviteUsers = () => {
     setInviteButtonClicked(true);
   };
 
   if (inviteButtonClicked) {
     return (
-      <InvitesButton otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
+      <InvitesButton
+      otherUsers={otherUsers}
+      currentUser={currentUser}
+      trip={trip}
+      setClickedPage={setClickedPage}
+      />
     );
   }
 
@@ -306,15 +296,6 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
             }}
           >
             Submit Preferences
-          </Button>
-          <br />
-          <Button
-            variant="contained"
-            onClick={() => {
-              selectPlaces();
-            }}
-          >
-            Generate Places
           </Button>
           <br />
           <Button
