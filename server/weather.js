@@ -34,7 +34,7 @@ const alertUsers = async (trips) => {
 };
 
 // Gets weather data from array of trips
-const getWeather = async (trips) => {
+const getWeather = async (trips, weatherOnly = true) => {
   const coordinates = trips.map((trip) => {
     const destination = trip.destination.split(' ');
     let state = destination.pop();
@@ -57,16 +57,15 @@ const getWeather = async (trips) => {
     .then((res) => {
       weatherData = res.map((response) => {
         const { data } = response.data;
-        // console.log('coordinates', response.data, 'the lat',
-        // data[0].latitude, 'the lon', data[0].longitude);
         return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${data[0].latitude}&lon=${data[0].longitude}&
         exclude=minutely,hourly&appid=${WEATHER_API}`);
       });
     })
     .catch((err) => console.warn(err));
+  let results;
   await Promise.all(weatherData)
     .then((res) => {
-      const results = res.map(({ data }, i) => {
+      results = res.map(({ data }, i) => {
         const trip = { ...trips[i], rain: false };
         const dates = {};
         let startIndex = 0;
@@ -94,12 +93,9 @@ const getWeather = async (trips) => {
         trip.forecast = dates;
         return trip;
       });
-      results.forEach((result) => {
-        console.info(result.forecast);
-      });
-      alertUsers(results);
     })
     .catch((err) => console.warn(err));
+  return weatherOnly ? results : alertUsers(results);
 };
 
 // Gets all trips from DB that will have weather info available based on dates
@@ -110,11 +106,10 @@ const getTrips = async () => {
     const diff = compareISODates(_, date);
     return diff >= 0 && diff <= 7;
   });
-  getWeather(trips);
+  getWeather(trips, false);
 };
-
-getTrips();
 
 module.exports = {
   getWeather,
+  getTrips,
 };
