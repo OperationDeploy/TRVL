@@ -38,6 +38,7 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
+  phoneNumber: Sequelize.TEXT,
 });
 
 const Trip = sequelize.define('Trip', {

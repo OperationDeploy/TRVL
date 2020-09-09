@@ -3,28 +3,40 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-const InvitesButton = ({ otherUsers, currentUser, trip }) => {
+const InvitesButton = ({ otherUsers, trip }) => {
   const [inviteClicked, setInviteClicked] = useState(false);
 
+  const handleClick = (event, user) => {
+    // event.preventDefault();
+    axios
+      .post('/inviteTheUser', {
+        user,
+        trip: trip.id,
+      })
+      .then(axios.post('/sendTwilio', { user }))
+      .catch((err) => console.warn(err));
+  };
+
   if (inviteClicked === true) {
-    if (currentUser.googleId !== otherUsers.googleId) {
-      axios
-        .post('/inviteAllOtherUsers', {
-          otherUsers,
-          trip: trip.id,
-          currentUser: currentUser.googleId,
-        })
-        .then((response) => {
-          console.info(response);
-        })
-        .catch((err) => console.warn(err));
-    }
+    return (
+      <div>
+        <header>Click on a user to send them a invite to this trip!</header>
+        <ul>
+          {otherUsers.map((user) => (
+            <button type="submit" key={user} onClick={(e) => handleClick(e, user)}>
+              {user.last_name}, {user.first_name}
+            </button>
+          ))}
+        </ul>
+      </div>
+    );
   }
 
   return (
     <div>
       <Button
         variant="contained"
+        color="primary"
         onClick={() => {
           setInviteClicked(!inviteClicked);
         }}
