@@ -189,22 +189,23 @@ app.post('/postMessages', (req, res) => {
   postMessages(req, res);
 });
 // Twilio
+// TODO: comment back in and take out console log when demoing
 app.post('/sendTwilio', (req, res) => {
-  // console.info(res);
-  res.header('Content-Type', 'application/json');
-  client.messages
-    .create({
-      from: TWILIO_PHONE_NUMBER,
-      to: req.body.user.phoneNumber,
-      body: 'Hey you have a new trip invite in Trvl! Login to view it!',
-    })
-    .then(() => {
-      res.send(JSON.stringify({ success: true }));
-    })
-    .catch((err) => {
-      console.warn('ERR', err);
-      res.send(JSON.stringify({ success: false }));
-    });
+  console.info(req, res, client, TWILIO_PHONE_NUMBER);
+  // res.header('Content-Type', 'application/json');
+  // client.messages
+  //   .create({
+  //     from: TWILIO_PHONE_NUMBER,
+  //     to: req.body.user.phoneNumber,
+  //     body: 'Hey you have a new trip invite in Trvl! Login to view it!',
+  //   })
+  //   .then(() => {
+  //     res.send(JSON.stringify({ success: true }));
+  //   })
+  //   .catch((err) => {
+  //     console.warn('ERR', err);
+  //     res.send(JSON.stringify({ success: false }));
+  //   });
 });
 
 app.use(express.static('public'));

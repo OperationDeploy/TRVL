@@ -13,7 +13,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
-import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import ChatIcon from '@material-ui/icons/Chat';
@@ -29,9 +28,7 @@ import PlanATrip from './PlanATrip';
 import Trips from './Trips';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
-
 import InvitesPage from './InvitesPage';
-
 import './App.scss';
 
 const drawerWidth = 240;
@@ -92,8 +89,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const [myInvites, setMyInvites] = useState([]);
   const [showChat, setShowChat] = useState(false);
   const [clickedPage, setClickedPage] = useState(null);
-  const [phoneRegistered, setPhoneRegistered] = useState(false);
-  const [phone, setPhone] = useState('');
   const [toggleIcon, setToggleIcon] = useState(false);
 
   const [showTrips, setShowTrips] = useState(false);
@@ -102,25 +97,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
-  };
-
-  const handleChangePhone = (event) => {
-    setPhone(event.target.value);
-    console.info(phone);
-  };
-
-  const handleSubmitPhone = () => {
-    axios
-      .post('/addPhoneNumber', {
-        phone,
-        currentUser,
-      })
-      .then((response) => {
-        if (response.data.length !== 0) {
-          setPhoneRegistered(true);
-        }
-      })
-      .catch((err) => console.warn(err));
   };
 
   const handleNavClick = (page) => {
@@ -264,20 +240,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       .catch((err) => console.warn('ERRR', err));
   }, []);
 
-  useEffect(() => {
-    axios
-      .get('/phone', { params: { googleId: currentUser.googleId } })
-      .then((response) => {
-        if (
-          Object.keys(response.data).length !== 0 &&
-          response.data.constructor === Object
-        ) {
-          setPhoneRegistered(true);
-        }
-      })
-      .catch((err) => console.warn('ERRR', err));
-  }, [phoneRegistered]);
-
   const container = window !== undefined ? () => window.document.body : undefined;
 
   const landingPage = (
@@ -302,29 +264,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       />
     </div>
   );
-  if (!phoneRegistered) {
-    return (
-      <Typography>
-        **Link you phone number to your account** Phone Number:
-        <input
-          type="text"
-          id="phone"
-          name="phone"
-          placeholder="number"
-          value={phone}
-          onChange={handleChangePhone}
-        />
-        <Button
-          variant="contained"
-          onClick={() => {
-            handleSubmitPhone();
-          }}
-        >
-          Submit Phone Number
-        </Button>
-      </Typography>
-    );
-  }
 
   if (showChat === true) {
     return (
