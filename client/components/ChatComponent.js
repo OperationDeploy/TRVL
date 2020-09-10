@@ -34,7 +34,9 @@ const ChatComponent = ({ currentUser, currentTrip }) => {
   const sendMessage = (event) => {
     event.preventDefault();
     const today = new Date();
-    const time = `${today.getHours() % 12 || 12}:${today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes()}${today.getHours() < 12 ? 'AM' : 'PM'}`;
+    const time = `${today.getHours() % 12 || 12}:${
+      today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes()
+    }${today.getHours() < 12 ? 'AM' : 'PM'}`;
     socket.emit('SEND_MESSAGE', {
       author: currentUser.first_name,
       message: messageText,
@@ -60,14 +62,12 @@ const ChatComponent = ({ currentUser, currentTrip }) => {
               <div className="messages">
                 {oldMessages.map((message) => (
                   <div>
-                    {message.author}: {message.text}{' '}
-                    {message.time}
+                    {message.author}: {message.text} {message.time}
                   </div>
                 ))}
                 {messages.map((message) => (
                   <div>
-                    {message.author}: {message.message}{' '}
-                    {message.time}
+                    {message.author}: {message.message} {message.time}
                   </div>
                 ))}
               </div>

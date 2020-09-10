@@ -53,10 +53,7 @@ const server = app.listen(8080, () => {
 const io = socket(server);
 
 io.on('connection', (sock) => {
-  // console.info(sock.id, 'socket id');
-
   sock.on('SEND_MESSAGE', (data) => {
-    console.info(data);
     io.emit('RECEIVE_MESSAGE', data);
   });
 });
