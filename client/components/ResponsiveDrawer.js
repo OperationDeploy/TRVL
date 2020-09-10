@@ -90,7 +90,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   const [showTrips, setShowTrips] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
+  const [showInvitesPage, setShowInvitesPage] = useState(false);
   const [showHome, setShowHome] = useState(false);
+  const [showChat, setShowChat] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -98,21 +100,40 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   const handleNavClick = (page) => {
     if (page === 'plan') {
+      console.info(showChat, showHome);
       setShowPlan(true);
       setShowTrips(false);
       setShowHome(false);
+      setShowInvitesPage(false);
+      setShowChat(false);
     }
     if (page === 'trips') {
       setShowTrips(true);
       setShowHome(false);
       setShowPlan(false);
+      setShowInvitesPage(false);
+      setShowChat(false);
+    }
+    if (page === 'invitesPage') {
+      setShowInvitesPage(true);
+      setShowHome(false);
+      setShowTrips(false);
+      setShowPlan(false);
+      setShowChat(false);
+    }
+    if (page === 'chat') {
+      setShowChat(true);
+      setShowHome(false);
+      setShowTrips(false);
+      setShowPlan(false);
+      setShowInvitesPage(false);
     }
     if (page === 'home') {
-      if (!showHome) {
-        setShowHome(true);
-        setShowTrips(false);
-        setShowPlan(false);
-      }
+      setShowHome(true);
+      setShowTrips(false);
+      setShowPlan(false);
+      setShowInvitesPage(false);
+      setShowChat(false);
     }
   };
 
@@ -143,6 +164,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              setClickedPage(true);
+              setMobileOpen(false);
               handleNavClick('plan');
             }}
             key={text}
@@ -160,6 +183,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              setMobileOpen(false);
               handleNavClick('trips');
             }}
             key={text}
@@ -177,23 +201,25 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              handleNavClick('invitesPage');
               if (myInvites.length !== 0) {
                 setToggleIcon(true);
               }
-              setClickedPage(
-                <div>
-                  <InvitesPage
-                    currentUser={currentUser}
-                    otherUsers={otherUsers}
-                    myInvites={myInvites}
-                  />
-                  <Trips
-                    currentUser={currentUser}
-                    currentTrip={currentTrip}
-                    setClickedPage={setClickedPage}
-                  />
-                </div>,
-              );
+              // setClickedPage(null)
+              // setClickedPage(
+              //   <div>
+              //     <InvitesPage
+              //       currentUser={currentUser}
+              //       otherUsers={otherUsers}
+              //       myInvites={myInvites}
+              //     />
+              //     <Trips
+              //       currentUser={currentUser}
+              //       currentTrip={currentTrip}
+              //       setClickedPage={setClickedPage}
+              //     />
+              //   </div>,
+              // );
               setMobileOpen(false);
             }}
             key={text}
@@ -208,6 +234,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           </ListItem>
         ))}
       </List>
+      <Divider />
       <List>
         {['Logout'].map((text) => (
           <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
@@ -276,7 +303,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             <Typography variant="h6" noWrap>
               TRVL
             </Typography>
-            <br />
+            <img
+              src={currentUser.profile_pic}
+              alt="user loaded from google login for toolbar"
+              className="toolbar-pic"
+            />
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer} aria-label="mailbox folders">
@@ -320,6 +351,21 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             ) : null}
             {showPlan ? (
               <Preferences currentUser={currentUser} currentTrip={currentTrip} />
+            ) : null}
+            {showInvitesPage ? (
+              <div>
+              <InvitesPage
+                currentUser={currentUser}
+                otherUsers={otherUsers}
+                myInvites={myInvites}
+                setClickedPage={setClickedPage}
+              />
+              <Trips
+                    currentUser={currentUser}
+                    currentTrip={currentTrip}
+                    setClickedPage={setClickedPage}
+                  />
+                  </div>
             ) : null}
           </div>
         </main>
