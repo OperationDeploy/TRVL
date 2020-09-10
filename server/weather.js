@@ -9,9 +9,16 @@ const compareISODates = (date1, date2) => {
   const today = date1 === 'today' ? new Date().toISOString().slice(0, 10) : null;
   return (new Date(date2) - new Date(today || date1)) / 86400000;
 };
-// Helper functions for converting data received from weather API
+// Converts data received from weather API for readability
 const toISO = (date) => new Date(date * 1000).toISOString().slice(0, 10);
 const toDegF = (temp) => Math.floor((temp - 273) * (9 / 5) + 32);
+
+// Determines if any dates of trip are within range of 7 day forecast
+const isWithinRange = (trip) => {
+  const date = compareISODates('today', trip.start_date) < 0 ? trip.end_date : trip.start_date;
+  const diff = compareISODates('today', date);
+  return diff >= 0 && diff <= 7;
+};
 
 // Gets users on each trip to alert them of bad weather
 const alertUsers = async (trips) => {
@@ -33,7 +40,8 @@ const alertUsers = async (trips) => {
 };
 
 // Gets weather data from array of trips
-const getWeather = async (trips, weatherOnly = true) => {
+const getWeather = async (allTrips, weatherOnly = true) => {
+  const trips = allTrips.filter(isWithinRange);
   const coordinates = trips.map((trip) => {
     const destination = trip.destination.split(' ');
     let state = destination.pop();
@@ -99,12 +107,7 @@ const getWeather = async (trips, weatherOnly = true) => {
 
 // Gets all trips from DB that will have weather info available based on dates
 const getTrips = async () => {
-  let trips = await Trip.findAll({ raw: true });
-  trips = trips.filter((trip) => {
-    const date = compareISODates('today', trip.start_date) < 0 ? trip.end_date : trip.start_date;
-    const diff = compareISODates('today', date);
-    return diff >= 0 && diff <= 7;
-  });
+  const trips = await Trip.findAll({ raw: true });
   getWeather(trips, false);
 };
 

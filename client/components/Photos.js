@@ -46,7 +46,7 @@ const Photos = ({ currentTrip, currentUser }) => {
           <div>
             {`Uploaded by ${photo.userName} on ${new Date(
               photo.createdAt,
-            ).toDateString()}`}
+            ).toUTCString().slice(0, 16)}`}
           </div>
           <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
         </div>
