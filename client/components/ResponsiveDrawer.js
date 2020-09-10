@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 import IconButton from '@material-ui/core/IconButton';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import List from '@material-ui/core/List';
@@ -12,8 +13,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
+import Button from '@material-ui/core/Button';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
+import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import EventIcon from '@material-ui/icons/Event';
@@ -21,8 +24,11 @@ import FlightIcon from '@material-ui/icons/Flight';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { indigo, orange } from '@material-ui/core/colors';
 import axios from 'axios';
+import Preferences from './preferences';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import Chat from './Chat';
+import UserTrips from './UserTrips';
 
 import InvitesPage from './InvitesPage';
 
@@ -84,12 +90,58 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
+  const [showChat, setShowChat] = useState(false);
+  const [clickedPage, setClickedPage] = useState(null);
+  const [phoneRegistered, setPhoneRegistered] = useState(false);
+  const [phone, setPhone] = useState('');
+  const [toggleIcon, setToggleIcon] = useState(false);
+
+  const [showTrips, setShowTrips] = useState(false);
+  const [showPlan, setShowPlan] = useState(false);
+  const [showHome, setShowHome] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const [clickedPage, setClickedPage] = useState(null);
+  const handleChangePhone = (event) => {
+    setPhone(event.target.value);
+    console.info(phone);
+  };
+
+  const handleSubmitPhone = () => {
+    axios
+      .post('/addPhoneNumber', {
+        phone,
+        currentUser,
+      })
+      .then((response) => {
+        if (response.data.length !== 0) {
+          setPhoneRegistered(true);
+        }
+      })
+      .catch((err) => console.warn(err));
+  };
+
+  const handleNavClick = (page) => {
+    if (page === 'plan') {
+      setShowPlan(true);
+      setShowTrips(false);
+      setShowHome(false);
+    }
+    if (page === 'trips') {
+      setShowTrips(true);
+      setShowHome(false);
+      setShowPlan(false);
+    }
+    if (page === 'home') {
+      if (!showHome) {
+        setShowHome(true);
+        setShowTrips(false);
+        setShowPlan(false);
+      }
+    }
+  };
 
   const drawer = (
     <div>
@@ -100,6 +152,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             button
             onClick={() => {
               setClickedPage(null);
+              handleNavClick('home');
               setMobileOpen(false);
             }}
             key={text}
@@ -117,11 +170,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
-              // onClickPlanTrip();
-              // if (clickPlan) {
-              //   return <Preferences currentUser={currentUser} />;
-              // }
-              // return null;
+              handleNavClick('plan');
             }}
             key={text}
           >
@@ -138,11 +187,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
-              // onClickGetTrips();
-              // if (clickTrips) {
-              //   return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
-              // }
-              // return null;
+              handleNavClick('trips');
             }}
             key={text}
           >
@@ -159,6 +204,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              if (myInvites.length !== 0) {
+                setToggleIcon(true);
+              }
               setClickedPage(
                 <div>
                   <InvitesPage
@@ -181,6 +229,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               <MailIcon />
             </ListItemIcon>
             <ListItemText primary={text} />
+            {myInvites.length !== 0 && toggleIcon === false ? (
+              <FiberNewIcon color="primary" />
+            ) : null}
           </ListItem>
         ))}
       </List>
@@ -194,6 +245,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           </ListItem>
         ))}
       </List>
+      <Divider />
+      <List>
+        {['Chat'].map((text, index) => (
+          <ListItem button onClick={() => setShowChat(!showChat)} key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 
@@ -203,6 +263,20 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       .then((response) => setMyInvites(response.data))
       .catch((err) => console.warn('ERRR', err));
   }, []);
+
+  useEffect(() => {
+    axios
+      .get('/phone', { params: { googleId: currentUser.googleId } })
+      .then((response) => {
+        if (
+          Object.keys(response.data).length !== 0 &&
+          response.data.constructor === Object
+        ) {
+          setPhoneRegistered(true);
+        }
+      })
+      .catch((err) => console.warn('ERRR', err));
+  }, [phoneRegistered]);
 
   const container = window !== undefined ? () => window.document.body : undefined;
 
@@ -228,6 +302,37 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       />
     </div>
   );
+  if (!phoneRegistered) {
+    return (
+      <Typography>
+        **Link you phone number to your account** Phone Number:
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          placeholder="number"
+          value={phone}
+          onChange={handleChangePhone}
+        />
+        <Button
+          variant="contained"
+          onClick={() => {
+            handleSubmitPhone();
+          }}
+        >
+          Submit Phone Number
+        </Button>
+      </Typography>
+    );
+  }
+
+  if (showChat === true) {
+    return (
+      <div>
+        <Chat currentUser={currentUser} />
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -272,6 +377,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               }}
             >
               {drawer}
+              {}
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -288,7 +394,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          {clickedPage || landingPage}
+          <div style={{ textAlign: 'center', justifyContent: 'center' }}>
+            {clickedPage || landingPage}
+            {showTrips ? (
+              <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
+            ) : null}
+            {showPlan ? (
+              <Preferences currentUser={currentUser} currentTrip={currentTrip} />
+            ) : null}
+          </div>
         </main>
       </div>
     </ThemeProvider>

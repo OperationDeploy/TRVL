@@ -15,6 +15,7 @@ const {
   SplitOwedPayment,
   TripProposalVotes,
   TripPhoto,
+  Message,
 } = require('./db.js');
 
 // create a user
@@ -48,6 +49,7 @@ const addPreferences = (req) => {
           proximity: req.proximity,
           group_age: req.group_age,
           group_relationship: req.group_relationship,
+          phoneNumber: req.phoneNumber,
         });
       } else {
         TripPreferences.create({
@@ -60,6 +62,7 @@ const addPreferences = (req) => {
           proximity: req.proximity,
           group_age: req.group_age,
           group_relationship: req.group_relationship,
+          phoneNumber: req.phoneNumber,
         });
       }
     },
@@ -100,9 +103,10 @@ const addSplit = async (req, res) => {
 const getSplit = async ({ trip, user }, res) => {
   const response = {};
   let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
-  let users = items.map((item) => User.findOne(
-    { where: { googleId: item.purchaser_id }, raw: true },
-  ));
+  let users = items.map((item) => User.findOne({
+    where: { googleId: item.purchaser_id },
+    raw: true,
+  }));
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -116,9 +120,10 @@ const getSplit = async ({ trip, user }, res) => {
     where: { trip_id: trip, recipient_id: user },
     raw: true,
   });
-  users = payments.map((payment) => User.findOne(
-    { where: { googleId: payment.ower_id }, raw: true },
-  ));
+  users = payments.map((payment) => User.findOne({
+    where: { googleId: payment.ower_id },
+    raw: true,
+  }));
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -174,9 +179,10 @@ const getPhotos = async ({ trip }, res) => {
     raw: true,
     order: [['createdAt', 'DESC']],
   });
-  let users = photos.map((photo) => User.findOne(
-    { where: { googleId: photo.user_id }, raw: true },
-  ));
+  let users = photos.map((photo) => User.findOne({
+    where: { googleId: photo.user_id },
+    raw: true,
+  }));
   await Promise.all(users).then((results) => {
     users = results;
   });
@@ -195,7 +201,9 @@ const addPhoto = async ({ files, body }, res) => {
     trip_id: trip,
     photo_link: photo.filename,
   }));
-  await Promise.all(photos).then((response) => { photos = response; });
+  await Promise.all(photos).then((response) => {
+    photos = response;
+  });
   res.send(photos);
 };
 
@@ -312,12 +320,68 @@ const removeInvite = async (req) => {
 const getWeatherForTrip = async (req, res) => {
   const trip = await Trip.findByPk(req.trip);
   getWeather([trip])
-    .then((response) => res.send(response));
+    .then((response) => res.send(response))
+    .catch((err) => console.warn(err));
+};
+const getMessages = async (req, res) => {
+  const messages = await Message.findAll({ where: { trip_id: req.body.trip_id } });
+
+  res.send(messages);
+};
+
+const postMessages = (req, res) => {
+  Message.create({
+    text: req.body.text,
+    author: req.body.author,
+    user_google_id: req.body.user_google_id,
+    trip_id: req.body.trip_id,
+  });
+  res.send(console.info('Message table updated'));
+};
+const getPhone = (req, res) => {
+  User.findOne({ where: { googleId: req.googleId, phoneNumber: { [Op.not]: null } } })
+    .then((response) => res.send(response))
+    .catch((err) => console.warn(err));
+};
+
+const addPhone = async (req, res) => {
+  const num = `+1${req.phone}`;
+  await User.update(
+    { phoneNumber: num },
+    { where: { googleId: req.currentUser.googleId } },
+  )
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((err) => console.warn(err));
+};
+
+const getAllOtherUsers = async (req, res) => {
+  const inviteThem = await User.findAll({
+    where: { [Op.not]: [{ googleId: req.currentUser }] },
+  });
+  res.send(inviteThem);
+};
+
+const inviteSelectedUser = async (req) => {
+  await TripProposalVotes.findOne({
+    where: { user_id: req.user.googleId, trip_id: req.trip },
+  })
+    .then((response) => {
+      if (response === null) {
+        TripProposalVotes.create({
+          user_id: req.user.googleId,
+          trip_id: req.trip,
+        });
+      }
+    })
+    .catch((err) => console.warn(err));
 };
 
 module.exports = {
   createUser,
   addDestinations,
+  inviteSelectedUser,
   addPreferences,
   addSplit,
   getSplit,
@@ -327,6 +391,7 @@ module.exports = {
   setDest,
   enterProposal,
   getOtherUsers,
+  getAllOtherUsers,
   getTripNames,
   getPhotos,
   getAllTrips,
@@ -336,4 +401,8 @@ module.exports = {
   getMyInvites,
   addPhoto,
   getWeatherForTrip,
+  getMessages,
+  postMessages,
+  addPhone,
+  getPhone,
 };
