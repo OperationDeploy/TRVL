@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import SelectPlaces from './SelectPlaces';
 
-const InvitesButton = ({ otherUsers, trip }) => {
-  const [inviteClicked, setInviteClicked] = useState(false);
+const InvitesButton = ({ currentUser, otherUsers, trip, setClickedPage }) => {
+  const [buttonClicked, setButtonClicked] = useState(false);
 
   const handleClick = (event, user) => {
-    // event.preventDefault();
+    event.preventDefault();
     axios
       .post('/inviteTheUser', {
         user,
@@ -17,8 +18,35 @@ const InvitesButton = ({ otherUsers, trip }) => {
       .catch((err) => console.warn(err));
   };
 
-  if (inviteClicked === true) {
+  const selectPlaces = () => {
+    setButtonClicked(true);
+  };
+
+  if (buttonClicked) {
     return (
+      <SelectPlaces
+        trip={trip}
+        otherUsers={otherUsers}
+        currentUser={currentUser}
+        setClickedPage={setClickedPage}
+      />
+    );
+  }
+
+  return (
+    <div>
+      <div>
+        <Button
+          color="secondary"
+          aria-label="outlined primary button group"
+          variant="contained"
+          onClick={() => {
+            selectPlaces();
+          }}
+        >
+          Generate Places
+        </Button>
+      </div>
       <div>
         <header>Click on a user to send them a invite to this trip!</header>
         <ul>
@@ -29,20 +57,6 @@ const InvitesButton = ({ otherUsers, trip }) => {
           ))}
         </ul>
       </div>
-    );
-  }
-
-  return (
-    <div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          setInviteClicked(!inviteClicked);
-        }}
-      >
-        Invite Users
-      </Button>
     </div>
   );
 };
@@ -73,6 +87,7 @@ InvitesButton.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
+  setClickedPage: PropTypes.func.isRequired,
 };
 
 export default InvitesButton;

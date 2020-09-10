@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
 import GoogleLogin from 'react-google-login';
@@ -9,6 +8,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import ResponsiveDrawer from './ResponsiveDrawer';
 
 class App extends Component {
@@ -20,14 +20,47 @@ class App extends Component {
       currentUser: '',
       otherUsers: [],
       currentTrip: { id: 2 },
+      phone: '',
+      registered: false,
     };
 
     this.responseGoogle = this.responseGoogle.bind(this);
   }
 
+  handleChangePhone(event) {
+    this.setState({
+      phone: event.target.value,
+    });
+  }
+
+  handleSubmitPhone() {
+    const { phone, currentUser } = this.state;
+    axios
+      .post('/addPhoneNumber', {
+        phone,
+        currentUser,
+      })
+      .then((response) => {
+        if (response) {
+          this.setState({
+            registered: true,
+          });
+        }
+      })
+      .catch((err) => console.warn(err));
+  }
+
+  findPhone() {
+    const { phone } = this.state;
+    if (phone !== null && phone !== '') {
+      this.setState({
+        registered: true,
+      });
+    }
+  }
+
   responseGoogle(response) {
     const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
-
     axios
       .post('/login', {
         first_name: givenName,
@@ -42,12 +75,15 @@ class App extends Component {
         this.setState({
           loginComplete: !this.loginComplete,
           currentUser: res.data,
+          phone: res.data.phoneNumber,
         });
+        this.findPhone();
       })
       .catch((err) => console.warn(err));
   }
 
   render() {
+    const { registered, phone } = this.state;
     const { loginComplete, currentUser, currentTrip, otherUsers } = this.state;
     if (!loginComplete) {
       return (
@@ -80,6 +116,29 @@ class App extends Component {
             </Card>
           </Grid>
         </Grid>
+      );
+    }
+    if (registered === false) {
+      return (
+        <Typography>
+          **Link you phone number to your account** Phone Number:
+          <input
+            type="text"
+            id="phone"
+            name="phone"
+            placeholder="number"
+            value={phone}
+            onChange={(e) => this.handleChangePhone(e)}
+          />
+          <Button
+            variant="contained"
+            onClick={() => {
+              this.handleSubmitPhone();
+            }}
+          >
+            Submit Phone Number
+          </Button>
+        </Typography>
       );
     }
     return (

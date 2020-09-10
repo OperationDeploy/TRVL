@@ -10,7 +10,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import SelectPlaces from './SelectPlaces';
+// import SelectPlaces from './SelectPlaces';
 import InvitesButton from './InvitesButton';
 
 // adjusts the width of the preferences sliders
@@ -34,8 +34,8 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
   const [groupRelationship, setRelationship] = useState(50);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(null);
-  const [buttonClicked, setButtonClicked] = useState(false);
   const [trip, setTrip] = useState(0);
+  const [inviteButtonClicked, setInviteButtonClicked] = useState(false);
   const userId = currentUser.googleId;
 
   // sets new states for our preferences upon change
@@ -109,15 +109,16 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
     }
   }, [trip]);
 
-  const selectPlaces = () => {
-    setButtonClicked(true);
+  const inviteUsers = () => {
+    setInviteButtonClicked(true);
   };
 
-  if (buttonClicked) {
+  if (inviteButtonClicked) {
     return (
-      <SelectPlaces
-        trip={trip}
+      <InvitesButton
+        otherUsers={otherUsers}
         currentUser={currentUser}
+        trip={trip}
         setClickedPage={setClickedPage}
       />
     );
@@ -300,13 +301,11 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
           <Button
             variant="contained"
             onClick={() => {
-              selectPlaces();
+              inviteUsers();
             }}
           >
-            Generate Places
+            Invite Users
           </Button>
-          <br />
-          <InvitesButton otherUsers={otherUsers} currentUser={currentUser} trip={trip} />
         </ButtonGroup>
       </div>
     </Container>
