@@ -329,15 +329,16 @@ const getMessages = async (req, res) => {
   res.send(messages);
 };
 
-const postMessages = (req, res) => {
+const postMessages = (req) => {
   Message.create({
     text: req.body.text,
     author: req.body.author,
+    time: req.body.time,
     user_google_id: req.body.user_google_id,
     trip_id: req.body.trip_id,
   });
-  res.send(console.info('Message table updated'));
 };
+
 const getPhone = (req, res) => {
   User.findOne({ where: { googleId: req.googleId, phoneNumber: { [Op.not]: null } } })
     .then((response) => res.send(response))
