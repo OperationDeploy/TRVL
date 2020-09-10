@@ -128,9 +128,17 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       setShowPlan(true);
       setShowTrips(false);
       setShowHome(false);
+      setShowChat(false);
     }
     if (page === 'trips') {
       setShowTrips(true);
+      setShowHome(false);
+      setShowPlan(false);
+      setShowChat(false);
+    }
+    if (page === 'chat') {
+      setShowChat(true);
+      setShowTrips(false);
       setShowHome(false);
       setShowPlan(false);
     }
@@ -139,6 +147,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         setShowHome(true);
         setShowTrips(false);
         setShowPlan(false);
+        setShowChat(false);
       }
     }
   };
@@ -248,7 +257,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       <Divider />
       <List>
         {['Chat'].map((text, index) => (
-          <ListItem button onClick={() => setShowChat(!showChat)} key={text}>
+          <ListItem button onClick={() => handleNavClick('chat')} key={text}>
             <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
