@@ -1,6 +1,7 @@
 require('dotenv').config();
 // import db
 const express = require('express');
+const socket = require('socket.io');
 const path = require('path'); // NEW
 
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
@@ -32,6 +33,9 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  getWeatherForTrip,
+  getMessages,
+  postMessages,
 } = require('./queries.js');
 
 const app = express();
@@ -41,6 +45,21 @@ const DIST_DIR = path.join(__dirname, '../dist'); // NEW
 // parse application/json
 app.use(bodyParser.json());
 app.use(cors());
+
+/** SOCKET.IO - CHAT ROOM CONNECTIONS* */
+const server = app.listen(8080, () => {
+  console.info('socket server running on 8080');
+});
+
+const io = socket(server);
+
+io.on('connection', (sock) => {
+  console.info(sock.id, 'socket id');
+
+  sock.on('SEND_MESSAGE', (data) => {
+    io.emit('RECEIVE_MESSAGE', data);
+  });
+});
 
 /** ************************************************** */
 
@@ -73,6 +92,10 @@ app.get('/getInvites', (req, res) => {
 
 app.get('/photos/:trip', (req, res) => {
   getPhotos(req.params, res);
+});
+
+app.get('/weather/:trip', async (req, res) => {
+  getWeatherForTrip(req.params, res);
 });
 
 app.get('/phone', (req, res) => {
@@ -157,6 +180,14 @@ app.post('/removeInvite', (req, res) => {
   removeInvite(req.body, res);
 });
 
+// get all messages for trip
+app.post('/getMessages', (req, res) => {
+  getMessages(req, res);
+});
+// post message
+app.post('/postMessages', (req, res) => {
+  postMessages(req, res);
+});
 // Twilio
 // TODO: comment back in and take out console log when demoing
 app.post('/sendTwilio', (req, res) => {

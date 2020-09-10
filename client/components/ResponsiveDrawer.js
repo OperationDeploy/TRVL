@@ -15,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
+import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import EventIcon from '@material-ui/icons/Event';
@@ -25,6 +26,7 @@ import axios from 'axios';
 import Preferences from './preferences';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
 import './App.scss';
@@ -85,6 +87,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
+  const [showChat, setShowChat] = useState(false);
   const [clickedPage, setClickedPage] = useState(null);
   const [toggleIcon, setToggleIcon] = useState(false);
 
@@ -218,6 +221,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           </ListItem>
         ))}
       </List>
+      <Divider />
+      <List>
+        {['Chat'].map((text, index) => (
+          <ListItem button onClick={() => setShowChat(!showChat)} key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
     </div>
   );
 
@@ -252,6 +264,14 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       />
     </div>
   );
+
+  if (showChat === true) {
+    return (
+      <div>
+        <Chat currentUser={currentUser} />
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>

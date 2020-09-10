@@ -33,6 +33,7 @@ CREATE TABLE "Trips" (
   "departure_city" TEXT,
   "airport_code" TEXT UNIQUE,
   "googleId" TEXT,
+  "weather_alert" boolean,
   "createdAt" TIMESTAMP DEFAULT NOW(),
   "updatedAt" TIMESTAMP DEFAULT NOW()
 );
@@ -136,6 +137,16 @@ CREATE TABLE "SplitOwedPayments" (
   "updatedAt" TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE "Messages" (
+  "id" SERIAL PRIMARY KEY,
+  "text" TEXT,
+  "author" TEXT,
+  "user_google_id" TEXT,
+  "trip_id" int,
+  "createdAt" TIMESTAMP DEFAULT NOW(),
+  "updatedAt" TIMESTAMP DEFAULT NOW()
+);
+
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("user_id") REFERENCES "Users" ("googleId");
 
 ALTER TABLE "TripUsers" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");
@@ -170,3 +181,6 @@ ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_B_id") REFERENCES "Des
 
 ALTER TABLE "TripProposals" ADD FOREIGN KEY ("destination_C_id") REFERENCES "Destinations" ("id");
 
+ALTER TABLE "Messages" ADD FOREIGN KEY ("user_google_id") REFERENCES "Users" ("googleId");
+
+ALTER TABLE "Messages" ADD FOREIGN KEY ("trip_id") REFERENCES "Trips" ("id");

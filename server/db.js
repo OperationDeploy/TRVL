@@ -61,6 +61,7 @@ const Trip = sequelize.define('Trip', {
       key: 'googleId',
     },
   },
+  weather_alert: Sequelize.BOOLEAN,
 });
 
 const TripUser = sequelize.define('TripUser', {
@@ -230,6 +231,25 @@ const SplitOwedPayment = sequelize.define('SplitOwedPayment', {
   item_id: Sequelize.INTEGER,
 });
 
+const Message = sequelize.define('Message', {
+  text: Sequelize.TEXT,
+  author: Sequelize.TEXT,
+  user_google_id: {
+    type: Sequelize.TEXT,
+    references: {
+      model: 'user',
+      key: 'googleId',
+    },
+  },
+  trip_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: 'trip',
+      key: 'id',
+    },
+  },
+});
+
 module.exports = {
   User,
   Trip,
@@ -242,5 +262,6 @@ module.exports = {
   Destinations,
   SplitItem,
   SplitOwedPayment,
+  Message,
   sequelize,
 };
