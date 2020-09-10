@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
+import moment from 'moment';
+
 import ActivityForm from './ActivityForm';
 import ActivityList from './ActivityList';
 
-const Itinerary = ({ currentUser, currentTrip }) => {
+moment().format();
+
+const Itinerary = ({ currentUser, currentTrip, day }) => {
   const [activities, setActivities] = useState([]);
   const [text, setText] = useState('');
 
@@ -13,20 +17,19 @@ const Itinerary = ({ currentUser, currentTrip }) => {
     axios
       .get(`/activities/${currentTrip.id}`, {
         trip_id: currentTrip.id,
-        user_id: currentUser,
       })
       .then((res) => {
-        const allEvents = res.data.map((activity) => activity.event);
+        // eslint-disable-next-line max-len
+        const allEvents = res.data.filter((activity) => activity.day === day).map((activity) => activity.event);
         setActivities(...activities, allEvents);
       });
   }, []);
 
   return (
     <div id="trip-itinerary" className="itinerary-container">
-      <Typography component="h1" variant="h2">
-        Itinerary
+      <Typography component="h1" variant="h6">
+        {`Plans for: ${moment(day).format('MMM Do')}`}
       </Typography>
-
       <ActivityForm
         saveActivity={(input) => {
           setText(input.trim());
@@ -36,7 +39,7 @@ const Itinerary = ({ currentUser, currentTrip }) => {
                 user_id: currentUser.id,
                 trip_id: currentTrip.id,
                 event: text,
-                day: new Date(),
+                day,
               })
               .then((response) => {
                 setActivities([...activities, response.data.event]);
@@ -52,13 +55,16 @@ const Itinerary = ({ currentUser, currentTrip }) => {
         currentUser={currentUser}
         deleteActivity={(activityIndex) => {
           const newActivities = activities.filter((_, index) => index !== activityIndex);
-          axios.delete('/activity', {
-            params: {
-              user_id: currentUser.id,
-              trip_id: currentTrip.id,
-              event: activities[activityIndex],
-            },
-          }).then((res) => res.status(204).send('Content Deleted'));
+          axios
+            .delete('/activity', {
+              params: {
+                user_id: currentUser.id,
+                trip_id: currentTrip.id,
+                event: activities[activityIndex],
+                day,
+              },
+            })
+            .then((res) => res.status(204).send('Content Deleted'));
           setActivities(newActivities);
         }}
       />
@@ -80,6 +86,7 @@ Itinerary.propTypes = {
     id: PropTypes.number,
     city: PropTypes.string,
   }).isRequired,
+  day: PropTypes.string.isRequired,
 };
 
 export default Itinerary;

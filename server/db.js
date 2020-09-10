@@ -181,7 +181,7 @@ const TripItinerary = sequelize.define('TripItinerary', {
     },
   },
   event: Sequelize.TEXT,
-  day: Sequelize.DATE,
+  day: Sequelize.TEXT,
 });
 
 const TripProposalVotes = sequelize.define('TripProposalVotes', {
