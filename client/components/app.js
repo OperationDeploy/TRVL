@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-// import { BrowserRouter as Router } from 'react-router-dom';
 import axios from 'axios';
 import Favicon from 'react-favicon';
 import GoogleLogin from 'react-google-login';

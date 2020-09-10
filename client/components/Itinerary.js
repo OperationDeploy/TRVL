@@ -7,20 +7,18 @@ import ActivityList from './ActivityList';
 
 const Itinerary = ({ currentUser, currentTrip }) => {
   const [activities, setActivities] = useState([]);
+  const [text, setText] = useState('');
 
   useEffect(() => {
-    axios.get(`/activities/${currentTrip.id}`, {
-      trip_id: currentTrip.id,
-      user_id: currentUser,
-    })
+    axios
+      .get(`/activities/${currentTrip.id}`, {
+        trip_id: currentTrip.id,
+        user_id: currentUser,
+      })
       .then((res) => {
-        console.info(res.data, 'got the activities!!');
-        const allEvents = res.data;
-        allEvents.forEach((activity) => {
-          setActivities(activities.push(activity.event));
-        });
-        // setActivities(res.data);
-      }).catch((err) => console.warn(err));
+        const allEvents = res.data.map((activity) => activity.event);
+        setActivities(...activities, allEvents);
+      });
   }, []);
 
   return (
@@ -31,17 +29,18 @@ const Itinerary = ({ currentUser, currentTrip }) => {
 
       <ActivityForm
         saveActivity={(input) => {
-          const text = input.trim();
+          setText(input.trim());
           if (text.length > 0) {
-            axios.post('/activities', {
-              user_id: currentUser.id,
-              trip_id: currentTrip.id,
-              event: text,
-              day: new Date(),
-            }).then((response) => {
-              console.info(response, 'kuygiygi');
-              setActivities(activities.push(response.data.event));
-            });
+            axios
+              .post('/activities', {
+                user_id: currentUser.id,
+                trip_id: currentTrip.id,
+                event: text,
+                day: new Date(),
+              })
+              .then((response) => {
+                setActivities([...activities, response.data.event]);
+              });
           }
         }}
         currentTrip={currentTrip}
@@ -49,8 +48,17 @@ const Itinerary = ({ currentUser, currentTrip }) => {
       />
       <ActivityList
         activities={activities}
+        currentTrip={currentTrip}
+        currentUser={currentUser}
         deleteActivity={(activityIndex) => {
           const newActivities = activities.filter((_, index) => index !== activityIndex);
+          axios.delete('/activity', {
+            params: {
+              user_id: currentUser.id,
+              trip_id: currentTrip.id,
+              event: activities[activityIndex],
+            },
+          }).then((res) => res.status(204).send('Content Deleted'));
           setActivities(newActivities);
         }}
       />

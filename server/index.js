@@ -73,7 +73,6 @@ app.get('/photos/:trip', (req, res) => {
 
 // get all trip activities
 app.get('/activities/:trip', (req, res) => {
-  console.info(req, 'in index js');
   getTripActivities(req.params, res);
 });
 
@@ -147,8 +146,8 @@ app.post('/removeInvite', (req, res) => {
   removeInvite(req.body, res);
 });
 
-app.delete('/removeActivity', (req, res) => {
-  deleteActivity(req.body, res);
+app.delete('/activity', (req, res) => {
+  deleteActivity(req.query, res);
 });
 
 app.use(express.static('public'));
