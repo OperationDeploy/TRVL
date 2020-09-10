@@ -38,7 +38,6 @@ const alertUsers = async (trips) => {
       users = response;
     })
     .catch((err) => console.warn(err));
-  console.info(users);
 };
 
 // Gets weather data from array of trips

@@ -51,7 +51,7 @@ const UserTrips = ({ currentUser }) => {
             <ListItemSecondaryAction>
               <Button
                 onClick={() => {
-                  const trip = { id: data.id, city: data.destination };
+                  const trip = { ...data, city: data.destination };
                   setCurrentTrip(trip);
                   setClicked('itinerary');
                 }}
