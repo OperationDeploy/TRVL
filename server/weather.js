@@ -91,7 +91,9 @@ const getWeather = async (allTrips, weatherOnly = true) => {
             temp: {
               low: toDegF(temp.min),
               high: toDegF(temp.max),
-            } };
+            },
+            icon: `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`,
+          };
           const date = toISO(day.dt);
           dates[date] = forecast;
           if (weather[0].main === 'Rain') {

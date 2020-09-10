@@ -19,19 +19,20 @@ const Itinerary = ({ currentUser, currentTrip }) => {
     });
   }, []);
 
-  let weatherDisp = <div>Loading Weather...</div>;
+  let weatherDisp = <div className="weather-widget"> Loading Weather...</div>;
 
   if (weather) {
     weatherDisp =
       weather === 'unavailable' ? (
-        <div>Weather Data Not Available</div>
+        <div className="weather-widget">Weather Data Not Available</div>
       ) : (
-        <div>
-          <div>Weather in {currentTrip.city}:</div>
-          <div>({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)}):</div>
-          <div>{weather[Object.keys(weather)[0]].weather}</div>
-          <div>High: {weather[Object.keys(weather)[0]].temp.high}</div>
-          <div>Low: {weather[Object.keys(weather)[0]].temp.low}</div>
+        <div className="weather-widget">
+          <div id="city">Weather in {currentTrip.city}:</div>
+          <div id="date">({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})</div>
+          <div><img alt="icon" src={weather[Object.keys(weather)[0]].icon}/></div>
+          <div id="main">{weather[Object.keys(weather)[0]].weather}</div>
+          <div id="high">High: {weather[Object.keys(weather)[0]].temp.high}</div>
+          <div id="low">Low: {weather[Object.keys(weather)[0]].temp.low}</div>
         </div>
       );
   }
