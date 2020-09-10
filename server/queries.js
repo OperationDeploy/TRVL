@@ -1,6 +1,8 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
 
+const { getWeather } = require('./weather');
+
 const { generatePlaces } = require('./algo.js');
 const {
   User,
@@ -315,6 +317,12 @@ const removeInvite = async (req) => {
   }).catch((err) => console.warn(err));
 };
 
+const getWeatherForTrip = async (req, res) => {
+  const trip = await Trip.findByPk(req.trip);
+  getWeather([trip])
+    .then((response) => res.send(response))
+    .catch((err) => console.warn(err));
+};
 const getMessages = async (req, res) => {
   const messages = await Message.findAll({ where: { trip_id: req.body.trip_id } });
 
@@ -392,6 +400,7 @@ module.exports = {
   tripUser,
   getMyInvites,
   addPhoto,
+  getWeatherForTrip,
   getMessages,
   postMessages,
   addPhone,

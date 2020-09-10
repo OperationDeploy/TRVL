@@ -61,6 +61,7 @@ const Trip = sequelize.define('Trip', {
       key: 'googleId',
     },
   },
+  weather_alert: Sequelize.BOOLEAN,
 });
 
 const TripUser = sequelize.define('TripUser', {

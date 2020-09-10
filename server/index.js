@@ -33,6 +33,7 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  getWeatherForTrip,
   getMessages,
   postMessages,
 } = require('./queries.js');
@@ -91,6 +92,10 @@ app.get('/getInvites', (req, res) => {
 
 app.get('/photos/:trip', (req, res) => {
   getPhotos(req.params, res);
+});
+
+app.get('/weather/:trip', async (req, res) => {
+  getWeatherForTrip(req.params, res);
 });
 
 app.get('/phone', (req, res) => {

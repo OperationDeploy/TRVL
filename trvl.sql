@@ -33,6 +33,7 @@ CREATE TABLE "Trips" (
   "departure_city" TEXT,
   "airport_code" TEXT UNIQUE,
   "googleId" TEXT,
+  "weather_alert" boolean,
   "createdAt" TIMESTAMP DEFAULT NOW(),
   "updatedAt" TIMESTAMP DEFAULT NOW()
 );
