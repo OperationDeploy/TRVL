@@ -1,10 +1,8 @@
-// TODO: Weather Feature (in progress)
-
 const axios = require('axios');
 const { WEATHER_API, GEO_API } = require('../config');
 const { Trip, TripUser, User } = require('./db');
 
-// Returns total number of days between 2 'YYYY-MM-DD' string dates
+// Measures total number of days between 2 'YYYY-MM-DD' string dates
 const compareISODates = (date1, date2) => {
   const today = date1 === 'today' ? new Date().toISOString().slice(0, 10) : null;
   return (new Date(date2) - new Date(today || date1)) / 86400000;
@@ -22,10 +20,9 @@ const isWithinRange = (trip) => {
 
 // Gets users on each trip to alert them of bad weather
 const alertUsers = async (trips) => {
-  const updateDB = trips.map((trip) => {
-    console.info(trip.destination, trip.forecast);
-    return Trip.update({ weather_alert: trip.weather_alert }, { where: { id: trip.id } });
-  });
+  const updateDB = trips.map((trip) => (
+    Trip.update({ weather_alert: trip.weather_alert }, { where: { id: trip.id } })
+  ));
   await Promise.all(updateDB);
   let userIds = trips.map((trip) => TripUser.findOne({ where: { trip_id: trip.id }, raw: true }));
   await Promise.all(userIds)
@@ -61,7 +58,6 @@ const getWeather = async (allTrips, weatherOnly = true) => {
     }
     const city = destination.join(' ');
     const query = state ? `${city}${state},${country}` : `${city}${country}`;
-    console.info('the query', query, 'the state', state);
     return axios.get(`http://api.positionstack.com/v1/forward?access_key=${GEO_API}&query=${query}&limit=1`);
   });
   let weatherData;
@@ -110,13 +106,13 @@ const getWeather = async (allTrips, weatherOnly = true) => {
   return weatherOnly ? results : alertUsers(results);
 };
 
-// Gets all trips from DB that will have weather info available based on dates
-const weatherRefresh = async () => {
+// Gets all trips from DB and updates weather alert value
+const weatherUpdate = async () => {
   const trips = await Trip.findAll({ raw: true });
   getWeather(trips, false);
 };
 
 module.exports = {
   getWeather,
-  weatherRefresh,
+  weatherUpdate,
 };

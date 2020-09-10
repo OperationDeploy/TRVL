@@ -10,9 +10,8 @@ const Itinerary = ({ currentUser, currentTrip }) => {
   const [weather, setWeather] = useState(null);
 
   useEffect(() => {
-    console.info('currentTrip:', currentTrip);
     axios.get(`/weather/${currentTrip.id}`).then(({ data }) => {
-      if (data[0]) {
+      if (data[0] && Object.keys(data[0].forecast).length) {
         setWeather(data[0].forecast);
       } else {
         setWeather('unavailable');
@@ -25,7 +24,7 @@ const Itinerary = ({ currentUser, currentTrip }) => {
   if (weather) {
     weatherDisp =
       weather === 'unavailable' ? (
-        <div>Weather Data Not Yet Available</div>
+        <div>Weather Data Not Available</div>
       ) : (
         <div>
           <div>Weather in {currentTrip.city}:</div>
