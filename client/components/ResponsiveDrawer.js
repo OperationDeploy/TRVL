@@ -156,21 +156,27 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => {
-            setClickedPage(<div>
-            <InvitesPage
-              currentUser={currentUser}
-              otherUsers={otherUsers}
-              myInvites={myInvites}
-            />
-            <Trips
-              currentUser={currentUser}
-              currentTrip={currentTrip}
-              setClickedPage={setClickedPage}
-            />
-          </div>);
-            setMobileOpen(false);
-          }} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              setClickedPage(
+                <div>
+                  <InvitesPage
+                    currentUser={currentUser}
+                    otherUsers={otherUsers}
+                    myInvites={myInvites}
+                  />
+                  <Trips
+                    currentUser={currentUser}
+                    currentTrip={currentTrip}
+                    setClickedPage={setClickedPage}
+                  />
+                </div>,
+              );
+              setMobileOpen(false);
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
@@ -207,10 +213,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         alt="user loaded from google login"
         className="profile-pic"
       />
-      <Typography
-        className="welcome-message"
-        variant="h6"
-      >
+      <Typography className="welcome-message" variant="h6">
         {`Hi, ${currentUser.first_name}!`}
       </Typography>
       <Trips

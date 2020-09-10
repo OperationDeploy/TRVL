@@ -11,27 +11,30 @@ const Itinerary = ({ currentUser, currentTrip }) => {
 
   useEffect(() => {
     console.info('currentTrip:', currentTrip);
-    axios.get(`/weather/${currentTrip.id}`)
-      .then(({ data }) => {
-        if (data[0]) {
-          setWeather(data[0].forecast);
-        } else {
-          setWeather('unavailable');
-        }
-      });
+    axios.get(`/weather/${currentTrip.id}`).then(({ data }) => {
+      if (data[0]) {
+        setWeather(data[0].forecast);
+      } else {
+        setWeather('unavailable');
+      }
+    });
   }, []);
 
   let weatherDisp = <div>Loading Weather...</div>;
 
   if (weather) {
-    weatherDisp = weather === 'unavailable' ? <div>Weather Data Not Yet Available</div> :
-      (<div>
-      <div>Weather in {currentTrip.city}:</div>
-      <div>({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)}):</div>
-      <div>{weather[Object.keys(weather)[0]].weather}</div>
-      <div>High: {weather[Object.keys(weather)[0]].temp.high}</div>
-      <div>Low: {weather[Object.keys(weather)[0]].temp.low}</div>
-    </div>);
+    weatherDisp =
+      weather === 'unavailable' ? (
+        <div>Weather Data Not Yet Available</div>
+      ) : (
+        <div>
+          <div>Weather in {currentTrip.city}:</div>
+          <div>({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)}):</div>
+          <div>{weather[Object.keys(weather)[0]].weather}</div>
+          <div>High: {weather[Object.keys(weather)[0]].temp.high}</div>
+          <div>Low: {weather[Object.keys(weather)[0]].temp.low}</div>
+        </div>
+      );
   }
 
   return (

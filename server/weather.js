@@ -22,6 +22,11 @@ const isWithinRange = (trip) => {
 
 // Gets users on each trip to alert them of bad weather
 const alertUsers = async (trips) => {
+  const updateDB = trips.map((trip) => {
+    console.info(trip.destination, trip.forecast);
+    return Trip.update({ weather_alert: trip.weather_alert }, { where: { id: trip.id } });
+  });
+  await Promise.all(updateDB);
   let userIds = trips.map((trip) => TripUser.findOne({ where: { trip_id: trip.id }, raw: true }));
   await Promise.all(userIds)
     .then((response) => {
@@ -73,7 +78,7 @@ const getWeather = async (allTrips, weatherOnly = true) => {
   await Promise.all(weatherData)
     .then((res) => {
       results = res.map(({ data }, i) => {
-        const trip = { ...trips[i], rain: false };
+        const trip = { ...trips[i], weather_alert: false };
         const dates = {};
         let startIndex = 0;
         const tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
@@ -93,8 +98,8 @@ const getWeather = async (allTrips, weatherOnly = true) => {
             } };
           const date = toISO(day.dt);
           dates[date] = forecast;
-          if (dates[date] === 'Rain') {
-            trip.rain = true; // TRIP HAS RAIN ON THIS DATE
+          if (weather[0].main === 'Rain') {
+            trip.weather_alert = true; // TRIP HAS RAIN ON THIS DATE
           }
         });
         trip.forecast = dates;
@@ -106,12 +111,12 @@ const getWeather = async (allTrips, weatherOnly = true) => {
 };
 
 // Gets all trips from DB that will have weather info available based on dates
-const getTrips = async () => {
+const weatherRefresh = async () => {
   const trips = await Trip.findAll({ raw: true });
   getWeather(trips, false);
 };
 
 module.exports = {
   getWeather,
-  getTrips,
+  weatherRefresh,
 };
