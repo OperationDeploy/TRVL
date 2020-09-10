@@ -64,6 +64,8 @@
     "react-google-login": "^5.1.21",
     "read-excel-file": "^4.0.7",
     "sequelize": "^6.3.4",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "twilio": "^3.49.1"
   },
   "devDependencies": {
