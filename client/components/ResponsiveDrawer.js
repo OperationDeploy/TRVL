@@ -24,8 +24,8 @@ import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/sty
 import { indigo, orange } from '@material-ui/core/colors';
 import axios from 'axios';
 import Preferences from './preferences';
-import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
+const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
   const classes = useStyles();
   const theme = createMuiTheme({
     palette: {
@@ -90,10 +90,13 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const [showChat, setShowChat] = useState(false);
   const [clickedPage, setClickedPage] = useState(null);
   const [toggleIcon, setToggleIcon] = useState(false);
-
+  const [newMsg, setNewMsg] = useState(false);
+  const [toggleNewMsgIcon, setToggleNewMsgIcon] = useState(false);
   const [showTrips, setShowTrips] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
+  const [showInvitesPage, setShowInvitesPage] = useState(false);
   const [showHome, setShowHome] = useState(false);
+  const [allOtherUsers, setAllOtherUsers] = useState([]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -104,18 +107,36 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       setShowPlan(true);
       setShowTrips(false);
       setShowHome(false);
+      setShowInvitesPage(false);
+      setShowChat(false);
     }
     if (page === 'trips') {
       setShowTrips(true);
       setShowHome(false);
       setShowPlan(false);
+      setShowInvitesPage(false);
+      setShowChat(false);
+    }
+    if (page === 'invitesPage') {
+      setShowInvitesPage(true);
+      setShowHome(false);
+      setShowTrips(false);
+      setShowPlan(false);
+      setShowChat(false);
+    }
+    if (page === 'chat') {
+      setShowChat(true);
+      setShowHome(false);
+      setShowTrips(false);
+      setShowPlan(false);
+      setShowInvitesPage(false);
     }
     if (page === 'home') {
-      if (!showHome) {
-        setShowHome(true);
-        setShowTrips(false);
-        setShowPlan(false);
-      }
+      setShowHome(true);
+      setShowTrips(false);
+      setShowPlan(false);
+      setShowInvitesPage(false);
+      setShowChat(false);
     }
   };
 
@@ -127,6 +148,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              console.info(showHome);
               setClickedPage(null);
               handleNavClick('home');
               setMobileOpen(false);
@@ -146,6 +168,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              setClickedPage(true);
+              setMobileOpen(false);
               handleNavClick('plan');
             }}
             key={text}
@@ -163,6 +187,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              setClickedPage(true);
+              setMobileOpen(false);
               handleNavClick('trips');
             }}
             key={text}
@@ -180,23 +206,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           <ListItem
             button
             onClick={() => {
+              setClickedPage(true);
+              handleNavClick('invitesPage');
               if (myInvites.length !== 0) {
                 setToggleIcon(true);
               }
-              setClickedPage(
-                <div>
-                  <InvitesPage
-                    currentUser={currentUser}
-                    otherUsers={otherUsers}
-                    myInvites={myInvites}
-                  />
-                  <Trips
-                    currentUser={currentUser}
-                    currentTrip={currentTrip}
-                    setClickedPage={setClickedPage}
-                  />
-                </div>,
-              );
               setMobileOpen(false);
             }}
             key={text}
@@ -211,6 +225,26 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           </ListItem>
         ))}
       </List>
+      <Divider />
+      <List>
+        {['Chat'].map((text, index) => (
+          <ListItem
+            button
+            onClick={() => {
+              setClickedPage(true);
+              setToggleNewMsgIcon(true);
+              handleNavClick('chat');
+              setMobileOpen(false);
+            }}
+            key={text}
+          >
+            <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
+            <ListItemText primary={text} />
+            {newMsg && !toggleNewMsgIcon ? <FiberNewIcon color="primary" /> : null}
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
       <List>
         {['Logout'].map((text) => (
           <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
@@ -221,17 +255,26 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
           </ListItem>
         ))}
       </List>
-      <Divider />
-      <List>
-        {['Chat'].map((text, index) => (
-          <ListItem button onClick={() => setShowChat(!showChat)} key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
     </div>
   );
+
+  const newChatMsg = () => {
+    setToggleNewMsgIcon(false);
+    setNewMsg(true);
+  };
+
+  useEffect(() => {
+    axios
+      .get('/inviteUsers', {
+        params: {
+          currentUser: currentUser.googleId,
+        },
+      })
+      .then((response) => {
+        setAllOtherUsers(response.data);
+      })
+      .catch((err) => console.warn('ERRR', err));
+  }, [currentUser.googleId]);
 
   useEffect(() => {
     axios
@@ -258,20 +301,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         setClickedPage={setClickedPage}
       />
       <PlanATrip
-        otherUsers={otherUsers}
+        otherUsers={allOtherUsers}
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
     </div>
   );
-
-  if (showChat === true) {
-    return (
-      <div>
-        <Chat currentUser={currentUser} />
-      </div>
-    );
-  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -295,8 +330,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             </IconButton>
             <Typography variant="h6" noWrap>
               TRVL
+              <img
+                src={currentUser.profile_pic}
+                alt="user loaded from google login for toolbar"
+                className="toolbar-pic"
+              />
             </Typography>
-            <br />
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer} aria-label="mailbox folders">
@@ -339,7 +378,22 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
             ) : null}
             {showPlan ? (
-              <Preferences currentUser={currentUser} currentTrip={currentTrip} />
+              <Preferences
+                currentUser={currentUser}
+                currentTrip={currentTrip}
+                setClickedPage={setClickedPage}
+              />
+            ) : null}
+            {showInvitesPage ? (
+              <InvitesPage
+                currentUser={currentUser}
+                otherUsers={allOtherUsers}
+                myInvites={myInvites}
+                setClickedPage={setClickedPage}
+              />
+            ) : null}
+            {showChat ? (
+              <Chat currentUser={currentUser} newChatMsg={() => newChatMsg()} />
             ) : null}
           </div>
         </main>
@@ -349,16 +403,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 };
 
 ResponsiveDrawer.propTypes = {
-  otherUsers: PropTypes.arrayOf(
-    PropTypes.shape({
-      first_name: PropTypes.string,
-      last_name: PropTypes.string,
-      email: PropTypes.string,
-      profile_pic: PropTypes.string,
-      host: PropTypes.bool,
-      googleId: PropTypes.string,
-    }),
-  ).isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.string,
     first_name: PropTypes.string,

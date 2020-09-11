@@ -32,9 +32,11 @@ const GasPrices = ({ currentTrip }) => {
         <div>Data Not Available</div>
       ) : (
         <div className="weather-widget">
-          <div>Avg gas price between here and {currentTrip.destination}: ${to2Dec(response.avgPrice)}</div>
-          <div>Driving for {to2Dec(response.miles)} miles at {to2Dec(response.mpg)} mpg,</div>
-          <div>it would cost: ${to2Dec(response.total)}</div>
+          <h2>Between here and {currentTrip.destination}</h2>
+          <div>Average Gas Price: ${to2Dec(response.avgPrice)}</div>
+          <div>Driving Distance: {to2Dec(response.miles)}</div>
+          <div>Fuel Economy: {to2Dec(response.mpg)} mpg</div>
+          <h2>Total Cost: ${to2Dec(response.total)}</h2>
         </div>
       );
   }
@@ -102,6 +104,7 @@ GasPrices.propTypes = {
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
     city: PropTypes.string,
+    destination: PropTypes.string,
   }).isRequired,
 };
 

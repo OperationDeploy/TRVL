@@ -10,7 +10,6 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-// import SelectPlaces from './SelectPlaces';
 import InvitesButton from './InvitesButton';
 
 // adjusts the width of the preferences sliders
@@ -21,7 +20,7 @@ const useStyles = makeStyles({
 });
 
 // exports our ContinuousSlider
-const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
+const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
   const classes = useStyles();
   // states of our preferences
   const [name, setName] = useState('');
@@ -116,7 +115,7 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
   if (inviteButtonClicked) {
     return (
       <InvitesButton
-        otherUsers={otherUsers}
+        otherUsers={allOtherUsers}
         currentUser={currentUser}
         trip={trip}
         setClickedPage={setClickedPage}
@@ -141,7 +140,6 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
-              fullWidth
               variant="inline"
               format="MM/dd/yyyy"
               margin="normal"
@@ -157,7 +155,6 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
-              fullWidth
               variant="inline"
               format="MM/dd/yyyy"
               margin="normal"
@@ -314,7 +311,7 @@ const ContinuousSlider = ({ currentUser, otherUsers, setClickedPage }) => {
 
 ContinuousSlider.propTypes = {
   setClickedPage: PropTypes.func.isRequired,
-  otherUsers: PropTypes.arrayOf(
+  allOtherUsers: PropTypes.arrayOf(
     PropTypes.shape({
       first_name: PropTypes.string,
       last_name: PropTypes.string,
@@ -323,7 +320,7 @@ ContinuousSlider.propTypes = {
       host: PropTypes.bool,
       googleId: PropTypes.string,
     }),
-  ).isRequired,
+  ),
   currentUser: PropTypes.shape({
     first_name: PropTypes.string,
     last_name: PropTypes.string,
@@ -333,4 +330,9 @@ ContinuousSlider.propTypes = {
     googleId: PropTypes.string,
   }).isRequired,
 };
+
+ContinuousSlider.defaultProps = {
+  allOtherUsers: [],
+};
+
 export default ContinuousSlider;

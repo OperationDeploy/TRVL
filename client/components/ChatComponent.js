@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-const ChatComponent = ({ currentUser, currentTrip }) => {
+const ChatComponent = ({ currentUser, currentTrip, newChatMsg }) => {
   const socket = io('localhost:8080');
 
   const [messages, setMessages] = useState([]);
@@ -29,17 +29,26 @@ const ChatComponent = ({ currentUser, currentTrip }) => {
 
   socket.on('RECEIVE_MESSAGE', (data) => {
     addMessage(data);
+    if (data.author !== currentUser.first_name) {
+      newChatMsg();
+    }
   });
 
   const sendMessage = (event) => {
     event.preventDefault();
+    const today = new Date();
+    const time = `${today.getHours() % 12 || 12}:${
+      today.getMinutes() < 10 ? `0${today.getMinutes()}` : today.getMinutes()
+    }${today.getHours() < 12 ? 'AM' : 'PM'}`;
     socket.emit('SEND_MESSAGE', {
       author: currentUser.first_name,
       message: messageText,
+      time,
     });
     axios.post('/postMessages', {
       text: messageText,
       author: currentUser.first_name,
+      time,
       user_google_id: currentUser.googleId,
       trip_id: currentTrip.id,
     });
@@ -56,12 +65,12 @@ const ChatComponent = ({ currentUser, currentTrip }) => {
               <div className="messages">
                 {oldMessages.map((message) => (
                   <div>
-                    {message.author}: {message.text}
+                    {message.author}: {message.text} {message.time}
                   </div>
                 ))}
                 {messages.map((message) => (
                   <div>
-                    {message.author}: {message.message}
+                    {message.author}: {message.message} {message.time}
                   </div>
                 ))}
               </div>
@@ -106,5 +115,6 @@ ChatComponent.propTypes = {
     destination: PropTypes.string,
     city: PropTypes.string,
   }).isRequired,
+  newChatMsg: PropTypes.func.isRequired,
 };
 export default ChatComponent;
