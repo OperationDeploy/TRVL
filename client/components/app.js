@@ -57,7 +57,7 @@ class App extends Component {
         registered: true,
       });
     }
-  } 
+  }
 
   responseGoogle(response) {
     const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
