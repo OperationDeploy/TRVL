@@ -22,13 +22,11 @@ const distance = (lat1, lon1, lat2, lon2) => {
   return (12742 * Math.asin(Math.sqrt(a))) * 0.62137;
 };
 
-const gasRequest = (lat, lon) => {
-  return axios.get(`http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon}&lat=${lat}`, {
-    headers: {
-      'content-type': 'application/json',
-      authorization: GAS_API,
-    } });
-};
+const gasRequest = (lat, lon) => axios.get(`http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon}&lat=${lat}`, {
+  headers: {
+    'content-type': 'application/json',
+    authorization: GAS_API,
+  } });
 
 const getGasPrices = async (trip, mpg) => {
   const departure = await getCoordinates(trip.departure_city);
