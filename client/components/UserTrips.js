@@ -7,7 +7,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Itinerary from './Itinerary';
+import TripCalendar from './TripCalendar';
+// import Itinerary from './Itinerary';
 import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
@@ -31,7 +32,7 @@ const UserTrips = ({ currentUser }) => {
 
   switch (clicked) {
     case 'itinerary':
-      return <Itinerary currentUser={currentUser} currentTrip={currentTrip} />;
+      return <TripCalendar currentUser={currentUser} currentTrip={currentTrip} />;
     case 'purchases':
       return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
     case 'photos':
@@ -47,17 +48,22 @@ const UserTrips = ({ currentUser }) => {
       {trips.map((data) => (
         <List>
           <ListItem>
-            <ListItemText>{data.name}</ListItemText>
             <ListItemSecondaryAction>
               <Button
                 onClick={() => {
-                  const trip = { id: data.id, city: data.destination };
+                  // eslint-disable-next-line max-len
+                  const trip = {
+                    id: data.id,
+                    city: data.destination,
+                    startDate: data.start_date,
+                    endDate: data.end_date,
+                  };
                   setCurrentTrip(trip);
                   setClicked('itinerary');
                 }}
                 color="primary"
               >
-                Trip Itinerary
+                Itinerary
               </Button>
             </ListItemSecondaryAction>
           </ListItem>

@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 const axios = require('axios');
 const { WEATHER_API, GEO_API } = require('../config');
 const { Trip, TripUser, User } = require('./db');

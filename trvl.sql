@@ -86,7 +86,7 @@ CREATE TABLE "TripItineraries" (
   "user_id" TEXT,
   "trip_id" int,
   "event" TEXT,
-  "day" date,
+  "day" TEXT,
   "createdAt" TIMESTAMP DEFAULT NOW(),
   "updatedAt" TIMESTAMP DEFAULT NOW()
 );

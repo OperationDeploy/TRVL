@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
