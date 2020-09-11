@@ -1,3 +1,5 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable implicit-arrow-linebreak */
 require('dotenv').config();
 const { Op } = require('sequelize');
 
@@ -15,6 +17,7 @@ const {
   SplitOwedPayment,
   TripProposalVotes,
   TripPhoto,
+  TripItinerary,
   Message,
 } = require('./db.js');
 
@@ -87,7 +90,8 @@ const addSplit = async (req, res) => {
     item_id: item.id,
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
-  users = users.map((user) => User.findOne({ where: { googleId: user.user_id }, raw: true }));
+  users = users.map((user) =>
+    User.findOne({ where: { googleId: user.user_id }, raw: true }),);
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -103,10 +107,11 @@ const addSplit = async (req, res) => {
 const getSplit = async ({ trip, user }, res) => {
   const response = {};
   let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
-  let users = items.map((item) => User.findOne({
-    where: { googleId: item.purchaser_id },
-    raw: true,
-  }));
+  let users = items.map((item) =>
+    User.findOne({
+      where: { googleId: item.purchaser_id },
+      raw: true,
+    }),);
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -120,10 +125,11 @@ const getSplit = async ({ trip, user }, res) => {
     where: { trip_id: trip, recipient_id: user },
     raw: true,
   });
-  users = payments.map((payment) => User.findOne({
-    where: { googleId: payment.ower_id },
-    raw: true,
-  }));
+  users = payments.map((payment) =>
+    User.findOne({
+      where: { googleId: payment.ower_id },
+      raw: true,
+    }),);
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -179,10 +185,11 @@ const getPhotos = async ({ trip }, res) => {
     raw: true,
     order: [['createdAt', 'DESC']],
   });
-  let users = photos.map((photo) => User.findOne({
-    where: { googleId: photo.user_id },
-    raw: true,
-  }));
+  let users = photos.map((photo) =>
+    User.findOne({
+      where: { googleId: photo.user_id },
+      raw: true,
+    }),);
   await Promise.all(users).then((results) => {
     users = results;
   });
@@ -196,11 +203,12 @@ const getPhotos = async ({ trip }, res) => {
 
 const addPhoto = async ({ files, body }, res) => {
   const { user, trip } = body;
-  let photos = files.map((photo) => TripPhoto.create({
-    user_id: user,
-    trip_id: trip,
-    photo_link: photo.filename,
-  }));
+  let photos = files.map((photo) =>
+    TripPhoto.create({
+      user_id: user,
+      trip_id: trip,
+      photo_link: photo.filename,
+    }),);
   await Promise.all(photos).then((response) => {
     photos = response;
   });
@@ -317,12 +325,54 @@ const removeInvite = async (req) => {
   }).catch((err) => console.warn(err));
 };
 
+const addActivity = async (req, res) => {
+  let activity = await TripItinerary.findOne({
+    where: {
+      trip_id: req.trip_id,
+      event: req.event,
+      day: req.day,
+    },
+  });
+
+  if (activity === null) {
+    activity = await TripItinerary.create({
+      user_id: req.user_id,
+      trip_id: req.trip_id,
+      event: req.event,
+      day: req.day,
+    });
+  }
+  res.send(activity.dataValues);
+};
+
+const getTripActivities = async (req, res) => {
+  const tripActivities = await TripItinerary.findAll({
+    where: {
+      trip_id: req.trip,
+    },
+  });
+
+  res.status(200).send(tripActivities);
+};
+
+const deleteActivity = async (req) => {
+  await TripItinerary.destroy({
+    where: {
+      user_id: req.user_id,
+      trip_id: req.trip_id,
+      event: req.event,
+      day: req.day,
+    },
+  });
+};
+
 const getWeatherForTrip = async (req, res) => {
   const trip = await Trip.findByPk(req.trip);
   getWeather([trip])
     .then((response) => res.send(response))
     .catch((err) => console.warn(err));
 };
+
 const getMessages = async (req, res) => {
   const messages = await Message.findAll({ where: { trip_id: req.body.trip_id } });
 
@@ -401,6 +451,9 @@ module.exports = {
   tripUser,
   getMyInvites,
   addPhoto,
+  addActivity,
+  getTripActivities,
+  deleteActivity,
   getWeatherForTrip,
   getMessages,
   postMessages,
