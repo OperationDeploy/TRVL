@@ -31,12 +31,10 @@ const TripCalendar = ({ currentUser, currentTrip }) => {
       <Typography component="h1" variant="h2">
         Itinerary
       </Typography>
-      <DateRange
-        ranges={[tripRange]}
-        onChange={(item) => handleSelect(item)}
-      />
-      {day ? <Itinerary currentUser={currentUser} currentTrip={currentTrip} day={day}
-      /> : null}
+      <DateRange ranges={[tripRange]} onChange={(item) => handleSelect(item)} />
+      {day ? (
+        <Itinerary currentUser={currentUser} currentTrip={currentTrip} day={day} />
+      ) : null}
     </div>
   );
 };

@@ -52,7 +52,12 @@ const UserTrips = ({ currentUser }) => {
               <Button
                 onClick={() => {
                   // eslint-disable-next-line max-len
-                  const trip = { id: data.id, city: data.destination, startDate: data.start_date, endDate: data.end_date };
+                  const trip = {
+                    id: data.id,
+                    city: data.destination,
+                    startDate: data.start_date,
+                    endDate: data.end_date,
+                  };
                   setCurrentTrip(trip);
                   setClicked('itinerary');
                 }}

@@ -21,7 +21,9 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
       })
       .then((res) => {
         // eslint-disable-next-line max-len
-        const allEvents = res.data.filter((activity) => activity.day === day).map((activity) => activity.event);
+        const allEvents = res.data
+          .filter((activity) => activity.day === day)
+          .map((activity) => activity.event);
         setActivities(...activities, allEvents);
       });
 
@@ -43,8 +45,12 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
       ) : (
         <div className="weather-widget">
           <div id="city">Weather in {currentTrip.city}:</div>
-          <div id="date">({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})</div>
-          <div><img alt="icon" src={weather[Object.keys(weather)[0]].icon}/></div>
+          <div id="date">
+            ({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})
+          </div>
+          <div>
+            <img alt="icon" src={weather[Object.keys(weather)[0]].icon} />
+          </div>
           <div id="main">{weather[Object.keys(weather)[0]].weather}</div>
           <div id="high">High: {weather[Object.keys(weather)[0]].temp.high}</div>
           <div id="low">Low: {weather[Object.keys(weather)[0]].temp.low}</div>
