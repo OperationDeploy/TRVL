@@ -12,6 +12,7 @@ moment().format();
 const Itinerary = ({ currentUser, currentTrip, day }) => {
   const [activities, setActivities] = useState([]);
   const [text, setText] = useState('');
+  const [weather, setWeather] = useState(null);
 
   useEffect(() => {
     axios
@@ -23,7 +24,33 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
         const allEvents = res.data.filter((activity) => activity.day === day).map((activity) => activity.event);
         setActivities(...activities, allEvents);
       });
+
+    axios.get(`/weather/${currentTrip.id}`).then(({ data }) => {
+      if (data[0] && Object.keys(data[0].forecast).length) {
+        setWeather(data[0].forecast);
+      } else {
+        setWeather('unavailable');
+      }
+    });
   }, []);
+
+  let weatherDisp = <div className="weather-widget"> Loading Weather...</div>;
+
+  if (weather) {
+    weatherDisp =
+      weather === 'unavailable' ? (
+        <div className="weather-widget">Weather Data Not Available</div>
+      ) : (
+        <div className="weather-widget">
+          <div id="city">Weather in {currentTrip.city}:</div>
+          <div id="date">({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})</div>
+          <div><img alt="icon" src={weather[Object.keys(weather)[0]].icon}/></div>
+          <div id="main">{weather[Object.keys(weather)[0]].weather}</div>
+          <div id="high">High: {weather[Object.keys(weather)[0]].temp.high}</div>
+          <div id="low">Low: {weather[Object.keys(weather)[0]].temp.low}</div>
+        </div>
+      );
+  }
 
   return (
     <div id="trip-itinerary" className="itinerary-container">
@@ -68,6 +95,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
           setActivities(newActivities);
         }}
       />
+      {weatherDisp}
     </div>
   );
 };
@@ -85,6 +113,8 @@ Itinerary.propTypes = {
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
     city: PropTypes.string,
+    start_date: PropTypes.string,
+    destination: PropTypes.string,
   }).isRequired,
   day: PropTypes.string.isRequired,
 };

@@ -5,6 +5,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
 import Drawer from '@material-ui/core/Drawer';
 import Hidden from '@material-ui/core/Hidden';
+import FiberNewIcon from '@material-ui/icons/FiberNew';
 import IconButton from '@material-ui/core/IconButton';
 import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import List from '@material-ui/core/List';
@@ -14,6 +15,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
+import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import EventIcon from '@material-ui/icons/Event';
@@ -24,10 +26,9 @@ import axios from 'axios';
 import Preferences from './preferences';
 import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import Chat from './Chat';
 import UserTrips from './UserTrips';
-
 import InvitesPage from './InvitesPage';
-
 import './App.scss';
 
 const drawerWidth = 240;
@@ -86,6 +87,10 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
+  const [showChat, setShowChat] = useState(false);
+  const [clickedPage, setClickedPage] = useState(null);
+  const [toggleIcon, setToggleIcon] = useState(false);
+
   const [showTrips, setShowTrips] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
   const [showHome, setShowHome] = useState(false);
@@ -99,9 +104,17 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       setShowPlan(true);
       setShowTrips(false);
       setShowHome(false);
+      setShowChat(false);
     }
     if (page === 'trips') {
       setShowTrips(true);
+      setShowHome(false);
+      setShowPlan(false);
+      setShowChat(false);
+    }
+    if (page === 'chat') {
+      setShowChat(true);
+      setShowTrips(false);
       setShowHome(false);
       setShowPlan(false);
     }
@@ -110,11 +123,10 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         setShowHome(true);
         setShowTrips(false);
         setShowPlan(false);
+        setShowChat(false);
       }
     }
   };
-
-  const [clickedPage, setClickedPage] = useState(null);
 
   const drawer = (
     <div>
@@ -174,25 +186,37 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       <Divider />
       <List>
         {['Trip Invites'].map((text) => (
-          <ListItem button onClick={() => {
-            setClickedPage(<div>
-            <InvitesPage
-              currentUser={currentUser}
-              otherUsers={otherUsers}
-              myInvites={myInvites}
-            />
-            <Trips
-              currentUser={currentUser}
-              currentTrip={currentTrip}
-              setClickedPage={setClickedPage}
-            />
-          </div>);
-            setMobileOpen(false);
-          }} key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              if (myInvites.length !== 0) {
+                setToggleIcon(true);
+              }
+              setClickedPage(
+                <div>
+                  <InvitesPage
+                    currentUser={currentUser}
+                    otherUsers={otherUsers}
+                    myInvites={myInvites}
+                  />
+                  <Trips
+                    currentUser={currentUser}
+                    currentTrip={currentTrip}
+                    setClickedPage={setClickedPage}
+                  />
+                </div>,
+              );
+              setMobileOpen(false);
+            }}
+            key={text}
+          >
             <ListItemIcon>
               <MailIcon />
             </ListItemIcon>
             <ListItemText primary={text} />
+            {myInvites.length !== 0 && toggleIcon === false ? (
+              <FiberNewIcon color="primary" />
+            ) : null}
           </ListItem>
         ))}
       </List>
@@ -202,6 +226,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             <ListItemIcon>
               <PersonOutlineIcon />
             </ListItemIcon>
+            <ListItemText primary={text} />
+          </ListItem>
+        ))}
+      </List>
+      <Divider />
+      <List>
+        {['Chat'].map((text, index) => (
+          <ListItem button onClick={() => handleNavClick('chat')} key={text}>
+            <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
             <ListItemText primary={text} />
           </ListItem>
         ))}
@@ -240,6 +273,14 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
       />
     </div>
   );
+
+  if (showChat === true) {
+    return (
+      <div>
+        <Chat currentUser={currentUser} />
+      </div>
+    );
+  }
 
   return (
     <ThemeProvider theme={theme}>

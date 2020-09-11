@@ -1,37 +1,62 @@
 import React, { useState } from 'react';
-import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
+import Button from '@material-ui/core/Button';
 import axios from 'axios';
+import SelectPlaces from './SelectPlaces';
 
-const InvitesButton = ({ otherUsers, currentUser, trip }) => {
-  const [inviteClicked, setInviteClicked] = useState(false);
+const InvitesButton = ({ currentUser, otherUsers, trip, setClickedPage }) => {
+  const [buttonClicked, setButtonClicked] = useState(false);
 
-  if (inviteClicked === true) {
-    if (currentUser.googleId !== otherUsers.googleId) {
-      axios
-        .post('/inviteAllOtherUsers', {
-          otherUsers,
-          trip: trip.id,
-          currentUser: currentUser.googleId,
-        })
-        .then((response) => {
-          console.info(response);
-        })
-        .catch((err) => console.warn(err));
-    }
+  const handleClick = (event, user) => {
+    event.preventDefault();
+    axios
+      .post('/inviteTheUser', {
+        user,
+        trip: trip.id,
+      })
+      .then(axios.post('/sendTwilio', { user }))
+      .catch((err) => console.warn(err));
+  };
+
+  const selectPlaces = () => {
+    setButtonClicked(true);
+  };
+
+  if (buttonClicked) {
+    return (
+      <SelectPlaces
+        trip={trip}
+        otherUsers={otherUsers}
+        currentUser={currentUser}
+        setClickedPage={setClickedPage}
+      />
+    );
   }
 
   return (
     <div>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => {
-          setInviteClicked(!inviteClicked);
-        }}
-      >
-        Invite Users
-      </Button>
+      <div>
+        <Button
+          color="secondary"
+          aria-label="outlined primary button group"
+          variant="contained"
+          onClick={() => {
+            selectPlaces();
+          }}
+        >
+          Generate Places
+        </Button>
+      </div>
+      <div>
+        <header>Click on a user to send them a invite to this trip!</header>
+        <ul>
+          {otherUsers.map((user) => (
+            <button type="submit" key={user} onClick={(e) => handleClick(e, user)}>
+              {user.last_name}, {user.first_name}
+            </button>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
@@ -62,6 +87,7 @@ InvitesButton.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
+  setClickedPage: PropTypes.func.isRequired,
 };
 
 export default InvitesButton;

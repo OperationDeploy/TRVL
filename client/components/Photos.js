@@ -20,8 +20,10 @@ const Photos = ({ currentTrip, currentUser }) => {
     data.append('user', currentUser.id);
     data.append('trip', currentTrip.id);
     axios.post('/photos', data).then((res) => {
-      const newPhotos = res.data.map((photo) => (
-        { ...photo, userName: `${currentUser.first_name} ${currentUser.last_name}` }));
+      const newPhotos = res.data.map((photo) => ({
+        ...photo,
+        userName: `${currentUser.first_name} ${currentUser.last_name}`,
+      }));
       setPhotos([...newPhotos, ...photos]);
     });
   };
@@ -44,9 +46,9 @@ const Photos = ({ currentTrip, currentUser }) => {
       {photos.map((photo, i) => (
         <div>
           <div>
-            {`Uploaded by ${photo.userName} on ${new Date(
-              photo.createdAt,
-            ).toDateString()}`}
+            {`Uploaded by ${photo.userName} on ${new Date(photo.createdAt)
+              .toUTCString()
+              .slice(0, 16)}`}
           </div>
           <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
         </div>
