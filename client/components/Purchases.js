@@ -1,3 +1,4 @@
+/* eslint-disable operator-linebreak */
 import React, { useState, useEffect } from 'react';
 import Typography from '@material-ui/core/Typography';
 import PropTypes from 'prop-types';
@@ -41,9 +42,9 @@ const Purchases = ({ currentUser, currentTrip }) => {
                 if (Array.isArray(data)) {
                   data.forEach((payment) => {
                     const name = `${payment.first_name} ${payment.last_name}`;
-                    debts[name] = debts[name] ?
-                      debts[name] + payment.amount :
-                      payment.amount;
+                    debts[name] = debts[name]
+                      ? debts[name] + payment.amount
+                      : payment.amount;
                   });
                   setDebts(debts);
                   setPurchases([...purchases, text]);

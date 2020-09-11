@@ -1,8 +1,7 @@
 require('dotenv').config();
-// import db
 const express = require('express');
 const socket = require('socket.io');
-const path = require('path'); // NEW
+const path = require('path');
 
 const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
 const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
@@ -33,6 +32,9 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  addActivity,
+  getTripActivities,
+  deleteActivity,
   getWeatherForTrip,
   getMessages,
   postMessages,
@@ -93,6 +95,11 @@ app.get('/photos/:trip', (req, res) => {
   getPhotos(req.params, res);
 });
 
+// get all trip activities
+app.get('/activities/:trip', (req, res) => {
+  getTripActivities(req.params, res);
+});
+
 app.get('/weather/:trip', async (req, res) => {
   getWeatherForTrip(req.params, res);
 });
@@ -139,11 +146,13 @@ app.post('/grabPlaces', (req, res) => {
 });
 
 app.post('/setDest', (req, res) => {
-  setDest(req, res);
+  setDest(req);
+  res.send('Dest set');
 });
 
 app.post('/proposals', (req, res) => {
-  enterProposal(req.body, res);
+  enterProposal(req.body);
+  res.send('Proposal sent');
 });
 
 app.post('/photos', (req, res) => {
@@ -179,8 +188,16 @@ app.post('/tripNames', (req, res) => {
   getTripNames(req.body, res);
 });
 
+app.post('/activities', (req, res) => {
+  addActivity(req.body, res);
+});
+
 app.post('/removeInvite', (req, res) => {
   removeInvite(req.body, res);
+});
+
+app.delete('/activity', (req, res) => {
+  deleteActivity(req.query, res);
 });
 
 // get all messages for trip
@@ -191,10 +208,12 @@ app.post('/getMessages', (req, res) => {
 app.post('/postMessages', (req, res) => {
   postMessages(req, res);
 });
+
 // Twilio
 // TODO: comment back in and take out console log when demoing
 app.post('/sendTwilio', (req, res) => {
-  console.info(req, res, client, TWILIO_PHONE_NUMBER);
+  console.info(req.body, res.body, client, TWILIO_PHONE_NUMBER);
+  res.send('We are not using twilio until we present our final app');
   // res.header('Content-Type', 'application/json');
   // client.messages
   //   .create({

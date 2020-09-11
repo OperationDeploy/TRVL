@@ -7,10 +7,12 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import Itinerary from './Itinerary';
+import TripCalendar from './TripCalendar';
+// import Itinerary from './Itinerary';
 import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
+import Hotels from './Hotels';
 
 const UserTrips = ({ currentUser }) => {
   const [clicked, setClicked] = useState(null);
@@ -31,13 +33,15 @@ const UserTrips = ({ currentUser }) => {
 
   switch (clicked) {
     case 'itinerary':
-      return <Itinerary currentUser={currentUser} currentTrip={currentTrip} />;
+      return <TripCalendar currentUser={currentUser} currentTrip={currentTrip} />;
     case 'purchases':
       return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
     case 'photos':
       return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
     case 'flights':
       return <Flights currentUser={currentUser} currentTrip={currentTrip} />;
+    case 'hotels':
+      return <Hotels currentUser={currentUser} currentTrip={currentTrip} />;
     default:
   }
 
@@ -47,20 +51,26 @@ const UserTrips = ({ currentUser }) => {
       {trips.map((data) => (
         <List>
           <ListItem>
-            <ListItemText>{data.name}</ListItemText>
             <ListItemSecondaryAction>
               <Button
                 onClick={() => {
-                  const trip = { id: data.id, city: data.destination };
+                  // eslint-disable-next-line max-len
+                  const trip = {
+                    id: data.id,
+                    city: data.destination,
+                    startDate: data.start_date,
+                    endDate: data.end_date,
+                  };
                   setCurrentTrip(trip);
                   setClicked('itinerary');
                 }}
                 color="primary"
               >
-                Trip Itinerary
+                Itinerary
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button
@@ -90,6 +100,7 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button
@@ -104,10 +115,27 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button
+                onClick={() => {
+                  const trip = { id: data.id, city: data.destination };
+                  setCurrentTrip(trip);
+                  setClicked('hotels');
+                }}
+                color="primary"
+              >
+                Hotels
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <br />
           <ListItem>
             Dates:
             <ListItemText>{`${data.start_date} to ${data.end_date}`}</ListItemText>
           </ListItem>
+          <br />
           <ListItem>
             Destination:
             <ListItemText>{data.destination}</ListItemText>
