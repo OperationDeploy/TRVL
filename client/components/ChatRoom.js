@@ -7,7 +7,11 @@ const ChatRoom = ({ currentUser, currentTrip, newChatMsg }) => (
     <h2>CHAT ROOM: {currentTrip.name}</h2>
     <h4>{`Welcome, ${currentUser.first_name}`}</h4>
     <p>{`Your group is going to ${currentTrip.destination}`}</p>
-    <ChatComponent currentUser={currentUser} currentTrip={currentTrip} newChatMsg={newChatMsg} />
+    <ChatComponent
+      currentUser={currentUser}
+      currentTrip={currentTrip}
+      newChatMsg={newChatMsg}
+    />
   </div>
 );
 

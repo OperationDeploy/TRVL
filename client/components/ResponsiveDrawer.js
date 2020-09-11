@@ -24,8 +24,8 @@ import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/sty
 import { indigo, orange } from '@material-ui/core/colors';
 import axios from 'axios';
 import Preferences from './preferences';
-import PlanATrip from './PlanATrip';
 import Trips from './Trips';
+import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
@@ -228,12 +228,16 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
       <Divider />
       <List>
         {['Chat'].map((text, index) => (
-          <ListItem button onClick={() => {
-            setClickedPage(true);
-            setToggleNewMsgIcon(true);
-            handleNavClick('chat');
-            setMobileOpen(false);
-          } } key={text}>
+          <ListItem
+            button
+            onClick={() => {
+              setClickedPage(true);
+              setToggleNewMsgIcon(true);
+              handleNavClick('chat');
+              setMobileOpen(false);
+            }}
+            key={text}
+          >
             <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
             <ListItemText primary={text} />
             {newMsg && !toggleNewMsgIcon ? <FiberNewIcon color="primary" /> : null}
