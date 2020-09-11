@@ -8,6 +8,7 @@ const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const cors = require('cors');
+const auth = require('./passport/auth-routes');
 const { getGasPrices } = require('./gas');
 
 const {
@@ -49,6 +50,8 @@ const DIST_DIR = path.join(__dirname, '../dist'); // NEW
 // parse application/json
 app.use(bodyParser.json());
 app.use(cors());
+
+app.use('/auth', auth);
 
 /** SOCKET.IO - CHAT ROOM CONNECTIONS* */
 const server = app.listen(8080, () => {
