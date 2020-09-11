@@ -54,9 +54,6 @@ const getGasPrices = async (trip, car) => {
   return { avgPrice, total, miles, mpg };
 };
 
-// getGasPrices({ departure_city: 'New Orleans, LA', destination: 'Los Angeles, CA' },
-//   { year: 2014, make: 'honda', model: 'civic' });
-
 module.exports = {
   getGasPrices,
 };

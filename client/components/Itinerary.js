@@ -22,7 +22,6 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
         trip_id: currentTrip.id,
       })
       .then((res) => {
-        // eslint-disable-next-line max-len
         const allEvents = res.data
           .filter((activity) => activity.day === day)
           .map((activity) => activity.event);
