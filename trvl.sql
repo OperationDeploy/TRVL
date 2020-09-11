@@ -142,6 +142,7 @@ CREATE TABLE "Messages" (
   "text" TEXT,
   "author" TEXT,
   "time" TEXT,
+  "unread" boolean,
   "user_google_id" TEXT,
   "trip_id" int,
   "createdAt" TIMESTAMP DEFAULT NOW(),
