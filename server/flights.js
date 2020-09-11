@@ -1,16 +1,20 @@
 const Amadeus = require('amadeus');
+const { API_KEY, API_SECRET } = require('../config');
 
-const getFlightsInfo = () => {
+let flightData;
+let dictionary;
+const array = [];
+const getFlightsInfo = async () => {
   // input: object with trip ID, destination
   // output: array of objects - flight info
   // array of objects - destinations: airport codes
 
   const amadeus = new Amadeus({
-    clientId: 'rfNXlbNx2n1u9N5eSINqsFoSrTRrIUmL',
-    clientSecret: 'r9HEL895nhlLQSdC',
+    clientId: API_KEY,
+    clientSecret: API_SECRET,
   });
 
-  amadeus.shopping.flightOffersSearch
+  await amadeus.shopping.flightOffersSearch
     .get({
       originLocationCode: 'MSY',
       destinationLocationCode: 'LAX',
@@ -20,42 +24,59 @@ const getFlightsInfo = () => {
       max: '5',
     })
     .then((response) => {
-      console.info(response.data);
+      // console.info(response.data);
+      flightData = response.data;
+      dictionary = response.result.dictionaries;
+      console.info(dictionary, 'FIRST DICTIONRY!!!');
     })
-    .catch((responseError) => {
-      console.info(responseError.code);
-    });
+    .then(() => {
+      console.info(dictionary, 'dictionary!!!!!!!');
+      const price = flightData.map((flight) => flight.price.grandTotal);
+      const carrier = 'SPIRIT AIRLINES';
+      // for (const key in dictionary.carriers) {
+      //   carrier = dictionary.carriers[key];
+      // }
 
-  // .get(
-  //     'https://test.api.amadeus.com/v2/shopping/flight-offers',
+      let result;
+      for (let i = 0; i < price.length; i += 1) {
+        result = { price: price[i], airline: carrier };
+        array.push(result);
+      }
 
-  //     {
-  //       params: {
-  //         access_token: '9BAnvWXyjKuZFgOJC2SmYceUsuTb',
-  //         client_id: 'rfNXlbNx2n1u9N5eSINqsFoSrTRrIUmL',
-  //         client_secret: 'r9HEL895nhlLQSdC',
-  //         originLocationCode: 'MSY',
-  //         destinationLocationCode: 'LAX',
-  //         departureDate: '2020-09-28',
-  //         returnDate: '2020-09-28',
-  //         adults: '1',
-  //         max: '5',
-  //       },
-  //     },
-  //     (req, res) => {},
-  //   );
-  // get flight info:
-  // axios call to API for flight info
-  // origin, destination, dates
+      // .get(
+      //     'https://test.api.amadeus.com/v2/shopping/flight-offers',
 
-  // axios call to API for airline look up
+      //     {
+      //       params: {
+      //         access_token: '9BAnvWXyjKuZFgOJC2SmYceUsuTb',
+      //         client_id: 'rfNXlbNx2n1u9N5eSINqsFoSrTRrIUmL',
+      //         client_secret: 'r9HEL895nhlLQSdC',
+      //         originLocationCode: 'MSY',
+      //         destinationLocationCode: 'LAX',
+      //         departureDate: '2020-09-28',
+      //         returnDate: '2020-09-28',
+      //         adults: '1',
+      //         max: '5',
+      //       },
+      //     },
+      //     (req, res) => {},
+      //   );
+      // get flight info:
+      // axios call to API for flight info
+      // origin, destination, dates
 
-  // convert EUR to USD
+      // axios call to API for airline look up
 
-  // create object with Airline & Price
+      // convert EUR to USD
 
-  // return array of results
-  // return cool;
+      // create object with Airline & Price
+
+      // return array of results
+      // return array;
+    })
+    .catch((err) => console.warn(err));
+
+  return array;
 };
 
 module.exports = {

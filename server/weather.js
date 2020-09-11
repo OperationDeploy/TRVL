@@ -13,18 +13,21 @@ const toDegF = (temp) => Math.floor((temp - 273) * (9 / 5) + 32);
 
 // Determines if any dates of trip are within range of 7 day forecast
 const isWithinRange = (trip) => {
-  const date = compareISODates('today', trip.start_date) < 0 ? trip.end_date : trip.start_date;
+  const date =
+    compareISODates('today', trip.start_date) < 0 ? trip.end_date : trip.start_date;
   const diff = compareISODates('today', date);
   return diff >= 0 && diff <= 7;
 };
 
 // Gets users on each trip to alert them of bad weather
 const alertUsers = async (trips) => {
-  const updateDB = trips.map((trip) => (
-    Trip.update({ weather_alert: trip.weather_alert }, { where: { id: trip.id } })
+  const updateDB = trips.map((trip) => Trip.update(
+    { weather_alert: trip.weather_alert }, { where: { id: trip.id } },
   ));
   await Promise.all(updateDB);
-  let userIds = trips.map((trip) => TripUser.findOne({ where: { trip_id: trip.id }, raw: true }));
+  let userIds = trips.map((trip) => TripUser.findOne(
+    { where: { trip_id: trip.id }, raw: true },
+  ));
   await Promise.all(userIds)
     .then((response) => {
       userIds = response;
@@ -58,7 +61,9 @@ const getWeather = async (allTrips, weatherOnly = true) => {
     }
     const city = destination.join(' ');
     const query = state ? `${city}${state},${country}` : `${city}${country}`;
-    return axios.get(`http://api.positionstack.com/v1/forward?access_key=${GEO_API}&query=${query}&limit=1`);
+    return axios.get(
+      `http://api.positionstack.com/v1/forward?access_key=${GEO_API}&query=${query}&limit=1`,
+    );
   });
   let weatherData;
   await Promise.all(coordinates)
@@ -87,7 +92,8 @@ const getWeather = async (allTrips, weatherOnly = true) => {
         const days = data.daily.slice(startIndex, startIndex + tripLength);
         days.forEach((day) => {
           const { weather, temp } = day;
-          const forecast = { weather: weather[0].main,
+          const forecast = {
+            weather: weather[0].main,
             temp: {
               low: toDegF(temp.min),
               high: toDegF(temp.max),

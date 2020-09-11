@@ -28,8 +28,12 @@ const Itinerary = ({ currentUser, currentTrip }) => {
       ) : (
         <div className="weather-widget">
           <div id="city">Weather in {currentTrip.city}:</div>
-          <div id="date">({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})</div>
-          <div><img alt="icon" src={weather[Object.keys(weather)[0]].icon}/></div>
+          <div id="date">
+            ({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})
+          </div>
+          <div>
+            <img alt="icon" src={weather[Object.keys(weather)[0]].icon} />
+          </div>
           <div id="main">{weather[Object.keys(weather)[0]].weather}</div>
           <div id="high">High: {weather[Object.keys(weather)[0]].temp.high}</div>
           <div id="low">Low: {weather[Object.keys(weather)[0]].temp.low}</div>

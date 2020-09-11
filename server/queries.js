@@ -373,7 +373,7 @@ const inviteSelectedUser = async (req) => {
 };
 
 const getFlights = async (req, res) => {
-  const flightsInfo = await getFlightsInfo(req);
+  const flightsInfo = await getFlightsInfo(req, res);
   res.send(flightsInfo);
 };
 
