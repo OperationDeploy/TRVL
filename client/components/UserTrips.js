@@ -11,6 +11,7 @@ import Itinerary from './Itinerary';
 import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
+import GasPrices from './GasPrices';
 
 const UserTrips = ({ currentUser }) => {
   const [clicked, setClicked] = useState(null);
@@ -38,6 +39,8 @@ const UserTrips = ({ currentUser }) => {
       return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
     case 'flights':
       return <Flights currentUser={currentUser} currentTrip={currentTrip} />;
+    case 'gas':
+      return <GasPrices currentTrip={currentTrip} />;
     default:
   }
 
@@ -101,6 +104,19 @@ const UserTrips = ({ currentUser }) => {
                 color="primary"
               >
                 Flights
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button
+                onClick={() => {
+                  setCurrentTrip(data);
+                  setClicked('gas');
+                }}
+                color="primary"
+              >
+                Gas Prices
               </Button>
             </ListItemSecondaryAction>
           </ListItem>

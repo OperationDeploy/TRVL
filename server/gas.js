@@ -51,7 +51,7 @@ const getGasPrices = async (trip, car) => {
   const avgPrice = (price1 + price2 + price3) / 3;
   const gals = miles / mpg;
   const total = avgPrice * gals;
-  console.info('avg price', avgPrice, 'total', total, 'miles', miles);
+  return { avgPrice, total, miles, mpg };
 };
 
 // getGasPrices({ departure_city: 'New Orleans, LA', destination: 'Los Angeles, CA' },
