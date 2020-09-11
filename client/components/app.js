@@ -57,7 +57,7 @@ class App extends Component {
         registered: true,
       });
     }
-  }
+  } 
 
   responseGoogle(response) {
     const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
@@ -90,13 +90,12 @@ class App extends Component {
         <Grid
           container
           justify="center"
-          alignItems="center"
           className="splash-page"
           style={{ minHeight: '100vh' }}
         >
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
           <Grid item xs={7}>
-            <Card className="splash-card" alignItems="center">
+            <Card className="splash-card">
               <CardMedia
                 className="splash-logo"
                 image="https://i.ibb.co/dj9N37R/trvl.png"
@@ -142,12 +141,7 @@ class App extends Component {
       );
     }
     return (
-      <Container
-        justify="center"
-        alignItems="center"
-        className="content-container"
-        alignText="center"
-      >
+      <Container justify="center" alignItems="center" className="content-container">
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
           currentUser={currentUser}

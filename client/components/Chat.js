@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import axios from 'axios';
 import ChatRoom from './ChatRoom';
 
-const Chat = ({ currentUser }) => {
+const Chat = ({ currentUser, newChatMsg }) => {
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
@@ -27,7 +27,13 @@ const Chat = ({ currentUser }) => {
   }, []);
 
   if (clicked) {
-    return <ChatRoom currentTrip={currentTrip} currentUser={currentUser} />;
+    return (
+      <ChatRoom
+        currentTrip={currentTrip}
+        currentUser={currentUser}
+        newChatMsg={newChatMsg}
+      />
+    );
   }
 
   if (trips.length === 0) {
@@ -74,6 +80,7 @@ Chat.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
+  newChatMsg: PropTypes.func.isRequired,
 };
 
 export default Chat;

@@ -145,11 +145,13 @@ app.post('/grabPlaces', (req, res) => {
 });
 
 app.post('/setDest', (req, res) => {
-  setDest(req, res);
+  setDest(req);
+  res.send('Dest set');
 });
 
 app.post('/proposals', (req, res) => {
-  enterProposal(req.body, res);
+  enterProposal(req.body);
+  res.send('Proposal sent');
 });
 
 app.post('/photos', (req, res) => {
@@ -205,7 +207,8 @@ app.post('/postMessages', (req, res) => {
 // Twilio
 // TODO: comment back in and take out console log when demoing
 app.post('/sendTwilio', (req, res) => {
-  console.info(req, res, client, TWILIO_PHONE_NUMBER);
+  console.info(req.body, res.body, client, TWILIO_PHONE_NUMBER);
+  res.send('We are not using twilio until we present our final app');
   // res.header('Content-Type', 'application/json');
   // client.messages
   //   .create({

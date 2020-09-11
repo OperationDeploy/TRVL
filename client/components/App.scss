@@ -24,6 +24,15 @@ $myColor:#24255f;
   border-radius: 50%;
 }
 
+.toolbar-pic {
+  border-radius: 50%;
+  transform: scale(0.5);
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+
+
 input[type=file] {
   display: none;
 }

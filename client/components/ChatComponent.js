@@ -3,7 +3,7 @@ import io from 'socket.io-client';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
-const ChatComponent = ({ currentUser, currentTrip }) => {
+const ChatComponent = ({ currentUser, currentTrip, newChatMsg }) => {
   const socket = io('localhost:8080');
 
   const [messages, setMessages] = useState([]);
@@ -29,6 +29,9 @@ const ChatComponent = ({ currentUser, currentTrip }) => {
 
   socket.on('RECEIVE_MESSAGE', (data) => {
     addMessage(data);
+    if (data.author !== currentUser.first_name) {
+      newChatMsg();
+    }
   });
 
   const sendMessage = (event) => {
@@ -112,5 +115,6 @@ ChatComponent.propTypes = {
     destination: PropTypes.string,
     city: PropTypes.string,
   }).isRequired,
+  newChatMsg: PropTypes.func.isRequired,
 };
 export default ChatComponent;
