@@ -2,10 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const socket = require('socket.io');
 const path = require('path');
-
-const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
-const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+
+const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE_NUMBER, COOKIE_KEY, PORT } = process.env;
+const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const multer = require('multer');
 const cors = require('cors');
 const auth = require('./passport/auth-routes');
@@ -44,13 +47,20 @@ const {
 } = require('./queries.js');
 
 const app = express();
-const { PORT } = process.env;
+app.use(cors());
 const DIST_DIR = path.join(__dirname, '../dist'); // NEW
-
+app.use(express.static('public'));
+app.use(express.static(DIST_DIR));
 // parse application/json
 app.use(bodyParser.json());
-app.use(cors());
 
+app.use(cookieSession({
+  maxAge: 86400000,
+  keys: [COOKIE_KEY],
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 app.use('/auth', auth);
 
 /** SOCKET.IO - CHAT ROOM CONNECTIONS* */
@@ -239,10 +249,6 @@ app.post('/gas', async (req, res) => {
   const result = await getGasPrices(trip, car);
   res.send(result);
 });
-
-app.use(express.static('public'));
-
-app.use(express.static(DIST_DIR)); // NEW
 
 app.listen(PORT, () => {
   console.info(`App listening on port:${PORT}`);

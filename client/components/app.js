@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Favicon from 'react-favicon';
-import GoogleLogin from 'react-google-login';
+// import GoogleLogin from 'react-google-login';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -102,14 +102,8 @@ class App extends Component {
                 style={{ height: 500 }}
               />
               <CardActions alignItems="stretch">
-                <Button fullWidth variant="outlined" color="default">
-                  <GoogleLogin
-                    clientId="882538519679-1djm34mua0vj39jocql6ncg86mric4vb.apps.googleusercontent.com"
-                    buttonText="Login with Google"
-                    onSuccess={this.responseGoogle}
-                    onFailure={this.responseGoogle}
-                    cookiePolicy="single_host_origin"
-                  />
+                <Button href="/auth/google" fullWidth variant="outlined" color="default" onClick>
+                  Login With Google
                 </Button>
               </CardActions>
             </Card>
