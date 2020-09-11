@@ -96,10 +96,20 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
   const [showPlan, setShowPlan] = useState(false);
   const [showInvitesPage, setShowInvitesPage] = useState(false);
   const [showHome, setShowHome] = useState(false);
+  const [count, setCount] = useState(0);
   const [allOtherUsers, setAllOtherUsers] = useState([]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
+  };
+
+  const handleToggleChatRead = () => {
+    axios.post('/setUnread', { currentUser }).then((response) => {
+      if (response) {
+        setToggleNewMsgIcon(false);
+        setNewMsg(false);
+      }
+    }).catch((err) => console.warn(err));
   };
 
   const handleNavClick = (page) => {
@@ -232,15 +242,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
             button
             onClick={() => {
               setClickedPage(true);
-              setToggleNewMsgIcon(true);
               handleNavClick('chat');
               setMobileOpen(false);
+              handleToggleChatRead();
             }}
             key={text}
           >
             <ListItemIcon>{index % 2 === 0 ? <ChatIcon /> : <ChatIcon />}</ListItemIcon>
             <ListItemText primary={text} />
-            {newMsg && !toggleNewMsgIcon ? <FiberNewIcon color="primary" /> : null}
+            {newMsg && toggleNewMsgIcon ? <FiberNewIcon color="primary" /> : null}
           </ListItem>
         ))}
       </List>
@@ -258,10 +268,21 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
     </div>
   );
 
-  const newChatMsg = () => {
-    setToggleNewMsgIcon(false);
-    setNewMsg(true);
-  };
+  useEffect(() => {
+    axios.post('./newMsgs', {
+      trip: currentTrip, currentUser })
+      .then((response) => {
+        if (response.data.length > 0) {
+          setToggleNewMsgIcon(true);
+          setNewMsg(true);
+        }
+      })
+      .catch((err) => console.warn(err));
+    const timer = setTimeout(() => {
+      setCount(count + 1);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [count]);
 
   useEffect(() => {
     axios
@@ -393,7 +414,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
               />
             ) : null}
             {showChat ? (
-              <Chat currentUser={currentUser} newChatMsg={() => newChatMsg()} />
+              <Chat currentUser={currentUser} />
             ) : null}
           </div>
         </main>

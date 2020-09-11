@@ -385,6 +385,7 @@ const postMessages = async (req, res) => {
     text: req.body.text,
     author: req.body.author,
     time: req.body.time,
+    unread: true,
     user_google_id: req.body.user_google_id,
     trip_id: req.body.trip_id,
   });
@@ -446,6 +447,23 @@ const getFullTrip = async (req, res) => {
   res.send(trip);
 };
 
+const setRead = async (req, res) => {
+  const unreadMsg = await Message.findAll(
+    { where: { unread: true, [Op.not]: [{ user_google_id: req.currentUser.googleId }] } }
+  );
+  const setReadMsg = unreadMsg.forEach((msg) => {
+    msg.update({ unread: false });
+  });
+  res.send(setReadMsg);
+};
+
+const newMsgs = async (req, res) => {
+  const findNew = await Message.findAll(
+    { where: { unread: true, [Op.not]: [{ user_google_id: req.currentUser.googleId }] } }
+  );
+  res.send(findNew);
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -473,6 +491,8 @@ module.exports = {
   deleteActivity,
   getWeatherForTrip,
   getMessages,
+  setRead,
+  newMsgs,
   postMessages,
   addPhone,
   getPhone,

@@ -235,6 +235,7 @@ const Message = sequelize.define('Message', {
   text: Sequelize.TEXT,
   author: Sequelize.TEXT,
   time: Sequelize.TEXT,
+  unread: Sequelize.BOOLEAN,
   user_google_id: {
     type: Sequelize.TEXT,
     references: {
