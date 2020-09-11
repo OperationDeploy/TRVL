@@ -176,21 +176,21 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
             }}
           />
         </MuiPickersUtilsProvider>
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="end-date"
-              label="End Date"
-              value={endDate}
-              onChange={handleChangeEndDate}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-          </MuiPickersUtilsProvider>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="end-date"
+            label="End Date"
+            value={endDate}
+            onChange={handleChangeEndDate}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+        </MuiPickersUtilsProvider>
       </div>
       <div className={classes.root}>
         <Typography id="continuous-slider" gutterBottom>
