@@ -114,6 +114,9 @@ app.get('/inviteUsers', (req, res) => {
 });
 
 // POST
+app.post('/activities', (req, res) => {
+  addActivity(req.body, res);
+});
 
 app.post('/inviteTheUser', (req, res) => {
   inviteSelectedUser(req.body, res);
@@ -187,10 +190,6 @@ app.post('/inviteAllOtherUsers', (req, res) => {
 
 app.post('/tripNames', (req, res) => {
   getTripNames(req.body, res);
-});
-
-app.post('/activities', (req, res) => {
-  addActivity(req.body, res);
 });
 
 app.post('/removeInvite', (req, res) => {

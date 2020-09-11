@@ -349,8 +349,8 @@ const addActivity = async (req, res) => {
       event: req.event,
       day: req.day,
     });
+    res.send(activity.dataValues);
   }
-  res.send(activity.dataValues);
 };
 
 const getTripActivities = async (req, res) => {
