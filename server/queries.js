@@ -1,8 +1,9 @@
+/* eslint-disable function-paren-newline */
 /* eslint-disable comma-dangle */
 /* eslint-disable implicit-arrow-linebreak */
 require('dotenv').config();
 const { Op } = require('sequelize');
-
+const { getFlightsInfo } = require('./flights');
 const { getWeather } = require('./weather');
 
 const { generatePlaces } = require('./algo.js');
@@ -38,9 +39,11 @@ const addDestinations = () => {
 
 // add preferences
 // TODO: need to come back and find where trip_id is = correct trip_id
-const addPreferences = (req) => {
-  TripPreferences.findOne({ where: { user_id: req.user_id, trip_id: req.trip_id } }).then(
-    (obj) => {
+const addPreferences = (req, res) => {
+  const pref = TripPreferences.findOne({
+    where: { user_id: req.user_id, trip_id: req.trip_id },
+  })
+    .then((obj) => {
       if (obj) {
         obj.update({
           user_id: req.user_id,
@@ -68,8 +71,10 @@ const addPreferences = (req) => {
           phoneNumber: req.phoneNumber,
         });
       }
-    },
-  );
+    })
+    .catch((err) => console.warn(err));
+
+  res.send(pref);
 };
 
 const addSplit = async (req, res) => {
@@ -229,13 +234,6 @@ const getAllTrips = async (req, res) => {
   res.send(trips);
 };
 
-const getTripForFlight = async (req, res) => {
-  const getTrip = await Trip.findOne({
-    where: { id: req.body.id, googleId: req.body.googleId },
-  });
-  res.send(getTrip);
-};
-
 // Gets the users from the db who are not the current user
 const getOtherUsers = async (req, res) => {
   const inviteThem = await User.findAll({
@@ -285,24 +283,27 @@ const enterProposal = async (req) => {
   });
 };
 
-const tripUser = async (req) => {
-  await TripUser.create({
+const tripUser = async (req, res) => {
+  const addUser = await TripUser.create({
     user_id: req.currentUser.googleId || req.currentUser.user_id,
     trip_id: req.trip_id,
   }).catch((err) => console.warn(err, 'ERRRRRRRR!!@#$'));
+
+  res.send(addUser);
 };
 
-const inviteAllOtherUsers = async (req) => {
+const inviteAllOtherUsers = async (req, res) => {
   const inviteThem = await User.findAll({
     where: { [Op.not]: [{ googleId: req.currentUser }] },
     raw: true,
   });
-  inviteThem.forEach((user) => {
+  const inviteEm = inviteThem.forEach((user) => {
     TripProposalVotes.create({
       user_id: user.googleId,
       trip_id: req.trip,
     }).catch((err) => console.warn(err));
   });
+  res.send(inviteEm);
 };
 
 const getMyInvites = async (req, res) => {
@@ -324,10 +325,11 @@ const getTripNames = async (req, res) => {
   res.send(invitedTrips);
 };
 
-const removeInvite = async (req) => {
-  await TripProposalVotes.destroy({
+const removeInvite = async (req, res) => {
+  const remove = await TripProposalVotes.destroy({
     where: { user_id: req.user, trip_id: req.trip_id },
   }).catch((err) => console.warn(err));
+  res.send(remove);
 };
 
 const addActivity = async (req, res) => {
@@ -384,14 +386,15 @@ const getMessages = async (req, res) => {
   res.send(messages);
 };
 
-const postMessages = (req) => {
-  Message.create({
+const postMessages = async (req, res) => {
+  const msg = await Message.create({
     text: req.body.text,
     author: req.body.author,
     time: req.body.time,
     user_google_id: req.body.user_google_id,
     trip_id: req.body.trip_id,
   });
+  res.send(msg);
 };
 
 const getPhone = (req, res) => {
@@ -419,8 +422,8 @@ const getAllOtherUsers = async (req, res) => {
   res.send(inviteThem);
 };
 
-const inviteSelectedUser = async (req) => {
-  await TripProposalVotes.findOne({
+const inviteSelectedUser = async (req, res) => {
+  const selected = await TripProposalVotes.findOne({
     where: { user_id: req.user.googleId, trip_id: req.trip },
   })
     .then((response) => {
@@ -432,6 +435,21 @@ const inviteSelectedUser = async (req) => {
       }
     })
     .catch((err) => console.warn(err));
+  res.send(selected);
+};
+
+const getFlights = async (req, res) => {
+  const flightsInfo = await getFlightsInfo(req, res);
+  res.send(flightsInfo);
+};
+
+const getFullTrip = async (req, res) => {
+  console.info(req, 'REQ');
+  const trip = await Trip.findOne({
+    where: { id: req.body.id },
+  });
+  console.info('trip found', trip);
+  res.send(trip);
 };
 
 module.exports = {
@@ -451,7 +469,7 @@ module.exports = {
   getTripNames,
   getPhotos,
   getAllTrips,
-  getTripForFlight,
+  getFlights,
   inviteAllOtherUsers,
   tripUser,
   getMyInvites,
@@ -464,4 +482,5 @@ module.exports = {
   postMessages,
   addPhone,
   getPhone,
+  getFullTrip,
 };

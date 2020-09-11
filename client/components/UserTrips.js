@@ -12,6 +12,8 @@ import TripCalendar from './TripCalendar';
 import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
+import GasPrices from './GasPrices';
+import Hotels from './Hotels';
 
 const UserTrips = ({ currentUser }) => {
   const [clicked, setClicked] = useState(null);
@@ -39,6 +41,10 @@ const UserTrips = ({ currentUser }) => {
       return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
     case 'flights':
       return <Flights currentUser={currentUser} currentTrip={currentTrip} />;
+    case 'gas':
+      return <GasPrices currentTrip={currentTrip} />;
+    case 'hotels':
+      return <Hotels currentUser={currentUser} currentTrip={currentTrip} />;
     default:
   }
 
@@ -53,7 +59,7 @@ const UserTrips = ({ currentUser }) => {
                 onClick={() => {
                   // eslint-disable-next-line max-len
                   const trip = {
-                    id: data.id,
+                    ...data,
                     city: data.destination,
                     startDate: data.start_date,
                     endDate: data.end_date,
@@ -67,6 +73,7 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button
@@ -96,6 +103,7 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button
@@ -110,10 +118,40 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button
+                onClick={() => {
+                  const trip = { id: data.id, city: data.destination };
+                  setCurrentTrip(trip);
+                  setClicked('hotels');
+                }}
+                color="primary"
+              >
+                Hotels
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <br />
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button
+                onClick={() => {
+                  setCurrentTrip(data);
+                  setClicked('gas');
+                }}
+                color="primary"
+              >
+                Gas Prices
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
           <ListItem>
             Dates:
             <ListItemText>{`${data.start_date} to ${data.end_date}`}</ListItemText>
           </ListItem>
+          <br />
           <ListItem>
             Destination:
             <ListItemText>{data.destination}</ListItemText>

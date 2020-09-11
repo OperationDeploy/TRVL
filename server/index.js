@@ -8,6 +8,7 @@ const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const cors = require('cors');
+const { getGasPrices } = require('./gas');
 
 const {
   createUser,
@@ -27,7 +28,7 @@ const {
   getMyInvites,
   addSplit,
   getAllTrips,
-  getTripForFlight,
+  getFlights,
   tripUser,
   inviteAllOtherUsers,
   getPhotos,
@@ -38,6 +39,7 @@ const {
   getWeatherForTrip,
   getMessages,
   postMessages,
+  getFullTrip,
 } = require('./queries.js');
 
 const app = express();
@@ -145,11 +147,13 @@ app.post('/grabPlaces', (req, res) => {
 });
 
 app.post('/setDest', (req, res) => {
-  setDest(req, res);
+  setDest(req);
+  res.send('Dest set');
 });
 
 app.post('/proposals', (req, res) => {
-  enterProposal(req.body, res);
+  enterProposal(req.body);
+  res.send('Proposal sent');
 });
 
 app.post('/photos', (req, res) => {
@@ -161,12 +165,16 @@ app.post('/photos', (req, res) => {
   });
 });
 
+app.post('/getFullTrip', (req, res) => {
+  getFullTrip(req, res);
+});
+
 app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
 });
 
-app.post('/getTripForFlight', (req, res) => {
-  getTripForFlight(req, res);
+app.post('/getFlights', (req, res) => {
+  getFlights(req, res);
 });
 
 app.post('/tripUser', (req, res) => {
@@ -205,7 +213,8 @@ app.post('/postMessages', (req, res) => {
 // Twilio
 // TODO: comment back in and take out console log when demoing
 app.post('/sendTwilio', (req, res) => {
-  console.info(req, res, client, TWILIO_PHONE_NUMBER);
+  console.info(req.body, res.body, client, TWILIO_PHONE_NUMBER);
+  res.send('We are not using twilio until we present our final app');
   // res.header('Content-Type', 'application/json');
   // client.messages
   //   .create({
@@ -220,6 +229,12 @@ app.post('/sendTwilio', (req, res) => {
   //     console.warn('ERR', err);
   //     res.send(JSON.stringify({ success: false }));
   //   });
+});
+
+app.post('/gas', async (req, res) => {
+  const { trip, car } = req.body;
+  const result = await getGasPrices(trip, car);
+  res.send(result);
 });
 
 app.use(express.static('public'));

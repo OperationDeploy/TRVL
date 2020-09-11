@@ -18,7 +18,8 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
         setAllOtherUsers(response.data);
       })
       .catch((err) => console.warn('ERRR', err));
-  }, []);
+  }, [currentUser.googleId]);
+
   return (
     <div>
       <Button
@@ -27,7 +28,7 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
           setClickedPage(
             <Preferences
               currentUser={currentUser}
-              otherUsers={allOtherUsers}
+              allOtherUsers={allOtherUsers}
               setClickedPage={setClickedPage}
             />,
           );
