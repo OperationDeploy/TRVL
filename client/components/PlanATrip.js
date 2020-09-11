@@ -28,7 +28,7 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
           setClickedPage(
             <Preferences
               currentUser={currentUser}
-              otherUsers={allOtherUsers}
+              allOtherUsers={allOtherUsers}
               setClickedPage={setClickedPage}
             />,
           );

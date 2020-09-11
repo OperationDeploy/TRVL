@@ -61,6 +61,7 @@ const Trip = sequelize.define('Trip', {
       key: 'googleId',
     },
   },
+  weather_alert: Sequelize.BOOLEAN,
 });
 
 const TripUser = sequelize.define('TripUser', {
@@ -233,6 +234,7 @@ const SplitOwedPayment = sequelize.define('SplitOwedPayment', {
 const Message = sequelize.define('Message', {
   text: Sequelize.TEXT,
   author: Sequelize.TEXT,
+  time: Sequelize.TEXT,
   user_google_id: {
     type: Sequelize.TEXT,
     references: {

@@ -1,13 +1,41 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 import ActivityForm from './ActivityForm';
 import ActivityList from './ActivityList';
 
 const Itinerary = ({ currentUser, currentTrip }) => {
   const [activities, setActivities] = useState([]);
+  const [weather, setWeather] = useState(null);
 
-  useEffect(() => console.info('currentTrip:', currentTrip));
+  useEffect(() => {
+    axios.get(`/weather/${currentTrip.id}`).then(({ data }) => {
+      if (data[0] && Object.keys(data[0].forecast).length) {
+        setWeather(data[0].forecast);
+      } else {
+        setWeather('unavailable');
+      }
+    });
+  }, []);
+
+  let weatherDisp = <div className="weather-widget"> Loading Weather...</div>;
+
+  if (weather) {
+    weatherDisp =
+      weather === 'unavailable' ? (
+        <div className="weather-widget">Weather Data Not Available</div>
+      ) : (
+        <div className="weather-widget">
+          <div id="city">Weather in {currentTrip.city}:</div>
+          <div id="date">({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})</div>
+          <div><img alt="icon" src={weather[Object.keys(weather)[0]].icon}/></div>
+          <div id="main">{weather[Object.keys(weather)[0]].weather}</div>
+          <div id="high">High: {weather[Object.keys(weather)[0]].temp.high}</div>
+          <div id="low">Low: {weather[Object.keys(weather)[0]].temp.low}</div>
+        </div>
+      );
+  }
 
   return (
     <div id="trip-itinerary" className="itinerary-container">
@@ -32,6 +60,7 @@ const Itinerary = ({ currentUser, currentTrip }) => {
           setActivities(newActivities);
         }}
       />
+      {weatherDisp}
     </div>
   );
 };
@@ -48,6 +77,8 @@ Itinerary.propTypes = {
   currentTrip: PropTypes.shape({
     id: PropTypes.number,
     city: PropTypes.string,
+    start_date: PropTypes.string,
+    destination: PropTypes.string,
   }).isRequired,
 };
 

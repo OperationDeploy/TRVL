@@ -33,6 +33,7 @@ CREATE TABLE "Trips" (
   "departure_city" TEXT,
   "airport_code" TEXT UNIQUE,
   "googleId" TEXT,
+  "weather_alert" boolean,
   "createdAt" TIMESTAMP DEFAULT NOW(),
   "updatedAt" TIMESTAMP DEFAULT NOW()
 );
@@ -140,6 +141,7 @@ CREATE TABLE "Messages" (
   "id" SERIAL PRIMARY KEY,
   "text" TEXT,
   "author" TEXT,
+  "time" TEXT,
   "user_google_id" TEXT,
   "trip_id" int,
   "createdAt" TIMESTAMP DEFAULT NOW(),

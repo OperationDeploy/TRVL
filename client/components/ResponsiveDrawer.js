@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
+const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
   const classes = useStyles();
   const theme = createMuiTheme({
     palette: {
@@ -96,6 +96,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
   const [showPlan, setShowPlan] = useState(false);
   const [showInvitesPage, setShowInvitesPage] = useState(false);
   const [showHome, setShowHome] = useState(false);
+  const [allOtherUsers, setAllOtherUsers] = useState([]);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -260,6 +261,19 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 
   useEffect(() => {
     axios
+      .get('/inviteUsers', {
+        params: {
+          currentUser: currentUser.googleId,
+        },
+      })
+      .then((response) => {
+        setAllOtherUsers(response.data);
+      })
+      .catch((err) => console.warn('ERRR', err));
+  }, [currentUser.googleId]);
+
+  useEffect(() => {
+    axios
       .get('/getInvites', { params: { googleId: currentUser.googleId } })
       .then((response) => setMyInvites(response.data))
       .catch((err) => console.warn('ERRR', err));
@@ -283,7 +297,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
         setClickedPage={setClickedPage}
       />
       <PlanATrip
-        otherUsers={otherUsers}
+        otherUsers={allOtherUsers}
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
@@ -312,11 +326,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
             </IconButton>
             <Typography variant="h6" noWrap>
               TRVL
-            <img
-              src={currentUser.profile_pic}
-              alt="user loaded from google login for toolbar"
-              className="toolbar-pic"
-            />
+              <img
+                src={currentUser.profile_pic}
+                alt="user loaded from google login for toolbar"
+                className="toolbar-pic"
+              />
             </Typography>
           </Toolbar>
         </AppBar>
@@ -360,12 +374,16 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
               <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
             ) : null}
             {showPlan ? (
-              <Preferences currentUser={currentUser} currentTrip={currentTrip} />
+              <Preferences
+                currentUser={currentUser}
+                currentTrip={currentTrip}
+                setClickedPage={setClickedPage}
+              />
             ) : null}
             {showInvitesPage ? (
               <InvitesPage
                 currentUser={currentUser}
-                otherUsers={otherUsers}
+                otherUsers={allOtherUsers}
                 myInvites={myInvites}
                 setClickedPage={setClickedPage}
               />
@@ -381,16 +399,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, otherUsers }) => {
 };
 
 ResponsiveDrawer.propTypes = {
-  otherUsers: PropTypes.arrayOf(
-    PropTypes.shape({
-      first_name: PropTypes.string,
-      last_name: PropTypes.string,
-      email: PropTypes.string,
-      profile_pic: PropTypes.string,
-      host: PropTypes.bool,
-      googleId: PropTypes.string,
-    }),
-  ).isRequired,
   currentUser: PropTypes.shape({
     id: PropTypes.string,
     first_name: PropTypes.string,
