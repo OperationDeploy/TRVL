@@ -12,6 +12,7 @@ import TripCalendar from './TripCalendar';
 import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
+import Hotels from './Hotels';
 
 const UserTrips = ({ currentUser }) => {
   const [clicked, setClicked] = useState(null);
@@ -39,6 +40,8 @@ const UserTrips = ({ currentUser }) => {
       return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
     case 'flights':
       return <Flights currentUser={currentUser} currentTrip={currentTrip} />;
+    case 'hotels':
+      return <Hotels currentUser={currentUser} currentTrip={currentTrip} />;
     default:
   }
 
@@ -67,6 +70,7 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button
@@ -96,6 +100,7 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
           <ListItem>
             <ListItemSecondaryAction>
               <Button
@@ -110,10 +115,27 @@ const UserTrips = ({ currentUser }) => {
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <br />
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button
+                onClick={() => {
+                  const trip = { id: data.id, city: data.destination };
+                  setCurrentTrip(trip);
+                  setClicked('hotels');
+                }}
+                color="primary"
+              >
+                Hotels
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
+          <br />
           <ListItem>
             Dates:
             <ListItemText>{`${data.start_date} to ${data.end_date}`}</ListItemText>
           </ListItem>
+          <br />
           <ListItem>
             Destination:
             <ListItemText>{data.destination}</ListItemText>
