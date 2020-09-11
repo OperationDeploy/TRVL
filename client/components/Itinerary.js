@@ -14,6 +14,8 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
   const [text, setText] = useState('');
   const [weather, setWeather] = useState(null);
 
+  const toISO = (date) => new Date(date).toISOString().slice(0, 10);
+
   useEffect(() => {
     axios
       .get(`/activities/${currentTrip.id}`, {
@@ -39,23 +41,24 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
   let weatherDisp = <div className="weather-widget"> Loading Weather...</div>;
 
   if (weather) {
-    weatherDisp =
-      weather === 'unavailable' ? (
-        <div className="weather-widget">Weather Data Not Available</div>
-      ) : (
+    if (weather === 'unavailable' || !weather[toISO(day)]) {
+      weatherDisp = <div className="weather-widget">Weather Data Not Available</div>;
+    } else {
+      weatherDisp = (
         <div className="weather-widget">
           <div id="city">Weather in {currentTrip.city}:</div>
           <div id="date">
-            ({new Date(Object.keys(weather)[0]).toUTCString().slice(0, 16)})
+            ({day.slice(0, 16)})
           </div>
           <div>
-            <img alt="icon" src={weather[Object.keys(weather)[0]].icon} />
+            <img alt="icon" src={weather[toISO(day)].icon} />
           </div>
-          <div id="main">{weather[Object.keys(weather)[0]].weather}</div>
-          <div id="high">High: {weather[Object.keys(weather)[0]].temp.high}</div>
-          <div id="low">Low: {weather[Object.keys(weather)[0]].temp.low}</div>
+          <div id="main">{weather[toISO(day)].weather}</div>
+          <div id="high">High: {weather[toISO(day)].temp.high}</div>
+          <div id="low">Low: {weather[toISO(day)].temp.low}</div>
         </div>
       );
+    }
   }
 
   return (
