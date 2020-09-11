@@ -91,7 +91,8 @@ const addSplit = async (req, res) => {
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
   users = users.map((user) =>
-    User.findOne({ where: { googleId: user.user_id }, raw: true }),);
+    User.findOne({ where: { googleId: user.user_id }, raw: true }),
+  );
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -111,7 +112,8 @@ const getSplit = async ({ trip, user }, res) => {
     User.findOne({
       where: { googleId: item.purchaser_id },
       raw: true,
-    }),);
+    }),
+  );
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -129,7 +131,8 @@ const getSplit = async ({ trip, user }, res) => {
     User.findOne({
       where: { googleId: payment.ower_id },
       raw: true,
-    }),);
+    }),
+  );
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -189,7 +192,8 @@ const getPhotos = async ({ trip }, res) => {
     User.findOne({
       where: { googleId: photo.user_id },
       raw: true,
-    }),);
+    }),
+  );
   await Promise.all(users).then((results) => {
     users = results;
   });
@@ -208,7 +212,8 @@ const addPhoto = async ({ files, body }, res) => {
       user_id: user,
       trip_id: trip,
       photo_link: photo.filename,
-    }),);
+    }),
+  );
   await Promise.all(photos).then((response) => {
     photos = response;
   });
