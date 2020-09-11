@@ -22,10 +22,14 @@ const isWithinRange = (trip) => {
 
 // Gets users on each trip to alert them of bad weather
 const alertUsers = async (trips) => {
+
   const updateDB = trips.map((trip) => Trip.update({
     weather_alert: trip.weather_alert }, { where: { id: trip.id } }));
+
   await Promise.all(updateDB);
-  let userIds = trips.map((trip) => TripUser.findOne({ where: { trip_id: trip.id }, raw: true }));
+  let userIds = trips.map((trip) => TripUser.findOne(
+    { where: { trip_id: trip.id }, raw: true },
+  ));
   await Promise.all(userIds)
     .then((response) => {
       userIds = response;
