@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
-
+const { getFlightsInfo } = require('./flights');
 const { getWeather } = require('./weather');
 
 const { generatePlaces } = require('./algo.js');
@@ -216,13 +216,6 @@ const getAllTrips = async (req, res) => {
   res.send(trips);
 };
 
-const getTripForFlight = async (req, res) => {
-  const getTrip = await Trip.findOne({
-    where: { id: req.body.id, googleId: req.body.googleId },
-  });
-  res.send(getTrip);
-};
-
 // Gets the users from the db who are not the current user
 const getOtherUsers = async (req, res) => {
   const inviteThem = await User.findAll({
@@ -379,6 +372,20 @@ const inviteSelectedUser = async (req) => {
     .catch((err) => console.warn(err));
 };
 
+const getFlights = async (req, res) => {
+  const flightsInfo = await getFlightsInfo(req);
+  res.send(flightsInfo);
+};
+
+const getFullTrip = async (req, res) => {
+  console.info(req, 'REQ');
+  const trip = await Trip.findOne({
+    where: { id: req.body.id },
+  });
+  console.info('trip found', trip);
+  res.send(trip);
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -396,7 +403,7 @@ module.exports = {
   getTripNames,
   getPhotos,
   getAllTrips,
-  getTripForFlight,
+  getFlights,
   inviteAllOtherUsers,
   tripUser,
   getMyInvites,
@@ -406,4 +413,5 @@ module.exports = {
   postMessages,
   addPhone,
   getPhone,
+  getFullTrip,
 };

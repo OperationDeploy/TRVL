@@ -28,7 +28,7 @@ const {
   getMyInvites,
   addSplit,
   getAllTrips,
-  getTripForFlight,
+  getFlights,
   tripUser,
   inviteAllOtherUsers,
   getPhotos,
@@ -36,6 +36,7 @@ const {
   getWeatherForTrip,
   getMessages,
   postMessages,
+  getFullTrip,
 } = require('./queries.js');
 
 const app = express();
@@ -154,12 +155,16 @@ app.post('/photos', (req, res) => {
   });
 });
 
+app.post('/getFullTrip', (req, res) => {
+  getFullTrip(req, res);
+});
+
 app.post('/getAllTrips', (req, res) => {
   getAllTrips(req, res);
 });
 
-app.post('/getTripForFlight', (req, res) => {
-  getTripForFlight(req, res);
+app.post('/getFlights', (req, res) => {
+  getFlights(req, res);
 });
 
 app.post('/tripUser', (req, res) => {

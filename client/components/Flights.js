@@ -4,26 +4,39 @@ import axios from 'axios';
 // import apiKey from './config';
 
 const Flights = ({ currentUser, currentTrip }) => {
-  const [flightData, setFlightData] = useState({});
-  // const [trip, setTrip] = useState({});
+  // const [flightData, setFlightData] = useState([]);
+  const [trip, setTrip] = useState({});
 
-  // const handleChange = (response) => {
-  //   setTrip(response);
+  const handleChange = (response) => {
+    setTrip(response);
+  };
+
+  // const handleChangeFlight = (response) => {
+  //   setFlightData(response);
   // };
 
   useEffect(() => {
     axios
       .post(
-        '/getTripForFlight',
+        '/getFullTrip',
         { id: currentTrip.id, googleId: currentUser.googleId },
-        () => {
-          console.info(
-            `Grabbing ${currentUser.first_name}'s trip info for ${currentTrip.city}`,
-          );
-        },
+        () => {},
       )
-      .then(() => {
+      .then((res) => {
         // console.info(response);
+        console.info(
+          `Grabbing ${currentUser.first_name}'s trip info for ${currentTrip.city}`,
+        );
+        console.info(res);
+        handleChange(res.data);
+      });
+
+    axios
+      .post('/getFlights', { trip }, () => {})
+      .then((res) => {
+        // console.info(response);
+        console.info(res);
+        // handleChangeFlight(res.data);
         // handleChange(response.data);
       });
   }, []);
@@ -53,7 +66,7 @@ const Flights = ({ currentUser, currentTrip }) => {
     //       }
     //     }
     //     console.info(carrier);
-    setFlightData({ airline: 'United Airlines', price: 138 });
+    // setFlightData({ airline: 'United Airlines', price: 138 });
     // });
   };
 
@@ -67,7 +80,8 @@ const Flights = ({ currentUser, currentTrip }) => {
         <button type="submit" onClick={() => onClickShowMeFlight()}>
           SHOW ME THE BEST FLIGHT
         </button>
-        <p>{`It costs only $${flightData.price} to travel with ${flightData.airline} to get to ${currentTrip.city}!`}</p>
+        {/* <p>{`It costs only $${flightData.price} to travel with
+         ${flightData.airline} to get to ${currentTrip.city}!`}</p> */}
         <p>You should book before flights go up!</p>
       </div>
     </div>

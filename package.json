@@ -43,6 +43,7 @@
     "@material-ui/pickers": "^3.2.10",
     "@material-ui/styles": "^4.10.0",
     "@unicef/material-ui-currency-textfield": "^0.8.6",
+    "amadeus": "^5.2.0",
     "axios": "^0.20.0",
     "body-parser": "^1.19.0",
     "cheeseburger-menu": "0.0.13",
