@@ -8,6 +8,7 @@ const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const cors = require('cors');
+const { getGasPrices } = require('./gas');
 
 const {
   createUser,
@@ -228,6 +229,12 @@ app.post('/sendTwilio', (req, res) => {
   //     console.warn('ERR', err);
   //     res.send(JSON.stringify({ success: false }));
   //   });
+});
+
+app.post('/gas', async (req, res) => {
+  const { trip, car } = req.body;
+  const result = await getGasPrices(trip, car);
+  res.send(result);
 });
 
 app.use(express.static('public'));

@@ -14,15 +14,13 @@ const toDegF = (temp) => Math.floor((temp - 273) * (9 / 5) + 32);
 
 // Determines if any dates of trip are within range of 7 day forecast
 const isWithinRange = (trip) => {
-  const date =
-    compareISODates('today', trip.start_date) < 0 ? trip.end_date : trip.start_date;
-  const diff = compareISODates('today', date);
-  return diff >= 0 && diff <= 7;
+  const end = compareISODates('today', trip.end_date);
+  const start = compareISODates('today', trip.start_date);
+  return end >= 0 && start <= 7;
 };
 
 // Gets users on each trip to alert them of bad weather
 const alertUsers = async (trips) => {
-
   const updateDB = trips.map((trip) => Trip.update({
     weather_alert: trip.weather_alert }, { where: { id: trip.id } }));
 
@@ -42,30 +40,29 @@ const alertUsers = async (trips) => {
       users = response;
     })
     .catch((err) => console.warn(err));
-  console.info(users);
+};
+
+const getCoordinates = (location) => {
+  const destination = location.split(' ');
+  let state = destination.pop();
+  let country = 'us';
+  if (state === 'Mexico') {
+    country = 'mx';
+    state = null;
+  }
+  if (state === 'Canada') {
+    country = 'ca';
+    state = null;
+  }
+  const city = destination.join(' ');
+  const query = state ? `${city}${state},${country}` : `${city}${country}`;
+  return axios.get(`http://api.positionstack.com/v1/forward?access_key=${GEO_API}&query=${query}&limit=1`);
 };
 
 // Gets weather data from array of trips
 const getWeather = async (allTrips, weatherOnly = true) => {
   const trips = allTrips.filter(isWithinRange);
-  const coordinates = trips.map((trip) => {
-    const destination = trip.destination.split(' ');
-    let state = destination.pop();
-    let country = 'us';
-    if (state === 'Mexico') {
-      country = 'mx';
-      state = null;
-    }
-    if (state === 'Canada') {
-      country = 'ca';
-      state = null;
-    }
-    const city = destination.join(' ');
-    const query = state ? `${city}${state},${country}` : `${city}${country}`;
-    return axios.get(
-      `http://api.positionstack.com/v1/forward?access_key=${GEO_API}&query=${query}&limit=1`,
-    );
-  });
+  const coordinates = trips.map((trip) => getCoordinates(trip.destination));
   let weatherData;
   await Promise.all(coordinates)
     .then((res) => {
@@ -124,4 +121,5 @@ const weatherUpdate = async () => {
 module.exports = {
   getWeather,
   weatherUpdate,
+  getCoordinates,
 };

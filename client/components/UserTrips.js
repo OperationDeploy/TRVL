@@ -12,6 +12,7 @@ import TripCalendar from './TripCalendar';
 import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
+import GasPrices from './GasPrices';
 import Hotels from './Hotels';
 
 const UserTrips = ({ currentUser }) => {
@@ -40,6 +41,8 @@ const UserTrips = ({ currentUser }) => {
       return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
     case 'flights':
       return <Flights currentUser={currentUser} currentTrip={currentTrip} />;
+    case 'gas':
+      return <GasPrices currentTrip={currentTrip} />;
     case 'hotels':
       return <Hotels currentUser={currentUser} currentTrip={currentTrip} />;
     default:
@@ -56,7 +59,7 @@ const UserTrips = ({ currentUser }) => {
                 onClick={() => {
                   // eslint-disable-next-line max-len
                   const trip = {
-                    id: data.id,
+                    ...data,
                     city: data.destination,
                     startDate: data.start_date,
                     endDate: data.end_date,
@@ -131,6 +134,19 @@ const UserTrips = ({ currentUser }) => {
             </ListItemSecondaryAction>
           </ListItem>
           <br />
+          <ListItem>
+            <ListItemSecondaryAction>
+              <Button
+                onClick={() => {
+                  setCurrentTrip(data);
+                  setClicked('gas');
+                }}
+                color="primary"
+              >
+                Gas Prices
+              </Button>
+            </ListItemSecondaryAction>
+          </ListItem>
           <ListItem>
             Dates:
             <ListItemText>{`${data.start_date} to ${data.end_date}`}</ListItemText>
