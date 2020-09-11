@@ -1,6 +1,8 @@
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
@@ -12,7 +14,11 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import InvitesButton from './InvitesButton';
 
-// add a destination to city, state input to submit to db
+// const stateCodes = ['AG', 'AL', 'AK', 'AB', 'AZ', 'AR', 'BJ', 'BS', 'BC', 'CA', 'CP', 'CH', 'CI', 'CU', 'CL', 'CO',
+//   'CT', 'DE', 'DC', 'DF', 'DG', 'FL', 'GA', 'GJ', 'GR', 'HI', 'HG', 'ID', 'IL', 'IN', 'IA', 'JA', 'KS', 'KY', 'LA', 'ME',
+//   'MD', 'MB', 'MA', 'EM', 'MI', 'MH', 'MN', 'MS', 'MO', 'MT', 'MR', 'NA', 'NE', 'NV', 'NB', 'NH', 'NJ', 'NM', 'NY', 'NF',
+//   'NC', 'ND', 'NT', 'NS', 'NL', 'NU', 'OA', 'OH', 'OK', 'ON', 'OR', 'PA', 'PE', 'PU', 'PR', 'QC', 'QA', 'QR', 'RI', 'SL',
+//   'SK', 'SI', 'SO', 'SC', 'SD', 'TA', 'TM', 'TN', 'TX', 'TL', 'UT', 'VZ', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'YC', 'YT', 'ZT', 'Canada', 'Mexico'];
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -75,11 +81,6 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
     setEndDate(event);
   };
 
-  const handleDepartureInput = (event) => {
-    console.info(event);
-    setDepartureCity(event);
-  };
-
   // Posts preferences to DB
   const handleSubmit = () => {
     axios
@@ -136,7 +137,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
     <Container fixed classes={{ root: 'preferences-container' }}>
       <div className="text-inputs">
         <Typography variant="h2">Plan a Trip</Typography>
-        <label htmlFor="text">
+        {/* <label htmlFor="text">
           Trip name:
           <input
             type="text"
@@ -146,18 +147,26 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
             value={name}
             onChange={handleChangeName}
           />
-        </label>
-        <label htmlFor="departure-city">
-          Departure City:
-          <input
-            type="text"
-            id="text"
-            name="type"
-            placeholder="City, ST"
-            value={name}
-            onChange={handleDepartureInput}
-          />
-        </label>
+        </label> */}
+        <TextField
+          value={name}
+          id="trip-name"
+          label="Trip Name"
+          variant="filled"
+          onChange={handleChangeName}
+          margin="normal"
+        />
+        <br />
+        <TextField
+          value={departureCity}
+          id="departure-city"
+          label="Departure City, ST"
+          variant="filled"
+          onChange={(event) => {
+            setDepartureCity(event.target.value);
+          }}
+          margin="normal"
+        />
       </div>
 
       <div className={classes.root}>
