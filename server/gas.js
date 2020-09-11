@@ -28,7 +28,14 @@ const gasRequest = (lat, lon) => axios.get(`http://api.collectapi.com/gasPrice/f
     authorization: GAS_API,
   } });
 
-const getGasPrices = async (trip, mpg) => {
+const getMPG = async (year, make, model) => {
+  const car = await axios.get(`https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${year}&make=${make}&model=${model}`);
+  const mpg = await axios.get(`https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${car.data.menuItem[1].value}`);
+  return mpg.data.avgMpg;
+};
+
+const getGasPrices = async (trip, car) => {
+  const mpg = await getMPG(car.year, car.make, car.model);
   const departure = await getCoordinates(trip.departure_city);
   const destination = await getCoordinates(trip.destination);
   const locA = departure.data.data[0];
@@ -44,7 +51,12 @@ const getGasPrices = async (trip, mpg) => {
   const avgPrice = (price1 + price2 + price3) / 3;
   const gals = miles / mpg;
   const total = avgPrice * gals;
-  console.info('avg price', avgPrice, 'total', total);
+  console.info('avg price', avgPrice, 'total', total, 'miles', miles);
 };
 
-getGasPrices({ departure_city: 'Syracuse, NY', destination: 'New Orleans, LA' }, 30);
+// getGasPrices({ departure_city: 'New Orleans, LA', destination: 'Los Angeles, CA' },
+//   { year: 2014, make: 'honda', model: 'civic' });
+
+module.exports = {
+  getGasPrices,
+};
