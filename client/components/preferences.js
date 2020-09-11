@@ -12,6 +12,8 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import InvitesButton from './InvitesButton';
 
+// add a destination to city, state input to submit to db
+
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
   root: {
@@ -35,6 +37,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
   const [endDate, setEndDate] = useState(null);
   const [trip, setTrip] = useState(0);
   const [inviteButtonClicked, setInviteButtonClicked] = useState(false);
+  const [departureCity, setDepartureCity] = useState('');
   const userId = currentUser.googleId;
 
   // sets new states for our preferences upon change
@@ -72,6 +75,11 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
     setEndDate(event);
   };
 
+  const handleDepartureInput = (event) => {
+    console.info(event);
+    setDepartureCity(event);
+  };
+
   // Posts preferences to DB
   const handleSubmit = () => {
     axios
@@ -79,6 +87,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         name,
         start_date: startDate,
         end_date: endDate,
+        departure_city: departureCity,
         googleId: currentUser.googleId,
       })
       .then((result) => {
@@ -125,7 +134,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
 
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className="prefs">
+      <div className="text-inputs">
         <Typography variant="h2">Plan a Trip</Typography>
         <label htmlFor="text">
           Trip name:
@@ -137,21 +146,36 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
             value={name}
             onChange={handleChangeName}
           />
-          <MuiPickersUtilsProvider utils={DateFnsUtils}>
-            <KeyboardDatePicker
-              disableToolbar
-              variant="inline"
-              format="MM/dd/yyyy"
-              margin="normal"
-              id="start-date"
-              label="Start Date"
-              value={startDate}
-              onChange={handleChangeStartDate}
-              KeyboardButtonProps={{
-                'aria-label': 'change date',
-              }}
-            />
-          </MuiPickersUtilsProvider>
+        </label>
+        <label htmlFor="departure-city">
+          Departure City:
+          <input
+            type="text"
+            id="text"
+            name="type"
+            placeholder="City, ST"
+            value={name}
+            onChange={handleDepartureInput}
+          />
+        </label>
+      </div>
+
+      <div className={classes.root}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <KeyboardDatePicker
+            disableToolbar
+            variant="inline"
+            format="MM/dd/yyyy"
+            margin="normal"
+            id="start-date"
+            label="Start Date"
+            value={startDate}
+            onChange={handleChangeStartDate}
+            KeyboardButtonProps={{
+              'aria-label': 'change date',
+            }}
+          />
+        </MuiPickersUtilsProvider>
           <MuiPickersUtilsProvider utils={DateFnsUtils}>
             <KeyboardDatePicker
               disableToolbar
@@ -167,7 +191,6 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               }}
             />
           </MuiPickersUtilsProvider>
-        </label>
       </div>
       <div className={classes.root}>
         <Typography id="continuous-slider" gutterBottom>
