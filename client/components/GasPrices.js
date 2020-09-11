@@ -7,13 +7,15 @@ import axios from 'axios';
 const GasPrices = ({ currentTrip }) => {
   const [value, setValue] = useState({});
   const [response, setResponse] = useState(null);
+  const [loading, setLoading] = useState(null);
 
   let display = '';
 
   const submit = (car, trip) => {
-    display = (<div> Loading...</div>);
+    setLoading(<div> Loading...</div>);
     axios.post('/gas', { car, trip: { ...trip, departure_city: 'New Orleans, LA' } })
       .then(({ data }) => {
+        setLoading(null);
         if (data && data.total) {
           setResponse(data);
         } else {
@@ -83,7 +85,7 @@ const GasPrices = ({ currentTrip }) => {
           </Button>
         </form>
       </div>
-      {display}
+      {loading || display}
     </div>
   );
 };
