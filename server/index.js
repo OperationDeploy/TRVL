@@ -243,20 +243,20 @@ app.post('/postMessages', authCheck, (req, res) => {
 app.post('/sendTwilio', authCheck, (req, res) => {
   console.info(req.body);
   res.send('We are not using twilio until we present our final app');
-  res.header('Content-Type', 'application/json');
-  client.messages
-    .create({
-      from: TWILIO_PHONE_NUMBER,
-      to: req.body.user.phoneNumber,
-      body: 'Hey you have a new trip invite in Trvl! Login to view it!',
-    })
-    .then(() => {
-      res.send(JSON.stringify({ success: true }));
-    })
-    .catch((err) => {
-      console.warn('ERR', err);
-      res.send(JSON.stringify({ success: false }));
-    });
+  // res.header('Content-Type', 'application/json');
+  // client.messages
+  //   .create({
+  //     from: TWILIO_PHONE_NUMBER,
+  //     to: req.body.user.phoneNumber,
+  //     body: 'Hey you have a new trip invite in Trvl! Login to view it!',
+  //   })
+  //   .then(() => {
+  //     res.send(JSON.stringify({ success: true }));
+  //   })
+  //   .catch((err) => {
+  //     console.warn('ERR', err);
+  //     res.send(JSON.stringify({ success: false }));
+  //   });
 });
 
 app.post('/gas', authCheck, async (req, res) => {
