@@ -16,9 +16,11 @@ const { getGasPrices } = require('./gas');
 
 const {
   addPreferences,
+  newMsgs,
   inviteSelectedUser,
   getPhone,
   addPhone,
+  setRead,
   planTrip,
   removeInvite,
   grabPlaces,
@@ -141,6 +143,10 @@ app.get('/inviteUsers', authCheck, (req, res) => {
 
 // POST
 
+app.post('/newMsgs', authCheck, (req, res) => {
+  newMsgs(req.body, res);
+});
+
 app.post('/inviteTheUser', authCheck, (req, res) => {
   inviteSelectedUser(req.body, res);
 });
@@ -256,6 +262,10 @@ app.post('/gas', authCheck, async (req, res) => {
   const { trip, car } = req.body;
   const result = await getGasPrices(trip, car);
   res.send(result);
+});
+
+app.post('/setUnread', (req, res) => {
+  setRead(req.body, res);
 });
 
 app.use(express.static('public'));
