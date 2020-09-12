@@ -85,7 +85,7 @@ class App extends Component {
   render() {
     const { registered, phone } = this.state;
     const { loginComplete, currentUser, currentTrip, otherUsers } = this.state;
-    if (!loginComplete) {
+    if (loginComplete) {
       return (
         <Grid
           container

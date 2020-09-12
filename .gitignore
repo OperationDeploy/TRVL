@@ -6,7 +6,9 @@ dist
 # Mac
 .DS_Store
 .env
-
+# josh key
 travel-app.pem
+# jessa key
+trvaldeploy.pem
 config.js
 flightApi.js
