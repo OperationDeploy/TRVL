@@ -35,9 +35,12 @@ const getMPG = async (year, make, model) => {
   const car = await axios.get(
     `https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${year}&make=${make}&model=${model}`,
   );
-  const mpg = await axios.get(
-    `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${car.data.menuItem[1].value}`,
-  );
+  let mpg = { data: { avgMpg: 25.1 } };
+  if (car && car.data && car.data.menuItem) {
+    mpg = await axios.get(
+      `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${car.data.menuItem[1].value}`,
+    );
+  }
   return mpg.data.avgMpg;
 };
 

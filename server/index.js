@@ -2,16 +2,19 @@ require('dotenv').config();
 const express = require('express');
 const socket = require('socket.io');
 const path = require('path');
-
-const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
-const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
+const passport = require('passport');
+
+const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE_NUMBER, COOKIE_KEY, PORT } = process.env;
+const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const multer = require('multer');
 const cors = require('cors');
+const auth = require('./passport/auth-routes');
 const { getGasPrices } = require('./gas');
 
 const {
-  createUser,
   addPreferences,
   newMsgs,
   inviteSelectedUser,
@@ -44,13 +47,29 @@ const {
   getFullTrip,
 } = require('./queries.js');
 
+const authCheck = (req, res, next) => {
+  if (!req.user) {
+    res.redirect('/auth/google');
+  } else {
+    next();
+  }
+};
+
 const app = express();
-const { PORT } = process.env;
+app.use(cors());
 const DIST_DIR = path.join(__dirname, '../dist'); // NEW
 
 // parse application/json
 app.use(bodyParser.json());
-app.use(cors());
+
+app.use(cookieSession({
+  maxAge: 86400000,
+  keys: [COOKIE_KEY],
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+app.use('/auth', auth);
 
 /** SOCKET.IO - CHAT ROOM CONNECTIONS* */
 const server = app.listen(8080, () => {
@@ -80,92 +99,91 @@ const upload = multer({ storage }).array('file', 10);
 
 // established axios connection to front end
 // GET
+app.get('/session', (req, res) => {
+  if (req.user) {
+    res.send(req.user);
+  } else {
+    res.send(null);
+  }
+});
 
 // gets the users who aren't the current user from the db
-app.get('/inviteUsers', (req, res) => {
+app.get('/inviteUsers', authCheck, (req, res) => {
   getOtherUsers(req.query, res);
 });
 
-app.get('/split/:trip/:user', (req, res) => {
+app.get('/split/:trip/:user', authCheck, (req, res) => {
   getSplit(req.params, res);
 });
 
-app.get('/getInvites', (req, res) => {
+app.get('/getInvites', authCheck, (req, res) => {
   getMyInvites(req.query, res);
 });
 
-app.get('/photos/:trip', (req, res) => {
+app.get('/photos/:trip', authCheck, (req, res) => {
   getPhotos(req.params, res);
 });
 
 // get all trip activities
-app.get('/activities/:trip', (req, res) => {
+app.get('/activities/:trip', authCheck, (req, res) => {
   getTripActivities(req.params, res);
 });
 
-app.get('/weather/:trip', async (req, res) => {
+app.get('/weather/:trip', authCheck, async (req, res) => {
   getWeatherForTrip(req.params, res);
 });
 
-app.get('/phone', (req, res) => {
+app.get('/phone', authCheck, (req, res) => {
   getPhone(req.query, res);
 });
 
-app.get('/inviteUsers', (req, res) => {
+app.get('/inviteUsers', authCheck, (req, res) => {
   getAllOtherUsers(req.query, res);
 });
 
 // POST
-app.post('/activities', (req, res) => {
-  addActivity(req.body, res);
-});
 
-app.post('/newMsgs', (req, res) => {
+app.post('/newMsgs', authCheck, (req, res) => {
   newMsgs(req.body, res);
 });
 
-app.post('/inviteTheUser', (req, res) => {
+app.post('/inviteTheUser', authCheck, (req, res) => {
   inviteSelectedUser(req.body, res);
 });
 
-app.post('/addPhoneNumber', (req, res) => {
+app.post('/addPhoneNumber', authCheck, (req, res) => {
   addPhone(req.body, res);
 });
 
 // add preferences
-app.post('/preferences', (req, res) => {
+app.post('/preferences', authCheck, (req, res) => {
   addPreferences(req.body, res);
 });
 
 // plan a trip
-app.post('/trips', (req, res) => {
+app.post('/trips', authCheck, (req, res) => {
   planTrip(req.body, res);
 });
 
-// add user
-app.post('/login', (req, res) => {
-  createUser(req, res);
-});
-
-app.post('/split', (req, res) => {
+app.post('/split', authCheck, (req, res) => {
   addSplit(req.body, res);
 });
 
-app.post('/grabPlaces', (req, res) => {
+app.post('/grabPlaces', authCheck, (req, res) => {
   grabPlaces(req, res);
 });
 
-app.post('/setDest', (req, res) => {
+app.post('/setDest', authCheck, (req, res) => {
   setDest(req);
   res.send('Dest set');
 });
 
-app.post('/proposals', (req, res) => {
+app.post('/proposals', authCheck, (req, res) => {
   enterProposal(req.body);
   res.send('Proposal sent');
 });
 
-app.post('/photos', (req, res) => {
+app.post('/photos', authCheck, (req, res) => {
   upload(req, res, (err) => {
     if (err) {
       res.sendStatus(500);
@@ -174,50 +192,54 @@ app.post('/photos', (req, res) => {
   });
 });
 
-app.post('/getFullTrip', (req, res) => {
+app.post('/getFullTrip', authCheck, (req, res) => {
   getFullTrip(req, res);
 });
 
-app.post('/getAllTrips', (req, res) => {
+app.post('/getAllTrips', authCheck, (req, res) => {
   getAllTrips(req, res);
 });
 
-app.post('/getFlights', (req, res) => {
+app.post('/getFlights', authCheck, (req, res) => {
   getFlights(req, res);
 });
 
-app.post('/tripUser', (req, res) => {
+app.post('/tripUser', authCheck, (req, res) => {
   tripUser(req.body, res);
 });
 
-app.post('/inviteAllOtherUsers', (req, res) => {
+app.post('/inviteAllOtherUsers', authCheck, (req, res) => {
   inviteAllOtherUsers(req.body, res);
 });
 
-app.post('/tripNames', (req, res) => {
+app.post('/tripNames', authCheck, (req, res) => {
   getTripNames(req.body, res);
 });
 
-app.post('/removeInvite', (req, res) => {
+app.post('/activities', authCheck, (req, res) => {
+  addActivity(req.body, res);
+});
+
+app.post('/removeInvite', authCheck, (req, res) => {
   removeInvite(req.body, res);
 });
 
-app.delete('/activity', (req, res) => {
+app.delete('/activity', authCheck, (req, res) => {
   deleteActivity(req.query, res);
 });
 
 // get all messages for trip
-app.post('/getMessages', (req, res) => {
+app.post('/getMessages', authCheck, (req, res) => {
   getMessages(req, res);
 });
 // post message
-app.post('/postMessages', (req, res) => {
+app.post('/postMessages', authCheck, (req, res) => {
   postMessages(req, res);
 });
 
 // Twilio
 // TODO: comment back in and take out console log when demoing
-app.post('/sendTwilio', (req, res) => {
+app.post('/sendTwilio', authCheck, (req, res) => {
   console.info(req.body, res.body, client, TWILIO_PHONE_NUMBER);
   res.send('We are not using twilio until we present our final app');
   // res.header('Content-Type', 'application/json');
@@ -236,7 +258,7 @@ app.post('/sendTwilio', (req, res) => {
   //   });
 });
 
-app.post('/gas', async (req, res) => {
+app.post('/gas', authCheck, async (req, res) => {
   const { trip, car } = req.body;
   const result = await getGasPrices(trip, car);
   res.send(result);
@@ -247,8 +269,7 @@ app.post('/setUnread', (req, res) => {
 });
 
 app.use(express.static('public'));
-
-app.use(express.static(DIST_DIR)); // NEW
+app.use('/', express.static(DIST_DIR));
 
 app.listen(PORT, () => {
   console.info(`App listening on port:${PORT}`);
