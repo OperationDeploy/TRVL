@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Favicon from 'react-favicon';
-// import GoogleLogin from 'react-google-login';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -102,7 +101,7 @@ class App extends Component {
         </Grid>
       );
     }
-    if (registered === false) {
+    if (loginComplete && !registered) {
       return (
         <Typography>
           **Link you phone number to your account** Phone Number:

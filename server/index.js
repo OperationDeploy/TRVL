@@ -103,7 +103,7 @@ app.get('/session', (req, res) => {
   if (req.user) {
     res.send(req.user);
   } else {
-    res.sendStatus(403);
+    res.send(null);
   }
 });
 

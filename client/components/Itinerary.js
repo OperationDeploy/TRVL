@@ -25,7 +25,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
         const allEvents = res.data
           .filter((activity) => activity.day === day)
           .map((activity) => activity.event);
-        setActivities(...activities, allEvents);
+        setActivities([...activities, ...allEvents]);
       });
 
     axios.get(`/weather/${currentTrip.id}`).then(({ data }) => {
@@ -46,9 +46,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
       weatherDisp = (
         <div className="weather-widget">
           <div id="city">Weather in {currentTrip.city}:</div>
-          <div id="date">
-            ({day.slice(0, 16)})
-          </div>
+          <div id="date">({day.slice(0, 16)})</div>
           <div>
             <img alt="icon" src={weather[toISO(day)].icon} />
           </div>

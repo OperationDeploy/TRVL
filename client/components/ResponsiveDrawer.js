@@ -29,7 +29,7 @@ import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
-import './App.scss';
+import './ResponsiveDrawer.scss';
 
 const drawerWidth = 240;
 
