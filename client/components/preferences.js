@@ -5,6 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -14,11 +15,11 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import InvitesButton from './InvitesButton';
 
-// const stateCodes = ['AG', 'AL', 'AK', 'AB', 'AZ', 'AR', 'BJ', 'BS', 'BC', 'CA', 'CP', 'CH', 'CI', 'CU', 'CL', 'CO',
-//   'CT', 'DE', 'DC', 'DF', 'DG', 'FL', 'GA', 'GJ', 'GR', 'HI', 'HG', 'ID', 'IL', 'IN', 'IA', 'JA', 'KS', 'KY', 'LA', 'ME',
-//   'MD', 'MB', 'MA', 'EM', 'MI', 'MH', 'MN', 'MS', 'MO', 'MT', 'MR', 'NA', 'NE', 'NV', 'NB', 'NH', 'NJ', 'NM', 'NY', 'NF',
-//   'NC', 'ND', 'NT', 'NS', 'NL', 'NU', 'OA', 'OH', 'OK', 'ON', 'OR', 'PA', 'PE', 'PU', 'PR', 'QC', 'QA', 'QR', 'RI', 'SL',
-//   'SK', 'SI', 'SO', 'SC', 'SD', 'TA', 'TM', 'TN', 'TX', 'TL', 'UT', 'VZ', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'YC', 'YT', 'ZT', 'Canada', 'Mexico'];
+const states = ['AG', 'AL', 'AK', 'AB', 'AZ', 'AR', 'BJ', 'BS', 'BC', 'CA', 'CP', 'CH', 'CI', 'CU', 'CL', 'CO',
+  'CT', 'DE', 'DC', 'DF', 'DG', 'FL', 'GA', 'GJ', 'GR', 'HI', 'HG', 'ID', 'IL', 'IN', 'IA', 'JA', 'KS', 'KY', 'LA', 'ME',
+  'MD', 'MB', 'MA', 'EM', 'MI', 'MH', 'MN', 'MS', 'MO', 'MT', 'MR', 'NA', 'NE', 'NV', 'NB', 'NH', 'NJ', 'NM', 'NY', 'NF',
+  'NC', 'ND', 'NT', 'NS', 'NL', 'NU', 'OA', 'OH', 'OK', 'ON', 'OR', 'PA', 'PE', 'PU', 'PR', 'QC', 'QA', 'QR', 'RI', 'SL',
+  'SK', 'SI', 'SO', 'SC', 'SD', 'TA', 'TM', 'TN', 'TX', 'TL', 'UT', 'VZ', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'YC', 'YT', 'ZT', 'Canada', 'Mexico'];
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -44,6 +45,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
   const [trip, setTrip] = useState(0);
   const [inviteButtonClicked, setInviteButtonClicked] = useState(false);
   const [departureCity, setDepartureCity] = useState('');
+  const [departureState, setDepartureState] = useState('');
   const userId = currentUser.googleId;
 
   // sets new states for our preferences upon change
@@ -88,7 +90,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         name,
         start_date: startDate,
         end_date: endDate,
-        departure_city: departureCity,
+        departure_city: `${departureCity}, ${departureState}`,
         googleId: currentUser.googleId,
       })
       .then((result) => {
@@ -137,22 +139,11 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
     <Container fixed classes={{ root: 'preferences-container' }}>
       <div className="text-inputs">
         <Typography variant="h2">Plan a Trip</Typography>
-        {/* <label htmlFor="text">
-          Trip name:
-          <input
-            type="text"
-            id="text"
-            name="type"
-            placeholder="text"
-            value={name}
-            onChange={handleChangeName}
-          />
-        </label> */}
         <TextField
           value={name}
           id="trip-name"
           label="Trip Name"
-          variant="filled"
+          variant="outlined"
           onChange={handleChangeName}
           margin="normal"
         />
@@ -160,13 +151,30 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         <TextField
           value={departureCity}
           id="departure-city"
-          label="Departure City, ST"
-          variant="filled"
+          label="Departure City"
+          variant="outlined"
           onChange={(event) => {
             setDepartureCity(event.target.value);
           }}
           margin="normal"
         />
+        <TextField
+          id="departure-state"
+          select
+          label="State"
+          value={departureState}
+          onChange={(event) => {
+            setDepartureState(event.value);
+          }}
+          variant="outlined"
+          margin="normal"
+        >
+          {states.map((option) => (
+            <MenuItem key={option} value={option}>
+              {option}
+            </MenuItem>
+          ))}
+        </TextField>
       </div>
 
       <div className={classes.root}>

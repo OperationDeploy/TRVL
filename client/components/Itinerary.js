@@ -17,14 +17,16 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
   const toISO = (date) => new Date(date).toISOString().slice(0, 10);
 
   useEffect(() => {
-    axios.get(`/activities/${currentTrip.id}`, {
-      trip_id: currentTrip.id,
-    }).then((res) => {
-      const allEvents = res.data
-        .filter((activity) => activity.day === day)
-        .map((activity) => activity.event);
-      setActivities([...activities, ...allEvents]);
-    });
+    axios
+      .get(`/activities/${currentTrip.id}`, {
+        trip_id: currentTrip.id,
+      })
+      .then((res) => {
+        const allEvents = res.data
+          .filter((activity) => activity.day === day)
+          .map((activity) => activity.event);
+        setActivities([...activities, ...allEvents]);
+      });
 
     axios.get(`/weather/${currentTrip.id}`).then(({ data }) => {
       if (data[0] && Object.keys(data[0].forecast).length) {
@@ -65,15 +67,16 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
         saveActivity={(input) => {
           setText(input.trim());
           if (text.length > 0) {
-            axios.post('/activities', {
-              user_id: currentUser.id,
-              trip_id: currentTrip.id,
-              event: text,
-              day,
-            }).then((response) => {
-              // console.log('response from db for activity list', response);
-              setActivities([...activities, response.data.event]);
-            });
+            axios
+              .post('/activities', {
+                user_id: currentUser.id,
+                trip_id: currentTrip.id,
+                event: text,
+                day,
+              })
+              .then((response) => {
+                setActivities([...activities, response.data.event]);
+              });
           }
         }}
         currentTrip={currentTrip}

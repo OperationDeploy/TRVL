@@ -163,7 +163,6 @@ const grabPlaces = async (req, res) => {
 
 // add planned trip
 const planTrip = async (req, res) => {
-  console.info(req, 'in queeries');
   const trip = await Trip.create(req);
   res.send(trip);
 };
