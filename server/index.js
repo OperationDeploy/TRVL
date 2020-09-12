@@ -46,11 +46,18 @@ const {
   getFullTrip,
 } = require('./queries.js');
 
+const authCheck = (req, res, next) => {
+  if (!req.user) {
+    res.redirect('/auth/google');
+  } else {
+    next();
+  }
+};
+
 const app = express();
 app.use(cors());
 const DIST_DIR = path.join(__dirname, '../dist'); // NEW
-app.use(express.static('public'));
-app.use(express.static(DIST_DIR));
+
 // parse application/json
 app.use(bodyParser.json());
 
@@ -91,6 +98,9 @@ const upload = multer({ storage }).array('file', 10);
 
 // established axios connection to front end
 // GET
+// app.get('/', authCheck, (req, res) => {
+//   res.sendFile(path.join(__dirname, '../', 'landing.html'));
+// });
 
 // gets the users who aren't the current user from the db
 app.get('/inviteUsers', (req, res) => {
@@ -249,6 +259,11 @@ app.post('/gas', async (req, res) => {
   const result = await getGasPrices(trip, car);
   res.send(result);
 });
+
+app.use('/', authCheck);
+
+app.use(express.static('public'));
+app.use('/', express.static(DIST_DIR));
 
 app.listen(PORT, () => {
   console.info(`App listening on port:${PORT}`);
