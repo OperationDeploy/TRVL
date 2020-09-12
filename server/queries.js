@@ -458,9 +458,20 @@ const setRead = async (req, res) => {
 };
 
 const newMsgs = async (req, res) => {
+  const tripsArr = [];
+  await TripUser.findAll(
+    { where: { user_id: req.currentUser.googleId } }
+  ).then((response) => {
+    response.forEach((trip) => {
+      tripsArr.push(trip.dataValues.trip_id);
+    });
+  });
   const findNew = await Message.findAll(
-    { where: { unread: true, [Op.not]: [{ user_google_id: req.currentUser.googleId }] } }
-  );
+    { where: {
+      unread: true,
+      user_google_id: { [Op.not]: req.currentUser.googleId },
+      trip_id: { [Op.or]: tripsArr } } }
+  ).catch((err) => console.warn(err));
   res.send(findNew);
 };
 
