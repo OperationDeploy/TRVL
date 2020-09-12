@@ -1,4 +1,3 @@
-/* eslint-disable implicit-arrow-linebreak */
 const axios = require('axios');
 const { getCoordinates } = require('./weather');
 const { GAS_API } = require('../config');
@@ -23,22 +22,21 @@ const distance = (lat1, lon1, lat2, lon2) => {
   return 12742 * Math.asin(Math.sqrt(a)) * 0.62137;
 };
 
-const gasRequest = (lat, lon) =>
-  axios.get(`http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon}&lat=${lat}`, {
-    headers: {
-      'content-type': 'application/json',
-      authorization: GAS_API,
-    },
-  });
+const gasRequest = (lat, lon) => axios.get(`http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon}&lat=${lat}`, {
+  headers: {
+    'content-type': 'application/json',
+    authorization: GAS_API,
+  },
+});
 
 const getMPG = async (year, make, model) => {
   const car = await axios.get(
     `https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${year}&make=${make}&model=${model}`,
   );
   let mpg = { data: { avgMpg: 25.1 } };
-  if (car && car.data && car.data.menuItem) {
+  if (car && car.data && car.data.menuItem && car.data.menuItem[0]) {
     mpg = await axios.get(
-      `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${car.data.menuItem[1].value}`,
+      `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${car.data.menuItem[0].value}`,
     );
   }
   return mpg.data.avgMpg;

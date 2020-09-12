@@ -1,7 +1,8 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable implicit-arrow-linebreak */
-/* eslint-disable max-len */
 const axios = require('axios');
+
+const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE_NUMBER } = process.env;
+const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const { WEATHER_API, GEO_API } = require('../config');
 const { Trip, TripUser, User } = require('./db');
 
@@ -21,39 +22,64 @@ const isWithinRange = (trip) => {
   return end >= 0 && start <= 7;
 };
 
-// Gets users on each trip to alert them of bad weather
-const alertUsers = async (trips) => {
-  const updateDB = trips.map((trip) =>
-    Trip.update(
-      {
-        weather_alert: trip.weather_alert,
-      },
-      { where: { id: trip.id } },
-    ),
-  );
+// Finds users on trips and alerts them of bad weather
+const alertUsersOnTrips = async (trips) => {
+  const userTrip = {};
 
-  await Promise.all(updateDB);
-  let userIds = trips.map((trip) =>
-    TripUser.findOne({ where: { trip_id: trip.id }, raw: true }),
-  );
-  await Promise.all(userIds)
+  let tripUsers = trips.map((trip) => TripUser.findAll({ where: { trip_id: trip.id }, raw: true }));
+  await Promise.all(tripUsers)
     .then((response) => {
-      userIds = response;
+      tripUsers = response;
     })
     .catch((err) => console.warn(err));
-  let users = userIds.map((userId) =>
-    User.findOne({
-      where: { googleId: userId.user_id },
-      raw: true,
-    }),
-  );
+
+  tripUsers.forEach((tripUserArr, i) => {
+    tripUserArr.forEach((tripUser) => {
+      if (tripUser.user_id in userTrip) {
+        userTrip[tripUser.user_id].push(trips[i]);
+      } else {
+        userTrip[tripUser.user_id] = [trips[i]];
+      }
+    });
+  });
+
+  let users = Object.keys(userTrip).map((googleId) => User.findOne({
+    where: { googleId },
+    raw: true,
+  }));
   await Promise.all(users)
     .then((response) => {
       users = response;
     })
     .catch((err) => console.warn(err));
+
+  const notifications = users.map((user) => {
+    const tripStr = userTrip[user.googleId].map((trip) => trip.name).join(',');
+    return client.messages.create({
+      from: TWILIO_PHONE_NUMBER,
+      to: user.phoneNumber,
+      body: `The following of your trips may have inclement weather ahead: ${tripStr}.
+Check TRVL app for more info.`,
+    });
+  });
+  Promise.all(notifications);
 };
 
+// Updates trips in database with weather alert boolean
+const updateTrips = async (updated, original) => {
+  const trips = updated.filter((trip, i) => trip.weather_alert !== original[i].weather_alert);
+  const updateDB = trips.map((trip) => Trip.update(
+    {
+      weather_alert: trip.weather_alert,
+    },
+    { where: { id: trip.id } },
+  ));
+
+  await Promise.all(updateDB);
+  alertUsersOnTrips(trips);
+};
+
+// Gets coordinates from a location string
 const getCoordinates = (location) => {
   const destination = location.split(' ');
   let state = destination.pop();
@@ -91,7 +117,7 @@ const getWeather = async (allTrips, weatherOnly = true) => {
   await Promise.all(weatherData)
     .then((res) => {
       results = res.map(({ data }, i) => {
-        const trip = { ...trips[i], weather_alert: false };
+        const trip = { ...trips[i] };
         const dates = {};
         let startIndex = 0;
         const tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
@@ -116,6 +142,7 @@ const getWeather = async (allTrips, weatherOnly = true) => {
           dates[date] = forecast;
           if (weather[0].main === 'Rain') {
             trip.weather_alert = true; // TRIP HAS RAIN ON THIS DATE
+            trip.alertDates = trip.alertDates ? trip.alertDates.concat(date) : [date];
           }
         });
         trip.forecast = dates;
@@ -123,10 +150,10 @@ const getWeather = async (allTrips, weatherOnly = true) => {
       });
     })
     .catch((err) => console.warn(err));
-  return weatherOnly ? results : alertUsers(results);
+  return weatherOnly ? results : updateTrips(results, trips);
 };
 
-// Gets all trips from DB and updates weather alert value
+// Initializes weather update process for entire database
 const weatherUpdate = async () => {
   const trips = await Trip.findAll({ raw: true });
   getWeather(trips, false);

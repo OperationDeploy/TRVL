@@ -92,6 +92,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         end_date: endDate,
         departure_city: `${departureCity}, ${departureState}`,
         googleId: currentUser.googleId,
+        weather_alert: false,
       })
       .then((result) => {
         const tripId = result.data.id;
