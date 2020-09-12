@@ -1,0 +1,60 @@
+$myColor:#24255f;
+
+.welcome-message {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center'
+}
+
+.trip-container {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+  overflow:'visible';
+  float:'right';
+}
+
+.pat-container {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+}
+
+.profile-pic {
+  border-radius: 50%;
+  width: 100px;
+}
+
+.toolbar-pic {
+  border-radius: 50%;
+  width: 95px;
+  transform: scale(0.5);
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+
+input[type=file] {
+  display: none;
+}
+
+.weather-widget {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 15px;
+  #city {
+    font-weight: 800;
+  }
+  #main {
+    font-weight: 800;
+  }
+  #date {
+    font-size: small;
+  }
+  #high {
+    font-size: small;
+  }
+  #low {
+    font-size: small;
+  }
+}

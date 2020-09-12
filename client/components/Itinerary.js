@@ -25,7 +25,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
         const allEvents = res.data
           .filter((activity) => activity.day === day)
           .map((activity) => activity.event);
-        setActivities(...activities, allEvents);
+        setActivities([...activities, ...allEvents]);
       });
 
     axios.get(`/weather/${currentTrip.id}`).then(({ data }) => {

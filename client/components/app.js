@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Favicon from 'react-favicon';
-import GoogleLogin from 'react-google-login';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -23,8 +22,22 @@ class App extends Component {
       phone: '',
       registered: false,
     };
+  }
 
-    this.responseGoogle = this.responseGoogle.bind(this);
+  componentDidMount() {
+    axios.get('/session')
+      .then((res) => {
+        if (res.data.googleId) {
+          res.data.id = res.data.googleId;
+          this.setState({
+            loginComplete: !this.loginComplete,
+            currentUser: res.data,
+            phone: res.data.phoneNumber,
+          });
+          this.findPhone();
+        }
+      })
+      .catch((err) => console.warn(err));
   }
 
   handleChangePhone(event) {
@@ -59,29 +72,6 @@ class App extends Component {
     }
   }
 
-  responseGoogle(response) {
-    const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
-    axios
-      .post('/login', {
-        first_name: givenName,
-        last_name: familyName,
-        email,
-        profile_pic: imageUrl,
-        host: false,
-        googleId,
-      })
-      .then((res) => {
-        res.data.id = res.data.googleId;
-        this.setState({
-          loginComplete: !this.loginComplete,
-          currentUser: res.data,
-          phone: res.data.phoneNumber,
-        });
-        this.findPhone();
-      })
-      .catch((err) => console.warn(err));
-  }
-
   render() {
     const { registered, phone } = this.state;
     const { loginComplete, currentUser, currentTrip, otherUsers } = this.state;
@@ -102,14 +92,8 @@ class App extends Component {
                 style={{ height: 500 }}
               />
               <CardActions alignItems="stretch">
-                <Button fullWidth variant="outlined" color="default">
-                  <GoogleLogin
-                    clientId="882538519679-1djm34mua0vj39jocql6ncg86mric4vb.apps.googleusercontent.com"
-                    buttonText="Login with Google"
-                    onSuccess={this.responseGoogle}
-                    onFailure={this.responseGoogle}
-                    cookiePolicy="single_host_origin"
-                  />
+                <Button href="/auth/google" fullWidth variant="outlined" color="default" onClick>
+                  Login With Google
                 </Button>
               </CardActions>
             </Card>
@@ -117,7 +101,7 @@ class App extends Component {
         </Grid>
       );
     }
-    if (registered === false) {
+    if (loginComplete && !registered) {
       return (
         <Typography>
           **Link you phone number to your account** Phone Number:
