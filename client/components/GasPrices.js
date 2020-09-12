@@ -13,7 +13,8 @@ const GasPrices = ({ currentTrip }) => {
 
   const submit = (car, trip) => {
     setLoading(<div> Loading...</div>);
-    axios.post('/gas', { car, trip: { ...trip, departure_city: 'New Orleans, LA' } })
+    axios
+      .post('/gas', { car, trip: { ...trip, departure_city: 'New Orleans, LA' } })
       .then(({ data }) => {
         setLoading(null);
         if (data && data.total) {
@@ -78,11 +79,15 @@ const GasPrices = ({ currentTrip }) => {
             }}
             margin="normal"
           />
-          <Button variant="contained" component="label" onClick={(event) => {
-            event.preventDefault();
-            submit(value, currentTrip);
-            setValue({ year: '', make: '', model: '' });
-          }}>
+          <Button
+            variant="contained"
+            component="label"
+            onClick={(event) => {
+              event.preventDefault();
+              submit(value, currentTrip);
+              setValue({ year: '', make: '', model: '' });
+            }}
+          >
             Submit
           </Button>
         </form>

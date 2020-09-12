@@ -46,9 +46,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
       weatherDisp = (
         <div className="weather-widget">
           <div id="city">Weather in {currentTrip.city}:</div>
-          <div id="date">
-            ({day.slice(0, 16)})
-          </div>
+          <div id="date">({day.slice(0, 16)})</div>
           <div>
             <img alt="icon" src={weather[toISO(day)].icon} />
           </div>
