@@ -23,8 +23,22 @@ class App extends Component {
       phone: '',
       registered: false,
     };
+  }
 
-    this.responseGoogle = this.responseGoogle.bind(this);
+  componentDidMount() {
+    axios.get('/session')
+      .then((res) => {
+        if (res.data.googleId) {
+          res.data.id = res.data.googleId;
+          this.setState({
+            loginComplete: !this.loginComplete,
+            currentUser: res.data,
+            phone: res.data.phoneNumber,
+          });
+          this.findPhone();
+        }
+      })
+      .catch((err) => console.warn(err));
   }
 
   handleChangePhone(event) {
@@ -57,29 +71,6 @@ class App extends Component {
         registered: true,
       });
     }
-  }
-
-  responseGoogle(response) {
-    const { givenName, familyName, email, imageUrl, googleId } = response.profileObj;
-    axios
-      .post('/login', {
-        first_name: givenName,
-        last_name: familyName,
-        email,
-        profile_pic: imageUrl,
-        host: false,
-        googleId,
-      })
-      .then((res) => {
-        res.data.id = res.data.googleId;
-        this.setState({
-          loginComplete: !this.loginComplete,
-          currentUser: res.data,
-          phone: res.data.phoneNumber,
-        });
-        this.findPhone();
-      })
-      .catch((err) => console.warn(err));
   }
 
   render() {

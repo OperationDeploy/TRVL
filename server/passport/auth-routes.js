@@ -19,7 +19,6 @@ passport.use(new GoogleStrategy({
   callbackURL: '/auth/google/redirect',
 },
 (async (accessToken, refreshToken, profile, done) => {
-  console.info('profile', profile);
   const { familyName, givenName } = profile.name;
   let user = await User.findOne({ where: { googleId: profile.id } });
   if (!user) {
@@ -41,7 +40,6 @@ router.get('/google', passport.authenticate('google', {
 
 router.get('/google/redirect', passport.authenticate('google'), (req, res) => {
   res.redirect('/');
-  res.send('You reached callback URI');
 });
 
 module.exports = router;
