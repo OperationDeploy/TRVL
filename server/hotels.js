@@ -1,9 +1,12 @@
 const axios = require('axios');
-// const Amadeus = require('amadeus');
-// const { API_KEY, API_SECRET } = require('../config');
+const Amadeus = require('amadeus');
+const { API_KEY, API_SECRET } = require('../config');
 const { GEO_API } = require('../config');
 
+let hotels;
 const getHotelsInfo = async (req, res) => {
+  const startDate = req.trip.start_date;
+  const endDate = req.trip.end_date;
   const city = req.city.slice(0, req.city.length - 4);
   let state = req.city.slice(req.city.length - 2);
   let country = 'us';
@@ -24,46 +27,37 @@ const getHotelsInfo = async (req, res) => {
       const long = response.data.data[0].longitude;
       const lat = response.data.data[0].latitude;
 
-      console.info(long, lat, res);
-      // const amadeus = new Amadeus({
-      //     clientId: API_KEY,
-      //     clientSecret: API_SECRET,
-      //   });
+      const amadeus = new Amadeus({
+        clientId: API_KEY,
+        clientSecret: API_SECRET,
+      });
 
-      //   await amadeus.shopping.flightOffersSearch
-      //     .get({
-      //       originLocationCode: 'MSY',
-      //       destinationLocationCode: 'LAX',
-      //       departureDate: '2020-09-20',
-      //       returnDate: '2020-09-28',
-      //       adults: '1',
-      //       max: '5',
-      //     })
-      //     .then((response) => {
-      //       console.info(response.data, 'DATA!!!');
-      //       hotelData = response.data;
-      //       dictionary = response.result.dictionaries;
-      //       console.info(dictionary, 'FIRST DICTIONRY!!!');
-      //       console.info(hotelData, 'HOTEL DATA!!!');
-      //     })
-
-      // .then(() => {
-      //   console.info(dictionary, 'dictionary!!!!!!!');
-      //   const price = hotelData.map((flight) => flight.price.grandTotal);
-      //   //   const carrier = 'SPIRIT AIRLINES';
-      //   // for (const key in dictionary.carriers) {
-      //   //   carrier = dictionary.carriers[key];
-      //   // }
-
-      //   let result;
-      //   for (let i = 0; i < price.length; i += 1) {
-      //     result = { price: price[i], airline: carrier };
-      //     array.push(result);
-      //   }
-      // })
-      // .catch((err) => console.warn(err));
-
-      //   return array;
+      hotels = amadeus.shopping.hotelOffers
+        .get({
+          latitude: lat,
+          longitude: long,
+          radius: 2,
+          radiusUnit: 'MILE',
+          checkInDate: startDate,
+          checkOutDate: endDate,
+          adults: '1',
+          currency: 'USD',
+          bestRateOnly: true,
+          sort: 'PRICE',
+        })
+        .then((results) => {
+          const result = results.data.map((hotel) => {
+            return {
+              hotelName: hotel.hotel.name,
+              price: hotel.offers[0].price.base,
+              rating: hotel.hotel.rating,
+            };
+          });
+          const arr = [result[0], result[1], result[2], result[3], result[4]];
+          return arr;
+        }).catch((err) => console.warn(err));
+        console.info(hotels);
+      res.send(hotels);
     })
     .catch((err) => console.warn(err));
 };

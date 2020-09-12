@@ -19,7 +19,7 @@ const Hotels = ({ currentUser, currentTrip }) => {
   const handleChange = (response, cityName) => {
     setTrip(response);
     setCity(cityName);
-    console.info(trip, city)
+    console.info(trip, city);
   };
 
   const handleChangeHotel = (response) => {
@@ -38,7 +38,6 @@ const Hotels = ({ currentUser, currentTrip }) => {
           `Grabbing ${currentUser.first_name}'s trip info for ${currentTrip.city}`,
         );
         handleChange(response.data, response.data.destination);
-        // const sliced = response.data.destination.slice(0, response.data.destination.length - 4);
         axios
           .post('/getHotels', { trip: response.data, city: response.data.destination })
           .then((results) => {
