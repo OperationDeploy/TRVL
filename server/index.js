@@ -213,7 +213,7 @@ app.post('/getFlights', authCheck, (req, res) => {
 });
 
 app.post('/getHotels', authCheck, (req, res) => {
-  getHotels(req, res);
+  getHotels(req.body, res);
 });
 
 app.post('/tripUser', authCheck, (req, res) => {

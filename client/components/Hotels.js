@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 const Hotels = ({ currentUser, currentTrip }) => {
   const [hotelData, setHotelData] = useState([]);
   const [trip, setTrip] = useState({});
+  const [city, setCity] = useState('');
 
   // const hotels = [
   //   ['Hilton', 243, 3],
@@ -15,8 +16,10 @@ const Hotels = ({ currentUser, currentTrip }) => {
   //   ['Holiday Inn', 162, 2],
   // ];
 
-  const handleChange = (response) => {
+  const handleChange = (response, cityName) => {
     setTrip(response);
+    setCity(cityName);
+    console.info(trip, city)
   };
 
   const handleChangeHotel = (response) => {
@@ -34,20 +37,19 @@ const Hotels = ({ currentUser, currentTrip }) => {
         console.info(
           `Grabbing ${currentUser.first_name}'s trip info for ${currentTrip.city}`,
         );
-        console.info(response);
-        handleChange(response.data);
-      });
-
-    axios
-      .post('/getHotels', { trip }, () => {})
-      .then((response) => {
-        console.info(response);
-        handleChangeHotel(response.data);
+        handleChange(response.data, response.data.destination);
+        // const sliced = response.data.destination.slice(0, response.data.destination.length - 4);
+        axios
+          .post('/getHotels', { trip: response.data, city: response.data.destination })
+          .then((results) => {
+            console.info(results);
+            handleChangeHotel(results.data);
+          });
       });
   }, []);
 
   if (hotelData.length === 0) {
-    return <h3>Finding the best flight prices for you...</h3>;
+    return <h3>Finding the best hotel prices for you...</h3>;
   }
 
   return (
@@ -56,14 +58,14 @@ const Hotels = ({ currentUser, currentTrip }) => {
       <p>{`Hey, ${currentUser.first_name}!`}</p>
       <p>{`Check out the cheapest hotels in ${currentTrip.city}:`}</p>
       <div>
-        <p>You should book before hot prices go up!</p>
-        <div>
+        <p>You should book before hotel prices go up!</p>
+        {/* <div>
           {hotelData.map((hotel) => (
             <div>
               <div>{`It costs $${hotel.price} to fly with ${hotel.airline}`}</div>
             </div>
           ))}
-        </div>
+        </div> */}
       </div>
     </div>
   );

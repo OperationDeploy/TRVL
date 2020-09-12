@@ -5,6 +5,7 @@ require('dotenv').config();
 const { Op } = require('sequelize');
 const { getFlightsInfo } = require('./flights');
 const { getWeather } = require('./weather');
+const { getHotelsInfo } = require('./hotels');
 
 const { generatePlaces } = require('./algo.js');
 const {
@@ -450,11 +451,9 @@ const getHotels = async (req, res) => {
 };
 
 const getFullTrip = async (req, res) => {
-  console.info(req, 'REQ');
   const trip = await Trip.findOne({
     where: { id: req.body.id },
   });
-  console.info('trip found', trip);
   res.send(trip);
 };
 
