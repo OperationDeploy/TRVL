@@ -48,7 +48,12 @@ const Hotels = ({ currentUser, currentTrip }) => {
   }, []);
 
   if (hotelData.length === 0) {
-    return <h3>Finding the best hotel prices for you...</h3>;
+    return (
+      <h3>
+        Finding the best hotel prices for you...If results do no return in 10 seconds or
+        less, please try again later
+      </h3>
+    );
   }
 
   return (
@@ -58,32 +63,18 @@ const Hotels = ({ currentUser, currentTrip }) => {
       <p>{`Check out the cheapest hotels in ${currentTrip.city}:`}</p>
       <div>
         <p>You should book before hotel prices go up!</p>
-        {/* <div>
+        <div>
           {hotelData.map((hotel) => (
             <div>
-              <div>{`It costs $${hotel.price} to fly with ${hotel.airline}`}</div>
+              <div>{`It costs $${hotel.offers[0].price.base} to stay at ${hotel.hotel.name}. It has a ${hotel.hotel.rating} start rating.`}</div>
             </div>
           ))}
-        </div> */}
+        </div>
       </div>
     </div>
   );
 };
 
-//   return (
-//     <div className="hotels-container">
-//       <Typography component="h1" variant="h2">
-//         Hotels
-//       </Typography>
-//       Based on your groups preferences and trip length, these are your top hotel choices:
-//       {hotels.map((hotel) => (
-//         <div>
-//           <div>{`${hotel[0]} $${hotel[1]}`}</div>
-//         </div>
-//       ))}
-//     </div>
-//   );
-// };
 
 Hotels.propTypes = {
   currentUser: PropTypes.shape({

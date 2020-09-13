@@ -29,25 +29,23 @@ const getHotelsInfo = async (req, res) => {
         clientId: API_KEY,
         clientSecret: API_SECRET,
       });
-      return amadeus.shopping.hotelOffers
-        .get({
-          latitude: lat,
-          longitude: long,
-          radius: 10,
-          radiusUnit: 'MILE',
-          // checkInDate: startDate,
-          // checkOutDate: endDate,
-          adults: '1',
-          currency: 'USD',
-          bestRateOnly: true,
-          sort: 'PRICE',
-          rating: [4, 3, 2],
-        });
+      return amadeus.shopping.hotelOffers.get({
+        latitude: lat,
+        longitude: long,
+        radius: 30,
+        radiusUnit: 'MILE',
+        checkInDate: startDate,
+        checkOutDate: endDate,
+        adults: '1',
+        currency: 'USD' || 'CAD',
+        sort: 'PRICE',
+      });
     })
     .then((hotelList) => {
       // console.log(hotelList);
       res.send(hotelList.data);
-    }).catch((err) => console.warn(err));
+    })
+    .catch((err) => console.warn(err));
   // const arr = [result[0], result[1], result[2], result[3], result[4]];
 };
 
