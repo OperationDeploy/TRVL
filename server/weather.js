@@ -80,23 +80,11 @@ const updateTrips = async (updated, original) => {
 };
 
 // Gets coordinates from a location string
-const getCoordinates = (location) => {
-  const destination = location.split(' ');
-  let state = destination.pop();
-  let country = 'us';
-  if (state === 'Mexico') {
-    country = 'mx';
-    state = null;
-  }
-  if (state === 'Canada') {
-    country = 'ca';
-    state = null;
-  }
-  const city = destination.join(' ');
-  const query = state ? `${city}${state},${country}` : `${city}${country}`;
-  return axios.get(
-    `http://api.positionstack.com/v1/forward?access_key=${GEO_API}&query=${query}&limit=1`,
+const getCoordinates = async (location) => {
+  const coordinates = await axios.get(
+    `https://geocoder.ls.hereapi.com/search/6.2/geocode.json?languages=en-US&maxresults=1&searchtext=${location}&apiKey=${GEO_API}`,
   );
+  return coordinates.data.Response.View[0].Result[0].Location.NavigationPosition[0];
 };
 
 // Gets weather data from array of trips
@@ -106,11 +94,8 @@ const getWeather = async (allTrips, weatherOnly = true) => {
   let weatherData;
   await Promise.all(coordinates)
     .then((res) => {
-      weatherData = res.map((response) => {
-        const { data } = response.data;
-        return axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${data[0].latitude}&lon=${data[0].longitude}&
-        exclude=minutely,hourly&appid=${WEATHER_API}`);
-      });
+      weatherData = res.map((loc) => axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${loc.Latitude}&lon=${loc.Longitude}&
+        exclude=minutely,hourly&appid=${WEATHER_API}`));
     })
     .catch((err) => console.warn(err));
   let results;

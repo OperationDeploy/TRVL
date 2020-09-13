@@ -241,7 +241,7 @@ app.post('/postMessages', authCheck, (req, res) => {
 // Twilio
 // TODO: comment back in and take out console log when demoing
 app.post('/sendTwilio', authCheck, (req, res) => {
-  console.info(req.body);
+  console.info(req.body, TWILIO_PHONE_NUMBER);
   res.send('We are not using twilio until we present our final app');
   // res.header('Content-Type', 'application/json');
   // client.messages
