@@ -56,10 +56,8 @@ const getGasPrices = async (trip, car) => {
   const mpg = await getMPG(car.year, car.make, car.model);
   const locA = await getCoordinates(trip.departure_city);
   const locB = await getCoordinates(trip.destination);
-  // const locA = departure.data.data[0];
-  // const locB = destination.data.data[0];
-  const stops = between(locA.latitude, locA.longitude, locB.latitude, locB.longitude);
-  const miles = distance(locA.latitude, locA.longitude, locB.latitude, locB.longitude) * 1.1;
+  const stops = between(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude);
+  const miles = distance(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude) * 1.1;
   console.info('the stops', stops, 'the mpg', mpg);
   const quote1 = await gasRequest(stops.lat25, stops.lon25);
   const quote2 = await gasRequest(stops.lat50, stops.lon50);
