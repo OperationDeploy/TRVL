@@ -14,7 +14,7 @@ const GasPrices = ({ currentTrip }) => {
   const submit = (car, trip) => {
     setLoading(<div> Loading...</div>);
     axios
-      .post('/gas', { car, trip: { ...trip, departure_city: 'New Orleans, LA' } })
+      .post('/gas', { car, trip })
       .then(({ data }) => {
         setLoading(null);
         if (data && data.total) {

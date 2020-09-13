@@ -17,6 +17,16 @@
 }
 .profile-pic {
   border-radius: 50%;
+  width: 100px;
+}
+
+.toolbar-pic {
+  border-radius: 50%;
+  width: 95px;
+  transform: scale(0.5);
+  position: absolute;
+  top: -20px;
+  right: -20px;
 }
 .toolbar-pic {
   border-radius: 50%;
