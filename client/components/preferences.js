@@ -5,7 +5,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -15,16 +14,25 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 import InvitesButton from './InvitesButton';
 
-const states = ['AG', 'AL', 'AK', 'AB', 'AZ', 'AR', 'BJ', 'BS', 'BC', 'CA', 'CP', 'CH', 'CI', 'CU', 'CL', 'CO',
-  'CT', 'DE', 'DC', 'DF', 'DG', 'FL', 'GA', 'GJ', 'GR', 'HI', 'HG', 'ID', 'IL', 'IN', 'IA', 'JA', 'KS', 'KY', 'LA', 'ME',
-  'MD', 'MB', 'MA', 'EM', 'MI', 'MH', 'MN', 'MS', 'MO', 'MT', 'MR', 'NA', 'NE', 'NV', 'NB', 'NH', 'NJ', 'NM', 'NY', 'NF',
-  'NC', 'ND', 'NT', 'NS', 'NL', 'NU', 'OA', 'OH', 'OK', 'ON', 'OR', 'PA', 'PE', 'PU', 'PR', 'QC', 'QA', 'QR', 'RI', 'SL',
-  'SK', 'SI', 'SO', 'SC', 'SD', 'TA', 'TM', 'TN', 'TX', 'TL', 'UT', 'VZ', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'YC', 'YT', 'ZT', 'Canada', 'Mexico'];
+const states = [
+  'Select', 'AG', 'AL', 'AK', 'AB', 'AZ', 'AR', 'BJ', 'BS', 'BC', 'CA', 'CP', 'CH', 'CI', 'CU', 'CL',
+  'CO', 'CT', 'DE', 'DC', 'DF', 'DG', 'FL', 'GA', 'GJ', 'GR', 'HI', 'HG', 'ID', 'IL', 'IN', 'IA',
+  'JA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MB', 'MA', 'EM', 'MI', 'MH', 'MN', 'MS', 'MO', 'MT',
+  'MR', 'NA', 'NE', 'NV', 'NB', 'NH', 'NJ', 'NM', 'NY', 'NF', 'NC', 'ND', 'NT', 'NS', 'NL',
+  'NU', 'OA', 'OH', 'OK', 'ON', 'OR', 'PA', 'PE', 'PU', 'PR', 'QC', 'QA', 'QR', 'RI', 'SL',
+  'SK', 'SI', 'SO', 'SC', 'SD', 'TA', 'TM', 'TN', 'TX', 'TL', 'UT', 'VZ', 'VT', 'VA', 'WA',
+  'WV', 'WI', 'WY', 'YC', 'YT', 'ZT', 'Canada', 'Mexico',
+];
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
   root: {
     width: 500,
+  },
+  textFields: {
+    '& .MuiTextField-root': {
+      width: '25ch',
+    },
   },
 });
 
@@ -137,7 +145,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
 
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className="text-inputs">
+      <div className={classes.textFields} noValidate autoComplete="off">
         <Typography variant="h2">Plan a Trip</Typography>
         <TextField
           value={name}
@@ -161,18 +169,20 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         <TextField
           id="departure-state"
           select
-          label="State"
-          value={departureState}
+          label="Departure State"
           onChange={(event) => {
             setDepartureState(event.value);
+          }}
+          SelectProps={{
+            native: true,
           }}
           variant="outlined"
           margin="normal"
         >
           {states.map((option) => (
-            <MenuItem key={option} value={option}>
+            <option key={option} value={option}>
               {option}
-            </MenuItem>
+            </option>
           ))}
         </TextField>
       </div>

@@ -29,7 +29,7 @@ import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
-import './ResponsiveDrawer.scss';
+import './ResponsiveDrawer.css';
 
 const drawerWidth = 240;
 
@@ -104,12 +104,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
   };
 
   const handleToggleChatRead = () => {
-    axios.post('/setUnread', { currentUser }).then((response) => {
-      if (response) {
-        setToggleNewMsgIcon(false);
-        setNewMsg(false);
-      }
-    }).catch((err) => console.warn(err));
+    axios
+      .post('/setUnread', { currentUser })
+      .then((response) => {
+        if (response) {
+          setToggleNewMsgIcon(false);
+          setNewMsg(false);
+        }
+      })
+      .catch((err) => console.warn(err));
   };
 
   const handleNavClick = (page) => {
@@ -269,8 +272,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
   );
 
   useEffect(() => {
-    axios.post('./newMsgs', {
-      trip: currentTrip, currentUser })
+    axios
+      .post('./newMsgs', {
+        trip: currentTrip,
+        currentUser,
+      })
       .then((response) => {
         if (response.data.length > 0) {
           setToggleNewMsgIcon(true);
@@ -413,9 +419,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
                 setClickedPage={setClickedPage}
               />
             ) : null}
-            {showChat ? (
-              <Chat currentUser={currentUser} />
-            ) : null}
+            {showChat ? <Chat currentUser={currentUser} /> : null}
           </div>
         </main>
       </div>
