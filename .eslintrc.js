@@ -16,6 +16,7 @@ module.exports = {
   },
   plugins: ['react', 'json', 'markdown'],
   rules: {
+    'react/jsx-props-no-spreading': off
     'linebreak-style': ['error', 'unix'],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'no-console': ['error', { allow: ['info', 'warn'] }],
