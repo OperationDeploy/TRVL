@@ -6,8 +6,13 @@ const cookieSession = require('cookie-session');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 
-const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN,
-  TWILIO_PHONE_NUMBER, COOKIE_KEY, PORT } = process.env;
+const {
+  TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN,
+  TWILIO_PHONE_NUMBER,
+  COOKIE_KEY,
+  PORT,
+} = process.env;
 const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const multer = require('multer');
 const cors = require('cors');
@@ -62,10 +67,12 @@ const DIST_DIR = path.join(__dirname, '../dist'); // NEW
 // parse application/json
 app.use(bodyParser.json());
 
-app.use(cookieSession({
-  maxAge: 86400000,
-  keys: [COOKIE_KEY],
-}));
+app.use(
+  cookieSession({
+    maxAge: 86400000,
+    keys: [COOKIE_KEY],
+  }),
+);
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -201,7 +208,8 @@ app.post('/getAllTrips', authCheck, (req, res) => {
 });
 
 app.post('/getFlights', authCheck, (req, res) => {
-  getFlights(req, res);
+  console.info('!!!!!', req.body, '!!!!!!!!!!');
+  getFlights(req.body, res);
 });
 
 app.post('/tripUser', authCheck, (req, res) => {

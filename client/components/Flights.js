@@ -5,34 +5,33 @@ import axios from 'axios';
 
 const Flights = ({ currentUser, currentTrip }) => {
   const [flightData, setFlightData] = useState([]);
-  const [trip, setTrip] = useState({});
+  // const [trip, setTrip] = useState({});
 
-  const handleChange = (response) => {
-    setTrip(response);
-  };
+  // const handleChange = (response) => {
+  //   setTrip(response);
+  // };
 
   const handleChangeFlight = (response) => {
     setFlightData(response);
   };
 
   useEffect(() => {
+    // axios
+    //   .post(
+    //     '/getFullTrip',
+    //     { id: currentTrip.id, googleId: currentUser.googleId },
+    //     () => {},
+    //   )
+    //   .then((res) => {
+    //     // console.info(response);
+    //     console.info(
+    //       `Grabbing ${currentUser.first_name}'s trip info for ${currentTrip.city}`,
+    //     );
+    //     console.info('trip info', res);
+    //     handleChange(res.data);
+    //   });
     axios
-      .post(
-        '/getFullTrip',
-        { id: currentTrip.id, googleId: currentUser.googleId },
-        () => {},
-      )
-      .then((res) => {
-        // console.info(response);
-        console.info(
-          `Grabbing ${currentUser.first_name}'s trip info for ${currentTrip.city}`,
-        );
-        console.info(res);
-        handleChange(res.data);
-      });
-
-    axios
-      .post('/getFlights', { trip }, () => {})
+      .post('/getFlights', { currentTrip }, () => {})
       .then((res) => {
         // console.info(response);
         console.info(res);

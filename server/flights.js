@@ -1,19 +1,38 @@
 const Amadeus = require('amadeus');
+// const axios = require('axios');
 const { API_KEY, API_SECRET } = require('../config');
+// const { GEO_API } = require('../config');
+// const { Trip } = require('./db');
 
 let flightData;
-let dictionary;
+// let dictionary;
 const array = [];
-const getFlightsInfo = async () => {
+const getFlightsInfo = async (tripInfo) => {
   // input: object with trip ID, destination
   // output: array of objects - flight info
   // array of objects - destinations: airport codes
 
+  // axios.post('/getFullTrip', { id: tripInfo.id }, (res) => {
+  //   console.info(res);
+  // });
+  console.info(tripInfo);
+  // find coordinates of destination
+  // geCoordinates func
+  // access trip
+  // const trip = await Trip.findOne({
+  //   where: { id: tripInfo.currentTrip.id },
+  // });
+  // console.info('TRIPPPPPP', trip.dataValues);
+
+  // const dest = trip.dataValues.destination;
+
+  // // get API keys
   const amadeus = new Amadeus({
     clientId: API_KEY,
     clientSecret: API_SECRET,
   });
 
+  // get Flight prices
   await amadeus.shopping.flightOffersSearch
     .get({
       originLocationCode: 'MSY',
@@ -26,11 +45,11 @@ const getFlightsInfo = async () => {
     .then((response) => {
       // console.info(response.data);
       flightData = response.data;
-      dictionary = response.result.dictionaries;
-      console.info(dictionary, 'FIRST DICTIONRY!!!');
+      // dictionary = response.result.dictionaries;
+      // console.info(dictionary, 'FIRST DICTIONRY!!!');
     })
     .then(() => {
-      console.info(dictionary, 'dictionary!!!!!!!');
+      // console.info(dictionary, 'dictionary');
       const price = flightData.map((flight) => flight.price.grandTotal);
       const carrier = 'SPIRIT AIRLINES';
       // for (const key in dictionary.carriers) {
