@@ -1,11 +1,9 @@
-/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -13,109 +11,9 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { Autocomplete } from '@material-ui/lab';
 import InvitesButton from './InvitesButton';
-
-const states = [
-  'AG',
-  'AL',
-  'AK',
-  'AB',
-  'AZ',
-  'AR',
-  'BJ',
-  'BS',
-  'BC',
-  'CA',
-  'CP',
-  'CH',
-  'CI',
-  'CU',
-  'CL',
-  'CO',
-  'CT',
-  'DE',
-  'DC',
-  'DF',
-  'DG',
-  'FL',
-  'GA',
-  'GJ',
-  'GR',
-  'HI',
-  'HG',
-  'ID',
-  'IL',
-  'IN',
-  'IA',
-  'JA',
-  'KS',
-  'KY',
-  'LA',
-  'ME',
-  'MD',
-  'MB',
-  'MA',
-  'EM',
-  'MI',
-  'MH',
-  'MN',
-  'MS',
-  'MO',
-  'MT',
-  'MR',
-  'NA',
-  'NE',
-  'NV',
-  'NB',
-  'NH',
-  'NJ',
-  'NM',
-  'NY',
-  'NF',
-  'NC',
-  'ND',
-  'NT',
-  'NS',
-  'NL',
-  'NU',
-  'OA',
-  'OH',
-  'OK',
-  'ON',
-  'OR',
-  'PA',
-  'PE',
-  'PU',
-  'PR',
-  'QC',
-  'QA',
-  'QR',
-  'RI',
-  'SL',
-  'SK',
-  'SI',
-  'SO',
-  'SC',
-  'SD',
-  'TA',
-  'TM',
-  'TN',
-  'TX',
-  'TL',
-  'UT',
-  'VZ',
-  'VT',
-  'VA',
-  'WA',
-  'WV',
-  'WI',
-  'WY',
-  'YC',
-  'YT',
-  'ZT',
-  'Canada',
-  'Mexico',
-];
+import { cities, states } from '../src/usaCities';
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -188,6 +86,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         end_date: endDate,
         departure_city: `${departureCity}, ${departureState}`,
         googleId: currentUser.googleId,
+        weather_alert: false,
       })
       .then((result) => {
         const tripId = result.data.id;
@@ -233,7 +132,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
 
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className="text-inputs">
+      <div className="text-inputs plan-a-trip">
         <Typography variant="h2">Plan a Trip</Typography>
         <TextField
           value={name}
@@ -244,33 +143,33 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           margin="normal"
         />
         <br />
-        <TextField
-          value={departureCity}
-          id="departure-city"
-          label="Departure City"
-          variant="outlined"
-          onChange={(event) => {
-            setDepartureCity(event.target.value);
-          }}
-          margin="normal"
-        />
-        <TextField
-          id="departure-state"
-          select
-          label="State"
-          value={departureState}
-          onChange={(event) => {
-            setDepartureState(event.value);
-          }}
-          variant="outlined"
-          margin="normal"
-        >
-          {states.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
+        <div>
+        <Autocomplete
+            id="departure-state"
+            onChange={(_, state) => {
+              setDepartureState(state);
+            }}
+            options={states}
+            getOptionLabel={(option) => option}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+        <TextField {...params} label="Departure State" variant="outlined" />
+            )}/>
+        </div>
+        <div>
+        <Autocomplete
+            id="departure-city"
+            onChange={(_, city) => {
+              setDepartureCity(city);
+            }}
+            key={departureState}
+            options={cities[departureState]}
+            getOptionLabel={(option) => option}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+        <TextField {...params} label="Departure City" variant="outlined" />
+            )}/>
+        </div>
       </div>
 
       <div className={classes.root}>
