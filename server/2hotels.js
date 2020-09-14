@@ -1,7 +1,7 @@
-const axios = require('axios');
 require('dotenv').config();
 
-const HOTEL_API = 'fd3e8d4c5cmshde40c89514f3e56p1c5e67jsn80df48e46993';
+const { HOTEL_API } = process.env;
+const axios = require('axios');
 
 // LOCATION LOOKUP AUTOCOMPLETE
 const idLookup = async (location) => {
