@@ -76,8 +76,8 @@ const GasPrices = ({ currentTrip }) => {
 
   return (
     <div>
-      <Typography component="h1" variant="h2">
-        Select Your Car
+      <Typography component="h4" variant="h4">
+        Car Select:
       </Typography>
       <div className="activity-form-container">
         <form
