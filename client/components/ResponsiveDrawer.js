@@ -276,7 +276,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
           setToggleNewMsgIcon(true);
           setNewMsg(true);
         }
-      })
+      }, [])
       .catch((err) => console.warn(err));
     const timer = setTimeout(() => {
       setCount(count + 1);
