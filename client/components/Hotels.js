@@ -8,14 +8,6 @@ const Hotels = ({ currentUser, currentTrip }) => {
   const [trip, setTrip] = useState({});
   const [city, setCity] = useState('');
 
-  // const hotels = [
-  //   ['Hilton', 243, 3],
-  //   ['Sheraton', 278, 4],
-  //   ['Ramada', 197, 2],
-  //   ['Marriott', 310, 4],
-  //   ['Holiday Inn', 162, 2],
-  // ];
-
   const handleChange = (response, cityName) => {
     setTrip(response);
     setCity(cityName);
@@ -43,14 +35,15 @@ const Hotels = ({ currentUser, currentTrip }) => {
           .then((results) => {
             console.info(results);
             handleChangeHotel(results.data);
-          });
+          })
+          .catch((err) => console.warn(err));
       });
   }, []);
 
   if (hotelData.length === 0) {
     return (
       <h3>
-        Finding the best hotel prices for you...If results do no return in 10 seconds or
+        Finding the best hotel prices for you...If results do no return in 20 seconds or
         less, please try again later
       </h3>
     );
@@ -64,17 +57,21 @@ const Hotels = ({ currentUser, currentTrip }) => {
       <div>
         <p>You should book before hotel prices go up!</p>
         <div>
-          {hotelData.map((hotel) => (
-            <div>
-              <div>{`It costs $${hotel.offers[0].price.base} to stay at ${hotel.hotel.name}. It has a ${hotel.hotel.rating} start rating.`}</div>
-            </div>
-          ))}
+          {hotelData.map((hotel) => {
+            if (hotel.offers[0].price.base && hotel.hotel.name && hotel.hotel.rating) {
+              return (
+                <div>
+                  <div>{`It costs $${hotel.offers[0].price.base} to stay at ${hotel.hotel.name}. It has a ${hotel.hotel.rating} start rating.`}</div>
+                </div>
+              );
+            }
+            return null;
+          })}
         </div>
       </div>
     </div>
   );
 };
-
 
 Hotels.propTypes = {
   currentUser: PropTypes.shape({
