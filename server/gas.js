@@ -34,8 +34,10 @@ const getMPG = async (year, make, model) => {
     `https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${year}&make=${make}&model=${model}`,
   );
   let mpg = 25.1;
-  if (car && car.data && car.data.menuItem && car.data.menuItem[0]) {
-    let mpgs = car.data.menuItem.map(async (item) => (
+  if (car && car.data && car.data.menuItem) {
+    let { menuItem } = car.data;
+    menuItem = Array.isArray(menuItem) ? menuItem : [menuItem];
+    let mpgs = menuItem.map(async (item) => (
       axios.get(`https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${item.value}`)));
     await Promise.all(mpgs)
       .then((res) => {
@@ -48,7 +50,7 @@ const getMPG = async (year, make, model) => {
       }
     }
   }
-  console.info('the car', car.data.menuItem[0]);
+  console.info('the car', car);
   return mpg;
 };
 
@@ -57,8 +59,7 @@ const getGasPrices = async (trip, car) => {
   const locA = await getCoordinates(trip.departure_city);
   const locB = await getCoordinates(trip.destination);
   const stops = between(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude);
-  const miles = distance(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude) * 1.1;
-  console.info('the stops', stops, 'the mpg', mpg);
+  const miles = distance(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude) * 1.2;
   const quote1 = await gasRequest(stops.lat25, stops.lon25);
   const quote2 = await gasRequest(stops.lat50, stops.lon50);
   const quote3 = await gasRequest(stops.lat75, stops.lon75);
