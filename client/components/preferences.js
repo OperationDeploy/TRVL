@@ -1,11 +1,9 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-// import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -134,7 +132,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
 
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className="text-inputs">
+      <div className="text-inputs plan-a-trip">
         <Typography variant="h2">Plan a Trip</Typography>
         <TextField
           value={name}
@@ -147,10 +145,10 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         <br />
         <div>
         <Autocomplete
+            id="departure-state"
             onChange={(_, state) => {
               setDepartureState(state);
             }}
-            id="departure-state"
             options={states}
             getOptionLabel={(option) => option}
             style={{ width: 300 }}
@@ -160,11 +158,11 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         </div>
         <div>
         <Autocomplete
+            id="departure-city"
             onChange={(_, city) => {
               setDepartureCity(city);
             }}
             key={departureState}
-            id="departure-city"
             options={cities[departureState]}
             getOptionLabel={(option) => option}
             style={{ width: 300 }}

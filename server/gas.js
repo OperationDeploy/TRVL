@@ -50,7 +50,6 @@ const getMPG = async (year, make, model) => {
       }
     }
   }
-  console.info('the car', car);
   return mpg;
 };
 

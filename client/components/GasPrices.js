@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -75,25 +74,23 @@ const GasPrices = ({ currentTrip }) => {
   }
 
   return (
-    <div>
-      <Typography component="h4" variant="h4">
-        Car Select:
-      </Typography>
-      <div className="activity-form-container">
+      <div className="activity-form-container gas-prices">
+        <Typography component="h4" variant="h4">
+          Car Select:
+        </Typography>
         <form
           onSubmit={(event) => {
             event.preventDefault();
             submit();
           }}
         >
-          <div className="gas-prices">
+          <div>
             <Autocomplete
+              id="year"
               onChange={(_, year) => getMakes(year)}
               key={years}
-              id="year"
               options={years}
               getOptionLabel={(option) => option}
-              style={{ width: 300 }}
               renderInput={(params) => (
               <TextField key={years} {...params} label="Year" variant="outlined" />
               )}
@@ -101,12 +98,11 @@ const GasPrices = ({ currentTrip }) => {
           </div>
           <div>
             <Autocomplete
+              id="make"
               onChange={(_, model) => getModels(model)}
               key={makes}
-              id="make"
               options={makes}
               getOptionLabel={(option) => option}
-              style={{ width: 300 }}
               renderInput={(params) => (
               <TextField key={makes} {...params} label="Make" variant="outlined" />
               )}
@@ -114,44 +110,16 @@ const GasPrices = ({ currentTrip }) => {
           </div>
           <div>
             <Autocomplete
+              id="model"
               onChange={(_, model) => setCar({ ...car, model })}
               key={models}
-              id="model"
               options={models}
               getOptionLabel={(option) => option}
-              style={{ width: 300 }}
               renderInput={(params) => (
               <TextField key={models} {...params} label="Model" variant="outlined" />
               )}
             />
           </div>
-          {/* <TextField
-            value={value.year}
-            variant="outlined"
-            placeholder="Year"
-            onChange={(event) => {
-              setValue({ ...value, year: event.target.value });
-            }}
-            margin="normal"
-          />
-          <TextField
-            value={value.make}
-            variant="outlined"
-            placeholder="Make"
-            onChange={(event) => {
-              setValue({ ...value, make: event.target.value });
-            }}
-            margin="normal"
-          />
-          <TextField
-            value={value.model}
-            variant="outlined"
-            placeholder="Model"
-            onChange={(event) => {
-              setValue({ ...value, model: event.target.value });
-            }}
-            margin="normal"
-          /> */}
           <Button
             variant="contained"
             component="label"
@@ -163,7 +131,6 @@ const GasPrices = ({ currentTrip }) => {
             Submit
           </Button>
         </form>
-      </div>
       {loading || display}
     </div>
   );
