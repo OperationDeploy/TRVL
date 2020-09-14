@@ -1,11 +1,11 @@
-/* eslint-disable max-len */
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import MenuItem from '@material-ui/core/MenuItem';
+// import MenuItem from '@material-ui/core/MenuItem';
 import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
@@ -13,13 +13,9 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import { Autocomplete } from '@material-ui/lab';
 import InvitesButton from './InvitesButton';
-
-const states = ['AG', 'AL', 'AK', 'AB', 'AZ', 'AR', 'BJ', 'BS', 'BC', 'CA', 'CP', 'CH', 'CI', 'CU', 'CL', 'CO',
-  'CT', 'DE', 'DC', 'DF', 'DG', 'FL', 'GA', 'GJ', 'GR', 'HI', 'HG', 'ID', 'IL', 'IN', 'IA', 'JA', 'KS', 'KY', 'LA', 'ME',
-  'MD', 'MB', 'MA', 'EM', 'MI', 'MH', 'MN', 'MS', 'MO', 'MT', 'MR', 'NA', 'NE', 'NV', 'NB', 'NH', 'NJ', 'NM', 'NY', 'NF',
-  'NC', 'ND', 'NT', 'NS', 'NL', 'NU', 'OA', 'OH', 'OK', 'ON', 'OR', 'PA', 'PE', 'PU', 'PR', 'QC', 'QA', 'QR', 'RI', 'SL',
-  'SK', 'SI', 'SO', 'SC', 'SD', 'TA', 'TM', 'TN', 'TX', 'TL', 'UT', 'VZ', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY', 'YC', 'YT', 'ZT', 'Canada', 'Mexico'];
+import { cities, states } from '../src/usaCities';
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
@@ -149,33 +145,33 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           margin="normal"
         />
         <br />
-        <TextField
-          value={departureCity}
-          id="departure-city"
-          label="Departure City"
-          variant="outlined"
-          onChange={(event) => {
-            setDepartureCity(event.target.value);
-          }}
-          margin="normal"
-        />
-        <TextField
-          id="departure-state"
-          select
-          label="State"
-          value={departureState}
-          onChange={(event) => {
-            setDepartureState(event.value);
-          }}
-          variant="outlined"
-          margin="normal"
-        >
-          {states.map((option) => (
-            <MenuItem key={option} value={option}>
-              {option}
-            </MenuItem>
-          ))}
-        </TextField>
+        <div>
+        <Autocomplete
+            onChange={(_, state) => {
+              setDepartureState(state);
+            }}
+            id="departure-state"
+            options={states}
+            getOptionLabel={(option) => option}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+        <TextField {...params} label="Departure State" variant="outlined" />
+            )}/>
+        </div>
+        <div>
+        <Autocomplete
+            onChange={(_, city) => {
+              setDepartureCity(city);
+            }}
+            key={departureState}
+            id="departure-city"
+            options={cities[departureState]}
+            getOptionLabel={(option) => option}
+            style={{ width: 300 }}
+            renderInput={(params) => (
+        <TextField {...params} label="Departure City" variant="outlined" />
+            )}/>
+        </div>
       </div>
 
       <div className={classes.root}>
