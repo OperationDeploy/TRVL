@@ -22,6 +22,8 @@ const isWithinRange = (trip) => {
   return end >= 0 && start <= 7;
 };
 
+let lastAlert;
+
 // Finds users on trips and alerts them of bad weather
 const alertUsersOnTrips = async (trips) => {
   const userTrip = {};
@@ -63,6 +65,7 @@ Check TRVL app for more info.`,
     });
   });
   Promise.all(notifications);
+  lastAlert = Date.now();
 };
 
 // Updates trips in database with weather alert boolean
@@ -76,7 +79,10 @@ const updateTrips = async (updated, original) => {
   ));
 
   await Promise.all(updateDB);
-  alertUsersOnTrips(trips);
+
+  if (!lastAlert || (Date.now() - lastAlert) >= 43200000) {
+    alertUsersOnTrips(trips);
+  }
 };
 
 // Gets coordinates from a location string

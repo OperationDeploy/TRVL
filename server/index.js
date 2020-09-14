@@ -274,7 +274,7 @@ app.get('/weatherUpdate', (req, res) => {
   res.sendStatus(200);
 });
 
-setInterval(weatherUpdate, 43200000);
+setInterval(weatherUpdate, 21600000);
 
 app.use(express.static('public'));
 app.use('/', express.static(DIST_DIR));
