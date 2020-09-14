@@ -22,12 +22,18 @@ const distance = (lat1, lon1, lat2, lon2) => {
   return 12742 * Math.asin(Math.sqrt(a)) * 0.62137;
 };
 
-const gasRequest = (lat, lon) => axios.get(`http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon.toFixed(6)}&lat=${lat.toFixed(6)}`, {
-  headers: {
-    'content-type': 'application/json',
-    authorization: GAS_API,
-  },
-});
+const gasRequest = (lat, lon) =>
+  axios.get(
+    `http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon.toFixed(
+      6,
+    )}&lat=${lat.toFixed(6)}`,
+    {
+      headers: {
+        'content-type': 'application/json',
+        authorization: GAS_API,
+      },
+    },
+  );
 
 const getMPG = async (year, make, model) => {
   const car = await axios.get(
@@ -37,12 +43,14 @@ const getMPG = async (year, make, model) => {
   if (car && car.data && car.data.menuItem) {
     let { menuItem } = car.data;
     menuItem = Array.isArray(menuItem) ? menuItem : [menuItem];
-    let mpgs = menuItem.map(async (item) => (
-      axios.get(`https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${item.value}`)));
-    await Promise.all(mpgs)
-      .then((res) => {
-        mpgs = res;
-      });
+    let mpgs = menuItem.map(async (item) =>
+      axios.get(
+        `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${item.value}`,
+      ),
+    );
+    await Promise.all(mpgs).then((res) => {
+      mpgs = res;
+    });
     for (let i = 0; i < mpgs.length; i += 1) {
       if (mpgs[i].data.avgMpg) {
         mpg = mpgs[i].data.avgMpg;
@@ -58,7 +66,8 @@ const getGasPrices = async (trip, car) => {
   const locA = await getCoordinates(trip.departure_city);
   const locB = await getCoordinates(trip.destination);
   const stops = between(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude);
-  const miles = distance(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude) * 1.2;
+  const miles =
+    distance(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude) * 1.2;
   const quote1 = await gasRequest(stops.lat25, stops.lon25);
   const quote2 = await gasRequest(stops.lat50, stops.lon50);
   const quote3 = await gasRequest(stops.lat75, stops.lon75);

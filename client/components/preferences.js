@@ -144,7 +144,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         />
         <br />
         <div>
-        <Autocomplete
+          <Autocomplete
             id="departure-state"
             onChange={(_, state) => {
               setDepartureState(state);
@@ -153,11 +153,12 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
             getOptionLabel={(option) => option}
             style={{ width: 300 }}
             renderInput={(params) => (
-        <TextField {...params} label="Departure State" variant="outlined" />
-            )}/>
+              <TextField {...params} label="Departure State" variant="outlined" />
+            )}
+          />
         </div>
         <div>
-        <Autocomplete
+          <Autocomplete
             id="departure-city"
             onChange={(_, city) => {
               setDepartureCity(city);
@@ -167,8 +168,9 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
             getOptionLabel={(option) => option}
             style={{ width: 300 }}
             renderInput={(params) => (
-        <TextField {...params} label="Departure City" variant="outlined" />
-            )}/>
+              <TextField {...params} label="Departure City" variant="outlined" />
+            )}
+          />
         </div>
       </div>
 
