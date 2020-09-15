@@ -5,6 +5,7 @@ require('dotenv').config();
 const { Op } = require('sequelize');
 const { getFlightsInfo } = require('./flights');
 const { getWeather } = require('./weather');
+const { getHotelsInfo } = require('./hotels');
 
 const { generatePlaces } = require('./algo.js');
 const {
@@ -444,19 +445,22 @@ const getFlights = async (req, res) => {
   res.send(flightsInfo);
 };
 
+const getHotels = async (req, res) => {
+  const hotelsInfo = await getHotelsInfo(req, res);
+  res.send(hotelsInfo);
+};
+
 const getFullTrip = async (req, res) => {
-  console.info(req, 'REQ');
   const trip = await Trip.findOne({
     where: { id: req.body.id },
   });
-  console.info('trip found', trip);
   res.send(trip);
 };
 
 const setRead = async (req, res) => {
-  const unreadMsg = await Message.findAll(
-    { where: { unread: true, [Op.not]: [{ user_google_id: req.currentUser.googleId }] } }
-  );
+  const unreadMsg = await Message.findAll({
+    where: { unread: true, [Op.not]: [{ user_google_id: req.currentUser.googleId }] },
+  });
   const setReadMsg = unreadMsg.forEach((msg) => {
     msg.update({ unread: false });
   });
@@ -465,19 +469,20 @@ const setRead = async (req, res) => {
 
 const newMsgs = async (req, res) => {
   const tripsArr = [];
-  await TripUser.findAll(
-    { where: { user_id: req.currentUser.googleId } }
-  ).then((response) => {
-    response.forEach((trip) => {
-      tripsArr.push(trip.dataValues.trip_id);
-    });
-  });
-  const findNew = await Message.findAll(
-    { where: {
+  await TripUser.findAll({ where: { user_id: req.currentUser.googleId } }).then(
+    (response) => {
+      response.forEach((trip) => {
+        tripsArr.push(trip.dataValues.trip_id);
+      });
+    },
+  );
+  const findNew = await Message.findAll({
+    where: {
       unread: true,
       user_google_id: { [Op.not]: req.currentUser.googleId },
-      trip_id: { [Op.or]: tripsArr } } }
-  ).catch((err) => console.warn(err));
+      trip_id: { [Op.or]: tripsArr },
+    },
+  }).catch((err) => console.warn(err));
   res.send(findNew);
 };
 
@@ -497,6 +502,7 @@ module.exports = {
   getAllOtherUsers,
   getTripNames,
   getPhotos,
+  getHotels,
   getAllTrips,
   getFlights,
   inviteAllOtherUsers,

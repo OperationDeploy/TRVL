@@ -17,8 +17,8 @@ module.exports = {
   plugins: ['react', 'json', 'markdown'],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
-    'react/jsx-props-no-spreading': off,
-    'linebreak-style': off,
+    'react/jsx-props-no-spreading': 'off',
+    'linebreak-style': 'off',
     'no-console': ['error', { allow: ['info', 'warn'] }],
     semi: ['error', 'always'],
     'func-style': ['error', 'expression'],

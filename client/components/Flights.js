@@ -23,7 +23,6 @@ const Flights = ({ currentUser, currentTrip }) => {
         () => {},
       )
       .then((res) => {
-        // console.info(response);
         console.info(
           `Grabbing ${currentUser.first_name}'s trip info for ${currentTrip.city}`,
         );
