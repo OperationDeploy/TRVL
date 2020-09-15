@@ -1,85 +1,86 @@
 const Amadeus = require('amadeus');
-// const axios = require('axios');
 const { API_KEY, API_SECRET } = require('../config');
-// const { GEO_API } = require('../config');
-// const { Trip } = require('./db');
+const { Trip } = require('./db');
+const { getCoordinates } = require('./weather');
 
-let flightData;
-// let dictionary;
-const array = [];
 const getFlightsInfo = async (tripInfo) => {
   // input: object with trip ID, destination
   // output: array of objects - flight info
   // array of objects - destinations: airport codes
 
-  // axios.post('/getFullTrip', { id: tripInfo.id }, (res) => {
-  //   console.info(res);
-  // });
-  console.info(tripInfo);
+  let flightData;
+  // let dictionary;
+  const array = [];
+  let iataCodeDestination;
+  let carrierCode;
+
+  // access trip
+  const trip = await Trip.findOne({
+    where: { id: tripInfo.currentTrip.id },
+  });
+
+  const dest = trip.dataValues.destination;
+
   // find coordinates of destination
   // geCoordinates func
-  // access trip
-  // const trip = await Trip.findOne({
-  //   where: { id: tripInfo.currentTrip.id },
-  // });
-  // console.info('TRIPPPPPP', trip.dataValues);
-
-  // const dest = trip.dataValues.destination;
-
-  // // get API keys
+  // Gets coordinates from a location string
+  const coordinates = await getCoordinates(dest);
+  const long = coordinates.Longitude;
+  const lat = coordinates.Latitude;
+  // console.info('lat:', lat);
+  // console.info(';ong', long);
+  // get API keys
   const amadeus = new Amadeus({
     clientId: API_KEY,
     clientSecret: API_SECRET,
   });
 
+  // get airport iata code
+
+  await amadeus.referenceData.locations.airports
+    .get({
+      longitude: long,
+      latitude: lat,
+    })
+    .then((response) => {
+      iataCodeDestination = response.data[0].iataCode;
+    })
+    .catch((response) => {
+      console.warn(response);
+    });
+
   // get Flight prices
   await amadeus.shopping.flightOffersSearch
     .get({
       originLocationCode: 'MSY',
-      destinationLocationCode: 'LAX',
-      departureDate: '2020-09-20',
-      returnDate: '2020-09-28',
+      destinationLocationCode: iataCodeDestination,
+      departureDate: trip.dataValues.start_date,
+      returnDate: trip.dataValues.end_date,
       adults: '1',
       max: '5',
     })
     .then((response) => {
-      // console.info(response.data);
+      // console.info(
+      //   'flight data!!!!!!',
+      //   response.data[0].itineraries[0].segments[0].carrierCode,
+      // );
+      carrierCode = response.data[0].itineraries[0].segments[0].carrierCode;
       flightData = response.data;
       // dictionary = response.result.dictionaries;
-      // console.info(dictionary, 'FIRST DICTIONRY!!!');
     })
     .then(() => {
-      // console.info(dictionary, 'dictionary');
       const price = flightData.map((flight) => flight.price.grandTotal);
-      const carrier = 'SPIRIT AIRLINES';
+      // const carrier = 'SPIRIT AIRLINES';
       // for (const key in dictionary.carriers) {
       //   carrier = dictionary.carriers[key];
       // }
 
       let result;
       for (let i = 0; i < price.length; i += 1) {
-        result = { price: price[i], airline: carrier };
+        result = { price: price[i], airline: carrierCode };
         array.push(result);
       }
 
-      // .get(
-      //     'https://test.api.amadeus.com/v2/shopping/flight-offers',
-
-      //     {
-      //       params: {
-      //         access_token: '9BAnvWXyjKuZFgOJC2SmYceUsuTb',
-      //         client_id: 'rfNXlbNx2n1u9N5eSINqsFoSrTRrIUmL',
-      //         client_secret: 'r9HEL895nhlLQSdC',
-      //         originLocationCode: 'MSY',
-      //         destinationLocationCode: 'LAX',
-      //         departureDate: '2020-09-28',
-      //         returnDate: '2020-09-28',
-      //         adults: '1',
-      //         max: '5',
-      //       },
-      //     },
-      //     (req, res) => {},
-      //   );
       // get flight info:
       // axios call to API for flight info
       // origin, destination, dates
@@ -95,7 +96,7 @@ const getFlightsInfo = async (tripInfo) => {
     })
     .catch((err) => console.warn(err));
 
-  return array;
+  return array.slice(0, 5);
 };
 
 module.exports = {
