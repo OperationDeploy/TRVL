@@ -11,14 +11,121 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { Autocomplete } from '@material-ui/lab';
+// import { Autocomplete } from '@material-ui/lab';
 import InvitesButton from './InvitesButton';
-import { cities, states } from '../src/usaCities';
+
+const states = [
+  'Select',
+  'AG',
+  'AL',
+  'AK',
+  'AB',
+  'AZ',
+  'AR',
+  'BJ',
+  'BS',
+  'BC',
+  'CA',
+  'CP',
+  'CH',
+  'CI',
+  'CU',
+  'CL',
+  'CO',
+  'CT',
+  'DE',
+  'DC',
+  'DF',
+  'DG',
+  'FL',
+  'GA',
+  'GJ',
+  'GR',
+  'HI',
+  'HG',
+  'ID',
+  'IL',
+  'IN',
+  'IA',
+  'JA',
+  'KS',
+  'KY',
+  'LA',
+  'ME',
+  'MD',
+  'MB',
+  'MA',
+  'EM',
+  'MI',
+  'MH',
+  'MN',
+  'MS',
+  'MO',
+  'MT',
+  'MR',
+  'NA',
+  'NE',
+  'NV',
+  'NB',
+  'NH',
+  'NJ',
+  'NM',
+  'NY',
+  'NF',
+  'NC',
+  'ND',
+  'NT',
+  'NS',
+  'NL',
+  'NU',
+  'OA',
+  'OH',
+  'OK',
+  'ON',
+  'OR',
+  'PA',
+  'PE',
+  'PU',
+  'PR',
+  'QC',
+  'QA',
+  'QR',
+  'RI',
+  'SL',
+  'SK',
+  'SI',
+  'SO',
+  'SC',
+  'SD',
+  'TA',
+  'TM',
+  'TN',
+  'TX',
+  'TL',
+  'UT',
+  'VZ',
+  'VT',
+  'VA',
+  'WA',
+  'WV',
+  'WI',
+  'WY',
+  'YC',
+  'YT',
+  'ZT',
+  'Canada',
+  'Mexico',
+];
 
 // adjusts the width of the preferences sliders
 const useStyles = makeStyles({
   root: {
     width: 500,
+  },
+  textFields: {
+    '& .MuiTextField-root': {
+      width: '25ch',
+    },
   },
 });
 
@@ -132,8 +239,10 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
 
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className="text-inputs plan-a-trip">
-        <Typography variant="h5">Plan a Trip</Typography>
+      <div className={classes.textFields} noValidate autoComplete="off">
+        <Typography component="h1" variant="h2">
+          Plan a Trip
+        </Typography>
         <TextField
           value={name}
           id="trip-name"
@@ -143,35 +252,35 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           margin="normal"
         />
         <br />
-        <div>
-          <Autocomplete
-            id="departure-state"
-            onChange={(_, state) => {
-              setDepartureState(state);
-            }}
-            options={states}
-            getOptionLabel={(option) => option}
-            style={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Departure State" variant="outlined" />
-            )}
-          />
-        </div>
-        <div>
-          <Autocomplete
-            id="departure-city"
-            onChange={(_, city) => {
-              setDepartureCity(city);
-            }}
-            key={departureState}
-            options={cities[departureState]}
-            getOptionLabel={(option) => option}
-            style={{ width: 300 }}
-            renderInput={(params) => (
-              <TextField {...params} label="Departure City" variant="outlined" />
-            )}
-          />
-        </div>
+        <TextField
+          value={departureCity}
+          id="departure-city"
+          label="Departure City"
+          variant="outlined"
+          onChange={(event) => {
+            setDepartureCity(event.target.value);
+          }}
+          margin="normal"
+        />
+        <TextField
+          id="departure-state"
+          select
+          label="Departure State"
+          onChange={(event) => {
+            setDepartureState(event.value);
+          }}
+          SelectProps={{
+            native: true,
+          }}
+          variant="outlined"
+          margin="normal"
+        >
+          {states.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </TextField>
       </div>
 
       <div className={classes.root}>
@@ -208,7 +317,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
       </div>
       <div className={classes.root}>
         <Typography id="continuous-slider" gutterBottom>
-          Preferences:
+          Select Destination Preferences:
         </Typography>
         <Grid container spacing={2}>
           Temperature

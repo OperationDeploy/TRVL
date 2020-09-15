@@ -29,13 +29,14 @@ import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
-import './ResponsiveDrawer.scss';
+import './ResponsiveDrawer.css';
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+    textAlign: 'center',
   },
   drawer: {
     [theme.breakpoints.up('sm')]: {
@@ -55,7 +56,6 @@ const useStyles = makeStyles((theme) => ({
       display: 'none',
     },
   },
-  // necessary for content to be below app bar
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
+const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
   const classes = useStyles();
   const theme = createMuiTheme({
     palette: {
@@ -157,11 +157,10 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
     <div>
       <div className={classes.toolbar} />
       <List>
-        {['HOME'].map((text) => (
+        {['Home'].map((text) => (
           <ListItem
             button
             onClick={() => {
-              console.info(showHome);
               setClickedPage(null);
               handleNavClick('home');
               setMobileOpen(false);
@@ -313,7 +312,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
   const container = window !== undefined ? () => window.document.body : undefined;
 
   const landingPage = (
-    <div style={{ textAlign: 'center', justifyContent: 'center' }}>
+    <div className="landing-page">
       <img
         src={currentUser.profile_pic}
         alt="user loaded from google login"
@@ -343,7 +342,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
         <CssBaseline />
         <AppBar
           position="fixed"
-          styles={{ background: 'secondary', boxShadow: 'none' }}
           className={classes.appBar}
         >
           <Toolbar>
@@ -367,7 +365,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
           </Toolbar>
         </AppBar>
         <nav className={classes.drawer} aria-label="mailbox folders">
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
           <Hidden smUp implementation="css">
             <Drawer
               container={container}
@@ -379,7 +376,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
                 paper: classes.drawerPaper,
               }}
               ModalProps={{
-                keepMounted: true, // Better open performance on mobile.
+                keepMounted: true,
               }}
             >
               {drawer}
@@ -445,6 +442,11 @@ ResponsiveDrawer.propTypes = {
     start_date: PropTypes.string,
     end_date: PropTypes.string,
   }).isRequired,
+  window: PropTypes.oneOfType([
+    PropTypes.func,
+    PropTypes.shape({
+      current: PropTypes.instanceOf(Element) }),
+  ]).isRequired,
 };
 
 export default ResponsiveDrawer;
