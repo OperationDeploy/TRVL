@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import { Button, CircularProgress } from '@material-ui/core';
 import { Autocomplete } from '@material-ui/lab';
 import PropTypes from 'prop-types';
 import axios from 'axios';
@@ -43,7 +43,7 @@ const GasPrices = ({ currentTrip }) => {
   const submit = () => {
     const { year, make, model } = car;
     if (year.length && make.length && model.length) {
-      setLoading(<div> Loading...</div>);
+      setLoading(<CircularProgress />);
       axios.post('/gas', { car, trip: currentTrip })
         .then(({ data }) => {
           setLoading(null);
