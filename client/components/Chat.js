@@ -27,7 +27,9 @@ const Chat = ({ currentUser, newMsgs }) => {
   }, []);
 
   if (clicked) {
-    return <ChatRoom currentTrip={currentTrip} newMsgs={newMsgs} currentUser={currentUser} />;
+    return (
+      <ChatRoom currentTrip={currentTrip} newMsgs={newMsgs} currentUser={currentUser} />
+    );
   }
 
   if (trips.length === 0) {

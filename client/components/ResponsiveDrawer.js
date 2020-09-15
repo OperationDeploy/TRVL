@@ -421,7 +421,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
                 setClickedPage={setClickedPage}
               />
             ) : null}
-            {showChat ? <Chat currentUser={currentUser} newMsgs={() => newMsgs()} /> : null}
+            {showChat ? (
+              <Chat currentUser={currentUser} newMsgs={() => newMsgs()} />
+            ) : null}
           </div>
         </main>
       </div>
