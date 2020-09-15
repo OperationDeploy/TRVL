@@ -1,4 +1,3 @@
-/* eslint-disable implicit-arrow-linebreak */
 const axios = require('axios');
 const { getCoordinates } = require('./weather');
 const { GAS_API } = require('../config');
@@ -24,35 +23,51 @@ const distance = (lat1, lon1, lat2, lon2) => {
 };
 
 const gasRequest = (lat, lon) =>
-  axios.get(`http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon}&lat=${lat}`, {
-    headers: {
-      'content-type': 'application/json',
-      authorization: GAS_API,
+  axios.get(
+    `http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon.toFixed(
+      6,
+    )}&lat=${lat.toFixed(6)}`,
+    {
+      headers: {
+        'content-type': 'application/json',
+        authorization: GAS_API,
+      },
     },
-  });
+  );
 
 const getMPG = async (year, make, model) => {
   const car = await axios.get(
     `https://www.fueleconomy.gov/ws/rest/vehicle/menu/options?year=${year}&make=${make}&model=${model}`,
   );
-  let mpg = { data: { avgMpg: 25.1 } };
+  let mpg = 25.1;
   if (car && car.data && car.data.menuItem) {
-    mpg = await axios.get(
-      `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${car.data.menuItem[1].value}`,
+    let { menuItem } = car.data;
+    menuItem = Array.isArray(menuItem) ? menuItem : [menuItem];
+    let mpgs = menuItem.map(async (item) =>
+      axios.get(
+        `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${item.value}`,
+      ),
     );
+    await Promise.all(mpgs).then((res) => {
+      mpgs = res;
+    });
+    for (let i = 0; i < mpgs.length; i += 1) {
+      if (mpgs[i].data.avgMpg) {
+        mpg = mpgs[i].data.avgMpg;
+        break;
+      }
+    }
   }
-  return mpg.data.avgMpg;
+  return mpg;
 };
 
 const getGasPrices = async (trip, car) => {
   const mpg = await getMPG(car.year, car.make, car.model);
-  const departure = await getCoordinates(trip.departure_city);
-  const destination = await getCoordinates(trip.destination);
-  const locA = departure.data.data[0];
-  const locB = destination.data.data[0];
-  const stops = between(locA.latitude, locA.longitude, locB.latitude, locB.longitude);
+  const locA = await getCoordinates(trip.departure_city);
+  const locB = await getCoordinates(trip.destination);
+  const stops = between(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude);
   const miles =
-    distance(locA.latitude, locA.longitude, locB.latitude, locB.longitude) * 1.1;
+    distance(locA.Latitude, locA.Longitude, locB.Latitude, locB.Longitude) * 1.2;
   const quote1 = await gasRequest(stops.lat25, stops.lon25);
   const quote2 = await gasRequest(stops.lat50, stops.lon50);
   const quote3 = await gasRequest(stops.lat75, stops.lon75);

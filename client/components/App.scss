@@ -1,40 +1,39 @@
+$myColor:#24255f;
+
 .welcome-message {
   text-align: center;
   align-items: center;
-  justify-content: 'center';
+  justify-content: 'center'
 }
-.trip-button {
+
+.trip-container {
   text-align: center;
   align-items: center;
   justify-content: 'center';
-  overflow: 'visible';
+  overflow:'visible';
+  float:'right';
 }
+
 .pat-container {
   text-align: center;
   align-items: center;
   justify-content: 'center';
 }
+
 .profile-pic {
   border-radius: 50%;
-  width: 100px;
 }
 
 .toolbar-pic {
   border-radius: 50%;
-  width: 95px;
   transform: scale(0.5);
   position: absolute;
   top: -20px;
   right: -20px;
 }
-.toolbar-pic {
-  border-radius: 50%;
-  transform: scale(0.5);
-  position: absolute;
-  top: -20px;
-  right: -20px;
-}
-input[type='file'] {
+
+
+input[type=file] {
   display: none;
 }
 
@@ -58,4 +57,3 @@ input[type='file'] {
     font-size: small;
   }
 }
-

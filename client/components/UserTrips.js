@@ -71,7 +71,7 @@ const UserTrips = ({ currentUser }) => {
 
   return (
     <div className="trip-container">
-      <Typography component="h1" variant="h2">
+      <Typography component="h1" variant="h5">
         Trips
       </Typography>
       {trips.map((data) => (

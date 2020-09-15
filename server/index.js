@@ -18,6 +18,7 @@ const multer = require('multer');
 const cors = require('cors');
 const auth = require('./passport/auth-routes');
 const { getGasPrices } = require('./gas');
+const { weatherUpdate } = require('./weather');
 
 const {
   addPreferences,
@@ -43,6 +44,7 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  getHotels,
   addActivity,
   getTripActivities,
   deleteActivity,
@@ -211,6 +213,10 @@ app.post('/getFlights', authCheck, (req, res) => {
   getFlights(req, res);
 });
 
+app.post('/getHotels', authCheck, (req, res) => {
+  getHotels(req.body, res);
+});
+
 app.post('/tripUser', authCheck, (req, res) => {
   tripUser(req.body, res);
 });
@@ -247,7 +253,7 @@ app.post('/postMessages', authCheck, (req, res) => {
 // Twilio
 // TODO: comment back in and take out console log when demoing
 app.post('/sendTwilio', authCheck, (req, res) => {
-  console.info(req.body, res.body, client, TWILIO_PHONE_NUMBER);
+  console.info(req.body, TWILIO_PHONE_NUMBER);
   res.send('We are not using twilio until we present our final app');
   // res.header('Content-Type', 'application/json');
   // client.messages
@@ -275,9 +281,20 @@ app.post('/setUnread', (req, res) => {
   setRead(req.body, res);
 });
 
+app.get('/weatherUpdate', (req, res) => {
+  weatherUpdate();
+  res.sendStatus(200);
+});
+
+setInterval(weatherUpdate, 43200000);
+
 app.use(express.static('public'));
 app.use('/', express.static(DIST_DIR));
 
 app.listen(PORT, () => {
   console.info(`App listening on port:${PORT}`);
 });
+
+module.exports = {
+  client,
+};

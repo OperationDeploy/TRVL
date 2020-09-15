@@ -281,7 +281,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           setToggleNewMsgIcon(true);
           setNewMsg(true);
         }
-      })
+      }, [])
       .catch((err) => console.warn(err));
     const timer = setTimeout(() => {
       setCount(count + 1);
@@ -326,6 +326,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         currentTrip={currentTrip}
         setClickedPage={setClickedPage}
       />
+      <br />
       <PlanATrip
         otherUsers={allOtherUsers}
         currentUser={currentUser}

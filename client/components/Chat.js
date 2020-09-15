@@ -41,7 +41,7 @@ const Chat = ({ currentUser }) => {
   }
   return (
     <div className="chat-container">
-      <Typography component="h1" variant="h2">
+      <Typography component="h1" variant="h5">
         Chat Rooms
       </Typography>
       {trips.map((data) => (

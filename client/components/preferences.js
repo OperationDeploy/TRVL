@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,6 +11,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+// import { Autocomplete } from '@material-ui/lab';
 import InvitesButton from './InvitesButton';
 
 const states = [
@@ -193,6 +193,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         end_date: endDate,
         departure_city: `${departureCity}, ${departureState}`,
         googleId: currentUser.googleId,
+        weather_alert: false,
       })
       .then((result) => {
         const tripId = result.data.id;
