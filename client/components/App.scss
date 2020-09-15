@@ -6,14 +6,13 @@ $myColor:#24255f;
   justify-content: 'center'
 }
 
-// .trip-container {
-  // color: 'secondary';
-  // text-align: center;
-  // align-items: center;
-  // justify-content: 'center';
-  // overflow:'visible';
-  // float:'right';
-// }
+.trip-container {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+  overflow:'visible';
+  float:'right';
+}
 
 .pat-container {
   text-align: center;
@@ -23,23 +22,25 @@ $myColor:#24255f;
 
 .profile-pic {
   border-radius: 50%;
-  width: 100px;
 }
 
 .toolbar-pic {
   border-radius: 50%;
-  width: 95px;
   transform: scale(0.5);
   position: absolute;
   top: -20px;
   right: -20px;
 }
 
+
 input[type=file] {
   display: none;
 }
 
 .weather-widget {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 15px;
   #city {
     font-weight: 800;
   }

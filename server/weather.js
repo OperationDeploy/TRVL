@@ -1,7 +1,6 @@
 const axios = require('axios');
 
-const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN,
-  TWILIO_PHONE_NUMBER } = process.env;
+const { TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_PHONE_NUMBER } = process.env;
 const client = require('twilio')(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
 const { WEATHER_API, GEO_API } = require('../config');
 const { Trip, TripUser, User } = require('./db');
@@ -70,7 +69,9 @@ Check TRVL app for more info.`,
 
 // Updates trips in database with weather alert boolean
 const updateTrips = async (updated, original) => {
-  const trips = updated.filter((trip, i) => trip.weather_alert !== original[i].weather_alert);
+  const trips = updated.filter(
+    (trip, i) => trip.weather_alert !== original[i].weather_alert,
+  );
   const updateDB = trips.map((trip) => Trip.update(
     {
       weather_alert: trip.weather_alert,
@@ -127,7 +128,7 @@ const getWeather = async (allTrips, weatherOnly = true) => {
               low: toDegF(temp.min),
               high: toDegF(temp.max),
             },
-            icon: `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`,
+            icon: `http://openweathermap.org/img/wn/${weather[0].icon}.png`,
           };
           const date = toISO(day.dt);
           dates[date] = forecast;

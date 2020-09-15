@@ -6,8 +6,8 @@ import UserTrips from './UserTrips';
 const Trips = ({ setClickedPage, currentUser, currentTrip }) => (
   <div className="trip-container">
     <Button
-      variant="outlined"
-      color="primary"
+      variant="contained"
+      color="secondary"
       onClick={() => {
         setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
       }}

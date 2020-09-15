@@ -19,7 +19,7 @@ const UserTrips = ({ currentUser }) => {
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
-  const [activeTrip, setActiveTrip] = useState(null)
+  const [activeTrip, setActiveTrip] = useState(null);
 
   const compareDates = (date1, date2) => {
     const today = date1 === 'today' ? new Date().toISOString().slice(0, 10) : null;
@@ -28,7 +28,7 @@ const UserTrips = ({ currentUser }) => {
 
   const handleChange = (response) => {
     setTrips(response);
-    for (let i = 0; i < response.length; i++) {
+    for (let i = 0; i < response.length; i += 1) {
       const start = response[i].start_date;
       const end = response[i].end_date;
       if (compareDates('today', start) <= 0 && compareDates('today', end) >= 0) {
@@ -66,7 +66,7 @@ const UserTrips = ({ currentUser }) => {
 
   return (
     <div className="itinerary-container">
-      <Typography variant="h2">Trips</Typography>
+      <Typography variant="h5">Trips</Typography>
       {trips.map((data) => (
         <List>
           <ListItem>

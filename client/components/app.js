@@ -25,7 +25,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('/session')
+    axios
+      .get('/session')
       .then((res) => {
         if (res.data.googleId) {
           res.data.id = res.data.googleId;
@@ -92,7 +93,13 @@ class App extends Component {
                 style={{ height: 500 }}
               />
               <CardActions alignItems="stretch">
-                <Button href="/auth/google" fullWidth variant="outlined" color="default" onClick>
+                <Button
+                  href="/auth/google"
+                  fullWidth
+                  variant="outlined"
+                  color="default"
+                  onClick
+                >
                   Login With Google
                 </Button>
               </CardActions>
