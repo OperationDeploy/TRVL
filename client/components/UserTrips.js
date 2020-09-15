@@ -50,7 +50,7 @@ const UserTrips = ({ currentUser }) => {
 
   return (
     <div className="itinerary-container">
-      <Typography variant="h2">Trips</Typography>
+      <Typography variant="h5">Trips</Typography>
       {trips.map((data) => (
         <List>
           <ListItem>

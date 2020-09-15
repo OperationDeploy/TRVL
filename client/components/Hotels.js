@@ -51,27 +51,25 @@ const Hotels = ({ currentUser, currentTrip }) => {
   return (
     <div>
       <div>
-      <Typography>
-        HOTELS
-      </Typography>
+        <Typography>HOTELS</Typography>
       </div>
       <p>{`Hey, ${currentUser.first_name}!`}</p>
       <p>{`These hotels in ${city} match up best with everyone's preferences.`}</p>
       <div>
         <p>You should book before hotel prices go up!</p>
         <div>
-          <List>
-          {hotelData.map((hotel) => {
-            if (hotel.price && hotel.name) {
-              return (
-                <ListItem>
-                  <div>{`${hotel.name}: ${hotel.price} per night`}</div>
-                </ListItem>
-              );
-            }
-            return null;
-          })}
-          </List>
+            {hotelData.map((hotel) => {
+              if (hotel.price && hotel.name) {
+                return (
+              <List>
+                  <ListItem>
+                    <div color="primary">{`${hotel.name}: ${hotel.price} per night`}</div>
+                  </ListItem>
+              </List>
+                );
+              }
+              return null;
+            })}
         </div>
       </div>
     </div>
