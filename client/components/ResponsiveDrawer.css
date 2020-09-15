@@ -3,12 +3,11 @@
   align-items: center;
   justify-content: 'center'
 }
-.trip-container {
+.trip-button {
   text-align: center;
   align-items: center;
   justify-content: 'center';
   overflow:'visible';
-  float:'right';
 }
 .pat-container {
   text-align: center;

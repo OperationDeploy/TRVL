@@ -146,7 +146,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
       <div className={classes.textFields} noValidate autoComplete="off">
-        <Typography variant="h2">Plan a Trip</Typography>
+        <Typography component="h1" variant="h2">Plan a Trip</Typography>
         <TextField
           value={name}
           id="trip-name"
@@ -221,7 +221,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
       </div>
       <div className={classes.root}>
         <Typography id="continuous-slider" gutterBottom>
-          Preferences:
+          Select Destination Preferences:
         </Typography>
         <Grid container spacing={2}>
           Temperature

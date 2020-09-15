@@ -23,7 +23,8 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
   return (
     <div>
       <Button
-        variant="contained"
+        variant="outlined"
+        color="primary"
         onClick={() => {
           setClickedPage(
             <Preferences

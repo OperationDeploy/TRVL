@@ -7,6 +7,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import { Divider } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
 
 const Chat = ({ currentUser }) => {
@@ -44,8 +45,8 @@ const Chat = ({ currentUser }) => {
     );
   }
   return (
-    <div>
-      <Typography variant="h1">Chat Rooms</Typography>
+    <div className="chat-container">
+      <Typography component="h1" variant="h2">Chat Rooms</Typography>
       {trips.map((data) => (
         <List>
           <ListItem>
@@ -59,10 +60,11 @@ const Chat = ({ currentUser }) => {
                 }}
                 color="primary"
               >
-                Enter Chat
+                Chat
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
+          <Divider />
         </List>
       ))}
     </div>
