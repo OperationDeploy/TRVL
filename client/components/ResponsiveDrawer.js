@@ -327,6 +327,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
         currentTrip={currentTrip}
         setClickedPage={setClickedPage}
       />
+      <br />
       <PlanATrip
         otherUsers={allOtherUsers}
         currentUser={currentUser}

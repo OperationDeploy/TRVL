@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
+import Typography from '@material-ui/core/Typography';
 import InvitesPreferences from './InvitesPreferences';
 
 const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
@@ -42,7 +43,7 @@ const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
   }
   return (
     <div>
-      <header>Here are your trip invites:</header>
+      <Typography variant="h5">Trip Invites</Typography>
       <ul>
         {invitedTripsArray.map((invite) => (
           <button

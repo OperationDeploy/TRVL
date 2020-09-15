@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-// import Typography from '@material-ui/core/Typography';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+// import ListItemIcon from '@material-ui/core/ListItemIcon';
+// import ListItemText from '@material-ui/core/ListItemText';
 
 const Hotels = ({ currentUser, currentTrip }) => {
   const [hotelData, setHotelData] = useState([]);
@@ -38,30 +42,34 @@ const Hotels = ({ currentUser, currentTrip }) => {
   if (hotelData.length === 0 || undefined || null) {
     return (
       <h3>
-        Finding the best hotels for your trip...If your results do no return in 10 seconds or
-        less, there may not be any reservations available. Please try again later
+        Finding the best hotels for your trip...If your results do no return in 10 seconds
+        or less, there may not be any reservations available. Please try again later
       </h3>
     );
   }
 
   return (
     <div>
-      <h2>HOTELS</h2>
+      <div>
+        <Typography>HOTELS</Typography>
+      </div>
       <p>{`Hey, ${currentUser.first_name}!`}</p>
       <p>{`These hotels in ${city} match up best with everyone's preferences.`}</p>
       <div>
         <p>You should book before hotel prices go up!</p>
         <div>
-          {hotelData.map((hotel) => {
-            if (hotel.price && hotel.name) {
-              return (
-                <div>
-                  <div>{`${hotel.name}: ${hotel.price} per night`}</div>
-                </div>
-              );
-            }
-            return null;
-          })}
+            {hotelData.map((hotel) => {
+              if (hotel.price && hotel.name) {
+                return (
+              <List>
+                  <ListItem>
+                    <div color="primary">{`${hotel.name}: ${hotel.price} per night`}</div>
+                  </ListItem>
+              </List>
+                );
+              }
+              return null;
+            })}
         </div>
       </div>
     </div>
