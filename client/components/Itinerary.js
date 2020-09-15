@@ -76,7 +76,8 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
               })
               .then((response) => {
                 setActivities([...activities, response.data.event]);
-              }).catch((err) => console.warn(err));
+              })
+              .catch((err) => console.warn(err));
           }
         }}
         currentTrip={currentTrip}

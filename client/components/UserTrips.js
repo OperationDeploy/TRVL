@@ -71,18 +71,22 @@ const UserTrips = ({ currentUser }) => {
 
   return (
     <div className="trip-container">
-      <Typography component="h1" variant="h2">Trips</Typography>
+      <Typography component="h1" variant="h2">
+        Trips
+      </Typography>
       {trips.map((data) => (
         <List>
           <ListItem>
             <ListItemText>
-              <Typography>
-                {`${data.name}`}
-              </Typography>
+              <Typography>{`${data.name}`}</Typography>
             </ListItemText>
             <br />
             <div className={classes.root}>
-              <ButtonGroup variant="text" color="secondary" aria-label="text primary button group">
+              <ButtonGroup
+                variant="text"
+                color="secondary"
+                aria-label="text primary button group"
+              >
                 <Button
                   onClick={() => {
                     const trip = { id: data.id, city: data.destination };

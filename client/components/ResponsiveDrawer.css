@@ -1,13 +1,13 @@
 .welcome-message {
   text-align: center;
   align-items: center;
-  justify-content: 'center'
+  justify-content: 'center';
 }
 .trip-button {
   text-align: center;
   align-items: center;
   justify-content: 'center';
-  overflow:'visible';
+  overflow: 'visible';
 }
 .pat-container {
   text-align: center;
@@ -34,7 +34,7 @@
   top: -20px;
   right: -20px;
 }
-input[type=file] {
+input[type='file'] {
   display: none;
 }
 .weather-widget {

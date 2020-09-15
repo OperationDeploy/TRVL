@@ -26,7 +26,8 @@ class App extends Component {
   }
 
   componentDidMount() {
-    axios.get('/session')
+    axios
+      .get('/session')
       .then((res) => {
         if (res.data.googleId) {
           res.data.id = res.data.googleId;
@@ -78,11 +79,7 @@ class App extends Component {
     const { loginComplete, currentUser, currentTrip, otherUsers } = this.state;
     if (!loginComplete) {
       return (
-        <Grid
-          container
-          justify="center"
-          className="splash-page"
-        >
+        <Grid container justify="center" className="splash-page">
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
           <Grid item xs={7}>
             <Card className="splash-card">
@@ -91,7 +88,13 @@ class App extends Component {
                 image="https://i.ibb.co/dj9N37R/trvl.png"
               />
               <CardActions alignItems="stretch">
-                <Button href="/auth/google" fullWidth variant="outlined" color="default" onClick>
+                <Button
+                  href="/auth/google"
+                  fullWidth
+                  variant="outlined"
+                  color="default"
+                  onClick
+                >
                   Login With Google
                 </Button>
               </CardActions>

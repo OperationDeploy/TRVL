@@ -13,16 +13,14 @@ const GasPrices = ({ currentTrip }) => {
 
   const submit = (car, trip) => {
     setLoading(<div> Loading...</div>);
-    axios
-      .post('/gas', { car, trip })
-      .then(({ data }) => {
-        setLoading(null);
-        if (data && data.total) {
-          setResponse(data);
-        } else {
-          setResponse('unavailable');
-        }
-      });
+    axios.post('/gas', { car, trip }).then(({ data }) => {
+      setLoading(null);
+      if (data && data.total) {
+        setResponse(data);
+      } else {
+        setResponse('unavailable');
+      }
+    });
   };
 
   const to2Dec = (num) => Math.round(num * 100) / 100;

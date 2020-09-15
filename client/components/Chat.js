@@ -28,12 +28,7 @@ const Chat = ({ currentUser }) => {
   }, []);
 
   if (clicked) {
-    return (
-      <ChatRoom
-        currentTrip={currentTrip}
-        currentUser={currentUser}
-      />
-    );
+    return <ChatRoom currentTrip={currentTrip} currentUser={currentUser} />;
   }
 
   if (trips.length === 0) {
@@ -46,7 +41,9 @@ const Chat = ({ currentUser }) => {
   }
   return (
     <div className="chat-container">
-      <Typography component="h1" variant="h2">Chat Rooms</Typography>
+      <Typography component="h1" variant="h2">
+        Chat Rooms
+      </Typography>
       {trips.map((data) => (
         <List>
           <ListItem>
