@@ -451,9 +451,12 @@ const getHotels = async (req, res) => {
 };
 
 const getFullTrip = async (req, res) => {
+  // console.info(req, 'REQ');
   const trip = await Trip.findOne({
     where: { id: req.body.id },
   });
+  // console.info('trip found', trip);
+
   res.send(trip);
 };
 
