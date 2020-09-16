@@ -96,7 +96,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
   const [showTrips, setShowTrips] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
   const [showInvitesPage, setShowInvitesPage] = useState(false);
-  const [allOtherUsers, setAllOtherUsers] = useState([]);
   const [activeTrip, setActiveTrip] = useState(null);
   const [loadComplete, setLoadComplete] = useState(false);
   const [check, setCheck] = useState(false);
@@ -289,19 +288,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
 
   useEffect(() => {
     axios
-      .get('/inviteUsers', {
-        params: {
-          currentUser: currentUser.googleId,
-        },
-      })
-      .then((response) => {
-        setAllOtherUsers(response.data);
-      })
-      .catch((err) => console.warn('ERRR', err));
-  }, [currentUser.googleId]);
-
-  useEffect(() => {
-    axios
       .get('/getInvites', { params: { googleId: currentUser.googleId } })
       .then((response) => setMyInvites(response.data))
       .catch((err) => console.warn('ERRR', err));
@@ -332,19 +318,18 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       <Typography className="welcome-message" variant="h6">
         {`Hi, ${currentUser.first_name}!`}
       </Typography>
+      <div className="trips">
       <Trips
         currentUser={currentUser}
         currentTrip={currentTrip}
         setClickedPage={setClickedPage}
       />
-      <br />
+      </div>
       <PlanATrip
-        otherUsers={allOtherUsers}
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
-      <br />
-      {forecast}
+      <div className="forecast">{forecast}</div>
     </div>
   );
 
@@ -422,7 +407,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
             {showInvitesPage ? (
               <InvitesPage
                 currentUser={currentUser}
-                otherUsers={allOtherUsers}
+                currentTrip={currentTrip}
                 myInvites={myInvites}
                 setClickedPage={setClickedPage}
               />

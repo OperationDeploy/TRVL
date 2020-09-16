@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { CircularProgress, Card, CardActionArea, CardContent, CardMedia } from '@material-ui/core';
 import axios from 'axios';
 import moment from 'moment';
-
+import './Itinerary.css';
 import ActivityForm from './ActivityForm';
 import ActivityList from './ActivityList';
 
@@ -56,7 +56,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
 
   if (weather) {
     if (weather === 'unavailable' || !weather[toISO(day)]) {
-      weatherDisp = <div className="weather-widget">Weather Data Not Available</div>;
+      weatherDisp = <div>Weather Data Not Available</div>;
     } else {
       weatherDisp = (
         <Card className={classes.root}>
@@ -84,19 +84,6 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
       );
     }
   }
-  // <div className="weather-widget">
-  //   <div id="city">Weather in {currentTrip.city}</div>
-  //   <div id="date">{toDate(day)}</div>
-  //   <div>
-  //     <img alt="icon" src={weather[toISO(day)].icon} />
-  //   </div>
-  //   <div id="main">{weather[toISO(day)].weather}</div>
-  //   <div id="high">High: {weather[toISO(day)].temp.high}</div>
-  //   <div id="low">Low: {weather[toISO(day)].temp.low}</div>
-  // </div>
-  //     );
-  //   }
-  // }
 
   return (
     <div id="trip-itinerary" className="itinerary-container">
@@ -142,8 +129,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
           setActivities(newActivities);
         }}
       />
-      <br />
-      {weatherDisp}
+      <div className="weather-widget">{weatherDisp}</div>
     </div>
   );
 };

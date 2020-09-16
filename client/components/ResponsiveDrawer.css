@@ -37,21 +37,11 @@
 input[type='file'] {
   display: none;
 }
-
-.weather-widget {
-  #city {
-    font-weight: 800;
-  }
-  #main {
-    font-weight: 800;
-  }
-  #date {
-    font-size: small;
-  }
-  #high {
-    font-size: small;
-  }
-  #low {
-    font-size: small;
-  }
+.trips {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.forecast {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }

@@ -1,11 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import SelectPlaces from './SelectPlaces';
 
-const InvitesButton = ({ currentUser, otherUsers, trip, setClickedPage }) => {
+const InvitesButton = ({ currentUser, trip, setClickedPage }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
+  const [otherUsers, setOtherUsers] = useState([]);
+
+  useEffect(() => {
+    axios.get('/inviteUsers', {
+      params: {
+        currentUser: currentUser.googleId,
+      },
+    })
+      .then((response) => {
+        setOtherUsers(response.data);
+      })
+      .catch((err) => console.warn('ERRR', err));
+  }, []);
+
   const handleClick = (event, user) => {
     event.preventDefault();
     axios
@@ -68,16 +82,6 @@ InvitesButton.propTypes = {
     start_date: PropTypes.string,
     end_date: PropTypes.string,
   }).isRequired,
-  otherUsers: PropTypes.arrayOf(
-    PropTypes.shape({
-      first_name: PropTypes.string,
-      last_name: PropTypes.string,
-      email: PropTypes.string,
-      profile_pic: PropTypes.string,
-      host: PropTypes.bool,
-      googleId: PropTypes.string,
-    }),
-  ).isRequired,
   currentUser: PropTypes.shape({
     first_name: PropTypes.string,
     last_name: PropTypes.string,

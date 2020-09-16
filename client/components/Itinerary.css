@@ -1,0 +1,19 @@
+.weather-widget {
+  padding: 10px;
+
+}
+#city {
+  font-weight: 800;
+}
+#main {
+  font-weight: 800;
+}
+#date {
+  font-size: small;
+}
+#high {
+  font-size: small;
+}
+#low {
+  font-size: small;
+}

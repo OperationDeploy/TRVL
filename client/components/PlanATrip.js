@@ -1,27 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
-import axios from 'axios';
 import Preferences from './preferences';
 
-const PlanATrip = ({ setClickedPage, currentUser }) => {
-  const [allOtherUsers, setAllOtherUsers] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get('/inviteUsers', {
-        params: {
-          currentUser: currentUser.googleId,
-        },
-      })
-      .then((response) => {
-        console.log('users from PlanATrip', response.data);
-        setAllOtherUsers(response.data);
-      })
-      .catch((err) => console.warn('ERRR', err));
-  }, [currentUser.googleId]);
-
-  return (
+const PlanATrip = ({ setClickedPage, currentUser }) => (
     <div>
       <Button
         variant="contained"
@@ -30,7 +12,6 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
           setClickedPage(
             <Preferences
               currentUser={currentUser}
-              allOtherUsers={allOtherUsers}
               setClickedPage={setClickedPage}
             />,
           );
@@ -39,8 +20,7 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
         Plan A Trip
       </Button>
     </div>
-  );
-};
+);
 
 PlanATrip.propTypes = {
   setClickedPage: PropTypes.func.isRequired,
