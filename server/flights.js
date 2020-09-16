@@ -61,8 +61,7 @@ const getFlightsInfo = async (tripInfo) => {
     .then(() => {
       const price = flightData.map((flight) => flight.price.grandTotal);
 
-      const { carrier } = Object.values(dictionary)[0];
-
+      const carrier = Object.values(dictionary);
       let result;
       for (let i = 0; i < price.length; i += 1) {
         result = { price: price[i], airline: carrier };
