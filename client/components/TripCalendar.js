@@ -28,7 +28,7 @@ const TripCalendar = ({ currentUser, currentTrip }) => {
 
   return (
     <div>
-      <Typography component="h1" variant="h2">
+      <Typography component="h1" variant="h5">
         Itinerary
       </Typography>
       <DateRange ranges={[tripRange]} onChange={(item) => handleSelect(item)} />

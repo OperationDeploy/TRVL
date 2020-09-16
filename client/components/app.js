@@ -87,13 +87,13 @@ class App extends Component {
                 className="splash-logo"
                 image="https://i.ibb.co/dj9N37R/trvl.png"
               />
-              <CardActions alignItems="stretch">
+              <CardActions>
                 <Button
                   href="/auth/google"
                   fullWidth
                   variant="outlined"
                   color="default"
-                  onClick
+                  // onClick
                 >
                   Login With Google
                 </Button>
@@ -127,7 +127,7 @@ class App extends Component {
       );
     }
     return (
-      <Container justify="center" alignItems="center" className="content-container">
+      <Container justify="center" className="content-container">
         <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
         <ResponsiveDrawer
           currentUser={currentUser}

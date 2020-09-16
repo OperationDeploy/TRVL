@@ -13,6 +13,7 @@ import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/picker
 import DateFnsUtils from '@date-io/date-fns';
 // import { Autocomplete } from '@material-ui/lab';
 import InvitesButton from './InvitesButton';
+import './PlanATrip.css';
 
 const states = [
   'Select',
@@ -239,7 +240,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
 
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className={classes.textFields} noValidate autoComplete="off">
+      <div className={classes.textFields} noValidate autoComplete="on">
         <Typography component="h1" variant="h2">
           Plan a Trip
         </Typography>

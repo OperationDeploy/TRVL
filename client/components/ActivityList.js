@@ -28,7 +28,7 @@ const ActivityList = ({ activities, deleteActivity }) => (
 );
 
 ActivityList.propTypes = {
-  activities: PropTypes.arrayOf.isRequired,
+  activities: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string])).isRequired,
   deleteActivity: PropTypes.func.isRequired,
 };
 

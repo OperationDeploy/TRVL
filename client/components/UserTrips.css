@@ -1,4 +1,8 @@
 .trip-container {
   min-height: 125px;
   width: 100%;
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+  overflow:'visible';
 }

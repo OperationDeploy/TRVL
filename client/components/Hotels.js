@@ -42,7 +42,7 @@ const Hotels = ({ currentUser, currentTrip }) => {
   if (hotelData.length === 0 || undefined || null) {
     return (
       <h3>
-        Finding the best hotels for your trip...If your results do no return in 10 seconds
+        Finding the best hotels for your trip...If your results do not return in 10 seconds
         or less, there may not be any reservations available. Please try again later
       </h3>
     );
@@ -58,18 +58,18 @@ const Hotels = ({ currentUser, currentTrip }) => {
       <div>
         <p>You should book before hotel prices go up!</p>
         <div>
-            {hotelData.map((hotel) => {
-              if (hotel.price && hotel.name) {
-                return (
-              <List>
+          {hotelData.map((hotel) => {
+            if (hotel.price && hotel.name) {
+              return (
+                <List>
                   <ListItem>
                     <div color="primary">{`${hotel.name}: ${hotel.price} per night`}</div>
                   </ListItem>
-              </List>
-                );
-              }
-              return null;
-            })}
+                </List>
+              );
+            }
+            return null;
+          })}
         </div>
       </div>
     </div>

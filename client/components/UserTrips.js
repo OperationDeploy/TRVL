@@ -13,6 +13,7 @@ import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import TripCalendar from './TripCalendar';
@@ -35,7 +36,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UserTrips = ({ currentUser }) => {
-  // const [expanded, setExpanded] = React.useState('panel1');
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
@@ -74,8 +74,8 @@ const UserTrips = ({ currentUser }) => {
       <Typography component="h1" variant="h5">
         Trips
       </Typography>
-      {trips.map((data) => (
-        <List>
+      {trips.map((data, index) => (
+        <List key={index.toString()}>
           <ListItem>
             <ListItemText>
               <Typography>{`${data.name}`}</Typography>
@@ -87,70 +87,82 @@ const UserTrips = ({ currentUser }) => {
                 color="secondary"
                 aria-label="text primary button group"
               >
-                <Button
-                  onClick={() => {
-                    const trip = { id: data.id, city: data.destination };
-                    setCurrentTrip(trip);
-                    setClicked('flights');
-                  }}
-                  color="secondary"
-                >
-                  <FlightIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    const trip = { id: data.id, city: data.destination };
-                    setCurrentTrip(trip);
-                    setClicked('hotels');
-                  }}
-                  color="secondary"
-                >
-                  <HotelOutlinedIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    const trip = {
-                      ...data,
-                      city: data.destination,
-                      startDate: data.start_date,
-                      endDate: data.end_date,
-                    };
-                    setCurrentTrip(trip);
-                    setClicked('itinerary');
-                  }}
-                  color="secondary"
-                >
-                  <DateRangeOutlinedIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    const trip = { id: data.id, city: data.destination };
-                    setCurrentTrip(trip);
-                    setClicked('purchases');
-                  }}
-                  color="secondary"
-                >
-                  <AttachMoneyIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    const trip = { id: data.id, city: data.destination };
-                    setCurrentTrip(trip);
-                    setClicked('photos');
-                  }}
-                  color="secondary"
-                >
-                  <PhotoCameraOutlinedIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    setCurrentTrip(data);
-                    setClicked('gas');
-                  }}
-                  color="secondary"
-                >
-                  <LocalGasStationOutlinedIcon />
-                </Button>
+                <Tooltip title="Flights">
+                  <Button
+                    onClick={() => {
+                      const trip = { id: data.id, city: data.destination };
+                      setCurrentTrip(trip);
+                      setClicked('flights');
+                    }}
+                    color="secondary"
+                  >
+                    <FlightIcon />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Hotels">
+                  <Button
+                    onClick={() => {
+                      const trip = { id: data.id, city: data.destination };
+                      setCurrentTrip(trip);
+                      setClicked('hotels');
+                    }}
+                    color="secondary"
+                  >
+                    <HotelOutlinedIcon />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Itinerary">
+                  <Button
+                    onClick={() => {
+                      const trip = {
+                        ...data,
+                        city: data.destination,
+                        startDate: data.start_date,
+                        endDate: data.end_date,
+                      };
+                      setCurrentTrip(trip);
+                      setClicked('itinerary');
+                    }}
+                    color="secondary"
+                  >
+                    <DateRangeOutlinedIcon />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Purchases">
+                  <Button
+                    onClick={() => {
+                      const trip = { id: data.id, city: data.destination };
+                      setCurrentTrip(trip);
+                      setClicked('purchases');
+                    }}
+                    color="secondary"
+                  >
+                    <AttachMoneyIcon />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Photos">
+                  <Button
+                    onClick={() => {
+                      const trip = { id: data.id, city: data.destination };
+                      setCurrentTrip(trip);
+                      setClicked('photos');
+                    }}
+                    color="secondary"
+                  >
+                    <PhotoCameraOutlinedIcon />
+                  </Button>
+                </Tooltip>
+                <Tooltip title="Gas">
+                  <Button
+                    onClick={() => {
+                      setCurrentTrip(data);
+                      setClicked('gas');
+                    }}
+                    color="secondary"
+                  >
+                    <LocalGasStationOutlinedIcon />
+                  </Button>
+                </Tooltip>
               </ButtonGroup>
             </div>
           </ListItem>
