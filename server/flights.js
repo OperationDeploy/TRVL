@@ -9,10 +9,9 @@ const getFlightsInfo = async (tripInfo) => {
   // array of objects - destinations: airport codes
 
   let flightData;
-  // let dictionary;
+  let dictionary;
   const array = [];
   let iataCodeDestination;
-  let carrierCode;
 
   // access trip
   const trip = await Trip.findOne({
@@ -22,13 +21,10 @@ const getFlightsInfo = async (tripInfo) => {
   const dest = trip.dataValues.destination;
 
   // find coordinates of destination
-  // geCoordinates func
-  // Gets coordinates from a location string
   const coordinates = await getCoordinates(dest);
   const long = coordinates.Longitude;
   const lat = coordinates.Latitude;
-  // console.info('lat:', lat);
-  // console.info(';ong', long);
+
   // get API keys
   const amadeus = new Amadeus({
     clientId: API_KEY,
@@ -36,7 +32,6 @@ const getFlightsInfo = async (tripInfo) => {
   });
 
   // get airport iata code
-
   await amadeus.referenceData.locations.airports
     .get({
       longitude: long,
@@ -60,39 +55,19 @@ const getFlightsInfo = async (tripInfo) => {
       max: '5',
     })
     .then((response) => {
-      // console.info(
-      //   'flight data!!!!!!',
-      //   response.data[0].itineraries[0].segments[0].carrierCode,
-      // );
-      carrierCode = response.data[0].itineraries[0].segments[0].carrierCode;
       flightData = response.data;
-      // dictionary = response.result.dictionaries;
+      dictionary = response.result.dictionaries.carriers;
     })
     .then(() => {
       const price = flightData.map((flight) => flight.price.grandTotal);
-      // const carrier = 'SPIRIT AIRLINES';
-      // for (const key in dictionary.carriers) {
-      //   carrier = dictionary.carriers[key];
-      // }
+
+      const { carrier } = Object.values(dictionary)[0];
 
       let result;
       for (let i = 0; i < price.length; i += 1) {
-        result = { price: price[i], airline: carrierCode };
+        result = { price: price[i], airline: carrier };
         array.push(result);
       }
-
-      // get flight info:
-      // axios call to API for flight info
-      // origin, destination, dates
-
-      // axios call to API for airline look up
-
-      // convert EUR to USD
-
-      // create object with Airline & Price
-
-      // return array of results
-      // return array;
     })
     .catch((err) => console.warn(err));
 
