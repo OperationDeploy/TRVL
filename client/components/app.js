@@ -9,6 +9,7 @@ import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ResponsiveDrawer from './ResponsiveDrawer';
+import './app.css';
 
 class App extends Component {
   constructor(props) {
@@ -78,19 +79,13 @@ class App extends Component {
     const { loginComplete, currentUser, currentTrip, otherUsers } = this.state;
     if (!loginComplete) {
       return (
-        <Grid
-          container
-          justify="center"
-          className="splash-page"
-          style={{ minHeight: '100vh' }}
-        >
+        <Grid container justify="center" className="splash-page">
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
           <Grid item xs={7}>
             <Card className="splash-card">
               <CardMedia
                 className="splash-logo"
                 image="https://i.ibb.co/dj9N37R/trvl.png"
-                style={{ height: 500 }}
               />
               <CardActions alignItems="stretch">
                 <Button
@@ -138,6 +133,7 @@ class App extends Component {
           currentUser={currentUser}
           currentTrip={currentTrip}
           otherUsers={otherUsers}
+          window={window}
         />
       </Container>
     );

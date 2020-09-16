@@ -22,18 +22,17 @@ const distance = (lat1, lon1, lat2, lon2) => {
   return 12742 * Math.asin(Math.sqrt(a)) * 0.62137;
 };
 
-const gasRequest = (lat, lon) =>
-  axios.get(
-    `http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon.toFixed(
-      6,
-    )}&lat=${lat.toFixed(6)}`,
-    {
-      headers: {
-        'content-type': 'application/json',
-        authorization: GAS_API,
-      },
+const gasRequest = (lat, lon) => axios.get(
+  `http://api.collectapi.com/gasPrice/fromCoordinates?lng=${lon.toFixed(
+    6,
+  )}&lat=${lat.toFixed(6)}`,
+  {
+    headers: {
+      'content-type': 'application/json',
+      authorization: GAS_API,
     },
-  );
+  },
+);
 
 const getMPG = async (year, make, model) => {
   const car = await axios.get(
@@ -43,11 +42,9 @@ const getMPG = async (year, make, model) => {
   if (car && car.data && car.data.menuItem) {
     let { menuItem } = car.data;
     menuItem = Array.isArray(menuItem) ? menuItem : [menuItem];
-    let mpgs = menuItem.map(async (item) =>
-      axios.get(
-        `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${item.value}`,
-      ),
-    );
+    let mpgs = menuItem.map(async (item) => axios.get(
+      `https://www.fueleconomy.gov/ws/rest/ympg/shared/ympgVehicle/${item.value}`,
+    ));
     await Promise.all(mpgs).then((res) => {
       mpgs = res;
     });
