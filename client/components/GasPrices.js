@@ -62,7 +62,7 @@ const GasPrices = ({ currentTrip }) => {
     }
   };
 
-  const to2Dec = (num) => Number(num.toFixed(2));
+  const to2Dec = (num) => Number(num).toFixed(2);
 
   const useStyles = makeStyles({
     root: {
