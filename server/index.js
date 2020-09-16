@@ -215,7 +215,8 @@ app.post('/getAllTrips', authCheck, (req, res) => {
 });
 
 app.post('/getFlights', authCheck, (req, res) => {
-  getFlights(req, res);
+  console.info('!!!!!', req.body, '!!!!!!!!!!');
+  getFlights(req.body, res);
 });
 
 app.post('/getHotels', authCheck, (req, res) => {
@@ -266,6 +267,27 @@ app.post('/sendTwilio', authCheck, (req, res) => {
   //     from: TWILIO_PHONE_NUMBER,
   //     to: req.body.user.phoneNumber,
   //     body: 'Hey you have a new trip invite in Trvl! Login to view it!',
+  //   })
+  //   .then(() => {
+  //     res.send(JSON.stringify({ success: true }));
+  //   })
+  //   .catch((err) => {
+  //     console.warn('ERR', err);
+  //     res.send(JSON.stringify({ success: false }));
+  //   });
+});
+
+app.post('/sendTripDestTwilio', authCheck, (req, res) => {
+  console.info(req.body, TWILIO_PHONE_NUMBER);
+  res.send('We are not using twilio until we present our final app');
+  // res.header('Content-Type', 'application/json');
+  // client.messages
+  //   .create({
+  //     from: TWILIO_PHONE_NUMBER,
+  //     to: req.body.currentUser.phoneNumber,
+  // body: `
+  // ${req.body.event} has
+  // been chosen as your destination for your trip in Trvl! Login to view more details!`,
   //   })
   //   .then(() => {
   //     res.send(JSON.stringify({ success: true }));

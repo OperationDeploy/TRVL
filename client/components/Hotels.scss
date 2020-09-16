@@ -1,19 +1,26 @@
+$myColor:#24255f;
+
 .welcome-message {
   text-align: center;
   align-items: center;
-  justify-content: 'center';
+  justify-content: 'center'
 }
-.trip-button {
-  text-align: center;
-  align-items: center;
-  justify-content: 'center';
-  overflow: 'visible';
-}
+
+// .trip-container {
+  // color: 'secondary';
+  // text-align: center;
+  // align-items: center;
+  // justify-content: 'center';
+  // overflow:'visible';
+  // float:'right';
+// }
+
 .pat-container {
   text-align: center;
   align-items: center;
   justify-content: 'center';
 }
+
 .profile-pic {
   border-radius: 50%;
   width: 100px;
@@ -27,18 +34,15 @@
   top: -20px;
   right: -20px;
 }
-.toolbar-pic {
-  border-radius: 50%;
-  transform: scale(0.5);
-  position: absolute;
-  top: -20px;
-  right: -20px;
-}
-input[type='file'] {
+
+input[type=file] {
   display: none;
 }
 
 .weather-widget {
+  border-style: solid;
+  border-width: 1px;
+  border-radius: 15px;
   #city {
     font-weight: 800;
   }
@@ -54,4 +58,21 @@ input[type='file'] {
   #low {
     font-size: small;
   }
+}
+
+.hotel-container {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+    border: 1px solid $myColor;
+    align-items: flex-end;
+}
+
+.hotel-image {
+    float:'right';
+}
+
+.MuiButton-root {
+  align-items: flex-end;
 }
