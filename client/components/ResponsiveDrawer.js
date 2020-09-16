@@ -30,6 +30,7 @@ import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
 import Forecast from './Forecast';
+import ActiveTrip from './ActiveTrip';
 import './ResponsiveDrawer.css';
 
 const drawerWidth = 240;
@@ -303,9 +304,15 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
 
   const container = window !== undefined ? () => window.document.body : undefined;
 
-  let forecast = activeTrip ? <Forecast forecast={activeTrip.forecast}/> : '';
+  let activeTripView = activeTrip ? (
+    <div>
+    <ActiveTrip trip={activeTrip.dataValues} setClickedPage={setClickedPage}
+      currentUser={currentUser} currentTrip={currentTrip} />
+    <Forecast forecast={activeTrip.forecast}/>
+    </div>
+  ) : '';
   if (!loadComplete) {
-    forecast = <CircularProgress />;
+    activeTripView = <CircularProgress />;
   }
 
   const landingPage = (
@@ -329,7 +336,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
-      <div className="forecast">{forecast}</div>
+      <div className="active-trip">{activeTripView}</div>
     </div>
   );
 
