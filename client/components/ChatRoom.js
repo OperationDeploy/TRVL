@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
 import ChatComponent from './ChatComponent';
 
 const ChatRoom = ({ currentUser, currentTrip, newChatMsg }) => (
   <div>
-    <h2>CHAT ROOM: {currentTrip.name}</h2>
+    <Typography component="h1" variant="h2">
+      CHAT ROOM: {currentTrip.name}
+    </Typography>
     <h4>{`Welcome, ${currentUser.first_name}`}</h4>
     <p>{`Your group is going to ${currentTrip.destination}`}</p>
     <ChatComponent

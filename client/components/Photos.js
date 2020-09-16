@@ -5,6 +5,7 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import { HOST, PORT } from '../../config';
+import './Photos.css';
 
 const Photos = ({ currentTrip, currentUser }) => {
   const [photos, setPhotos] = useState([]);
@@ -44,12 +45,14 @@ const Photos = ({ currentTrip, currentUser }) => {
           <input type="file" multiple onChange={fileSelectHandler} />
         </Button>
       </div>
+      <br />
       {photos.map((photo, i) => (
         <div>
-          <div>
-            {`Uploaded by ${photo.userName} ${moment(photo.createdAt).format('MMMM Do YYYY')}`}
-          </div>
           <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
+          <Typography variant="caption" id="timestamp">
+            {`Uploaded by ${photo.userName} on ${moment(photo.createdAt).format('MMMM Do')}`}
+          </Typography>
+          <br />
         </div>
       ))}
     </div>

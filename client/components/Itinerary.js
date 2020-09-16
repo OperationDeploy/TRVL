@@ -75,8 +75,8 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
             </Typography>
             <Typography className="weather-widget" variant="body2" component="p">
               <div id="main">{weather[toISO(day)].weather}</div>
-              <div id="high">High: {weather[toISO(day)].temp.high}</div>
-              <div id="low">Low: {weather[toISO(day)].temp.low}</div>
+              <div id="high">High: {`${weather[toISO(day)].temp.high}\u00b0`}</div>
+              <div id="low">Low: {`${weather[toISO(day)].temp.low}\u00b0`}</div>
             </Typography>
           </CardContent>
         </CardActionArea>
@@ -116,7 +116,8 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
               })
               .then((response) => {
                 setActivities([...activities, response.data.event]);
-              });
+              })
+              .catch((err) => console.warn(err));
           }
         }}
         currentTrip={currentTrip}

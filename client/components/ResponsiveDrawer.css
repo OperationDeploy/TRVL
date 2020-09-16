@@ -1,26 +1,19 @@
-$myColor:#24255f;
-
 .welcome-message {
   text-align: center;
   align-items: center;
-  justify-content: 'center'
+  justify-content: 'center';
 }
-
-// .trip-container {
-  // color: 'secondary';
-  // text-align: center;
-  // align-items: center;
-  // justify-content: 'center';
-  // overflow:'visible';
-  // float:'right';
-// }
-
+.trip-button {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+  overflow: 'visible';
+}
 .pat-container {
   text-align: center;
   align-items: center;
   justify-content: 'center';
 }
-
 .profile-pic {
   border-radius: 50%;
   width: 100px;
@@ -34,8 +27,14 @@ $myColor:#24255f;
   top: -20px;
   right: -20px;
 }
-
-input[type=file] {
+.toolbar-pic {
+  border-radius: 50%;
+  transform: scale(0.5);
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+input[type='file'] {
   display: none;
 }
 
@@ -56,3 +55,4 @@ input[type=file] {
     font-size: small;
   }
 }
+

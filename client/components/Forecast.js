@@ -14,8 +14,8 @@ const Forecast = ({ forecast }) => {
     const result = [[], [], []];
     Object.values(forecast).forEach((day) => {
       result[0].push(<img src={day.icon} alt={day.weather} />);
-      result[1].push(`High: ${day.temp.high}`);
-      result[2].push(`Low: ${day.temp.low}`);
+      result[1].push(`High: ${day.temp.high}\u00b0`);
+      result[2].push(`Low: ${day.temp.low}\u00b0`);
     });
     setRows(result.map((row) => createData(...row)));
     setColumns(Object.keys(forecast));
