@@ -70,9 +70,18 @@ input[type=file] {
 }
 
 .hotel-image {
-    float:'right';
+    position: absolute;
+    top: 0px;
+    right: 0px;
 }
 
-.MuiButton-root {
-  align-items: flex-end;
+.hotel-link {
+  width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+}
+
+.hotel-name {
+  margin-right: 100px
 }
