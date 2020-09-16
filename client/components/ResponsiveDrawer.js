@@ -96,8 +96,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
   const [showPlan, setShowPlan] = useState(false);
   const [showInvitesPage, setShowInvitesPage] = useState(false);
   const [showHome, setShowHome] = useState(false);
-  const [count, setCount] = useState(0);
   const [allOtherUsers, setAllOtherUsers] = useState([]);
+  const [check, setCheck] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -110,6 +110,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         if (response) {
           setToggleNewMsgIcon(false);
           setNewMsg(false);
+          console.info(showHome);
         }
       })
       .catch((err) => console.warn(err));
@@ -270,7 +271,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
     </div>
   );
 
-  useEffect(() => {
+  const newMsgs = () => {
+    setCheck(true);
+  };
+
+  if (check) {
     axios
       .post('./newMsgs', {
         trip: currentTrip,
@@ -280,14 +285,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         if (response.data.length > 0) {
           setToggleNewMsgIcon(true);
           setNewMsg(true);
+          setCheck(false);
         }
       }, [])
       .catch((err) => console.warn(err));
-    const timer = setTimeout(() => {
-      setCount(count + 1);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [count]);
+  }
 
   useEffect(() => {
     axios
@@ -340,10 +342,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       <CssBaseline />
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classes.appBar}
-        >
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
               color="secondary"
@@ -417,7 +416,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
                 setClickedPage={setClickedPage}
               />
             ) : null}
-            {showChat ? <Chat currentUser={currentUser} /> : null}
+            {showChat ? (
+              <Chat currentUser={currentUser} newMsgs={() => newMsgs()} />
+            ) : null}
           </div>
         </main>
       </div>
@@ -445,7 +446,8 @@ ResponsiveDrawer.propTypes = {
   window: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({
-      current: PropTypes.instanceOf(Element) }),
+      current: PropTypes.instanceOf(Element),
+    }),
   ]).isRequired,
 };
 

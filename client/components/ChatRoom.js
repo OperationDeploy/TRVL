@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import ChatComponent from './ChatComponent';
 
-const ChatRoom = ({ currentUser, currentTrip, newChatMsg }) => (
+const ChatRoom = ({ currentUser, currentTrip, newMsgs }) => (
   <div>
     <Typography component="h1" variant="h2">
       CHAT ROOM: {currentTrip.name}
@@ -11,9 +11,9 @@ const ChatRoom = ({ currentUser, currentTrip, newChatMsg }) => (
     <h4>{`Welcome, ${currentUser.first_name}`}</h4>
     <p>{`Your group is going to ${currentTrip.destination}`}</p>
     <ChatComponent
+      newMsgs={newMsgs}
       currentUser={currentUser}
       currentTrip={currentTrip}
-      newChatMsg={newChatMsg}
     />
   </div>
 );
@@ -33,6 +33,6 @@ ChatRoom.propTypes = {
     destination: PropTypes.string,
     city: PropTypes.string,
   }).isRequired,
-  newChatMsg: PropTypes.func.isRequired,
+  newMsgs: PropTypes.func.isRequired,
 };
 export default ChatRoom;
