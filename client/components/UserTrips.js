@@ -1,24 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import FlightIcon from '@material-ui/icons/Flight';
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
+import DateRangeOutlinedIcon from '@material-ui/icons/DateRangeOutlined';
+import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
+import LocalGasStationOutlinedIcon from '@material-ui/icons/LocalGasStationOutlined';
+import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import TripCalendar from './TripCalendar';
-// import Itinerary from './Itinerary';
 import Purchases from './Purchases';
 import Photos from './Photos';
 import Flights from './Flights';
 import GasPrices from './GasPrices';
 import Hotels from './Hotels';
+import './UserTrips.css';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+}));
 
 const UserTrips = ({ currentUser }) => {
+  // const [expanded, setExpanded] = React.useState('panel1');
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
+  const classes = useStyles();
 
   const handleChange = (response) => {
     setTrips(response);
@@ -49,113 +70,91 @@ const UserTrips = ({ currentUser }) => {
   }
 
   return (
-    <div className="itinerary-container">
-      <Typography variant="h2">Trips</Typography>
+    <div className="trip-container">
+      <Typography component="h1" variant="h5">
+        Trips
+      </Typography>
       {trips.map((data) => (
         <List>
           <ListItem>
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => {
-                  // eslint-disable-next-line max-len
-                  const trip = {
-                    ...data,
-                    city: data.destination,
-                    startDate: data.start_date,
-                    endDate: data.end_date,
-                  };
-                  setCurrentTrip(trip);
-                  setClicked('itinerary');
-                }}
-                color="primary"
+            <ListItemText>
+              <Typography>{`${data.name}`}</Typography>
+            </ListItemText>
+            <br />
+            <div className={classes.root}>
+              <ButtonGroup
+                variant="text"
+                color="secondary"
+                aria-label="text primary button group"
               >
-                Itinerary
-              </Button>
-            </ListItemSecondaryAction>
+                <Button
+                  onClick={() => {
+                    const trip = { id: data.id, city: data.destination };
+                    setCurrentTrip(trip);
+                    setClicked('flights');
+                  }}
+                  color="secondary"
+                >
+                  <FlightIcon />
+                </Button>
+                <Button
+                  onClick={() => {
+                    const trip = { id: data.id, city: data.destination };
+                    setCurrentTrip(trip);
+                    setClicked('hotels');
+                  }}
+                  color="secondary"
+                >
+                  <HotelOutlinedIcon />
+                </Button>
+                <Button
+                  onClick={() => {
+                    const trip = {
+                      ...data,
+                      city: data.destination,
+                      startDate: data.start_date,
+                      endDate: data.end_date,
+                    };
+                    setCurrentTrip(trip);
+                    setClicked('itinerary');
+                  }}
+                  color="secondary"
+                >
+                  <DateRangeOutlinedIcon />
+                </Button>
+                <Button
+                  onClick={() => {
+                    const trip = { id: data.id, city: data.destination };
+                    setCurrentTrip(trip);
+                    setClicked('purchases');
+                  }}
+                  color="secondary"
+                >
+                  <AttachMoneyIcon />
+                </Button>
+                <Button
+                  onClick={() => {
+                    const trip = { id: data.id, city: data.destination };
+                    setCurrentTrip(trip);
+                    setClicked('photos');
+                  }}
+                  color="secondary"
+                >
+                  <PhotoCameraOutlinedIcon />
+                </Button>
+                <Button
+                  onClick={() => {
+                    setCurrentTrip(data);
+                    setClicked('gas');
+                  }}
+                  color="secondary"
+                >
+                  <LocalGasStationOutlinedIcon />
+                </Button>
+              </ButtonGroup>
+            </div>
           </ListItem>
-          <br />
-          <ListItem>
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => {
-                  const trip = { id: data.id, city: data.destination };
-                  setCurrentTrip(trip);
-                  setClicked('purchases');
-                }}
-                color="primary"
-              >
-                Purchases
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <br />
-          <ListItem>
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => {
-                  const trip = { id: data.id, city: data.destination };
-                  setCurrentTrip(trip);
-                  setClicked('photos');
-                }}
-                color="primary"
-              >
-                Photos
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <br />
-          <ListItem>
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => {
-                  const trip = { id: data.id, city: data.destination };
-                  setCurrentTrip(trip);
-                  setClicked('flights');
-                }}
-                color="primary"
-              >
-                Flights
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <br />
-          <ListItem>
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => {
-                  const trip = { id: data.id, city: data.destination };
-                  setCurrentTrip(trip);
-                  setClicked('hotels');
-                }}
-                color="primary"
-              >
-                Hotels
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <br />
-          <ListItem>
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => {
-                  setCurrentTrip(data);
-                  setClicked('gas');
-                }}
-                color="primary"
-              >
-                Gas Prices
-              </Button>
-            </ListItemSecondaryAction>
-          </ListItem>
-          <ListItem>
-            Dates:
-            <ListItemText>{`${data.start_date} to ${data.end_date}`}</ListItemText>
-          </ListItem>
-          <br />
-          <ListItem>
-            Destination:
-            <ListItemText>{data.destination}</ListItemText>
-          </ListItem>
+          <Divider />
         </List>
       ))}
     </div>

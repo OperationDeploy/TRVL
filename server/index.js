@@ -44,6 +44,7 @@ const {
   inviteAllOtherUsers,
   getPhotos,
   addPhoto,
+  getHotels,
   addActivity,
   getTripActivities,
   deleteActivity,
@@ -211,6 +212,10 @@ app.post('/getAllTrips', authCheck, (req, res) => {
 app.post('/getFlights', authCheck, (req, res) => {
   console.info('!!!!!', req.body, '!!!!!!!!!!');
   getFlights(req.body, res);
+});
+
+app.post('/getHotels', authCheck, (req, res) => {
+  getHotels(req.body, res);
 });
 
 app.post('/tripUser', authCheck, (req, res) => {
