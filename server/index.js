@@ -210,7 +210,8 @@ app.post('/getAllTrips', authCheck, (req, res) => {
 });
 
 app.post('/getFlights', authCheck, (req, res) => {
-  getFlights(req, res);
+  console.info('!!!!!', req.body, '!!!!!!!!!!');
+  getFlights(req.body, res);
 });
 
 app.post('/getHotels', authCheck, (req, res) => {
