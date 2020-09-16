@@ -2,3 +2,8 @@
   min-height: 125px;
   width: 100%;
 }
+
+#weather-alert {
+  font-size: small;
+  font-weight: 800;
+}

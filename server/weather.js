@@ -21,7 +21,7 @@ const isWithinRange = (trip) => {
   return end >= 0 && start <= 7;
 };
 
-let lastAlert;
+let lastAlert = Date.now();
 
 // Finds users on trips and alerts them of bad weather
 const alertUsersOnTrips = async (trips) => {

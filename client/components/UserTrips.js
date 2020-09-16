@@ -9,6 +9,7 @@ import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
 import DateRangeOutlinedIcon from '@material-ui/icons/DateRangeOutlined';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import LocalGasStationOutlinedIcon from '@material-ui/icons/LocalGasStationOutlined';
+import FlashOnOutlinedIcon from '@material-ui/icons/FlashOnOutlined';
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
@@ -69,6 +70,12 @@ const UserTrips = ({ currentUser }) => {
     default:
   }
 
+  const weatherAlert = (
+    <Typography id="weather-alert" color="error" variant="caption" display="inline" gutterBottom>
+    CHECK WEATHER
+    </Typography>
+  );
+
   return (
     <div className="trip-container">
       <Typography component="h1" variant="h5">
@@ -79,6 +86,7 @@ const UserTrips = ({ currentUser }) => {
           <ListItem>
             <ListItemText>
               <Typography>{`${data.name}`}</Typography>
+              {data.weather_alert ? weatherAlert : ''}
             </ListItemText>
             <br />
             <div className={classes.root}>
@@ -87,6 +95,13 @@ const UserTrips = ({ currentUser }) => {
                 color="secondary"
                 aria-label="text primary button group"
               >
+                {/* <Button
+                  onClick={() => {
+                  }}
+                  color="yellow"
+                >
+                  <FlashOnOutlinedIcon />
+                </Button> */}
                 <Button
                   onClick={() => {
                     const trip = { id: data.id, city: data.destination };
