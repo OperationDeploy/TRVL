@@ -96,7 +96,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
   const [showTrips, setShowTrips] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
   const [showInvitesPage, setShowInvitesPage] = useState(false);
-  const [showHome, setShowHome] = useState(false);
   const [count, setCount] = useState(0);
   const [allOtherUsers, setAllOtherUsers] = useState([]);
   const [activeTrip, setActiveTrip] = useState(null);
@@ -122,33 +121,28 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
     if (page === 'plan') {
       setShowPlan(true);
       setShowTrips(false);
-      setShowHome(false);
       setShowInvitesPage(false);
       setShowChat(false);
     }
     if (page === 'trips') {
       setShowTrips(true);
-      setShowHome(false);
       setShowPlan(false);
       setShowInvitesPage(false);
       setShowChat(false);
     }
     if (page === 'invitesPage') {
       setShowInvitesPage(true);
-      setShowHome(false);
       setShowTrips(false);
       setShowPlan(false);
       setShowChat(false);
     }
     if (page === 'chat') {
       setShowChat(true);
-      setShowHome(false);
       setShowTrips(false);
       setShowPlan(false);
       setShowInvitesPage(false);
     }
     if (page === 'home') {
-      setShowHome(true);
       setShowTrips(false);
       setShowPlan(false);
       setShowInvitesPage(false);
