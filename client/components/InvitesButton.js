@@ -6,7 +6,6 @@ import SelectPlaces from './SelectPlaces';
 
 const InvitesButton = ({ currentUser, otherUsers, trip, setClickedPage }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
-
   const handleClick = (event, user) => {
     event.preventDefault();
     axios

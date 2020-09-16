@@ -104,20 +104,8 @@ const GasPrices = ({ currentTrip }) => {
         <div>Driving Distance: {to2Dec(response.miles * 2)} miles</div>
         <div>Fuel Economy: {to2Dec(response.mpg)} mpg</div>
         </Typography>
-        {/* <Typography variant="body2" component="p">
-          well meaning and kindly.
-          <br />
-          "a benevolent smile"
-        </Typography> */}
       </CardContent>
     </Card>
-      // <div className="weather-widget">
-      //   <h2>Between here and {currentTrip.destination}</h2>
-      // <div>Average Gas Price: ${to2Dec(response.avgPrice)}</div>
-      // <div>Driving Distance: {to2Dec(response.miles)}</div>
-      // <div>Fuel Economy: {to2Dec(response.mpg)} mpg</div>
-      //   <h2>Total Cost: ${to2Dec(response.total)}</h2>
-      // </div>
       );
   }
 

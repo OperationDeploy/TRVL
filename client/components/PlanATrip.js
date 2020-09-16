@@ -15,6 +15,7 @@ const PlanATrip = ({ setClickedPage, currentUser }) => {
         },
       })
       .then((response) => {
+        console.log('users from PlanATrip', response.data);
         setAllOtherUsers(response.data);
       })
       .catch((err) => console.warn('ERRR', err));
