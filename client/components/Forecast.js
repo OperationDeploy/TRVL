@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
 // import Typography from '@material-ui/core/Typography';
-// TODO: Finish active trips section
+// TODO: Finish active trips section;
 import moment from 'moment';
 
 const Forecast = ({ forecast }) => {
