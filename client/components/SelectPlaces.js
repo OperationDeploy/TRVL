@@ -28,8 +28,11 @@ const SelectPlaces = ({ trip, currentUser, setClickedPage }) => {
 
   // updates destination on trips table onclick
   const handleClick = (event) => {
-    axios.post('./setDest', { destination: event, trip_id: trip.id }, () => {});
-    setClickedPage(<UserTrips currentUser={currentUser} currentTrip={trip} />);
+    axios
+      .post('./setDest', { destination: event, trip_id: trip.id }, () => {})
+      .then(axios.post('/sendTripDestTwilio', { currentUser, event, trip }))
+      .then(setClickedPage(<UserTrips currentUser={currentUser} currentTrip={trip} />))
+      .catch((err) => console.warn(err));
   };
 
   return (

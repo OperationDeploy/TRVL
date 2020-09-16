@@ -66,8 +66,13 @@ input[type=file] {
     position: relative;
     list-style: none;
     border: 1px solid $myColor;
+    align-items: flex-end;
 }
 
 .hotel-image {
     float:'right';
+}
+
+.MuiButton-root {
+  align-items: flex-end;
 }

@@ -342,10 +342,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       <CssBaseline />
       <div className={classes.root}>
         <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classes.appBar}
-        >
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
               color="secondary"
@@ -449,7 +446,8 @@ ResponsiveDrawer.propTypes = {
   window: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({
-      current: PropTypes.instanceOf(Element) }),
+      current: PropTypes.instanceOf(Element),
+    }),
   ]).isRequired,
 };
 

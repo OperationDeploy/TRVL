@@ -43,7 +43,7 @@ const Hotels = ({ currentUser, currentTrip }) => {
     window.open(input);
   };
 
-  if (hotelData.length === 0 || undefined || null) {
+  if (hotelData.length === 0 || hotelData.length === undefined || null) {
     return (
       <h3>
         Finding the best hotels for your trip...If your results do no return in 10 seconds
@@ -63,28 +63,43 @@ const Hotels = ({ currentUser, currentTrip }) => {
         <p>You should book before hotel prices go up!</p>
         <div className="hotels-container">
           {hotelData.map((hotel) => {
-            if (hotel.price && hotel.name) {
+            if (
+              hotel.price !== undefined &&
+              hotel.name !== undefined &&
+              hotel.hac_offers.offers[0].link !== undefined &&
+              hotel.photo.images.thumbnail.url !== undefined
+            ) {
               return (
                 <div className="hotel-container">
-                <List>
-                  <ListItem>
-                    <img alt="new" src={hotel.photo.images.thumbnail.url} />
-                    <div color="primary">
-                      <div>
-                      {`${hotel.name}`}
-                      <br />
-                      {`${hotel.price} per night`}
+                  <List>
+                    <ListItem>
+                      <img
+                        alt="new"
+                        src={
+                          hotel.photo.images.thumbnail.url !== undefined
+                            ? hotel.photo.images.thumbnail.url
+                            : null
+                        }
+                      />
+                      <div color="primary">
+                        <div>
+                          {`${hotel.name}`}
+                          <br />
+                          {`${hotel.price} per night`}
+                        </div>
+                        <br />
+                        <div className="hotel-image" float="right">
+                          <br />
+                          <Button
+                            className="hotel-link"
+                            onClick={() => hotelLink(hotel.hac_offers.offers[0].link)}
+                          >
+                            Book now
+                          </Button>
+                        </div>
                       </div>
-                      <br />
-                      <div className="hotel-image" float="right" >
-                      <br />
-                      <Button onClick={() => hotelLink(hotel.hac_offers.offers[0].link)}>
-                      Book now
-                      </Button>
-                      </div>
-                    </div>
-                  </ListItem>
-                </List>
+                    </ListItem>
+                  </List>
                 </div>
               );
             }
