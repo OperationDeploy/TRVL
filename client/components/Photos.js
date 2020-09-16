@@ -3,6 +3,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import { HOST, PORT } from '../../config';
 
 const Photos = ({ currentTrip, currentUser }) => {
@@ -46,9 +47,7 @@ const Photos = ({ currentTrip, currentUser }) => {
       {photos.map((photo, i) => (
         <div>
           <div>
-            {`Uploaded by ${photo.userName} on ${new Date(photo.createdAt)
-              .toUTCString()
-              .slice(0, 16)}`}
+            {`Uploaded by ${photo.userName} ${moment(photo.createdAt).format('MMMM Do YYYY')}`}
           </div>
           <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
         </div>

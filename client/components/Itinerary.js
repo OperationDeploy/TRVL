@@ -18,34 +18,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
 
   const toISO = (date) => new Date(date).toISOString().slice(0, 10);
 
-  const toDate = (date) => {
-    const table = {
-      Mon: 'Monday,',
-      Tue: 'Tuesday,',
-      Wed: 'Wednesday,',
-      Thu: 'Thursday,',
-      Fri: 'Friday,',
-      Sat: 'Saturday,',
-      Sun: 'Sunday,',
-      Jan: 'January',
-      Feb: 'February',
-      Mar: 'March',
-      Apr: 'April',
-      May: 'May',
-      Jun: 'June',
-      Jul: 'July',
-      Aug: 'August',
-      Sep: 'September',
-      Oct: 'October',
-      Nov: 'November',
-      Dec: 'December',
-    };
-    const str = new Date(date).toDateString();
-    return str.split(' ').map((word, i) => {
-      const sub = i === 2 ? `${word},` : word;
-      return table[sub] || sub;
-    }).join(' ');
-  };
+  const toDate = (date) => moment(date).format('MMMM Do YYYY');
 
   useEffect(() => {
     axios
@@ -97,7 +70,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
             <Typography gutterBottom variant="h6" component="h2">
              {currentTrip.city.split(',')[0]} Weather
             </Typography>
-            <Typography variant="subtitle2" color="textSecondary" component="p">
+            <Typography variant="subtitle2" color="textSecondary" component="p" fontWeight="fontWeightBold">
               {toDate(day)}
             </Typography>
             <Typography className="weather-widget" variant="body2" component="p">
@@ -168,6 +141,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
           setActivities(newActivities);
         }}
       />
+      <br />
       {weatherDisp}
     </div>
   );

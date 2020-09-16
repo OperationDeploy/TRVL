@@ -17,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Typography, CircularProgress } from '@material-ui/core';
 import EventIcon from '@material-ui/icons/Event';
 import FlightIcon from '@material-ui/icons/Flight';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -29,6 +29,7 @@ import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
+import Forecast from './Forecast';
 import './ResponsiveDrawer.scss';
 
 const drawerWidth = 240;
@@ -98,6 +99,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
   const [showHome, setShowHome] = useState(false);
   const [count, setCount] = useState(0);
   const [allOtherUsers, setAllOtherUsers] = useState([]);
+  const [activeTrip, setActiveTrip] = useState(null);
+  const [loadComplete, setLoadComplete] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -310,7 +313,20 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
       .catch((err) => console.warn('ERRR', err));
   }, []);
 
+  useEffect(() => {
+    axios.get('/activeTrip')
+      .then(({ data }) => {
+        setActiveTrip(data);
+        setLoadComplete(true);
+      });
+  }, []);
+
   const container = window !== undefined ? () => window.document.body : undefined;
+
+  let forecast = activeTrip ? <Forecast forecast={activeTrip.forecast}/> : '';
+  if (!loadComplete) {
+    forecast = <CircularProgress />;
+  }
 
   const landingPage = (
     <div style={{ textAlign: 'center', justifyContent: 'center' }}>
@@ -333,6 +349,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip }) => {
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
+      <br />
+      {forecast}
     </div>
   );
 

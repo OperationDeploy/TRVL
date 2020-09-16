@@ -13,29 +13,14 @@ import Photos from './Photos';
 import Flights from './Flights';
 import GasPrices from './GasPrices';
 import Hotels from './Hotels';
-import Forecast from './Forecast';
 
 const UserTrips = ({ currentUser }) => {
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
-  const [activeTrip, setActiveTrip] = useState(null);
-
-  const compareDates = (date1, date2) => {
-    const today = date1 === 'today' ? new Date().toISOString().slice(0, 10) : null;
-    return (new Date(date2) - new Date(today || date1)) / 86400000;
-  };
 
   const handleChange = (response) => {
     setTrips(response);
-    for (let i = 0; i < response.length; i += 1) {
-      const start = response[i].start_date;
-      const end = response[i].end_date;
-      if (compareDates('today', start) <= 0 && compareDates('today', end) >= 0) {
-        setActiveTrip(response[i]);
-        break;
-      }
-    }
   };
 
   useEffect(() => {
@@ -61,8 +46,6 @@ const UserTrips = ({ currentUser }) => {
       return <Hotels currentUser={currentUser} currentTrip={currentTrip} />;
     default:
   }
-
-  const forecast = activeTrip ? <Forecast activeTrip={activeTrip}/> : '';
 
   return (
     <div className="itinerary-container">
@@ -173,7 +156,6 @@ const UserTrips = ({ currentUser }) => {
           </ListItem>
         </List>
       ))}
-      {forecast}
     </div>
   );
 };
