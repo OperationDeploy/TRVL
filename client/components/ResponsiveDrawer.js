@@ -30,6 +30,8 @@ import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
 import Forecast from './Forecast';
+import ActiveTrip from './ActiveTrip';
+import UpcomingTrip from './UpcomingTrip';
 import './ResponsiveDrawer.css';
 
 const drawerWidth = 240;
@@ -88,15 +90,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
-  const [showChat, setShowChat] = useState(false);
   const [clickedPage, setClickedPage] = useState(null);
   const [toggleIcon, setToggleIcon] = useState(false);
   const [newMsg, setNewMsg] = useState(false);
   const [toggleNewMsgIcon, setToggleNewMsgIcon] = useState(false);
-  const [showTrips, setShowTrips] = useState(false);
-  const [showPlan, setShowPlan] = useState(false);
-  const [showInvitesPage, setShowInvitesPage] = useState(false);
   const [activeTrip, setActiveTrip] = useState(null);
+  const [upcomingTrip, setUpcomingTrip] = useState(null);
   const [loadComplete, setLoadComplete] = useState(false);
   const [check, setCheck] = useState(false);
 
@@ -116,37 +115,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       .catch((err) => console.warn(err));
   };
 
-  const handleNavClick = (page) => {
-    if (page === 'plan') {
-      setShowPlan(true);
-      setShowTrips(false);
-      setShowInvitesPage(false);
-      setShowChat(false);
-    }
-    if (page === 'trips') {
-      setShowTrips(true);
-      setShowPlan(false);
-      setShowInvitesPage(false);
-      setShowChat(false);
-    }
-    if (page === 'invitesPage') {
-      setShowInvitesPage(true);
-      setShowTrips(false);
-      setShowPlan(false);
-      setShowChat(false);
-    }
-    if (page === 'chat') {
-      setShowChat(true);
-      setShowTrips(false);
-      setShowPlan(false);
-      setShowInvitesPage(false);
-    }
-    if (page === 'home') {
-      setShowTrips(false);
-      setShowPlan(false);
-      setShowInvitesPage(false);
-      setShowChat(false);
-    }
+  const newMsgs = () => {
+    setCheck(true);
   };
 
   const drawer = (
@@ -158,7 +128,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
             button
             onClick={() => {
               setClickedPage(null);
-              handleNavClick('home');
               setMobileOpen(false);
             }}
             key={text}
@@ -176,9 +145,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
+              setClickedPage(<Preferences
+                currentUser={currentUser}
+                currentTrip={currentTrip}
+                setClickedPage={setClickedPage}
+              />);
               setMobileOpen(false);
-              handleNavClick('plan');
             }}
             key={text}
           >
@@ -195,9 +167,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
+              setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
               setMobileOpen(false);
-              handleNavClick('trips');
             }}
             key={text}
           >
@@ -214,8 +185,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
-              handleNavClick('invitesPage');
+              setClickedPage(<InvitesPage
+                currentUser={currentUser}
+                currentTrip={currentTrip}
+                myInvites={myInvites}
+                setClickedPage={setClickedPage}
+              />);
               if (myInvites.length !== 0) {
                 setToggleIcon(true);
               }
@@ -239,8 +214,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
-              handleNavClick('chat');
+              setClickedPage(<Chat currentUser={currentUser} newMsgs={() => newMsgs()} />);
               setMobileOpen(false);
               handleToggleChatRead();
             }}
@@ -265,10 +239,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       </List>
     </div>
   );
-
-  const newMsgs = () => {
-    setCheck(true);
-  };
 
   if (check) {
     axios
@@ -296,17 +266,36 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
   useEffect(() => {
     axios.get('/activeTrip')
       .then(({ data }) => {
-        setActiveTrip(data);
+        if (data.activeTrip) {
+          setActiveTrip(data);
+        } else {
+          setUpcomingTrip(data);
+        }
         setLoadComplete(true);
       });
   }, []);
 
   const container = window !== undefined ? () => window.document.body : undefined;
 
-  let forecast = activeTrip ? <Forecast forecast={activeTrip.forecast}/> : '';
+  let activeTripView = activeTrip ? (
+    <div>
+    <ActiveTrip trip={activeTrip} setClickedPage={setClickedPage}
+      currentUser={currentUser} />
+    <Forecast forecast={activeTrip.forecast}/>
+    </div>
+  ) : null;
+
   if (!loadComplete) {
-    forecast = <CircularProgress />;
+    activeTripView = <CircularProgress />;
   }
+
+  const upcomingTripView = upcomingTrip ? (
+    <div>
+    <UpcomingTrip trip={upcomingTrip} setClickedPage={setClickedPage}
+      currentUser={currentUser} />
+    <Forecast forecast={upcomingTrip.forecast}/>
+    </div>
+  ) : null;
 
   const landingPage = (
     <div className="landing-page">
@@ -329,7 +318,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
-      <div className="forecast">{forecast}</div>
+      <div className="active-trip">{activeTripView || upcomingTripView}</div>
     </div>
   );
 
@@ -394,27 +383,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <div className={classes.toolbar} />
           <div style={{ textAlign: 'center', justifyContent: 'center' }}>
             {clickedPage || landingPage}
-            {showTrips ? (
-              <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
-            ) : null}
-            {showPlan ? (
-              <Preferences
-                currentUser={currentUser}
-                currentTrip={currentTrip}
-                setClickedPage={setClickedPage}
-              />
-            ) : null}
-            {showInvitesPage ? (
-              <InvitesPage
-                currentUser={currentUser}
-                currentTrip={currentTrip}
-                myInvites={myInvites}
-                setClickedPage={setClickedPage}
-              />
-            ) : null}
-            {showChat ? (
-              <Chat currentUser={currentUser} newMsgs={() => newMsgs()} />
-            ) : null}
           </div>
         </main>
       </div>

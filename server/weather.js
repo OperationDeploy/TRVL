@@ -101,8 +101,11 @@ const getCoordinates = async (location) => {
 };
 
 // Gets weather data from array of trips
-const getWeather = async (allTrips, weatherOnly = true, activeTrip) => {
+const getWeather = async (allTrips, weatherOnly = true) => {
   const trips = allTrips.filter(isWithinRange);
+  if (!trips.length) {
+    return null;
+  }
   const coordinates = trips.map((trip) => getCoordinates(trip.destination));
   let weatherData;
   await Promise.all(coordinates)
@@ -120,15 +123,12 @@ const getWeather = async (allTrips, weatherOnly = true, activeTrip) => {
         const trip = { ...trips[i] };
         const dates = {};
         let startIndex = 0;
-        let tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
+        const tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
         for (let j = 0; j < data.daily.length; j += 1) {
           if (toISO(data.daily[j].dt) === trips[i].start_date) {
             startIndex = j;
             break;
           }
-        }
-        if (activeTrip) {
-          tripLength = 4;
         }
         const days = data.daily.slice(startIndex, startIndex + tripLength);
         days.forEach((day) => {

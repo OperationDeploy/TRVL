@@ -15,6 +15,9 @@ const InvitesPage = ({ currentTrip, currentUser, myInvites }) => {
       trip_id: id,
     })
       .then(() => {
+        axios.post('/removeInvite', { trip_id: id, user: currentUser.googleId });
+      })
+      .then(() => {
         setInvitedTripClicked(true);
       })
       .catch((err) => console.warn(err));

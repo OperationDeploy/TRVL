@@ -2,24 +2,28 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
-// import Typography from '@material-ui/core/Typography';
-// TODO: Finish active trips section
 import moment from 'moment';
 
 const Forecast = ({ forecast }) => {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
 
+  if (!forecast) {
+    return null;
+  }
+
   useEffect(() => {
-    const createData = (day1, day2, day3, day4, day5) => ({ day1, day2, day3, day4, day5 });
-    const result = [[], [], []];
-    Object.values(forecast).forEach((day) => {
-      result[0].push(<img src={day.icon} alt={day.weather} />);
-      result[1].push(`High: ${day.temp.high}\u00b0`);
-      result[2].push(`Low: ${day.temp.low}\u00b0`);
-    });
-    setRows(result.map((row) => createData(...row)));
-    setColumns(Object.keys(forecast));
+    if (forecast) {
+      const createData = (day1, day2, day3, day4) => ({ day1, day2, day3, day4 });
+      const result = [[], [], []];
+      Object.values(forecast).forEach((day) => {
+        result[0].push(<img src={day.icon} alt={day.weather} />);
+        result[1].push(`High: ${day.temp.high}\u00b0`);
+        result[2].push(`Low: ${day.temp.low}\u00b0`);
+      });
+      setRows(result.map((row) => createData(...row)));
+      setColumns(Object.keys(forecast).slice(0, 4));
+    }
   }, []);
 
   const useStyles = makeStyles({
