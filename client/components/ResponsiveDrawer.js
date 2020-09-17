@@ -145,7 +145,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       setShowInvitesPage(false);
     }
     if (page === 'home') {
-      setShowHome(true);
+      setShowHome(!showHome);
       setShowTrips(false);
       setShowPlan(false);
       setShowInvitesPage(false);
@@ -339,11 +339,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={classes.appBar}
-        >
+        <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
               color="secondary"
@@ -380,7 +376,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
               }}
             >
               {drawer}
-              {}
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -397,28 +392,26 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div style={{ textAlign: 'center', justifyContent: 'center' }}>
-            {clickedPage || landingPage}
-            {showTrips ? (
-              <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
-            ) : null}
-            {showPlan ? (
-              <Preferences
-                currentUser={currentUser}
-                currentTrip={currentTrip}
-                setClickedPage={setClickedPage}
-              />
-            ) : null}
-            {showInvitesPage ? (
-              <InvitesPage
-                currentUser={currentUser}
-                otherUsers={allOtherUsers}
-                myInvites={myInvites}
-                setClickedPage={setClickedPage}
-              />
-            ) : null}
-            {showChat ? <Chat currentUser={currentUser} /> : null}
-          </div>
+          {clickedPage || landingPage}
+          {showTrips ? (
+            <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
+          ) : null}
+          {showPlan ? (
+            <Preferences
+              currentUser={currentUser}
+              currentTrip={currentTrip}
+              setClickedPage={setClickedPage}
+            />
+          ) : null}
+          {showInvitesPage ? (
+            <InvitesPage
+              currentUser={currentUser}
+              otherUsers={allOtherUsers}
+              myInvites={myInvites}
+              setClickedPage={setClickedPage}
+            />
+          ) : null}
+          {showChat ? <Chat currentUser={currentUser} /> : null}
         </main>
       </div>
     </ThemeProvider>
@@ -445,7 +438,8 @@ ResponsiveDrawer.propTypes = {
   window: PropTypes.oneOfType([
     PropTypes.func,
     PropTypes.shape({
-      current: PropTypes.instanceOf(Element) }),
+      current: PropTypes.instanceOf(Element),
+    }),
   ]).isRequired,
 };
 

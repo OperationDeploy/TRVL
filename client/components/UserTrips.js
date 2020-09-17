@@ -12,6 +12,7 @@ import LocalGasStationOutlinedIcon from '@material-ui/icons/LocalGasStationOutli
 import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
 import PropTypes from 'prop-types';
@@ -22,7 +23,6 @@ import Photos from './Photos';
 import Flights from './Flights';
 import GasPrices from './GasPrices';
 import Hotels from './Hotels';
-import './UserTrips.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,7 +71,7 @@ const UserTrips = ({ currentUser }) => {
 
   return (
     <div className="trips-container">
-      <Typography component="h1" variant="h5">
+      <Typography component="h1" variant="h4">
         Trips
       </Typography>
       {trips.map((data, index) => (
@@ -80,14 +80,13 @@ const UserTrips = ({ currentUser }) => {
             <ListItemText>
               <Typography>{`${data.name}`}</Typography>
             </ListItemText>
-            <br />
             <div className={classes.root}>
               <ButtonGroup
                 variant="text"
                 color="secondary"
                 aria-label="text primary button group"
               >
-                <Tooltip title="Flights">
+                <Tooltip placement="top" title="Flights">
                   <Button
                     onClick={() => {
                       const trip = { id: data.id, city: data.destination };

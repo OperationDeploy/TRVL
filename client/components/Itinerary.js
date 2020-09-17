@@ -78,7 +78,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
 
   return (
     <div id="trip-itinerary" className="itinerary-container">
-      <Typography component="h1" variant="h6">
+      <Typography component="h1" variant="h5">
         {`Plans for: ${moment(day).format('MMM Do')}`}
       </Typography>
       <ActivityForm

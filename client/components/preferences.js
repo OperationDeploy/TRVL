@@ -252,7 +252,6 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           onChange={handleChangeName}
           margin="normal"
         />
-        <br />
         <TextField
           value={departureCity}
           id="departure-city"
@@ -441,7 +440,6 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           >
             Submit Preferences
           </Button>
-          <br />
           <Button
             variant="contained"
             onClick={() => {
