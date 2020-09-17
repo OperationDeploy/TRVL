@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+import { Typography, Button, LinearProgress } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import './Photos.css';
 
 const Photos = ({ currentTrip, currentUser }) => {
   const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(null);
 
   useEffect(() => {
     axios.get(`/photos/${currentTrip.id}`).then(({ data }) => {
@@ -16,18 +17,34 @@ const Photos = ({ currentTrip, currentUser }) => {
     });
   }, []);
 
+  const useStyles = makeStyles({
+    root: {
+      width: '100%',
+    },
+  });
+  const classes = useStyles();
+
   const fileUpload = (files) => {
     const data = new FormData();
     Object.values(files).forEach((file) => data.append('file', file));
     data.append('user', currentUser.id);
     data.append('trip', currentTrip.id);
-    axios.post('/photos', data).then((res) => {
-      const newPhotos = res.data.map((photo) => ({
-        ...photo,
-        userName: `${currentUser.first_name} ${currentUser.last_name}`,
-      }));
-      setPhotos([...newPhotos, ...photos]);
-    });
+    axios.post('/photos', data, {
+      onUploadProgress: (progress) => {
+        const dec = progress.loaded / progress.total;
+        setLoading(dec * 100);
+        if (progress.loaded === progress.total) {
+          setTimeout(() => setLoading(null), 1000);
+        }
+      },
+    })
+      .then((res) => {
+        const newPhotos = res.data.map((photo) => ({
+          ...photo,
+          userName: `${currentUser.first_name} ${currentUser.last_name}`,
+        }));
+        setPhotos([...newPhotos, ...photos]);
+      });
   };
 
   const fileSelectHandler = (e) => {
@@ -44,14 +61,17 @@ const Photos = ({ currentTrip, currentUser }) => {
           Upload Photo
           <input type="file" multiple onChange={fileSelectHandler} />
         </Button>
+        <div id="progress-bar" className={classes.root}>
+          {loading ? <LinearProgress variant="determinate" value={loading} /> : null}
+        </div>
       </div>
       <br />
       {photos.map((photo, i) => (
         <div>
-          <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
           <Typography variant="caption" id="timestamp">
             {`Uploaded by ${photo.userName} on ${moment(photo.createdAt).format('MMMM Do')}`}
           </Typography>
+          <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
           <br />
         </div>
       ))}
