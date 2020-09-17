@@ -38,6 +38,7 @@ const {
   getSplit,
   getMyInvites,
   addSplit,
+  deleteSplit,
   getAllTrips,
   getFlights,
   tripUser,
@@ -181,6 +182,12 @@ app.post('/trips', authCheck, (req, res) => {
 
 app.post('/split', authCheck, (req, res) => {
   addSplit(req.body, res);
+});
+
+app.delete('/split/:tripId/:itemId', authCheck, (req, res) => {
+  deleteSplit(req, res);
+  // console.log('inside server', req.params.id);
+  // res.send('test');
 });
 
 app.post('/grabPlaces', authCheck, (req, res) => {
