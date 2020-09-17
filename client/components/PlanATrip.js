@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Preferences from './preferences';
+import './PlanATrip.css';
 
 const PlanATrip = ({ setClickedPage, currentUser }) => {
   const [allOtherUsers, setAllOtherUsers] = useState([]);
