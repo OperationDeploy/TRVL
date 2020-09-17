@@ -48,7 +48,9 @@ const Purchases = ({ currentUser, currentTrip }) => {
                       : payment.amount;
                   });
                   setDebts(debts);
-                  setPurchases([...purchases, { description, price, purchaser: currentUser.first_name }]);
+                  setPurchases(
+                    [...purchases, { description, price, purchaser: currentUser.first_name }],
+                  );
                 }
               });
           }
