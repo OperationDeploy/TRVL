@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     alignItems: 'center',
     '& > *': {
-      margin: theme.spacing(1),
+      margin: theme.spacing(3),
     },
   },
 }));
@@ -70,7 +70,7 @@ const UserTrips = ({ currentUser }) => {
   }
 
   return (
-    <div className="trip-container">
+    <div className="trips-container">
       <Typography component="h1" variant="h5">
         Trips
       </Typography>

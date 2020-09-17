@@ -42,8 +42,9 @@ const Hotels = ({ currentUser, currentTrip }) => {
   if (hotelData.length === 0 || undefined || null) {
     return (
       <h3>
-        Finding the best hotels for your trip...If your results do not return in 10 seconds
-        or less, there may not be any reservations available. Please try again later
+        Finding the best hotels for your trip...If your results do not return in 10
+        seconds or less, there may not be any reservations available. Please try again
+        later
       </h3>
     );
   }
