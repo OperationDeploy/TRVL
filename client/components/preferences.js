@@ -8,11 +8,27 @@ import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
+import Tooltip from '@material-ui/core/Tooltip';
+import IosSunnyOutline from 'react-ionicons/lib/IosSunnyOutline';
+import IosSnowOutline from 'react-ionicons/lib/IosSnowOutline';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { Autocomplete } from '@material-ui/lab';
 import InvitesButton from './InvitesButton';
+import buildings from '../src/icons/buildings.svg';
+import forest from '../src/icons/forest.svg';
+import hearts from '../src/icons/hearts.svg';
+import heart from '../src/icons/heart.svg';
+import historical from '../src/icons/historical.svg';
+import location from '../src/icons/location.svg';
+import money from '../src/icons/money.svg';
+import money2 from '../src/icons/money2.svg';
+import oldman from '../src/icons/oldman.svg';
+import party from '../src/icons/party.svg';
+import travel from '../src/icons/travel.svg';
+import young from '../src/icons/young.svg';
+import './PlanATrip.css';
 
 const states = [
   'Select',
@@ -239,7 +255,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
 
   return (
     <Container fixed classes={{ root: 'preferences-container' }}>
-      <div className={classes.textFields} noValidate autoComplete="off">
+      <div className={classes.textFields} noValidate autoComplete="on">
         <Typography component="h1" variant="h2">
           Plan a Trip
         </Typography>
@@ -251,7 +267,6 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           onChange={handleChangeName}
           margin="normal"
         />
-        <br />
         <TextField
           value={departureCity}
           id="departure-city"
@@ -308,25 +323,25 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         <Typography id="continuous-slider" gutterBottom>
           Select Destination Preferences:
         </Typography>
-        <Grid container spacing={2}>
-          Temperature
-          <Grid item>Hot</Grid>
+        <Typography>Temperature</Typography>
+        <Grid container spacing={3}>
+          <Grid item><IosSunnyOutline fontSize="50px"/></Grid>
           <Grid item xs>
-            <Slider
-              value={temperature}
-              onChange={handleChangeTemp}
-              aria-labelledby="temperature"
-              step={10}
-              marks
-              min={0}
-              max={100}
-            />
-          </Grid>
-          <Grid item>Cold</Grid>
+              <Slider
+                value={temperature}
+                onChange={handleChangeTemp}
+                aria-labelledby="temperature"
+                step={10}
+                marks
+                min={0}
+                max={100}
+              />
+            </Grid>
+            <Grid item><IosSnowOutline fontSize="50px"/></Grid>
         </Grid>
+        <Typography>City Expenses</Typography>
         <Grid container spacing={2}>
-          City Expenses
-          <Grid item>Low</Grid>
+          <Grid item><img src={money} alt="lowExpense" height="50px" width="50px" /></Grid>
           <Grid item xs>
             <Slider
               value={cityExpenses}
@@ -338,11 +353,11 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item>High</Grid>
+          <Grid item><img src={money2} alt="highExpense" height="50px" width="50px" /></Grid>
         </Grid>
+        <Typography>Landscape</Typography>
         <Grid container spacing={2}>
-          Landscape
-          <Grid item>City</Grid>
+          <Grid item><img src={buildings} alt="City" height="50px" width="50px" /></Grid>
           <Grid item xs>
             <Slider
               value={landscape}
@@ -354,11 +369,11 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item>Nature</Grid>
+          <Grid item><img src={forest} alt="nature" height="50px" width="50px" /></Grid>
         </Grid>
+        <Typography>City Type</Typography>
         <Grid container spacing={2}>
-          City Type
-          <Grid item>Party</Grid>
+          <Grid item><img src={party} alt="party" height="50px" width="50px" /></Grid>
           <Grid item xs>
             <Slider
               value={cityType}
@@ -370,11 +385,11 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item>Historical</Grid>
+          <Grid item><img src={historical} alt="historical" height="50px" width="50px" /></Grid>
         </Grid>
+        <Typography>Proximity</Typography>
         <Grid container spacing={2}>
-          Proximity
-          <Grid item>Domestic</Grid>
+          <Grid item><img src={location} alt="domestic" height="50px" width="50px" /></Grid>
           <Grid item xs>
             <Slider
               value={proximity}
@@ -386,11 +401,11 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item>International</Grid>
+          <Grid item><img src={travel} alt="international" height="50px" width="50px" /></Grid>
         </Grid>
+        <Typography>Group Age</Typography>
         <Grid container spacing={2}>
-          Group Age
-          <Grid item>Young Adults</Grid>
+          <Grid item><img src={young} alt="youngerPeople" height="50px" width="50px" /></Grid>
           <Grid item xs>
             <Slider
               value={groupAge}
@@ -402,11 +417,13 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item>Older Adults</Grid>
+          <Grid item><img src={oldman} alt="olderPeople" height="50px" width="50px" /></Grid>
         </Grid>
+        <Typography>Group Relationship Status</Typography>
         <Grid container spacing={2}>
-          Group Relationship Status
-          <Grid item>Singles</Grid>
+          <Grid item>
+            <img src={heart} alt="singles" height="50px" width="50px" />
+          </Grid>
           <Grid item xs>
             <Slider
               value={groupRelationship}
@@ -418,7 +435,7 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item>Couples</Grid>
+          <Grid item><img src={hearts} alt="couples" height="50px" width="50px" /></Grid>
         </Grid>
         <ButtonGroup color="secondary" aria-label="outlined primary button group">
           <Button
@@ -429,7 +446,6 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           >
             Submit Preferences
           </Button>
-          <br />
           <Button
             variant="contained"
             onClick={() => {

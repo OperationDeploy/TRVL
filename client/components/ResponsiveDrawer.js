@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
   toolbar: theme.mixins.toolbar,
   drawerPaper: {
     width: drawerWidth,
+    color: '#ffa500',
   },
   content: {
     flexGrow: 1,
@@ -326,7 +327,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <div className={classes.root}>
-        <CssBaseline />
         <AppBar position="fixed" className={classes.appBar}>
           <Toolbar>
             <IconButton
@@ -364,7 +364,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
               }}
             >
               {drawer}
-              {}
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">
@@ -381,9 +380,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         </nav>
         <main className={classes.content}>
           <div className={classes.toolbar} />
-          <div style={{ textAlign: 'center', justifyContent: 'center' }}>
-            {clickedPage || landingPage}
-          </div>
+          {clickedPage || landingPage}
         </main>
       </div>
     </ThemeProvider>

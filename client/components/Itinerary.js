@@ -13,11 +13,28 @@ moment().format();
 
 const Itinerary = ({ currentUser, currentTrip, day }) => {
   const [activities, setActivities] = useState([]);
-  const [text, setText] = useState('');
   const [weather, setWeather] = useState(null);
+  const [activity, setActivity] = useState('');
 
   const toISO = (date) => new Date(date).toISOString().slice(0, 10);
 
+  const saveActivityToDB = () => {
+    setActivity(activity.trim());
+    if (activity.length > 0) {
+      axios
+        .post('/activities', {
+          user_id: currentUser.id,
+          trip_id: currentTrip.id,
+          event: activity,
+          day,
+        })
+        .then((response) => {
+          console.info(response);
+          setActivities([...activities, response.data.event]);
+        })
+        .catch((err) => console.warn(err));
+    }
+  };
   const toDate = (date) => moment(date).format('MMMM Do YYYY');
 
   useEffect(() => {
@@ -27,8 +44,8 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
       })
       .then((res) => {
         const allEvents = res.data
-          .filter((activity) => activity.day === day)
-          .map((activity) => activity.event);
+          .filter((activityEl) => activityEl.day === day)
+          .map((activityEl) => activityEl.event);
         setActivities([...activities, ...allEvents]);
       });
 
@@ -87,28 +104,15 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
 
   return (
     <div id="trip-itinerary" className="itinerary-container">
-      <Typography component="h1" variant="h6">
+      <Typography component="h1" variant="h5">
         {`Plans for: ${moment(day).format('MMM Do')}`}
       </Typography>
       <ActivityForm
-        saveActivity={(input) => {
-          setText(input.trim());
-          if (text.length > 0) {
-            axios
-              .post('/activities', {
-                user_id: currentUser.id,
-                trip_id: currentTrip.id,
-                event: text,
-                day,
-              })
-              .then((response) => {
-                setActivities([...activities, response.data.event]);
-              })
-              .catch((err) => console.warn(err));
-          }
-        }}
+        saveActivity={saveActivityToDB}
         currentTrip={currentTrip}
         currentUser={currentUser}
+        setActivity={setActivity}
+        activity={activity}
       />
       <ActivityList
         activities={activities}

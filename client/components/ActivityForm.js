@@ -1,46 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
-const ActivityForm = ({ saveActivity }) => {
-  const [value, setValue] = useState('');
-
-  return (
-    <div className="activity-form-container">
-      <form
-        onSubmit={(event) => {
+const ActivityForm = ({ saveActivity, setActivity, activity }) => (
+  <div className="activity-form-container">
+    <form>
+      <TextField
+        value={activity}
+        variant="outlined"
+        placeholder="add activity"
+        onChange={(event) => {
+          setActivity(event.target.value);
+        }}
+        margin="normal"
+      />
+      <IconButton
+        onClick={(event) => {
           event.preventDefault();
-          saveActivity(value);
-          setValue('');
+          saveActivity();
+          setActivity('');
         }}
       >
-        <TextField
-          value={value}
-          variant="outlined"
-          placeholder="add activity"
-          onChange={(event) => {
-            setValue(event.target.value);
-          }}
-          margin="normal"
-        />
-        <IconButton>
-          <AddIcon
-            onClick={(event) => {
-              event.preventDefault();
-              saveActivity(value);
-              setValue('');
-            }}
-          />
-        </IconButton>
-      </form>
-    </div>
-  );
-};
+        <AddIcon />
+      </IconButton>
+    </form>
+  </div>
+);
 
 ActivityForm.propTypes = {
   saveActivity: PropTypes.func.isRequired,
+  setActivity: PropTypes.func.isRequired,
+  activity: PropTypes.string.isRequired,
 };
 
 export default ActivityForm;

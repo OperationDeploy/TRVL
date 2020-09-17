@@ -36,7 +36,7 @@ const Photos = ({ currentTrip, currentUser }) => {
 
   return (
     <div className="photos-container">
-      <Typography component="h1" variant="h2">
+      <Typography component="h1" variant="h5">
         Photos
       </Typography>
       <div>
