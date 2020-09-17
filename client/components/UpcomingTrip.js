@@ -42,10 +42,10 @@ const UpcomingTrip = ({ trip, currentUser, setClickedPage }) => {
     <Card className={classes.root}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Your upcoming trip
+          Your upcoming trip to
         </Typography>
         <Typography variant="h5" component="h2">
-          {trip.name}
+          {trip.destination}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
           is {moment(trip.start_date, 'YYYY-MM-DD').fromNow()}

@@ -108,6 +108,13 @@ const addSplit = async (req, res) => {
   );
 };
 
+const deleteSplit = async (req, res) => {
+  const id = req.params.itemId;
+  await SplitItem.destroy({ where: { id } });
+  await SplitOwedPayment.destroy({ where: { item_id: id } });
+  res.sendStatus(200);
+};
+
 const getSplit = async ({ trip, user }, res) => {
   const response = {};
   let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
@@ -508,7 +515,6 @@ const getActiveWeather = async (req, res) => {
   if (trip || nextTrip) {
     const result = await getWeather([trip || nextTrip]);
     if (result) {
-      // console.log('the object before slicing', result[0].forecast)
       const forecast = Object.keys(result[0].forecast).length <= 4 ? null : result[0].forecast;
       res.send({ ...result[0].dataValues, forecast, activeTrip: !!trip });
     } else {
@@ -526,6 +532,7 @@ module.exports = {
   addPreferences,
   addSplit,
   getSplit,
+  deleteSplit,
   planTrip,
   removeInvite,
   grabPlaces,
