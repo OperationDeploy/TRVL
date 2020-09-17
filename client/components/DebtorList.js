@@ -5,7 +5,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import PropTypes from 'prop-types';
 
 const DebtorList = ({ debts }) => {
-  const debtViews = Object.keys(debts).map((name) => `${name}: ${debts[name]}`);
+  const debtViews = Object.keys(debts).map((name) => `${name}: $${Number(debts[name]).toFixed(2)}`);
   if (debtViews.length) {
     return (
       <List className="debts-container">

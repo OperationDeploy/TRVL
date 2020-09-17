@@ -21,6 +21,8 @@ const isWithinRange = (trip) => {
   return end >= 0 && start <= 7;
 };
 
+let lastAlert = Date.now();
+
 // Finds users on trips and alerts them of bad weather
 const alertUsersOnTrips = async (trips) => {
   const userTrip = {};
@@ -62,6 +64,7 @@ Check TRVL app for more info.`,
     });
   });
   Promise.all(notifications);
+  lastAlert = Date.now();
 };
 
 // Updates trips in database with weather alert boolean
@@ -77,7 +80,10 @@ const updateTrips = async (updated, original) => {
   ));
 
   await Promise.all(updateDB);
-  alertUsersOnTrips(trips);
+
+  if (!lastAlert || (Date.now() - lastAlert) >= 43200000) {
+    alertUsersOnTrips(trips);
+  }
 };
 
 // Gets coordinates from a location string
@@ -89,7 +95,7 @@ const getCoordinates = async (location) => {
 };
 
 // Gets weather data from array of trips
-const getWeather = async (allTrips, weatherOnly = true) => {
+const getWeather = async (allTrips, weatherOnly = true, activeTrip) => {
   const trips = allTrips.filter(isWithinRange);
   const coordinates = trips.map((trip) => getCoordinates(trip.destination));
   let weatherData;
@@ -106,12 +112,15 @@ const getWeather = async (allTrips, weatherOnly = true) => {
         const trip = { ...trips[i] };
         const dates = {};
         let startIndex = 0;
-        const tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
+        let tripLength = compareISODates(trips[i].start_date, trips[i].end_date);
         for (let j = 0; j < data.daily.length; j += 1) {
           if (toISO(data.daily[j].dt) === trips[i].start_date) {
             startIndex = j;
             break;
           }
+        }
+        if (activeTrip) {
+          tripLength = 4;
         }
         const days = data.daily.slice(startIndex, startIndex + tripLength);
         days.forEach((day) => {
@@ -122,7 +131,7 @@ const getWeather = async (allTrips, weatherOnly = true) => {
               low: toDegF(temp.min),
               high: toDegF(temp.max),
             },
-            icon: `http://openweathermap.org/img/wn/${weather[0].icon}@2x.png`,
+            icon: `http://openweathermap.org/img/wn/${weather[0].icon}.png`,
           };
           const date = toISO(day.dt);
           dates[date] = forecast;
@@ -149,4 +158,5 @@ module.exports = {
   getWeather,
   weatherUpdate,
   getCoordinates,
+  compareISODates,
 };

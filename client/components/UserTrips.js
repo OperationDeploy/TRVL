@@ -35,7 +35,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const UserTrips = ({ currentUser }) => {
-  // const [expanded, setExpanded] = React.useState('panel1');
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
@@ -69,6 +68,12 @@ const UserTrips = ({ currentUser }) => {
     default:
   }
 
+  const weatherAlert = (
+    <Typography id="weather-alert" color="error" variant="caption" display="inline" gutterBottom>
+    CHECK WEATHER
+    </Typography>
+  );
+
   return (
     <div className="trip-container">
       <Typography component="h1" variant="h5">
@@ -79,6 +84,7 @@ const UserTrips = ({ currentUser }) => {
           <ListItem>
             <ListItemText>
               <Typography>{`${data.name}`}</Typography>
+              {data.weather_alert ? weatherAlert : ''}
             </ListItemText>
             <br />
             <div className={classes.root}>

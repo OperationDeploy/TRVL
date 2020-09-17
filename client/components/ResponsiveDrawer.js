@@ -17,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Typography, CircularProgress } from '@material-ui/core';
 import EventIcon from '@material-ui/icons/Event';
 import FlightIcon from '@material-ui/icons/Flight';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -29,6 +29,7 @@ import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
+import Forecast from './Forecast';
 import './ResponsiveDrawer.css';
 
 const drawerWidth = 240;
@@ -95,8 +96,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
   const [showTrips, setShowTrips] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
   const [showInvitesPage, setShowInvitesPage] = useState(false);
-  const [showHome, setShowHome] = useState(false);
-  const [allOtherUsers, setAllOtherUsers] = useState([]);
+  const [activeTrip, setActiveTrip] = useState(null);
+  const [loadComplete, setLoadComplete] = useState(false);
   const [check, setCheck] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -110,7 +111,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         if (response) {
           setToggleNewMsgIcon(false);
           setNewMsg(false);
-          console.info(showHome);
         }
       })
       .catch((err) => console.warn(err));
@@ -120,33 +120,28 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
     if (page === 'plan') {
       setShowPlan(true);
       setShowTrips(false);
-      setShowHome(false);
       setShowInvitesPage(false);
       setShowChat(false);
     }
     if (page === 'trips') {
       setShowTrips(true);
-      setShowHome(false);
       setShowPlan(false);
       setShowInvitesPage(false);
       setShowChat(false);
     }
     if (page === 'invitesPage') {
       setShowInvitesPage(true);
-      setShowHome(false);
       setShowTrips(false);
       setShowPlan(false);
       setShowChat(false);
     }
     if (page === 'chat') {
       setShowChat(true);
-      setShowHome(false);
       setShowTrips(false);
       setShowPlan(false);
       setShowInvitesPage(false);
     }
     if (page === 'home') {
-      setShowHome(true);
       setShowTrips(false);
       setShowPlan(false);
       setShowInvitesPage(false);
@@ -293,25 +288,25 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
 
   useEffect(() => {
     axios
-      .get('/inviteUsers', {
-        params: {
-          currentUser: currentUser.googleId,
-        },
-      })
-      .then((response) => {
-        setAllOtherUsers(response.data);
-      })
-      .catch((err) => console.warn('ERRR', err));
-  }, [currentUser.googleId]);
-
-  useEffect(() => {
-    axios
       .get('/getInvites', { params: { googleId: currentUser.googleId } })
       .then((response) => setMyInvites(response.data))
       .catch((err) => console.warn('ERRR', err));
   }, []);
 
+  useEffect(() => {
+    axios.get('/activeTrip')
+      .then(({ data }) => {
+        setActiveTrip(data);
+        setLoadComplete(true);
+      });
+  }, []);
+
   const container = window !== undefined ? () => window.document.body : undefined;
+
+  let forecast = activeTrip ? <Forecast forecast={activeTrip.forecast}/> : '';
+  if (!loadComplete) {
+    forecast = <CircularProgress />;
+  }
 
   const landingPage = (
     <div className="landing-page">
@@ -323,17 +318,18 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       <Typography className="welcome-message" variant="h6">
         {`Hi, ${currentUser.first_name}!`}
       </Typography>
+      <div className="trips">
       <Trips
         currentUser={currentUser}
         currentTrip={currentTrip}
         setClickedPage={setClickedPage}
       />
-      <br />
+      </div>
       <PlanATrip
-        otherUsers={allOtherUsers}
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
+      <div className="forecast">{forecast}</div>
     </div>
   );
 
@@ -411,7 +407,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
             {showInvitesPage ? (
               <InvitesPage
                 currentUser={currentUser}
-                otherUsers={allOtherUsers}
+                currentTrip={currentTrip}
                 myInvites={myInvites}
                 setClickedPage={setClickedPage}
               />

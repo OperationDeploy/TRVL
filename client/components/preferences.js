@@ -11,7 +11,7 @@ import ButtonGroup from '@material-ui/core/ButtonGroup';
 import axios from 'axios';
 import { MuiPickersUtilsProvider, KeyboardDatePicker } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-// import { Autocomplete } from '@material-ui/lab';
+import { Autocomplete } from '@material-ui/lab';
 import InvitesButton from './InvitesButton';
 
 const states = [
@@ -262,25 +262,14 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           }}
           margin="normal"
         />
-        <TextField
-          id="departure-state"
-          select
-          label="Departure State"
-          onChange={(event) => {
-            setDepartureState(event.value);
-          }}
-          SelectProps={{
-            native: true,
-          }}
-          variant="outlined"
-          margin="normal"
-        >
-          {states.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </TextField>
+        <Autocomplete
+          onChange={(_, state) => setDepartureState(state)}
+          options={states}
+          getOptionLabel={(option) => option}
+          renderInput={(params) => (
+            <TextField {...params} id="departure-state" label="Departure State" variant="outlined" margin="normal" />
+          )}
+        />
       </div>
 
       <div className={classes.root}>

@@ -49,6 +49,7 @@ const {
   getTripActivities,
   deleteActivity,
   getWeatherForTrip,
+  getActiveWeather,
   getMessages,
   postMessages,
   getFullTrip,
@@ -140,6 +141,10 @@ app.get('/activities/:trip', authCheck, (req, res) => {
 
 app.get('/weather/:trip', authCheck, async (req, res) => {
   getWeatherForTrip(req.params, res);
+});
+
+app.get('/activeTrip', authCheck, async (req, res) => {
+  getActiveWeather(req, res);
 });
 
 app.get('/phone', authCheck, (req, res) => {
@@ -308,7 +313,7 @@ app.get('/weatherUpdate', (req, res) => {
   res.sendStatus(200);
 });
 
-setInterval(weatherUpdate, 43200000);
+setInterval(weatherUpdate, 21600000);
 
 app.use(express.static('public'));
 app.use('/', express.static(DIST_DIR));

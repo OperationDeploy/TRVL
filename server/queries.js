@@ -4,7 +4,7 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
 const { getFlightsInfo } = require('./flights');
-const { getWeather } = require('./weather');
+const { getWeather, compareISODates } = require('./weather');
 const { getHotelsInfo } = require('./hotels');
 
 const { generatePlaces } = require('./algo.js');
@@ -489,6 +489,29 @@ const newMsgs = async (req, res) => {
   res.send(findNew);
 };
 
+const getActiveWeather = async (req, res) => {
+  const tripIds = await TripUser.findAll({ where: { user_id: req.user.googleId } });
+  let trips = tripIds.map((item) => Trip.findByPk(item.trip_id));
+  await Promise.all(trips).then((response) => {
+    trips = response;
+  });
+  let trip = null;
+  for (let i = 0; i < trips.length; i += 1) {
+    const start = trips[i].start_date;
+    const end = trips[i].end_date;
+    if (compareISODates('today', start) <= 0 && compareISODates('today', end) >= 0) {
+      trip = trips[i];
+      break;
+    }
+  }
+  if (trip) {
+    const forecast = await getWeather([trip], true, true);
+    res.send(forecast[0]);
+  } else {
+    res.send(null);
+  }
+};
+
 module.exports = {
   createUser,
   addDestinations,
@@ -523,4 +546,5 @@ module.exports = {
   addPhone,
   getPhone,
   getFullTrip,
+  getActiveWeather,
 };

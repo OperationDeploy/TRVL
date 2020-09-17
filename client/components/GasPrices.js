@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
-import { Autocomplete } from '@material-ui/lab/';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button, CircularProgress, Card, CardContent } from '@material-ui/core';
+import { Autocomplete } from '@material-ui/lab';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
@@ -48,40 +49,72 @@ const GasPrices = ({ currentTrip }) => {
   const submit = () => {
     const { year, make, model } = car;
     if (year.length && make.length && model.length) {
-      setLoading(<div> Loading...</div>);
-      axios.post('/gas', { car, trip: currentTrip }).then(({ data }) => {
-        setLoading(null);
-        if (data && data.total) {
-          setResponse(data);
-        } else {
-          setResponse('unavailable');
-        }
-      });
+      setLoading(<CircularProgress />);
+      axios.post('/gas', { car, trip: currentTrip })
+        .then(({ data }) => {
+          setLoading(null);
+          if (data && data.total) {
+            setResponse(data);
+          } else {
+            setResponse('unavailable');
+          }
+        });
     }
   };
 
-  const to2Dec = (num) => Math.round(num * 100) / 100;
+  const to2Dec = (num) => Number(num).toFixed(2);
+
+  const useStyles = makeStyles({
+    root: {
+      minWidth: 275,
+    },
+    bullet: {
+      display: 'inline-block',
+      margin: '0 2px',
+      transform: 'scale(0.8)',
+    },
+    title: {
+      fontSize: 14,
+    },
+    pos: {
+      marginBottom: 12,
+    },
+  });
+
+  const classes = useStyles();
 
   if (response) {
     display =
       response === 'unavailable' ? (
         <div>Data Not Available</div>
       ) : (
-        <div className="weather-widget">
-          <h2>Between here and {currentTrip.destination}</h2>
-          <div>Average Gas Price: ${to2Dec(response.avgPrice)}</div>
-          <div>Driving Distance: {to2Dec(response.miles)}</div>
-          <div>Fuel Economy: {to2Dec(response.mpg)} mpg</div>
-          <h2>Total Cost: ${to2Dec(response.total)}</h2>
-        </div>
+        <Card className={classes.root} variant="outlined">
+      <CardContent>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
+          From here to {currentTrip.destination.split(',')[0]} and back
+        </Typography>
+        <Typography variant="h5" component="h2">
+          Total Cost: ${to2Dec(response.total * 2)}
+        </Typography>
+        <Typography className={classes.pos} color="textSecondary">
+          One Way: ${to2Dec(response.total)}
+        </Typography>
+        <Typography className={classes.title} color="textSecondary" gutterBottom>
+        <div>Average Gas Price: ${to2Dec(response.avgPrice)}</div>
+        <div>Driving Distance: {to2Dec(response.miles * 2)} miles</div>
+        <div>Fuel Economy: {to2Dec(response.mpg)} mpg</div>
+        </Typography>
+      </CardContent>
+    </Card>
       );
   }
 
   return (
     <div className="activity-form-container gas-prices">
       <Typography component="h4" variant="h4">
-        Car Select:
+        Car Select
       </Typography>
+      <br />
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -124,6 +157,7 @@ const GasPrices = ({ currentTrip }) => {
             )}
           />
         </div>
+        <br />
         <Button
           variant="contained"
           component="label"
@@ -135,6 +169,7 @@ const GasPrices = ({ currentTrip }) => {
           Submit
         </Button>
       </form>
+      <br />
       {loading || display}
     </div>
   );
