@@ -80,7 +80,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
         <CardActionArea>
           <CardMedia
             className={classes.media}
-            image={`/weather-img/${weather[toISO(day)].weather}.jpg`}
+            image={`/weather-img/${weather[toISO(day)].weather}.gif`}
             title="Contemplative Reptile"
           />
           <CardContent>

@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const UserTrips = ({ currentUser }) => {
+const UserTrips = ({ currentUser, setClickedPage }) => {
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
@@ -54,17 +54,23 @@ const UserTrips = ({ currentUser }) => {
 
   switch (clicked) {
     case 'itinerary':
-      return <TripCalendar currentUser={currentUser} currentTrip={currentTrip} />;
+      setClickedPage(<TripCalendar currentUser={currentUser} currentTrip={currentTrip} />);
+      break;
     case 'purchases':
-      return <Purchases currentUser={currentUser} currentTrip={currentTrip} />;
+      setClickedPage(<Purchases currentUser={currentUser} currentTrip={currentTrip} />);
+      break;
     case 'photos':
-      return <Photos currentUser={currentUser} currentTrip={currentTrip} />;
+      setClickedPage(<Photos currentUser={currentUser} currentTrip={currentTrip} />);
+      break;
     case 'flights':
-      return <Flights currentUser={currentUser} currentTrip={currentTrip} />;
+      setClickedPage(<Flights currentUser={currentUser} currentTrip={currentTrip} />);
+      break;
     case 'gas':
-      return <GasPrices currentTrip={currentTrip} />;
+      setClickedPage(<GasPrices currentTrip={currentTrip} />);
+      break;
     case 'hotels':
-      return <Hotels currentUser={currentUser} currentTrip={currentTrip} />;
+      setClickedPage(<Hotels currentUser={currentUser} currentTrip={currentTrip} />);
+      break;
     default:
   }
 
@@ -74,7 +80,7 @@ const UserTrips = ({ currentUser }) => {
     </Typography>
   );
 
-  return (
+  return clicked ? null : (
     <div className="trips-container">
       <Typography component="h1" variant="h4">
         Trips
@@ -188,6 +194,7 @@ UserTrips.propTypes = {
     host: PropTypes.bool,
     googleId: PropTypes.string,
   }).isRequired,
+  setClickedPage: PropTypes.func.isRequired,
 };
 
 export default UserTrips;

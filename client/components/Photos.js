@@ -56,7 +56,7 @@ const Photos = ({ currentTrip, currentUser }) => {
       <Typography component="h1" variant="h5">
         Photos
       </Typography>
-      <div>
+      <div id="upload-button">
         <Button variant="contained" component="label">
           Upload Photo
           <input type="file" multiple onChange={fileSelectHandler} />

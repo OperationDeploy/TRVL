@@ -18,6 +18,10 @@ import GasPrices from './GasPrices';
 import Hotels from './Hotels';
 
 const UpcomingTrip = ({ trip, currentUser, setClickedPage }) => {
+  const calTrip = {
+    ...trip, startDate: trip.start_date, endDate: trip.end_date, city: trip.destination,
+  };
+
   const useStyles = makeStyles({
     root: {
       minWidth: 275,
@@ -78,7 +82,7 @@ const UpcomingTrip = ({ trip, currentUser, setClickedPage }) => {
                 </Button>
                 <Button
                   onClick={() => {
-                    setClickedPage(<TripCalendar currentUser={currentUser} currentTrip={trip} />);
+                    setClickedPage(<TripCalendar currentUser={currentUser} currentTrip={calTrip}/>);
                   }}
                   color="secondary"
                 >
@@ -122,6 +126,7 @@ UpcomingTrip.propTypes = {
     name: PropTypes.string,
     destination: PropTypes.string,
     start_date: PropTypes.string,
+    end_date: PropTypes.string,
   }).isRequired,
   currentUser: PropTypes.shape({
   }).isRequired,

@@ -168,7 +168,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
+              setClickedPage(<UserTrips
+                currentUser={currentUser}
+                currentTrip={currentTrip}
+                setClickedPage={setClickedPage}
+              />);
               setMobileOpen(false);
             }}
             key={text}
@@ -230,7 +234,13 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       <Divider />
       <List>
         {['Logout'].map((text) => (
-          <ListItem button onClick={() => console.info(`${text} Clicked!`)} key={text}>
+          <ListItem button onClick={() => {
+            axios.get('/logout')
+              .then(() => {
+                window.location.reload(false);
+              });
+            setMobileOpen(false);
+          }} key={text}>
             <ListItemIcon>
               <PersonOutlineIcon />
             </ListItemIcon>

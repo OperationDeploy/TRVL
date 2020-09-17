@@ -118,6 +118,11 @@ app.get('/session', (req, res) => {
   }
 });
 
+app.get('/logout', (req, res) => {
+  req.logout();
+  res.sendStatus(200);
+});
+
 // gets the users who aren't the current user from the db
 app.get('/inviteUsers', authCheck, (req, res) => {
   getOtherUsers(req.query, res);
