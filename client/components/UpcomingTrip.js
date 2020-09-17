@@ -1,8 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Card, CardContent, Typography, List, ListItem,
-  Divider, Button, ButtonGroup } from '@material-ui/core';
+import {
+  Card,
+  CardContent,
+  Typography,
+  List,
+  ListItem,
+  Divider,
+  Button,
+  ButtonGroup,
+} from '@material-ui/core';
 import FlightIcon from '@material-ui/icons/Flight';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
@@ -39,80 +47,86 @@ const UpcomingTrip = ({ trip, currentUser, setClickedPage }) => {
   return (
     <div>
       {/* The Upcoming Trip Div */}
-    <Card className={classes.root}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Your upcoming trip
-        </Typography>
-        <Typography variant="h5" component="h2">
-          {trip.name}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          is {moment(trip.start_date, 'YYYY-MM-DD').fromNow()}
-        </Typography>
-      </CardContent>
-    </Card>
-    <List>
-          <ListItem>
-            <div className={classes.root}>
-              <ButtonGroup
-                variant="text"
+      <Card className={classes.root}>
+        <CardContent>
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
+            Your upcoming trip
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {trip.name}
+          </Typography>
+          <Typography className={classes.pos} color="textSecondary">
+            is {moment(trip.start_date, 'YYYY-MM-DD').fromNow()}
+          </Typography>
+        </CardContent>
+      </Card>
+      <List>
+        <ListItem>
+          <div className={classes.root}>
+            <ButtonGroup
+              variant="text"
+              color="secondary"
+              aria-label="text primary button group"
+            >
+              <Button
+                onClick={() => {
+                  setClickedPage(
+                    <Flights currentUser={currentUser} currentTrip={trip} />,
+                  );
+                }}
                 color="secondary"
-                aria-label="text primary button group"
               >
-                <Button
-                  onClick={() => {
-                    setClickedPage(<Flights currentUser={currentUser} currentTrip={trip} />);
-                  }}
-                  color="secondary"
-                >
-                  <FlightIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    setClickedPage(<Hotels currentUser={currentUser} currentTrip={trip} />);
-                  }}
-                  color="secondary"
-                >
-                  <HotelOutlinedIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    setClickedPage(<TripCalendar currentUser={currentUser} currentTrip={trip} />);
-                  }}
-                  color="secondary"
-                >
-                  <DateRangeOutlinedIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    setClickedPage(<Purchases currentUser={currentUser} currentTrip={trip} />);
-                  }}
-                  color="secondary"
-                >
-                  <AttachMoneyIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    setClickedPage(<Photos currentUser={currentUser} currentTrip={trip} />);
-                  }}
-                  color="secondary"
-                >
-                  <PhotoCameraOutlinedIcon />
-                </Button>
-                <Button
-                  onClick={() => {
-                    setClickedPage(<GasPrices currentTrip={trip} />);
-                  }}
-                  color="secondary"
-                >
-                  <LocalGasStationOutlinedIcon />
-                </Button>
-              </ButtonGroup>
-            </div>
-          </ListItem>
-          <Divider />
-        </List>
+                <FlightIcon />
+              </Button>
+              <Button
+                onClick={() => {
+                  setClickedPage(<Hotels currentUser={currentUser} currentTrip={trip} />);
+                }}
+                color="secondary"
+              >
+                <HotelOutlinedIcon />
+              </Button>
+              <Button
+                onClick={() => {
+                  setClickedPage(
+                    <TripCalendar currentUser={currentUser} currentTrip={trip} />,
+                  );
+                }}
+                color="secondary"
+              >
+                <DateRangeOutlinedIcon />
+              </Button>
+              <Button
+                onClick={() => {
+                  setClickedPage(
+                    <Purchases currentUser={currentUser} currentTrip={trip} />,
+                  );
+                }}
+                color="secondary"
+              >
+                <AttachMoneyIcon />
+              </Button>
+              <Button
+                onClick={() => {
+                  setClickedPage(<Photos currentUser={currentUser} currentTrip={trip} />);
+                }}
+                color="secondary"
+              >
+                <PhotoCameraOutlinedIcon />
+              </Button>
+              <Button
+                onClick={() => {
+                  setClickedPage(<GasPrices currentTrip={trip} />);
+                }}
+                color="secondary"
+              >
+                <LocalGasStationOutlinedIcon />
+              </Button>
+            </ButtonGroup>
+          </div>
+        </ListItem>
+        <Divider />
+      </List>
     </div>
   );
 };
@@ -123,8 +137,7 @@ UpcomingTrip.propTypes = {
     destination: PropTypes.string,
     start_date: PropTypes.string,
   }).isRequired,
-  currentUser: PropTypes.shape({
-  }).isRequired,
+  currentUser: PropTypes.shape({}).isRequired,
   setClickedPage: PropTypes.func.isRequired,
 };
 

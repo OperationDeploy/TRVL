@@ -9,11 +9,12 @@ const InvitesButton = ({ currentUser, trip, setClickedPage }) => {
   const [otherUsers, setOtherUsers] = useState([]);
 
   useEffect(() => {
-    axios.get('/inviteUsers', {
-      params: {
-        currentUser: currentUser.googleId,
-      },
-    })
+    axios
+      .get('/inviteUsers', {
+        params: {
+          currentUser: currentUser.googleId,
+        },
+      })
       .then((response) => {
         setOtherUsers(response.data);
       })

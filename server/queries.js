@@ -501,7 +501,10 @@ const getActiveWeather = async (req, res) => {
       trip = trips[i];
       break;
     }
-    if (!nextTrip || (toStart < compareISODates('today', nextTrip.start_date) && toStart >= 0)) {
+    if (
+      !nextTrip ||
+      (toStart < compareISODates('today', nextTrip.start_date) && toStart >= 0)
+    ) {
       nextTrip = trips[i];
     }
   }
@@ -509,7 +512,8 @@ const getActiveWeather = async (req, res) => {
     const result = await getWeather([trip || nextTrip]);
     if (result) {
       // console.log('the object before slicing', result[0].forecast)
-      const forecast = Object.keys(result[0].forecast).length <= 4 ? null : result[0].forecast;
+      const forecast =
+        Object.keys(result[0].forecast).length <= 4 ? null : result[0].forecast;
       res.send({ ...result[0].dataValues, forecast, activeTrip: !!trip });
     } else {
       res.send(nextTrip);

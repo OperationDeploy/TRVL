@@ -1,7 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@material-ui/core';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+} from '@material-ui/core';
 import moment from 'moment';
 
 const Forecast = ({ forecast }) => {
@@ -41,7 +49,11 @@ const Forecast = ({ forecast }) => {
       <Table className={classes.table} size="small" aria-label="a dense table">
         <TableHead>
           <TableRow className="weather-widget">
-            {columns.map((day) => <TableCell align="center" id="main">{toDateStr(day)}</TableCell>)}
+            {columns.map((day) => (
+              <TableCell align="center" id="main">
+                {toDateStr(day)}
+              </TableCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -60,8 +72,7 @@ const Forecast = ({ forecast }) => {
 };
 
 Forecast.propTypes = {
-  forecast: PropTypes.shape({
-  }).isRequired,
+  forecast: PropTypes.shape({}).isRequired,
 };
 
 export default Forecast;
