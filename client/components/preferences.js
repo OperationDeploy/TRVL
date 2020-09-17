@@ -8,7 +8,7 @@ import Slider from '@material-ui/core/Slider';
 import Button from '@material-ui/core/Button';
 import Container from '@material-ui/core/Container';
 import ButtonGroup from '@material-ui/core/ButtonGroup';
-// import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@material-ui/core/Tooltip';
 import IosSunnyOutline from 'react-ionicons/lib/IosSunnyOutline';
 import IosSnowOutline from 'react-ionicons/lib/IosSnowOutline';
 import axios from 'axios';
