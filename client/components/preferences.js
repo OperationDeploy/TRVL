@@ -407,20 +407,20 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           </Grid>
           <Grid item>
             <Tooltip placement="top" title="Nature">
-                <div>
-                  <img src={forest} alt="nature" height="50px" width="50px" />
-                </div>
-              </Tooltip>
+              <div>
+                <img src={forest} alt="nature" height="50px" width="50px" />
+              </div>
+            </Tooltip>
           </Grid>
         </Grid>
         <Typography>City Type</Typography>
         <Grid container spacing={2}>
           <Grid item>
             <Tooltip placement="top" title="Party">
-                <div>
-                  <img src={party} alt="party" height="50px" width="50px" />
-                </div>
-              </Tooltip>
+              <div>
+                <img src={party} alt="party" height="50px" width="50px" />
+              </div>
+            </Tooltip>
           </Grid>
           <Grid item xs>
             <Slider

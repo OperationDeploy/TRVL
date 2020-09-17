@@ -47,26 +47,26 @@ const UpcomingTrip = ({ trip, currentUser, setClickedPage }) => {
   return (
     <div>
       {/* The Upcoming Trip Div */}
-    <Card className={classes.root}>
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          Your upcoming trip to
-        </Typography>
-        <Typography variant="h5" component="h2">
-          {trip.destination}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          is {moment(trip.start_date, 'YYYY-MM-DD').fromNow()}
-        </Typography>
-      </CardContent>
-    </Card>
-    <List>
-          <ListItem>
-            <div className={classes.root}>
-              <ButtonGroup
-                variant="text"
-                color="secondary"
-                aria-label="text primary button group"
+      <Card className={classes.root}>
+        <CardContent>
+          <Typography className={classes.title} color="textSecondary" gutterBottom>
+            Your upcoming trip to
+          </Typography>
+          <Typography variant="h5" component="h2">
+            {trip.destination}
+          </Typography>
+          <Typography className={classes.pos} color="textSecondary">
+            is {moment(trip.start_date, 'YYYY-MM-DD').fromNow()}
+          </Typography>
+        </CardContent>
+      </Card>
+      <List>
+        <ListItem>
+          <div className={classes.root}>
+            <ButtonGroup
+              variant="text"
+              color="secondary"
+              aria-label="text primary button group"
             >
               <Button
                 onClick={() => {

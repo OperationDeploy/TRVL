@@ -11,7 +11,9 @@ const PurchasesList = ({ purchases, deletePurchase }) => (
   <List>
     {purchases.map((purchase, index) => (
       <ListItem key={index.toString()} dense button>
-        <ListItemText primary={`${purchase.description}: $${purchase.price} (${purchase.purchaser})`} />
+        <ListItemText
+          primary={`${purchase.description}: $${purchase.price} (${purchase.purchaser})`}
+        />
         <ListItemSecondaryAction>
           <IconButton
             aria-label="Delete"

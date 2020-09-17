@@ -12,13 +12,10 @@ const Purchases = ({ currentUser, currentTrip }) => {
   const [debts, setDebts] = useState([]);
 
   const getSplit = () => {
-    axios.get(`/split/${currentTrip.id}/${currentUser.id}`)
-      .then(({ data }) => {
-        setPurchases(
-          data.items,
-        );
-        setDebts(data.debts);
-      });
+    axios.get(`/split/${currentTrip.id}/${currentUser.id}`).then(({ data }) => {
+      setPurchases(data.items);
+      setDebts(data.debts);
+    });
   };
 
   useEffect(() => {
@@ -33,12 +30,13 @@ const Purchases = ({ currentUser, currentTrip }) => {
       <PurchasesForm
         savePurchase={({ description, price }) => {
           if (description.length && price.length) {
-            axios.post('/split', {
-              purchaser_id: currentUser.id,
-              trip_id: currentTrip.id,
-              description,
-              price,
-            })
+            axios
+              .post('/split', {
+                purchaser_id: currentUser.id,
+                trip_id: currentTrip.id,
+                description,
+                price,
+              })
               .then(({ data }) => {
                 if (Array.isArray(data)) {
                   data.forEach((payment) => {
@@ -48,9 +46,10 @@ const Purchases = ({ currentUser, currentTrip }) => {
                       : payment.amount;
                   });
                   setDebts(debts);
-                  setPurchases(
-                    [...purchases, { description, price, purchaser: currentUser.first_name }],
-                  );
+                  setPurchases([
+                    ...purchases,
+                    { description, price, purchaser: currentUser.first_name },
+                  ]);
                 }
               });
           }
@@ -59,10 +58,9 @@ const Purchases = ({ currentUser, currentTrip }) => {
       <PurchasesList
         purchases={purchases}
         deletePurchase={(purchaseIndex, id) => {
-          axios.delete(`/split/${currentTrip.id}/${id}`)
-            .then(() => {
-              getSplit();
-            });
+          axios.delete(`/split/${currentTrip.id}/${id}`).then(() => {
+            getSplit();
+          });
           const newPurchases = purchases.filter((_, index) => index !== purchaseIndex);
           setPurchases(newPurchases);
         }}
