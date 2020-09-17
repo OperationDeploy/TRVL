@@ -27,7 +27,9 @@ let lastAlert = Date.now();
 const alertUsersOnTrips = async (trips) => {
   const userTrip = {};
 
-  let tripUsers = trips.map((trip) => TripUser.findAll({ where: { trip_id: trip.id }, raw: true }));
+  let tripUsers = trips.map((trip) =>
+    TripUser.findAll({ where: { trip_id: trip.id }, raw: true }),
+  );
   await Promise.all(tripUsers)
     .then((response) => {
       tripUsers = response;
@@ -44,10 +46,12 @@ const alertUsersOnTrips = async (trips) => {
     });
   });
 
-  let users = Object.keys(userTrip).map((googleId) => User.findOne({
-    where: { googleId },
-    raw: true,
-  }));
+  let users = Object.keys(userTrip).map((googleId) =>
+    User.findOne({
+      where: { googleId },
+      raw: true,
+    }),
+  );
   await Promise.all(users)
     .then((response) => {
       users = response;
@@ -72,12 +76,14 @@ const updateTrips = async (updated, original) => {
   const trips = updated.filter(
     (trip, i) => trip.weather_alert !== original[i].weather_alert,
   );
-  const updateDB = trips.map((trip) => Trip.update(
-    {
-      weather_alert: trip.weather_alert,
-    },
-    { where: { id: trip.id } },
-  ));
+  const updateDB = trips.map((trip) =>
+    Trip.update(
+      {
+        weather_alert: trip.weather_alert,
+      },
+      { where: { id: trip.id } },
+    ),
+  );
 
   await Promise.all(updateDB);
 
@@ -101,8 +107,10 @@ const getWeather = async (allTrips, weatherOnly = true, activeTrip) => {
   let weatherData;
   await Promise.all(coordinates)
     .then((res) => {
-      weatherData = res.map((loc) => axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${loc.Latitude}&lon=${loc.Longitude}&
-        exclude=minutely,hourly&appid=${WEATHER_API}`));
+      weatherData = res.map((loc) =>
+        axios.get(`https://api.openweathermap.org/data/2.5/onecall?lat=${loc.Latitude}&lon=${loc.Longitude}&
+        exclude=minutely,hourly&appid=${WEATHER_API}`),
+      );
     })
     .catch((err) => console.warn(err));
   let results;

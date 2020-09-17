@@ -46,8 +46,9 @@ const Hotels = ({ currentUser, currentTrip }) => {
   if (hotelData.length === 0 || hotelData.length === undefined || null) {
     return (
       <h3>
-        Finding the best hotels for your trip...If your results do no return in 10 seconds
-        or less, there may not be any reservations available. Please try again later
+        Finding the best hotels for your trip...If your results do not return in 10
+        seconds or less, there may not be any reservations available. Please try again
+        later
       </h3>
     );
   }
@@ -74,6 +75,7 @@ const Hotels = ({ currentUser, currentTrip }) => {
                   <List>
                     <ListItem>
                       <img
+                        className="hotel-image"
                         alt="new"
                         src={
                           hotel.photo.images.thumbnail.url !== undefined ?
@@ -82,15 +84,14 @@ const Hotels = ({ currentUser, currentTrip }) => {
                         }
                       />
                       <div color="primary">
-                        <div>
-                          {`${hotel.name}`}
-                          <br />
-                          {`${hotel.price} per night`}
-                        </div>
+                        <div className="hotel-name">{`${hotel.name}`}</div>
                         <br />
-                        <div className="hotel-image" float="right">
-                          <br />
+                        {`${hotel.price} per night`}
+                        <div>
                           <Button
+                            fullWidth
+                            variant="contained"
+                            color="secondary"
                             className="hotel-link"
                             onClick={() => hotelLink(hotel.hac_offers.offers[0].link)}
                           >
