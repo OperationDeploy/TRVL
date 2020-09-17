@@ -81,7 +81,7 @@ const updateTrips = async (updated, original) => {
 
   await Promise.all(updateDB);
 
-  if (!lastAlert || (Date.now() - lastAlert) >= 43200000) {
+  if (!lastAlert || Date.now() - lastAlert >= 43200000) {
     alertUsersOnTrips(trips);
   }
 };

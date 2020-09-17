@@ -69,8 +69,14 @@ const UserTrips = ({ currentUser }) => {
   }
 
   const weatherAlert = (
-    <Typography id="weather-alert" color="error" variant="caption" display="inline" gutterBottom>
-    CHECK WEATHER
+    <Typography
+      id="weather-alert"
+      color="error"
+      variant="caption"
+      display="inline"
+      gutterBottom
+    >
+      CHECK WEATHER
     </Typography>
   );
 
@@ -104,7 +110,7 @@ const UserTrips = ({ currentUser }) => {
                     <FlightIcon />
                   </Button>
                 </Tooltip>
-                <Tooltip title="Hotels">
+                <Tooltip placement="top" title="Hotels">
                   <Button
                     onClick={() => {
                       const trip = { id: data.id, city: data.destination };
@@ -116,7 +122,7 @@ const UserTrips = ({ currentUser }) => {
                     <HotelOutlinedIcon />
                   </Button>
                 </Tooltip>
-                <Tooltip title="Itinerary">
+                <Tooltip placement="top" title="Itinerary">
                   <Button
                     onClick={() => {
                       const trip = {
@@ -133,7 +139,7 @@ const UserTrips = ({ currentUser }) => {
                     <DateRangeOutlinedIcon />
                   </Button>
                 </Tooltip>
-                <Tooltip title="Purchases">
+                <Tooltip placement="top" title="Purchases">
                   <Button
                     onClick={() => {
                       const trip = { id: data.id, city: data.destination };
@@ -145,7 +151,7 @@ const UserTrips = ({ currentUser }) => {
                     <AttachMoneyIcon />
                   </Button>
                 </Tooltip>
-                <Tooltip title="Photos">
+                <Tooltip placement="top" title="Photos">
                   <Button
                     onClick={() => {
                       const trip = { id: data.id, city: data.destination };
@@ -157,7 +163,7 @@ const UserTrips = ({ currentUser }) => {
                     <PhotoCameraOutlinedIcon />
                   </Button>
                 </Tooltip>
-                <Tooltip title="Gas">
+                <Tooltip placement="top" title="Gas">
                   <Button
                     onClick={() => {
                       setCurrentTrip(data);

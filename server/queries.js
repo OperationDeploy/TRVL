@@ -498,7 +498,10 @@ const getActiveWeather = async (req, res) => {
       trip = trips[i];
       break;
     }
-    if (!nextTrip || (toStart < compareISODates('today', nextTrip.start_date) && toStart >= 0)) {
+    if (
+      !nextTrip ||
+      (toStart < compareISODates('today', nextTrip.start_date) && toStart >= 0)
+    ) {
       nextTrip = trips[i];
     }
   }

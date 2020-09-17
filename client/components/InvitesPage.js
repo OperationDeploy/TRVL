@@ -10,10 +10,11 @@ const InvitesPage = ({ currentTrip, currentUser, myInvites }) => {
 
   const handleClick = (event, id) => {
     event.preventDefault();
-    axios.post('./tripUser', {
-      currentUser,
-      trip_id: id,
-    })
+    axios
+      .post('./tripUser', {
+        currentUser,
+        trip_id: id,
+      })
       .then(() => {
         axios.post('/removeInvite', { trip_id: id, user: currentUser.googleId });
       })
@@ -32,9 +33,7 @@ const InvitesPage = ({ currentTrip, currentUser, myInvites }) => {
   }, []);
 
   if (invitedTripClicked) {
-    return (
-      <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
-    );
+    return <UserTrips currentUser={currentUser} currentTrip={currentTrip} />;
   }
   return (
     <div>

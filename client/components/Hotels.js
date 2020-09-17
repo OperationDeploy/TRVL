@@ -78,9 +78,9 @@ const Hotels = ({ currentUser, currentTrip }) => {
                         className="hotel-image"
                         alt="new"
                         src={
-                          hotel.photo.images.thumbnail.url !== undefined ?
-                            hotel.photo.images.thumbnail.url :
-                            null
+                          hotel.photo.images.thumbnail.url !== undefined
+                            ? hotel.photo.images.thumbnail.url
+                            : null
                         }
                       />
                       <div color="primary">
