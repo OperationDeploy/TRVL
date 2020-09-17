@@ -1,6 +1,3 @@
-/* eslint-disable function-paren-newline */
-/* eslint-disable comma-dangle */
-/* eslint-disable implicit-arrow-linebreak */
 require('dotenv').config();
 const { Op } = require('sequelize');
 const { getFlightsInfo } = require('./flights');
@@ -356,8 +353,8 @@ const addActivity = async (req, res) => {
       event: req.event,
       day: req.day,
     });
-    res.send(activity.dataValues);
   }
+  res.send(activity.dataValues);
 };
 
 const getTripActivities = async (req, res) => {

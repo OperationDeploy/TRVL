@@ -59,7 +59,7 @@ const Chat = ({ currentUser, newMsgs }) => {
                 }}
                 color="primary"
               >
-                Chat
+                Enter
               </Button>
             </ListItemSecondaryAction>
           </ListItem>
