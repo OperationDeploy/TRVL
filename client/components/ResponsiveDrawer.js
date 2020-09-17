@@ -146,11 +146,13 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(<Preferences
-                currentUser={currentUser}
-                currentTrip={currentTrip}
-                setClickedPage={setClickedPage}
-              />);
+              setClickedPage(
+                <Preferences
+                  currentUser={currentUser}
+                  currentTrip={currentTrip}
+                  setClickedPage={setClickedPage}
+                />,
+              );
               setMobileOpen(false);
             }}
             key={text}
@@ -190,12 +192,14 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(<InvitesPage
-                currentUser={currentUser}
-                currentTrip={currentTrip}
-                myInvites={myInvites}
-                setClickedPage={setClickedPage}
-              />);
+              setClickedPage(
+                <InvitesPage
+                  currentUser={currentUser}
+                  currentTrip={currentTrip}
+                  myInvites={myInvites}
+                  setClickedPage={setClickedPage}
+                />,
+              );
               if (myInvites.length !== 0) {
                 setToggleIcon(true);
               }
@@ -219,7 +223,9 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(<Chat currentUser={currentUser} newMsgs={() => newMsgs()} />);
+              setClickedPage(
+                <Chat currentUser={currentUser} newMsgs={() => newMsgs()} />,
+              );
               setMobileOpen(false);
               handleToggleChatRead();
             }}
@@ -275,24 +281,26 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
   }, []);
 
   useEffect(() => {
-    axios.get('/activeTrip')
-      .then(({ data }) => {
-        if (data.activeTrip) {
-          setActiveTrip(data);
-        } else {
-          setUpcomingTrip(data);
-        }
-        setLoadComplete(true);
-      });
+    axios.get('/activeTrip').then(({ data }) => {
+      if (data.activeTrip) {
+        setActiveTrip(data);
+      } else {
+        setUpcomingTrip(data);
+      }
+      setLoadComplete(true);
+    });
   }, []);
 
   const container = window !== undefined ? () => window.document.body : undefined;
 
   let activeTripView = activeTrip ? (
     <div>
-    <ActiveTrip trip={activeTrip} setClickedPage={setClickedPage}
-      currentUser={currentUser} />
-    <Forecast forecast={activeTrip.forecast}/>
+      <ActiveTrip
+        trip={activeTrip}
+        setClickedPage={setClickedPage}
+        currentUser={currentUser}
+      />
+      <Forecast forecast={activeTrip.forecast} />
     </div>
   ) : null;
 
@@ -302,9 +310,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
 
   const upcomingTripView = upcomingTrip ? (
     <div>
-    <UpcomingTrip trip={upcomingTrip} setClickedPage={setClickedPage}
-      currentUser={currentUser} />
-    <Forecast forecast={upcomingTrip.forecast}/>
+      <UpcomingTrip
+        trip={upcomingTrip}
+        setClickedPage={setClickedPage}
+        currentUser={currentUser}
+      />
+      <Forecast forecast={upcomingTrip.forecast} />
     </div>
   ) : null;
 
@@ -319,16 +330,13 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         {`Hi, ${currentUser.first_name}!`}
       </Typography>
       <div className="trips">
-      <Trips
-        currentUser={currentUser}
-        currentTrip={currentTrip}
-        setClickedPage={setClickedPage}
-      />
+        <Trips
+          currentUser={currentUser}
+          currentTrip={currentTrip}
+          setClickedPage={setClickedPage}
+        />
       </div>
-      <PlanATrip
-        currentUser={currentUser}
-        setClickedPage={setClickedPage}
-      />
+      <PlanATrip currentUser={currentUser} setClickedPage={setClickedPage} />
       <div className="active-trip">{activeTripView || upcomingTripView}</div>
     </div>
   );

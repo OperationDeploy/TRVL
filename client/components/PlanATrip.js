@@ -5,22 +5,19 @@ import Preferences from './preferences';
 import './PlanATrip.css';
 
 const PlanATrip = ({ setClickedPage, currentUser }) => (
-    <div>
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={() => {
-          setClickedPage(
-            <Preferences
-              currentUser={currentUser}
-              setClickedPage={setClickedPage}
-            />,
-          );
-        }}
-      >
-        Plan A Trip
-      </Button>
-    </div>
+  <div>
+    <Button
+      variant="contained"
+      color="secondary"
+      onClick={() => {
+        setClickedPage(
+          <Preferences currentUser={currentUser} setClickedPage={setClickedPage} />,
+        );
+      }}
+    >
+      Plan A Trip
+    </Button>
+  </div>
 );
 
 PlanATrip.propTypes = {

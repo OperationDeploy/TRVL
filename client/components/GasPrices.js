@@ -50,15 +50,14 @@ const GasPrices = ({ currentTrip }) => {
     const { year, make, model } = car;
     if (year.length && make.length && model.length) {
       setLoading(<CircularProgress />);
-      axios.post('/gas', { car, trip: currentTrip })
-        .then(({ data }) => {
-          setLoading(null);
-          if (data && data.total) {
-            setResponse(data);
-          } else {
-            setResponse('unavailable');
-          }
-        });
+      axios.post('/gas', { car, trip: currentTrip }).then(({ data }) => {
+        setLoading(null);
+        if (data && data.total) {
+          setResponse(data);
+        } else {
+          setResponse('unavailable');
+        }
+      });
     }
   };
 
@@ -89,23 +88,23 @@ const GasPrices = ({ currentTrip }) => {
         <div>Data Not Available</div>
       ) : (
         <Card className={classes.root} variant="outlined">
-      <CardContent>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-          From here to {currentTrip.destination.split(',')[0]} and back
-        </Typography>
-        <Typography variant="h5" component="h2">
-          Total Cost: ${to2Dec(response.total * 2)}
-        </Typography>
-        <Typography className={classes.pos} color="textSecondary">
-          One Way: ${to2Dec(response.total)}
-        </Typography>
-        <Typography className={classes.title} color="textSecondary" gutterBottom>
-        <div>Average Gas Price: ${to2Dec(response.avgPrice)}</div>
-        <div>Driving Distance: {to2Dec(response.miles * 2)} miles</div>
-        <div>Fuel Economy: {to2Dec(response.mpg)} mpg</div>
-        </Typography>
-      </CardContent>
-    </Card>
+          <CardContent>
+            <Typography className={classes.title} color="textSecondary" gutterBottom>
+              From here to {currentTrip.destination.split(',')[0]} and back
+            </Typography>
+            <Typography variant="h5" component="h2">
+              Total Cost: ${to2Dec(response.total * 2)}
+            </Typography>
+            <Typography className={classes.pos} color="textSecondary">
+              One Way: ${to2Dec(response.total)}
+            </Typography>
+            <Typography className={classes.title} color="textSecondary" gutterBottom>
+              <div>Average Gas Price: ${to2Dec(response.avgPrice)}</div>
+              <div>Driving Distance: {to2Dec(response.miles * 2)} miles</div>
+              <div>Fuel Economy: {to2Dec(response.mpg)} mpg</div>
+            </Typography>
+          </CardContent>
+        </Card>
       );
   }
 

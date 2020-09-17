@@ -69,7 +69,9 @@ const Photos = ({ currentTrip, currentUser }) => {
       {photos.map((photo, i) => (
         <div>
           <Typography variant="caption" id="timestamp">
-            {`Uploaded by ${photo.userName} on ${moment(photo.createdAt).format('MMMM Do')}`}
+            {`Uploaded by ${photo.userName} on ${moment(photo.createdAt).format(
+              'MMMM Do',
+            )}`}
           </Typography>
           <img alt={i} src={`http://${HOST}:${PORT}/${photo.photo_link}`} width="330" />
           <br />

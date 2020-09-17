@@ -2,7 +2,13 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import { CircularProgress, Card, CardActionArea, CardContent, CardMedia } from '@material-ui/core';
+import {
+  CircularProgress,
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+} from '@material-ui/core';
 import axios from 'axios';
 import moment from 'moment';
 import './Itinerary.css';
@@ -77,27 +83,32 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
     } else {
       weatherDisp = (
         <Card className={classes.root}>
-        <CardActionArea>
-          <CardMedia
-            className={classes.media}
-            image={`/weather-img/${weather[toISO(day)].weather}.gif`}
-            title="Contemplative Reptile"
-          />
-          <CardContent>
-            <Typography gutterBottom variant="h6" component="h2">
-             {currentTrip.city.split(',')[0]} Weather
-            </Typography>
-            <Typography variant="subtitle2" color="textSecondary" component="p" fontWeight="fontWeightBold">
-              {toDate(day)}
-            </Typography>
-            <Typography className="weather-widget" variant="body2" component="p">
-              <div id="main">{weather[toISO(day)].weather}</div>
-              <div id="high">High: {`${weather[toISO(day)].temp.high}\u00b0`}</div>
-              <div id="low">Low: {`${weather[toISO(day)].temp.low}\u00b0`}</div>
-            </Typography>
-          </CardContent>
-        </CardActionArea>
-      </Card>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+              image={`/weather-img/${weather[toISO(day)].weather}.gif`}
+              title="Contemplative Reptile"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="h2">
+                {currentTrip.city.split(',')[0]} Weather
+              </Typography>
+              <Typography
+                variant="subtitle2"
+                color="textSecondary"
+                component="p"
+                fontWeight="fontWeightBold"
+              >
+                {toDate(day)}
+              </Typography>
+              <Typography className="weather-widget" variant="body2" component="p">
+                <div id="main">{weather[toISO(day)].weather}</div>
+                <div id="high">High: {`${weather[toISO(day)].temp.high}\u00b0`}</div>
+                <div id="low">Low: {`${weather[toISO(day)].temp.low}\u00b0`}</div>
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+        </Card>
       );
     }
   }

@@ -282,7 +282,13 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
           options={states}
           getOptionLabel={(option) => option}
           renderInput={(params) => (
-            <TextField {...params} id="departure-state" label="Departure State" variant="outlined" margin="normal" />
+            <TextField
+              {...params}
+              id="departure-state"
+              label="Departure State"
+              variant="outlined"
+              margin="normal"
+            />
           )}
         />
       </div>
@@ -325,23 +331,41 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
         </Typography>
         <Typography>Temperature</Typography>
         <Grid container spacing={3}>
-          <Grid item><IosSunnyOutline fontSize="50px"/></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Hot">
+              <div>
+                <IosSunnyOutline fontSize="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
           <Grid item xs>
-              <Slider
-                value={temperature}
-                onChange={handleChangeTemp}
-                aria-labelledby="temperature"
-                step={10}
-                marks
-                min={0}
-                max={100}
-              />
-            </Grid>
-            <Grid item><IosSnowOutline fontSize="50px"/></Grid>
+            <Slider
+              value={temperature}
+              onChange={handleChangeTemp}
+              aria-labelledby="temperature"
+              step={10}
+              marks
+              min={0}
+              max={100}
+            />
+          </Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Cold">
+              <div>
+                <IosSnowOutline fontSize="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
         </Grid>
         <Typography>City Expenses</Typography>
         <Grid container spacing={2}>
-          <Grid item><img src={money} alt="lowExpense" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Low">
+              <div>
+                <img src={money} alt="lowExpense" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
           <Grid item xs>
             <Slider
               value={cityExpenses}
@@ -353,11 +377,23 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item><img src={money2} alt="highExpense" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="High">
+              <div>
+                <img src={money2} alt="highExpense" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
         </Grid>
         <Typography>Landscape</Typography>
         <Grid container spacing={2}>
-          <Grid item><img src={buildings} alt="City" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="City">
+              <div>
+                <img src={buildings} alt="City" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
           <Grid item xs>
             <Slider
               value={landscape}
@@ -369,11 +405,23 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item><img src={forest} alt="nature" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Nature">
+                <div>
+                  <img src={forest} alt="nature" height="50px" width="50px" />
+                </div>
+              </Tooltip>
+          </Grid>
         </Grid>
         <Typography>City Type</Typography>
         <Grid container spacing={2}>
-          <Grid item><img src={party} alt="party" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Party">
+                <div>
+                  <img src={party} alt="party" height="50px" width="50px" />
+                </div>
+              </Tooltip>
+          </Grid>
           <Grid item xs>
             <Slider
               value={cityType}
@@ -385,11 +433,23 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item><img src={historical} alt="historical" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Historical">
+              <div>
+                <img src={historical} alt="historical" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
         </Grid>
         <Typography>Proximity</Typography>
         <Grid container spacing={2}>
-          <Grid item><img src={location} alt="domestic" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Domestic">
+              <div>
+                <img src={location} alt="domestic" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
           <Grid item xs>
             <Slider
               value={proximity}
@@ -401,11 +461,23 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item><img src={travel} alt="international" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="International">
+              <div>
+                <img src={travel} alt="international" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
         </Grid>
         <Typography>Group Age</Typography>
         <Grid container spacing={2}>
-          <Grid item><img src={young} alt="youngerPeople" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Young">
+              <div>
+                <img src={young} alt="youngerPeople" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
           <Grid item xs>
             <Slider
               value={groupAge}
@@ -417,12 +489,22 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item><img src={oldman} alt="olderPeople" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Old">
+              <div>
+                <img src={oldman} alt="olderPeople" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
         </Grid>
         <Typography>Group Relationship Status</Typography>
         <Grid container spacing={2}>
           <Grid item>
-            <img src={heart} alt="singles" height="50px" width="50px" />
+            <Tooltip placement="top" title="Singles">
+              <div>
+                <img src={heart} alt="singles" height="50px" width="50px" />
+              </div>
+            </Tooltip>
           </Grid>
           <Grid item xs>
             <Slider
@@ -435,7 +517,13 @@ const ContinuousSlider = ({ currentUser, allOtherUsers, setClickedPage }) => {
               max={100}
             />
           </Grid>
-          <Grid item><img src={hearts} alt="couples" height="50px" width="50px" /></Grid>
+          <Grid item>
+            <Tooltip placement="top" title="Couples">
+              <div>
+                <img src={hearts} alt="couples" height="50px" width="50px" />
+              </div>
+            </Tooltip>
+          </Grid>
         </Grid>
         <ButtonGroup color="secondary" aria-label="outlined primary button group">
           <Button
