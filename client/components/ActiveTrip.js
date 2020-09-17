@@ -25,6 +25,10 @@ import GasPrices from './GasPrices';
 import Hotels from './Hotels';
 
 const ActiveTrip = ({ trip, currentUser, setClickedPage }) => {
+  const calTrip = {
+    ...trip, startDate: trip.start_date, endDate: trip.end_date, city: trip.destination,
+  };
+
   const useStyles = makeStyles({
     root: {
       minWidth: 275,
@@ -88,7 +92,7 @@ const ActiveTrip = ({ trip, currentUser, setClickedPage }) => {
               <Button
                 onClick={() => {
                   setClickedPage(
-                    <TripCalendar currentUser={currentUser} currentTrip={trip} />,
+                    <TripCalendar currentUser={currentUser} currentTrip={calTrip} />,
                   );
                 }}
                 color="secondary"
@@ -134,6 +138,8 @@ ActiveTrip.propTypes = {
   trip: PropTypes.shape({
     name: PropTypes.string,
     destination: PropTypes.string,
+    start_date: PropTypes.string,
+    end_date: PropTypes.string,
   }).isRequired,
   currentUser: PropTypes.shape({}).isRequired,
   setClickedPage: PropTypes.func.isRequired,
