@@ -2,23 +2,25 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import Typography from '@material-ui/core/Typography';
-import InvitesPreferences from './InvitesPreferences';
+import UserTrips from './UserTrips';
 
-const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
+const InvitesPage = ({ currentTrip, currentUser, myInvites }) => {
   const [invitedTripsArray, setInvitedTripsArray] = useState([]);
   const [invitedTripClicked, setInvitedTripClicked] = useState(false);
-  const [inviteTripId, setInviteTripId] = useState(0);
-  const [invitedStartDate, setInvitedStartDate] = useState('');
-  const [invitedEndDate, setInvitedEndDate] = useState('');
-  const [inviteTripName, setInviteTripName] = useState('');
 
-  const handleClick = (event, name, id, startDate, endDate) => {
+  const handleClick = (event, id) => {
     event.preventDefault();
-    setInviteTripId(id);
-    setInvitedTripClicked(true);
-    setInvitedStartDate(startDate);
-    setInvitedEndDate(endDate);
-    setInviteTripName(name);
+    axios.post('./tripUser', {
+      currentUser,
+      trip_id: id,
+    })
+      .then(() => {
+        axios.post('/removeInvite', { trip_id: id, user: currentUser.googleId });
+      })
+      .then(() => {
+        setInvitedTripClicked(true);
+      })
+      .catch((err) => console.warn(err));
   };
 
   useEffect(() => {
@@ -31,14 +33,7 @@ const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
 
   if (invitedTripClicked) {
     return (
-      <InvitesPreferences
-        inviteTripId={inviteTripId}
-        currentUser={currentUser}
-        otherUsers={otherUsers}
-        invitedStartDate={invitedStartDate}
-        invitedEndDate={invitedEndDate}
-        inviteTripName={inviteTripName}
-      />
+      <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
     );
   }
   return (
@@ -50,7 +45,7 @@ const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
             type="submit"
             key={invite.id}
             onClick={(e) => {
-              handleClick(e, invite.name, invite.id, invite.start_date, invite.end_date);
+              handleClick(e, invite.id);
             }}
           >
             {invite.name}
@@ -62,7 +57,7 @@ const InvitesPage = ({ otherUsers, currentUser, myInvites }) => {
 };
 
 InvitesPage.propTypes = {
-  otherUsers: PropTypes.arrayOf(
+  currentTrip: PropTypes.arrayOf(
     PropTypes.shape({
       first_name: PropTypes.string,
       last_name: PropTypes.string,

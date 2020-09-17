@@ -68,6 +68,12 @@ const UserTrips = ({ currentUser }) => {
     default:
   }
 
+  const weatherAlert = (
+    <Typography id="weather-alert" color="error" variant="caption" display="inline" gutterBottom>
+    CHECK WEATHER
+    </Typography>
+  );
+
   return (
     <div className="trips-container">
       <Typography component="h1" variant="h4">
@@ -78,6 +84,7 @@ const UserTrips = ({ currentUser }) => {
           <ListItem>
             <ListItemText>
               <Typography>{`${data.name}`}</Typography>
+              {data.weather_alert ? weatherAlert : ''}
             </ListItemText>
             <div className={classes.root}>
               <ButtonGroup

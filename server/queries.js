@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { Op } = require('sequelize');
 const { getFlightsInfo } = require('./flights');
-const { getWeather } = require('./weather');
+const { getWeather, compareISODates } = require('./weather');
 const { getHotelsInfo } = require('./hotels');
 
 const { generatePlaces } = require('./algo.js');
@@ -448,9 +448,12 @@ const getHotels = async (req, res) => {
 };
 
 const getFullTrip = async (req, res) => {
+  // console.info(req, 'REQ');
   const trip = await Trip.findOne({
     where: { id: req.body.id },
   });
+  // console.info('trip found', trip);
+
   res.send(trip);
 };
 
@@ -481,6 +484,39 @@ const newMsgs = async (req, res) => {
     },
   }).catch((err) => console.warn(err));
   res.send(findNew);
+};
+
+const getActiveWeather = async (req, res) => {
+  const tripIds = await TripUser.findAll({ where: { user_id: req.user.googleId } });
+  let trips = tripIds.map((item) => Trip.findByPk(item.trip_id));
+  await Promise.all(trips).then((response) => {
+    trips = response;
+  });
+  let trip = null;
+  let nextTrip = null;
+  for (let i = 0; i < trips.length; i += 1) {
+    const toStart = compareISODates('today', trips[i].start_date);
+    const toEnd = compareISODates('today', trips[i].end_date);
+    if (toStart <= 0 && toEnd >= 0) {
+      trip = trips[i];
+      break;
+    }
+    if (!nextTrip || (toStart < compareISODates('today', nextTrip.start_date) && toStart >= 0)) {
+      nextTrip = trips[i];
+    }
+  }
+  if (trip || nextTrip) {
+    const result = await getWeather([trip || nextTrip]);
+    if (result) {
+      // console.log('the object before slicing', result[0].forecast)
+      const forecast = Object.keys(result[0].forecast).length <= 4 ? null : result[0].forecast;
+      res.send({ ...result[0].dataValues, forecast, activeTrip: !!trip });
+    } else {
+      res.send(nextTrip);
+    }
+  } else {
+    res.send(null);
+  }
 };
 
 module.exports = {
@@ -517,4 +553,5 @@ module.exports = {
   addPhone,
   getPhone,
   getFullTrip,
+  getActiveWeather,
 };

@@ -49,6 +49,7 @@ const {
   getTripActivities,
   deleteActivity,
   getWeatherForTrip,
+  getActiveWeather,
   getMessages,
   postMessages,
   getFullTrip,
@@ -142,6 +143,10 @@ app.get('/weather/:trip', authCheck, async (req, res) => {
   getWeatherForTrip(req.params, res);
 });
 
+app.get('/activeTrip', authCheck, async (req, res) => {
+  getActiveWeather(req, res);
+});
+
 app.get('/phone', authCheck, (req, res) => {
   getPhone(req.query, res);
 });
@@ -210,7 +215,8 @@ app.post('/getAllTrips', authCheck, (req, res) => {
 });
 
 app.post('/getFlights', authCheck, (req, res) => {
-  getFlights(req, res);
+  console.info('!!!!!', req.body, '!!!!!!!!!!');
+  getFlights(req.body, res);
 });
 
 app.post('/getHotels', authCheck, (req, res) => {
@@ -271,6 +277,27 @@ app.post('/sendTwilio', authCheck, (req, res) => {
   //   });
 });
 
+app.post('/sendTripDestTwilio', authCheck, (req, res) => {
+  console.info(req.body, TWILIO_PHONE_NUMBER);
+  res.send('We are not using twilio until we present our final app');
+  // res.header('Content-Type', 'application/json');
+  // client.messages
+  //   .create({
+  //     from: TWILIO_PHONE_NUMBER,
+  //     to: req.body.currentUser.phoneNumber,
+  // body: `
+  // ${req.body.event} has
+  // been chosen as your destination for your trip in Trvl! Login to view more details!`,
+  //   })
+  //   .then(() => {
+  //     res.send(JSON.stringify({ success: true }));
+  //   })
+  //   .catch((err) => {
+  //     console.warn('ERR', err);
+  //     res.send(JSON.stringify({ success: false }));
+  //   });
+});
+
 app.post('/gas', authCheck, async (req, res) => {
   const { trip, car } = req.body;
   const result = await getGasPrices(trip, car);
@@ -286,7 +313,7 @@ app.get('/weatherUpdate', (req, res) => {
   res.sendStatus(200);
 });
 
-setInterval(weatherUpdate, 43200000);
+setInterval(weatherUpdate, 21600000);
 
 app.use(express.static('public'));
 app.use('/', express.static(DIST_DIR));

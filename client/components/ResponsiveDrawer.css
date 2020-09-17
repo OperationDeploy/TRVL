@@ -42,24 +42,11 @@ main {
 input[type='file'] {
   display: none;
 }
-
-.weather-widget {
-  border-style: solid;
-  border-width: 1px;
-  border-radius: 15px;
-  #city {
-    font-weight: 800;
-  }
-  #main {
-    font-weight: 800;
-  }
-  #date {
-    font-size: small;
-  }
-  #high {
-    font-size: small;
-  }
-  #low {
-    font-size: small;
-  }
+.trips {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.active-trip {
+  padding-top: 20px;
+  padding-bottom: 20px;
 }

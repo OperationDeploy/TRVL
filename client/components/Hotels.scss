@@ -1,0 +1,57 @@
+$myColor:#24255f;
+
+.welcome-message {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center'
+}
+
+.pat-container {
+  text-align: center;
+  align-items: center;
+  justify-content: 'center';
+}
+
+.profile-pic {
+  border-radius: 50%;
+  width: 100px;
+}
+
+.toolbar-pic {
+  border-radius: 50%;
+  width: 95px;
+  transform: scale(0.5);
+  position: absolute;
+  top: -20px;
+  right: -20px;
+}
+
+input[type=file] {
+  display: none;
+}
+
+.hotel-container {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    list-style: none;
+    border: 1px solid $myColor;
+    align-items: flex-end;
+}
+
+.hotel-image {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
+.hotel-link {
+  width: 100%;
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+}
+
+.hotel-name {
+  margin-right: 100px
+}

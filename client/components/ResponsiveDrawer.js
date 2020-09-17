@@ -17,7 +17,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import HomeIcon from '@material-ui/icons/Home';
 import ChatIcon from '@material-ui/icons/Chat';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
+import { Typography, CircularProgress } from '@material-ui/core';
 import EventIcon from '@material-ui/icons/Event';
 import FlightIcon from '@material-ui/icons/Flight';
 import { makeStyles, createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
@@ -29,6 +29,9 @@ import PlanATrip from './PlanATrip';
 import Chat from './Chat';
 import UserTrips from './UserTrips';
 import InvitesPage from './InvitesPage';
+import Forecast from './Forecast';
+import ActiveTrip from './ActiveTrip';
+import UpcomingTrip from './UpcomingTrip';
 import './ResponsiveDrawer.css';
 
 const drawerWidth = 240;
@@ -88,17 +91,14 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
 
   const [mobileOpen, setMobileOpen] = useState(false);
   const [myInvites, setMyInvites] = useState([]);
-  const [showChat, setShowChat] = useState(false);
   const [clickedPage, setClickedPage] = useState(null);
   const [toggleIcon, setToggleIcon] = useState(false);
   const [newMsg, setNewMsg] = useState(false);
   const [toggleNewMsgIcon, setToggleNewMsgIcon] = useState(false);
-  const [showTrips, setShowTrips] = useState(false);
-  const [showPlan, setShowPlan] = useState(false);
-  const [showInvitesPage, setShowInvitesPage] = useState(false);
-  const [showHome, setShowHome] = useState(false);
-  const [count, setCount] = useState(0);
-  const [allOtherUsers, setAllOtherUsers] = useState([]);
+  const [activeTrip, setActiveTrip] = useState(null);
+  const [upcomingTrip, setUpcomingTrip] = useState(null);
+  const [loadComplete, setLoadComplete] = useState(false);
+  const [check, setCheck] = useState(false);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -116,42 +116,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       .catch((err) => console.warn(err));
   };
 
-  const handleNavClick = (page) => {
-    if (page === 'plan') {
-      setShowPlan(true);
-      setShowTrips(false);
-      setShowHome(false);
-      setShowInvitesPage(false);
-      setShowChat(false);
-    }
-    if (page === 'trips') {
-      setShowTrips(true);
-      setShowHome(false);
-      setShowPlan(false);
-      setShowInvitesPage(false);
-      setShowChat(false);
-    }
-    if (page === 'invitesPage') {
-      setShowInvitesPage(true);
-      setShowHome(false);
-      setShowTrips(false);
-      setShowPlan(false);
-      setShowChat(false);
-    }
-    if (page === 'chat') {
-      setShowChat(true);
-      setShowHome(false);
-      setShowTrips(false);
-      setShowPlan(false);
-      setShowInvitesPage(false);
-    }
-    if (page === 'home') {
-      setShowHome(!showHome);
-      setShowTrips(false);
-      setShowPlan(false);
-      setShowInvitesPage(false);
-      setShowChat(false);
-    }
+  const newMsgs = () => {
+    setCheck(true);
   };
 
   const drawer = (
@@ -163,7 +129,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
             button
             onClick={() => {
               setClickedPage(null);
-              handleNavClick('home');
               setMobileOpen(false);
             }}
             key={text}
@@ -181,9 +146,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
+              setClickedPage(<Preferences
+                currentUser={currentUser}
+                currentTrip={currentTrip}
+                setClickedPage={setClickedPage}
+              />);
               setMobileOpen(false);
-              handleNavClick('plan');
             }}
             key={text}
           >
@@ -200,9 +168,8 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
+              setClickedPage(<UserTrips currentUser={currentUser} currentTrip={currentTrip} />);
               setMobileOpen(false);
-              handleNavClick('trips');
             }}
             key={text}
           >
@@ -219,8 +186,12 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
-              handleNavClick('invitesPage');
+              setClickedPage(<InvitesPage
+                currentUser={currentUser}
+                currentTrip={currentTrip}
+                myInvites={myInvites}
+                setClickedPage={setClickedPage}
+              />);
               if (myInvites.length !== 0) {
                 setToggleIcon(true);
               }
@@ -244,8 +215,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
           <ListItem
             button
             onClick={() => {
-              setClickedPage(true);
-              handleNavClick('chat');
+              setClickedPage(<Chat currentUser={currentUser} newMsgs={() => newMsgs()} />);
               setMobileOpen(false);
               handleToggleChatRead();
             }}
@@ -271,7 +241,7 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
     </div>
   );
 
-  useEffect(() => {
+  if (check) {
     axios
       .post('./newMsgs', {
         trip: currentTrip,
@@ -281,27 +251,11 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         if (response.data.length > 0) {
           setToggleNewMsgIcon(true);
           setNewMsg(true);
+          setCheck(false);
         }
       }, [])
       .catch((err) => console.warn(err));
-    const timer = setTimeout(() => {
-      setCount(count + 1);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [count]);
-
-  useEffect(() => {
-    axios
-      .get('/inviteUsers', {
-        params: {
-          currentUser: currentUser.googleId,
-        },
-      })
-      .then((response) => {
-        setAllOtherUsers(response.data);
-      })
-      .catch((err) => console.warn('ERRR', err));
-  }, [currentUser.googleId]);
+  }
 
   useEffect(() => {
     axios
@@ -310,7 +264,39 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       .catch((err) => console.warn('ERRR', err));
   }, []);
 
+  useEffect(() => {
+    axios.get('/activeTrip')
+      .then(({ data }) => {
+        if (data.activeTrip) {
+          setActiveTrip(data);
+        } else {
+          setUpcomingTrip(data);
+        }
+        setLoadComplete(true);
+      });
+  }, []);
+
   const container = window !== undefined ? () => window.document.body : undefined;
+
+  let activeTripView = activeTrip ? (
+    <div>
+    <ActiveTrip trip={activeTrip} setClickedPage={setClickedPage}
+      currentUser={currentUser} />
+    <Forecast forecast={activeTrip.forecast}/>
+    </div>
+  ) : null;
+
+  if (!loadComplete) {
+    activeTripView = <CircularProgress />;
+  }
+
+  const upcomingTripView = upcomingTrip ? (
+    <div>
+    <UpcomingTrip trip={upcomingTrip} setClickedPage={setClickedPage}
+      currentUser={currentUser} />
+    <Forecast forecast={upcomingTrip.forecast}/>
+    </div>
+  ) : null;
 
   const landingPage = (
     <div className="landing-page">
@@ -322,17 +308,18 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
       <Typography className="welcome-message" variant="h6">
         {`Hi, ${currentUser.first_name}!`}
       </Typography>
+      <div className="trips">
       <Trips
         currentUser={currentUser}
         currentTrip={currentTrip}
         setClickedPage={setClickedPage}
       />
-      <br />
+      </div>
       <PlanATrip
-        otherUsers={allOtherUsers}
         currentUser={currentUser}
         setClickedPage={setClickedPage}
       />
+      <div className="active-trip">{activeTripView || upcomingTripView}</div>
     </div>
   );
 
@@ -394,25 +381,6 @@ const ResponsiveDrawer = ({ currentUser, currentTrip, window }) => {
         <main className={classes.content}>
           <div className={classes.toolbar} />
           {clickedPage || landingPage}
-          {showTrips ? (
-            <UserTrips currentUser={currentUser} currentTrip={currentTrip} />
-          ) : null}
-          {showPlan ? (
-            <Preferences
-              currentUser={currentUser}
-              currentTrip={currentTrip}
-              setClickedPage={setClickedPage}
-            />
-          ) : null}
-          {showInvitesPage ? (
-            <InvitesPage
-              currentUser={currentUser}
-              otherUsers={allOtherUsers}
-              myInvites={myInvites}
-              setClickedPage={setClickedPage}
-            />
-          ) : null}
-          {showChat ? <Chat currentUser={currentUser} /> : null}
         </main>
       </div>
     </ThemeProvider>
