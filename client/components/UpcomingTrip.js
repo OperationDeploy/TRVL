@@ -9,6 +9,7 @@ import HotelOutlinedIcon from '@material-ui/icons/HotelOutlined';
 import DateRangeOutlinedIcon from '@material-ui/icons/DateRangeOutlined';
 import PhotoCameraOutlinedIcon from '@material-ui/icons/PhotoCameraOutlined';
 import LocalGasStationOutlinedIcon from '@material-ui/icons/LocalGasStationOutlined';
+import moment from 'moment';
 import TripCalendar from './TripCalendar';
 import Purchases from './Purchases';
 import Photos from './Photos';
@@ -16,7 +17,7 @@ import Flights from './Flights';
 import GasPrices from './GasPrices';
 import Hotels from './Hotels';
 
-const ActiveTrip = ({ trip, currentUser, setClickedPage }) => {
+const UpcomingTrip = ({ trip, currentUser, setClickedPage }) => {
   const useStyles = makeStyles({
     root: {
       minWidth: 275,
@@ -35,19 +36,19 @@ const ActiveTrip = ({ trip, currentUser, setClickedPage }) => {
   });
 
   const classes = useStyles();
-
   return (
     <div>
+      {/* The Upcoming Trip Div */}
     <Card className={classes.root}>
       <CardContent>
         <Typography className={classes.title} color="textSecondary" gutterBottom>
-          You are currently on your trip
+          Your upcoming trip
         </Typography>
         <Typography variant="h5" component="h2">
           {trip.name}
         </Typography>
         <Typography className={classes.pos} color="textSecondary">
-          in {trip.destination}
+          is {moment(trip.start_date, 'YYYY-MM-DD').fromNow()}
         </Typography>
       </CardContent>
     </Card>
@@ -116,14 +117,15 @@ const ActiveTrip = ({ trip, currentUser, setClickedPage }) => {
   );
 };
 
-ActiveTrip.propTypes = {
+UpcomingTrip.propTypes = {
   trip: PropTypes.shape({
     name: PropTypes.string,
     destination: PropTypes.string,
+    start_date: PropTypes.string,
   }).isRequired,
   currentUser: PropTypes.shape({
   }).isRequired,
   setClickedPage: PropTypes.func.isRequired,
 };
 
-export default ActiveTrip;
+export default UpcomingTrip;
