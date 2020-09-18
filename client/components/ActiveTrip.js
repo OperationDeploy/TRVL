@@ -26,7 +26,10 @@ import Hotels from './Hotels';
 
 const ActiveTrip = ({ trip, currentUser, setClickedPage }) => {
   const calTrip = {
-    ...trip, startDate: trip.start_date, endDate: trip.end_date, city: trip.destination,
+    ...trip,
+    startDate: trip.start_date,
+    endDate: trip.end_date,
+    city: trip.destination,
   };
 
   const useStyles = makeStyles({

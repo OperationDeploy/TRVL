@@ -14,9 +14,7 @@ const ChatRoom = ({ currentUser, currentTrip, newMsgs }) => (
     <Typography component="h3" variant="h5">
       {`Welcome, ${currentUser.first_name}`}
     </Typography>
-    <Typography>
-      {`Your group is going to ${currentTrip.destination}`}
-    </Typography>
+    <Typography>{`Your group is going to ${currentTrip.destination}`}</Typography>
     <ChatComponent
       newMsgs={newMsgs}
       currentUser={currentUser}

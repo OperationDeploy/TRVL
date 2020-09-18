@@ -1,3 +1,4 @@
+/* eslint-disable function-paren-newline */
 const axios = require('axios');
 const { getCoordinates } = require('./weather');
 const { GAS_API } = require('../config');

@@ -81,37 +81,31 @@ const ChatComponent = ({ currentUser, currentTrip, newMsgs }) => {
               <div className="card-title">Join the Conversation</div>
               <hr />
               <List className={classes.root}>
-              {oldMessages.map((message) => (
-                <ListItem alignItems="flex-start">
-                  <ListItemText
-                    primary={`${messageText} ${message.time}`}
-                    secondary={
-                        <Typography
-                        component="span"
-                        color="primary"
-                        >
+                {oldMessages.map((message) => (
+                  <ListItem alignItems="flex-start">
+                    <ListItemText
+                      primary={`${message.text} ${message.time}`}
+                      secondary={
+                        <Typography component="span" color="primary">
                           {message.author}
                         </Typography>
-                    }
-                  />
-                </ListItem>
-              ))}
-               {messages.map((message) => (
-                 <ListItem alignItems="flex-start">
-                  <ListItemText
-                    primary={`${messageText} ${message.time}`}
-                    secondary={
-                      <Typography
-                      component="span"
-                      color="primary"
-                      >
+                      }
+                    />
+                  </ListItem>
+                ))}
+                {messages.map((message) => (
+                  <ListItem alignItems="flex-start">
+                    <ListItemText
+                      primary={`${message.message} ${message.time}`}
+                      secondary={
+                        <Typography component="span" color="primary">
                           {message.author}
                         </Typography>
-                    }
-                  />
-                </ListItem>
-               ))}
-               <Divider variant="inset" component="li" />
+                      }
+                    />
+                  </ListItem>
+                ))}
+                <Divider variant="inset" component="li" />
               </List>
             </div>
             <div className="card-footer">
