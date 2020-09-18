@@ -9,11 +9,13 @@ const Trips = ({ setClickedPage, currentUser, currentTrip }) => (
       variant="contained"
       color="secondary"
       onClick={() => {
-        setClickedPage(<UserTrips
-          currentUser={currentUser}
-          currentTrip={currentTrip}
-          setClickedPage={setClickedPage}
-        />);
+        setClickedPage(
+          <UserTrips
+            currentUser={currentUser}
+            currentTrip={currentTrip}
+            setClickedPage={setClickedPage}
+          />,
+        );
       }}
     >
       Trips

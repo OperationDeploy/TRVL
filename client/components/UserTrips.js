@@ -54,7 +54,9 @@ const UserTrips = ({ currentUser, setClickedPage }) => {
 
   switch (clicked) {
     case 'itinerary':
-      setClickedPage(<TripCalendar currentUser={currentUser} currentTrip={currentTrip} />);
+      setClickedPage(
+        <TripCalendar currentUser={currentUser} currentTrip={currentTrip} />,
+      );
       break;
     case 'purchases':
       setClickedPage(<Purchases currentUser={currentUser} currentTrip={currentTrip} />);
