@@ -1,19 +1,32 @@
 import React, { useState, useEffect } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
+import Tooltip from '@material-ui/core/Tooltip';
 import Button from '@material-ui/core/Button';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 import { Divider } from '@material-ui/core';
 import ChatRoom from './ChatRoom';
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    '& > *': {
+      margin: theme.spacing(3),
+    },
+  },
+}));
+
 const Chat = ({ currentUser, newMsgs }) => {
   const [clicked, setClicked] = useState(null);
   const [trips, setTrips] = useState([]);
   const [currentTrip, setCurrentTrip] = useState({});
+  const classes = useStyles();
 
   const handleChange = (response) => {
     setTrips(response);
@@ -50,18 +63,21 @@ const Chat = ({ currentUser, newMsgs }) => {
         <List>
           <ListItem>
             <ListItemText>{data.name}</ListItemText>
-            <ListItemSecondaryAction>
-              <Button
-                onClick={() => {
-                  const trip = data;
-                  setCurrentTrip(trip);
-                  setClicked(true);
-                }}
-                color="primary"
-              >
-                Enter
-              </Button>
-            </ListItemSecondaryAction>
+            <div className={classes.root}>
+              <Tooltip placement="top" title="Enter Chat">
+                <Button
+                  onClick={() => {
+                    const trip = data;
+                    setCurrentTrip(trip);
+                    setClicked(true);
+                  }}
+                  color="secondary"
+                  variant="contained"
+                >
+                  Enter
+                </Button>
+              </Tooltip>
+            </div>
           </ListItem>
           <Divider />
         </List>

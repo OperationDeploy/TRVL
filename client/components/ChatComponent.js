@@ -1,7 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import io from 'socket.io-client';
 import PropTypes from 'prop-types';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import { Typography } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Divider from '@material-ui/core/Divider';
+import ListItemText from '@material-ui/core/ListItemText';
 import axios from 'axios';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    maxWidth: '36ch',
+    backgroundColor: theme.palette.background.paper,
+  },
+  inline: {
+    display: 'inline',
+  },
+}));
 
 const ChatComponent = ({ currentUser, currentTrip, newMsgs }) => {
   const socket = io('localhost:8080');
@@ -9,6 +28,7 @@ const ChatComponent = ({ currentUser, currentTrip, newMsgs }) => {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState('');
   const [oldMessages, setOldMessages] = useState([]);
+  const classes = useStyles();
 
   const handleChange = (response) => {
     setOldMessages(response);
@@ -58,38 +78,62 @@ const ChatComponent = ({ currentUser, currentTrip, newMsgs }) => {
         <div className="col-4">
           <div className="card">
             <div className="card-body">
-              <div className="card-title">CHAT</div>
+              <div className="card-title">Join the Conversation</div>
               <hr />
-              <div className="messages">
-                {oldMessages.map((message) => (
-                  <div>
-                    {message.author}: {message.text} {message.time}
-                  </div>
-                ))}
-                {messages.map((message) => (
-                  <div>
-                    {message.author}: {message.message} {message.time}
-                  </div>
-                ))}
-              </div>
+              <List className={classes.root}>
+              {oldMessages.map((message) => (
+                <ListItem alignItems="flex-start">
+                  <ListItemText
+                    primary={`${messageText} ${message.time}`}
+                    secondary={
+                        <Typography
+                        component="span"
+                        color="primary"
+                        >
+                          {message.author}
+                        </Typography>
+                    }
+                  />
+                </ListItem>
+              ))}
+               {messages.map((message) => (
+                 <ListItem alignItems="flex-start">
+                  <ListItemText
+                    primary={`${messageText} ${message.time}`}
+                    secondary={
+                      <Typography
+                      component="span"
+                      color="primary"
+                      >
+                          {message.author}
+                        </Typography>
+                    }
+                  />
+                </ListItem>
+               ))}
+               <Divider variant="inset" component="li" />
+              </List>
             </div>
             <div className="card-footer">
-              <br />
-              <input
-                type="text"
-                placeholder="Message"
-                className="form-control"
+              <TextField
+                id="outlined-multiline-static"
+                multiline
+                rows={1}
+                placeholder="Share your message"
+                variant="outlined"
+                color="secondary"
                 value={messageText}
                 onChange={(ev) => setMessageText(ev.target.value)}
               />
-              <br />
-              <button
+              <Button
                 type="submit"
                 onClick={sendMessage}
                 className="btn btn-primary form-control"
+                color="primary"
+                variant="contained"
               >
                 Send
-              </button>
+              </Button>
             </div>
           </div>
         </div>

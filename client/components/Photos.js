@@ -29,15 +29,16 @@ const Photos = ({ currentTrip, currentUser }) => {
     Object.values(files).forEach((file) => data.append('file', file));
     data.append('user', currentUser.id);
     data.append('trip', currentTrip.id);
-    axios.post('/photos', data, {
-      onUploadProgress: (progress) => {
-        const dec = progress.loaded / progress.total;
-        setLoading(dec * 100);
-        if (progress.loaded === progress.total) {
-          setTimeout(() => setLoading(null), 1000);
-        }
-      },
-    })
+    axios
+      .post('/photos', data, {
+        onUploadProgress: (progress) => {
+          const dec = progress.loaded / progress.total;
+          setLoading(dec * 100);
+          if (progress.loaded === progress.total) {
+            setTimeout(() => setLoading(null), 1000);
+          }
+        },
+      })
       .then((res) => {
         const newPhotos = res.data.map((photo) => ({
           ...photo,

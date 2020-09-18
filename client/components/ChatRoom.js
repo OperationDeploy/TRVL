@@ -5,11 +5,18 @@ import ChatComponent from './ChatComponent';
 
 const ChatRoom = ({ currentUser, currentTrip, newMsgs }) => (
   <div>
-    <Typography component="h1" variant="h5">
-      CHAT ROOM: {currentTrip.name}
+    <Typography component="h1" variant="h4">
+      CHAT ROOM
     </Typography>
-    <h4>{`Welcome, ${currentUser.first_name}`}</h4>
-    <p>{`Your group is going to ${currentTrip.destination}`}</p>
+    <Typography component="h2" variant="h3" color="secondary">
+      {currentTrip.name}
+    </Typography>
+    <Typography component="h3" variant="h5">
+      {`Welcome, ${currentUser.first_name}`}
+    </Typography>
+    <Typography>
+      {`Your group is going to ${currentTrip.destination}`}
+    </Typography>
     <ChatComponent
       newMsgs={newMsgs}
       currentUser={currentUser}
