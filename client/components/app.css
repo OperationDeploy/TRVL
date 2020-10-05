@@ -2,19 +2,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-.splash-page {
-  min-height: 100vh;
-}
-
-.splash-card {
-  height: 500;
-}
-
-.splash-logo {
-  min-height: 100vh;
-  border: #000000;
+  width: 100%;
 }
 
 .welcome-message {

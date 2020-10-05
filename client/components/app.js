@@ -1,12 +1,9 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Favicon from 'react-favicon';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
-import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Login from './Login';
 import ResponsiveDrawer from './ResponsiveDrawer';
 import './app.css';
 
@@ -78,28 +75,10 @@ class App extends Component {
     const { loginComplete, currentUser, currentTrip, otherUsers } = this.state;
     if (!loginComplete) {
       return (
-        <Grid container justify="center" className="splash-page">
+        <div>
           <Favicon url="https://i.ibb.co/wyss9DS/TRVLfavicon-2.png" />
-          <Grid item xs={7}>
-            <Card className="splash-card">
-              <CardMedia
-                className="splash-logo"
-                image="https://i.ibb.co/dj9N37R/trvl.png"
-              />
-              <CardActions>
-                <Button
-                  href="/auth/google"
-                  fullWidth
-                  variant="outlined"
-                  color="default"
-                  // onClick
-                >
-                  Login With Google
-                </Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Grid>
+          <Login />
+        </div>
       );
     }
     if (loginComplete && !registered) {
