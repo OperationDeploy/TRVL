@@ -4,8 +4,8 @@
   "description": "Travel App",
   "main": "index.js",
   "engines": {
-    "node": "12.18.3",
-    "npm": "6.14.6"
+    "node": "12.x",
+    "npm": "6.x"
   },
   "scripts": {
     "start": "node server/index.js",
@@ -16,7 +16,8 @@
     "lint:fix": "eslint --fix . --ext .json --ext .js",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.+(js|json|yml|yaml|css)\"",
-    "test": ""
+    "test": "",
+    "heroku-postbuild": "npm run build"
   },
   "prettier": {
     "printWidth": 90,
