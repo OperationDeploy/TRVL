@@ -14,7 +14,6 @@
     "format": "prettier --write \"**/*.+(js|json|yml|yaml|css)\"",
     "test": "",
     "heroku-postbuild": "npm run build"
-    
   },
   "prettier": {
     "printWidth": 90,
