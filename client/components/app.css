@@ -38,8 +38,8 @@ body {
 }
 
 .logo {
-  max-height: 100px; 
+  max-height: 100px;
   max-width: 90vw;
-  animation-duration: 3s; 
-	animation-iteration-count: 1;
+  animation-duration: 3s;
+  animation-iteration-count: 1;
 }
