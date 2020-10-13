@@ -12,8 +12,7 @@
     "lint:fix": "eslint --fix . --ext .json --ext .js",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.+(js|json|yml|yaml|css)\"",
-    "test": "",
-    "heroku-postbuild": "npm run build"
+    "test": ""
   },
   "prettier": {
     "printWidth": 90,
