@@ -6,12 +6,13 @@ const Login = () => (
   <section className="intro">
     <div className="inner">
       <div className="content">
-        <img src="https://i.ibb.co/FD0qXN8/logowithtag-1.png" className="photo" alt="login-img" />
+        <img
+          src="https://i.ibb.co/FD0qXN8/logowithtag-1.png"
+          className="photo"
+          alt="login-img"
+        />
         <div className="google-btn">
-          <a
-            href="/auth/google"
-            className="google-link"
-          >
+          <a href="/auth/google" className="google-link">
             Login With Google
           </a>
         </div>

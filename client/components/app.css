@@ -22,3 +22,24 @@ body {
   top: -20px;
   right: -20px;
 }
+
+.number-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  align-items: center;
+  width: 75vw;
+  height: 62vh;
+  margin: auto;
+  display: table;
+  background-color: #fdfdfd;
+}
+
+.logo {
+  max-height: 100px; 
+  max-width: 90vw;
+  animation-duration: 3s; 
+	animation-iteration-count: 1;
+}

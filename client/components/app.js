@@ -1,11 +1,31 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import Favicon from 'react-favicon';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { indigo, orange } from '@material-ui/core/colors';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 import Login from './Login';
 import ResponsiveDrawer from './ResponsiveDrawer';
 import './app.css';
+import animatedlogo from '../src/animatedlogo.gif';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: indigo[500],
+    },
+    secondary: {
+      main: orange[500],
+    },
+  },
+  typography: {
+    fontFamily: 'sans-serif',
+    fontWeightBold: 500,
+  },
+});
 
 class App extends Component {
   constructor(props) {
@@ -83,25 +103,32 @@ class App extends Component {
     }
     if (loginComplete && !registered) {
       return (
-        <Typography>
-          **Link you phone number to your account** Phone Number:
-          <input
-            type="text"
-            id="phone"
-            name="phone"
-            placeholder="number"
-            value={phone}
-            onChange={(e) => this.handleChangePhone(e)}
-          />
-          <Button
-            variant="contained"
-            onClick={() => {
-              this.handleSubmitPhone();
-            }}
-          >
-            Submit Phone Number
-          </Button>
-        </Typography>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <div className="number-container">
+            <img src={animatedlogo} alt="" className="logo" />
+            <Typography component="h1" variant="h6">
+              Add your mobile number for TRVL text updates.
+            </Typography>
+            <TextField
+              value={phone}
+              id="phone"
+              label="Mobile Number"
+              variant="outlined"
+              onChange={(e) => this.handleChangePhone(e)}
+              margin="normal"
+            />
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={() => {
+                this.handleSubmitPhone();
+              }}
+            >
+              Submit
+            </Button>
+          </div>
+        </ThemeProvider>
       );
     }
     return (
