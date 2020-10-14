@@ -8,7 +8,7 @@
     "npm": "6.14.8"
   },
   "scripts": {
-    "start": "node server/index.js",
+    "start": "nodemon server/index.js",
     "seed": "node seed.js",
     "dev": "webpack --mode development --open --hot --watch",
     "build": "webpack --mode production",
@@ -16,8 +16,7 @@
     "lint:fix": "eslint --fix . --ext .json --ext .js",
     "eject": "react-scripts eject",
     "format": "prettier --write \"**/*.+(js|json|yml|yaml|css)\"",
-    "test": "",
-    "heroku-postbuild": "npm run build"
+    "test": ""
   },
   "prettier": {
     "printWidth": 90,

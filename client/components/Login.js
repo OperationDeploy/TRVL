@@ -21,16 +21,4 @@ const Login = () => (
   </section>
 );
 
-Login.propTypes = {
-  currentUser: PropTypes.shape({
-    id: PropTypes.string,
-    first_name: PropTypes.string,
-    last_name: PropTypes.string,
-    email: PropTypes.string,
-    profile_pic: PropTypes.string,
-    host: PropTypes.bool,
-    googleId: PropTypes.string,
-  }).isRequired,
-};
-
 export default Login;

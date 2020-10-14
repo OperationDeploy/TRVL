@@ -20,23 +20,22 @@ moment().format();
 const Itinerary = ({ currentUser, currentTrip, day }) => {
   const [activities, setActivities] = useState([]);
   const [weather, setWeather] = useState(null);
-  const [activity, setActivity] = useState('');
+  const [activity, setActivity] = useState({});
 
   const toISO = (date) => new Date(date).toISOString().slice(0, 10);
 
   const saveActivityToDB = () => {
-    setActivity(activity.trim());
-    if (activity.length > 0) {
+    setActivity({ text: activity.text.trim(), day });
+    if (activity.text.length > 0) {
       axios
         .post('/activities', {
           user_id: currentUser.id,
           trip_id: currentTrip.id,
-          event: activity,
+          event: activity.text,
           day,
         })
         .then((response) => {
-          console.info(response);
-          setActivities([...activities, response.data.event]);
+          setActivities([...activities, { text: response.data.event, day }]);
         })
         .catch((err) => console.warn(err));
     }
@@ -50,8 +49,8 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
       })
       .then((res) => {
         const allEvents = res.data
-          .filter((activityEl) => activityEl.day === day)
-          .map((activityEl) => activityEl.event);
+          .filter((e) => e.day === day)
+          .map((e) => ({ text: e.event, day: e.day }));
         setActivities([...activities, ...allEvents]);
       });
 
@@ -124,11 +123,13 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
         currentUser={currentUser}
         setActivity={setActivity}
         activity={activity}
+        day={day}
       />
       <ActivityList
         activities={activities}
         currentTrip={currentTrip}
         currentUser={currentUser}
+        day={day}
         deleteActivity={(activityIndex) => {
           const newActivities = activities.filter((_, index) => index !== activityIndex);
           axios
@@ -136,11 +137,11 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
               params: {
                 user_id: currentUser.id,
                 trip_id: currentTrip.id,
-                event: activities[activityIndex],
+                event: activities[activityIndex].text,
                 day,
               },
             })
-            .then((res) => res.status(204).send('Content Deleted'));
+            .then((res) => res.status(204).send('Content Deleted'))
           setActivities(newActivities);
         }}
       />

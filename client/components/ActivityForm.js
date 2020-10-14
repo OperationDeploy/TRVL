@@ -4,15 +4,15 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 
-const ActivityForm = ({ saveActivity, setActivity, activity }) => (
+const ActivityForm = ({ saveActivity, setActivity, activity, day }) => (
   <div className="activity-form-container">
     <form>
       <TextField
-        value={activity}
+        value={activity.text}
         variant="outlined"
         placeholder="add activity"
         onChange={(event) => {
-          setActivity(event.target.value);
+          setActivity({ text: event.target.value, day });
         }}
         margin="normal"
       />
@@ -20,7 +20,7 @@ const ActivityForm = ({ saveActivity, setActivity, activity }) => (
         onClick={(event) => {
           event.preventDefault();
           saveActivity();
-          setActivity('');
+          setActivity({});
         }}
       >
         <AddIcon />
@@ -32,7 +32,8 @@ const ActivityForm = ({ saveActivity, setActivity, activity }) => (
 ActivityForm.propTypes = {
   saveActivity: PropTypes.func.isRequired,
   setActivity: PropTypes.func.isRequired,
-  activity: PropTypes.string.isRequired,
+  activity: PropTypes.shape({ text: PropTypes.string }).isRequired,
+  day: PropTypes.string.isRequired,
 };
 
 export default ActivityForm;
