@@ -141,7 +141,7 @@ const Itinerary = ({ currentUser, currentTrip, day }) => {
                 day,
               },
             })
-            .then((res) => res.status(204).send('Content Deleted'))
+            .then((res) => res.status(204).send('Content Deleted'));
           setActivities(newActivities);
         }}
       />
