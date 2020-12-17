@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
+
 import UserTrips from './UserTrips';
 
 const SelectPlaces = ({ trip, currentUser, setClickedPage }) => {
@@ -37,13 +43,22 @@ const SelectPlaces = ({ trip, currentUser, setClickedPage }) => {
 
   return (
     <div className="places-container">
-      <header>Here are Your Places:</header>
+      <Typography component="h1" variant="h6">
+        Select Destination
+      </Typography>
       <ul>
+      <List>
         {places.map((dest) => (
-          <button type="submit" key={dest} onClick={() => handleClick(dest)}>
-            {dest}
-          </button>
+          <div>
+            <ListItem button key={dest} onClick={() => handleClick(dest)}>
+              <ListItemText
+                primary={dest}
+              />
+            </ListItem>
+            <Divider />
+          </div>
         ))}
+        </List>
       </ul>
     </div>
   );

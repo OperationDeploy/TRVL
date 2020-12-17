@@ -7,6 +7,8 @@ import { Typography } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
 import ListItemText from '@material-ui/core/ListItemText';
 import axios from 'axios';
@@ -43,7 +45,7 @@ const ChatComponent = ({ currentUser, currentTrip, newMsgs }) => {
   }, []);
 
   const addMessage = (data) => {
-    console.info(data, 'Message added');
+    console.info(data, messages, 'Message added');
     setMessages([...messages, data]);
   };
 
@@ -83,6 +85,9 @@ const ChatComponent = ({ currentUser, currentTrip, newMsgs }) => {
               <List className={classes.root}>
                 {oldMessages.map((message) => (
                   <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar alt="">{message.author[0]}</Avatar>
+                    </ListItemAvatar>
                     <ListItemText
                       primary={`${message.text} ${message.time}`}
                       secondary={
@@ -95,6 +100,9 @@ const ChatComponent = ({ currentUser, currentTrip, newMsgs }) => {
                 ))}
                 {messages.map((message) => (
                   <ListItem alignItems="flex-start">
+                    <ListItemAvatar>
+                      <Avatar alt="">{message.author[0]}</Avatar>
+                    </ListItemAvatar>
                     <ListItemText
                       primary={`${message.message} ${message.time}`}
                       secondary={

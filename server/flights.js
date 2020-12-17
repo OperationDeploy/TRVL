@@ -7,30 +7,24 @@ const getFlightsInfo = async (tripInfo) => {
   // input: object with trip ID, destination
   // output: array of objects - flight info
   // array of objects - destinations: airport codes
-
   let flightData;
   let dictionary;
   const array = [];
   let iataCodeDestination;
-
   // access trip
   const trip = await Trip.findOne({
     where: { id: tripInfo.currentTrip.id },
   });
-
   const dest = trip.dataValues.destination;
-
   // find coordinates of destination
   const coordinates = await getCoordinates(dest);
   const long = coordinates.Longitude;
   const lat = coordinates.Latitude;
-
   // get API keys
   const amadeus = new Amadeus({
     clientId: API_KEY,
     clientSecret: API_SECRET,
   });
-
   // get airport iata code
   await amadeus.referenceData.locations.airports
     .get({
@@ -43,7 +37,6 @@ const getFlightsInfo = async (tripInfo) => {
     .catch((response) => {
       console.warn(response);
     });
-
   // get Flight prices
   await amadeus.shopping.flightOffersSearch
     .get({
@@ -60,7 +53,6 @@ const getFlightsInfo = async (tripInfo) => {
     })
     .then(() => {
       const price = flightData.map((flight) => flight.price.grandTotal);
-
       const carrier = Object.values(dictionary);
       let result;
       for (let i = 0; i < price.length; i += 1) {
@@ -69,10 +61,8 @@ const getFlightsInfo = async (tripInfo) => {
       }
     })
     .catch((err) => console.warn(err));
-
   return array.slice(0, 5);
 };
-
 module.exports = {
   getFlightsInfo,
 };

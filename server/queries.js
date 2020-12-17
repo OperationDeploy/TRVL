@@ -93,9 +93,7 @@ const addSplit = async (req, res) => {
     item_id: item.id,
   }));
   await Promise.all(userObjs.map((user) => SplitOwedPayment.create(user)));
-  users = users.map((user) =>
-    User.findOne({ where: { googleId: user.user_id }, raw: true }),
-  );
+  users = users.map((user) => User.findOne({ where: { googleId: user.user_id }, raw: true }),);
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -118,12 +116,10 @@ const deleteSplit = async (req, res) => {
 const getSplit = async ({ trip, user }, res) => {
   const response = {};
   let items = await SplitItem.findAll({ where: { trip_id: trip }, raw: true });
-  let users = items.map((item) =>
-    User.findOne({
+  let users = items.map((item) => User.findOne({
       where: { googleId: item.purchaser_id },
       raw: true,
-    }),
-  );
+    }),);
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -137,12 +133,10 @@ const getSplit = async ({ trip, user }, res) => {
     where: { trip_id: trip, recipient_id: user },
     raw: true,
   });
-  users = payments.map((payment) =>
-    User.findOne({
+  users = payments.map((payment) => User.findOne({
       where: { googleId: payment.ower_id },
       raw: true,
-    }),
-  );
+    }),);
   await Promise.all(users).then((result) => {
     users = result;
   });
@@ -198,12 +192,10 @@ const getPhotos = async ({ trip }, res) => {
     raw: true,
     order: [['createdAt', 'DESC']],
   });
-  let users = photos.map((photo) =>
-    User.findOne({
+  let users = photos.map((photo) => User.findOne({
       where: { googleId: photo.user_id },
       raw: true,
-    }),
-  );
+    }),);
   await Promise.all(users).then((results) => {
     users = results;
   });
@@ -217,13 +209,11 @@ const getPhotos = async ({ trip }, res) => {
 
 const addPhoto = async ({ files, body }, res) => {
   const { user, trip } = body;
-  let photos = files.map((photo) =>
-    TripPhoto.create({
+  let photos = files.map((photo) => TripPhoto.create({
       user_id: user,
       trip_id: trip,
       photo_link: photo.filename,
-    }),
-  );
+    }),);
   await Promise.all(photos).then((response) => {
     photos = response;
   });

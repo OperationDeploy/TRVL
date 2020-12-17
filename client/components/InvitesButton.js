@@ -1,12 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import Avatar from '@material-ui/core/Avatar';
+
 import axios from 'axios';
 import SelectPlaces from './SelectPlaces';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    width: '100%',
+    maxWidth: '36ch',
+  },
+  inline: {
+  },
+}));
 
 const InvitesButton = ({ currentUser, trip, setClickedPage }) => {
   const [buttonClicked, setButtonClicked] = useState(false);
   const [otherUsers, setOtherUsers] = useState([]);
+
+  const classes = useStyles();
 
   useEffect(() => {
     axios
@@ -28,8 +47,12 @@ const InvitesButton = ({ currentUser, trip, setClickedPage }) => {
         user,
         trip: trip.id,
       })
-      .then(axios.post('/sendTwilio', { user }))
-      .catch((err) => console.warn(err));
+      .then(() => {
+        axios.post('/sendTwilio', { user });
+      })
+      .catch((err) => {
+        console.warn(err);
+      });
   };
 
   const selectPlaces = () => {
@@ -50,6 +73,28 @@ const InvitesButton = ({ currentUser, trip, setClickedPage }) => {
   return (
     <div>
       <div>
+        <Typography component="h1" variant="h6">
+          Invite Friends
+        </Typography>
+        <ul>
+          {otherUsers.map((user) => (
+            <List className={classes.root}>
+              <ListItem key={user.id} onClick={(event) => {
+                handleClick(event, user);
+              }}>
+                <ListItemAvatar>
+                  <Avatar src={user.profile_pic}
+                    alt="user loaded from google login" />
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${user.first_name} ${user.last_name}`}
+                />
+              </ListItem>
+            </List>
+          ))}
+        </ul>
+      </div>
+      <div>
         <Button
           color="secondary"
           aria-label="outlined primary button group"
@@ -60,16 +105,6 @@ const InvitesButton = ({ currentUser, trip, setClickedPage }) => {
         >
           Generate Places
         </Button>
-      </div>
-      <div>
-        <header>Click on a user to send them a invite to this trip!</header>
-        <ul>
-          {otherUsers.map((user) => (
-            <button type="submit" key={user} onClick={(e) => handleClick(e, user)}>
-              {user.last_name}, {user.first_name}
-            </button>
-          ))}
-        </ul>
       </div>
     </div>
   );
